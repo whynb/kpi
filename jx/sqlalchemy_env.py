@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import *
 from jx.util import *
 from pymysql.err import *
+from typing import List
 
 
 # engine = create_engine('sqlite:///data.db', echo=True)

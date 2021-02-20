@@ -9,15 +9,16 @@ from django.http import JsonResponse, HttpResponse
 from django.db import connection
 from django.forms.models import model_to_dict
 from django.db.utils import *
+from django.conf import settings
 import pandas as pd
 
 
 def calculate_kpi(_payroll):
-    from module import VIEW_JZGJCSJXX
+    from jx.module import VIEW_JZGJCSJXX
     departments = VIEW_JZGJCSJXX.get_managed_departments(str(_payroll))
 
-    from sqlalchemy_env import db
-    from rule import KH_JXKHGZ, KH_KHJGMX
+    from jx.sqlalchemy_env import db
+    from jx.rule import KH_JXKHGZ, KH_KHJGMX
     # TODO: additional query options
     rules_query = db.query(KH_JXKHGZ)
     rules_query = rules_query.filter(KH_JXKHGZ.DWH.in_(departments))
@@ -377,16 +378,16 @@ def jx_upload_file(req):
         table_prefix = "dr"
 
         try:
-            model_dr = __import__('model_dr')
-        except ImportError:
             model_dr = __import__('jx.model_dr', fromlist=(["model_dr"]))
+        except ImportError:
+            model_dr = __import__('model_dr')
 
         if function in ['jxkhgz']:
             table_prefix = 'kh'
             try:
-                model_dr = __import__('rule')
-            except ImportError:
                 model_dr = __import__('jx.rule', fromlist=(["rule"]))
+            except ImportError:
+                model_dr = __import__('rule')
 
         model_dr_class = getattr(model_dr, (table_prefix + '_' + function).upper())
         table = model_dr_class.__tablename__
