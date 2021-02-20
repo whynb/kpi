@@ -1,0 +1,57 @@
+    <div class="modal fade" id="modal_progress" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="width:400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="progress-title">上传进度提示</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div class="col-sm-12 input-group">
+                        <div></div>
+                        <div class="progress" id="progress-bar-active">
+                          <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width: 100%"></div>
+                        </div>
+                        <div class="progress" id="progress-bar-static" hidden>
+                          <div id="progress-bar-static-res" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="progress_check" type="button" class="btn btn-info" onclick="progress_finish()" disabled><span class="fa fa-check" aria-hidden="true"></span> 查看 </button>
+                    <button id="progress_close" type="button" class="btn btn-danger" data-dismiss="modal" disabled><span class="fa fa-remove" aria-hidden="true"></span> 关闭 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function startProgressBar(v) {
+            $('#progress-title').html(v);
+            $('#progress-bar-active').show();
+            $('#progress-bar-static').hide();
+            $('#progress_check').prop('disabled', true);
+            $('#progress_close').prop('disabled', true);
+            $('#modal_progress').modal({backdrop: 'static', keyboard: false});
+        }
+
+        function pauseProgressBar(v, s) {
+            $('#progress-title').html(v);
+            $('#progress-bar-active').hide();
+            $('#progress-bar-static').show();
+            if (s) {
+                $('#progress-bar-static-res').removeClass('progress-bar-danger');
+                $('#progress-bar-static-res').addClass('progress-bar-success');
+                $('#progress_check').prop('disabled', false);
+            }
+            else {
+                $('#progress-bar-static-res').removeClass('progress-bar-success');
+                $('#progress-bar-static-res').addClass('progress-bar-danger');
+                $('#progress_check').prop('disabled', true);
+            }
+            $('#progress_close').prop('disabled', false);
+            $('#modal_progress').modal({backdrop: 'static', keyboard: false});
+        }
+
+        function endProgressBar() {
+            $('#modal_progress').modal('hide');
+        }
+    </script>

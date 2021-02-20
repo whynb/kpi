@@ -1,0 +1,12 @@
+<script>
+    $.getJSON("{{ url('jx_get_table') }}?table=sal_itemtype", function(ret){
+        for(var i=0; i < ret.length; i++){
+            var checked = "";
+            for (var j=0; j < itemCode.length; j++) if (itemCode[j] == i+1) checked = 'checked="" ';
+            $('<div class="col-sm-3 input-group"><span class="input-group-addon">' +
+                '<input onclick="getItemData()" type="checkbox" ' + checked + 'data-code="' + ret[i].id +
+                '"></span><input type="text" class="form-control" placeholder="' + ret[i].name +
+                '" readonly></div>').appendTo($('#checkItemTypes'));
+        }
+    });
+</script>

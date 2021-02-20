@@ -1,0 +1,11 @@
+{% if report %}
+    editable: {
+        type: "text",
+        url: "{{ url('edit') }}",
+        emptytext: "请输入",
+        params: function(p) { p.t = 'taxrate'; p.m = $('#selectStartDate').val(); return p; },
+        error: function(rsp, nv) { $.hulla.send(rsp.status+'异常，请重试！', "danger"); return '';},
+        success: function(rsp, nv) { refreshTable(); $.hulla.send(rsp.msg, "warning"); return ''; },
+        validate: function (v) { if($.trim(v) == '' || (notNumber(v) && notFloat(v))) return '请重新输入整数或小数'; },
+    },
+{% endif %}

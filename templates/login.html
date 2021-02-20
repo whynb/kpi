@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="{{ static('css/bootstrap-cerulean.min.css') }}" rel="stylesheet">
+    <link href="{{ static('css/charisma-app.css') }}" rel="stylesheet">
+    <link href="{{ static('font-awesome-4/css/font-awesome.min.css') }}" rel="stylesheet">
+</head>
+
+<body>
+<div class="ch-container">
+    <div class="row">
+        <div class="col-md-12 center">
+            <br><br>
+            <h2>
+                <span id="sysname">东北大学绩效考核系统</span>
+            </h2>
+            <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="well col-md-3 center login-box">
+            <div class="alert alert-info"><h4>请 输 入 用 户 名 和 密 码</h4></div>
+            <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <fieldset>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><i class="fa fa-user red"></i></span>
+                        {{ form.payroll }}
+                    </div>
+                    <div class="clearfix"></div><br>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><i class="fa fa-lock red"></i></span>
+                        {{ form.password }}
+                    </div>
+                    <div class="clearfix"></div> <br>
+                    <p class="center col-md-4">
+                        <button type="submit" class="btn btn-primary">登 录</button>
+                    </p>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

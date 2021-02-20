@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    {% include 'html/stitle.html' %}
+    {% include 'html/scss.html' %}
+    {% include 'html/sjs.html' %}
+</head>
+
+<body>
+
+    {% include 'html/spassword.html' %}
+
+    <!-- Start Navigation -->
+    <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
+        <div class="container">
+            {% include 'html/sheader.html' %}
+            {% include 'html/smenu.html' %}
+        </div>
+    </nav>
+    <!-- End Navigation -->
+
+    <div class="clearfix"></div>
+
+    <div class="column">
+        <div class="column-right" style="height: 1000px;">
+            <div id="content" class="col-lg-12 col-sm-12">
+                <div class="box-inner">
+                    <div class="box-content">
+                        <div class="form-group form-inline" id="tabletoolbar">
+                            <table border="0">
+                                <tr>
+                                    <td>
+                                        <label class="control-label">  工资号: </label>
+                                        <input type="text" name="teacherid" id="paynum" class="form-control"  placeholder="请输入工资号">
+                                    </td>
+                                    <td>
+                                        <span>&nbsp;    </span>
+                                        <label class="control-label">  姓名: </label>
+                                        <input type="text" name="teacherid" id="staffname" class="form-control" placeholder="请输入姓名">
+                                    </td>
+                                    <!--
+                                    <td>
+                                        <span>&nbsp;    </span>
+                                        <label class="control-label">  部门: </label>
+                                        <select class="selectpicker" data-width="200" title="--------空--------" id="cur_department"></select>
+                                    </td>
+                                    -->
+                                    <td>
+                                        <span>&nbsp;    </span>
+                                        <button id="btn_search" onclick="refresh()" type="button" class="btn btn-danger">
+                                            <span class="fa fa-search" aria-hidden="true"></span> 查询
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <span>&nbsp;    </span>
+                                        <button id="btn_dselete" type="button" onclick="allrefresh()" class="btn btn-info">
+                                            <span class="fa fa-refresh" aria-hidden="true"></span> 全部
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <table id="tb_info"></table>
+                    </div>
+                </div><!--/#content.col-md-0-->
+            </div>
+        </div>
+    </div>
+<!-- external javascript -->
+
+
+<script>
+
+    $(function () {
+        $.getJSON("{{ url('get_department') }}", function (ret) {
+            $("<option  value=\"-1\">--------空--------</option>").appendTo($('#cur_department'));
+            for (var i = 0; i < ret.length; i++) {
+                $("<option value=" + ret[i]['curr_department_id'] + ">  " + ret[i]['curr_department_name'] + " </option>").appendTo($('#cur_department'));
+            }
+            $('#cur_department').selectpicker('refresh');
+        });
+
+        var oTable = new TableInit();
+        oTable.Init();
+    });
+
+    function refresh() {
+        // $("#tb_info").bootstrapTable('destroy');
+        setTimeout(function () { $('#tb_info').bootstrapTable('refresh'); }, 100);
+    }
+
+    function allrefresh() {
+        $('#paynum').val('');
+        $('#staffname').val('');
+        $('#cur_department').val('-1');
+        $('#cur_department').selectpicker('refresh');
+        refresh();
+    }
+
+    var TableInit = function () {
+        var oTableInit = new Object();
+        oTableInit.Init = function () {
+            $('#tb_info').bootstrapTable('destroy').bootstrapTable({
+                url: '/jx/staffinfo',               //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#tabletoolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                singleSelect: true,
+                locale: 'zh-CN',
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageSize: 25,                       //每页的记录行数（*）
+                pageList: [10, 25, 50, 'all'],        //可供选择的每页的行数（*）
+                buttonsAlign: "right",              //按钮位置
+                search: true,                       //是否显示表格搜索，根据表格类型进行客户端搜索或者服务端搜索
+                searchOnEnterKey: true,
+                showRefresh: true,                  //是否显示刷新按钮
+                showColumns: false,                 //是否显示所有的列
+                clickToSelect: true,                //是否启用点击选中行
+                uniqueId: "payroll_number",                     //每一行的唯一标识，一般为主键列
+                idField: "payroll_number",                      //used by x-editable
+                undefinedText: '',
+            columns: [
+                {'title': '工资号', 'sortable': true, 'field': 'payroll'},
+                {'title': '姓名', 'sortable': true, 'field': 'XM'},
+                {title: '角色', sortable: true, field: 'role_id',
+                    {% if editable %}
+                        editable: {
+                            type: "select",
+                            source: [
+                                {% for role in roles %}
+                                    {value: '{{ role[0] }}', text: '{{ role[1] }}'},
+                                {% endfor %}
+                            ],
+                            validate: function (v) { if(1==1
+                                {% for role in roles %}
+                                    && v!={{ role[0] }}
+                                {% endfor %}
+                            ) return '请重新选择参数类型"';}
+                        },
+                    {% endif %}
+                },
+                {'title': '当前所属部门', 'sortable': true, 'field': 'DWMC'},
+            ],
+                    {% if editable %}
+            onEditableSave: function (field, row, oldValue, $el) {
+                var data = row;
+                data.field = field;
+                data.menu = '{{ menu }}';
+                $.ajax({
+                    type: "post",
+                    url: "{{ url('role_inline_edit') }}",
+                    headers: {"X-CSRFToken": getCookie('csrftoken')},
+                    data: data,
+                    dataType: 'JSON',
+                    success: function (data, status) { if (status == "success") { $.hulla.send(data.msg, "warning"); } },
+                    error: function () { $.hulla.send('在线编辑异常，请重试！', "danger"); },
+                    complete: function () { refreshTable();}
+                });
+            }
+                    {% endif %}
+
+            });
+        };
+
+        oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit,   //页面大小
+                offset: params.offset, //页码
+                sort: params.sort,
+                order: params.order,
+                paynum: $('#paynum').val(),
+                staffname: $('#staffname').val(),
+                cur_department: $('#cur_department').val(),
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+</script>
+
+</body>
+</html>

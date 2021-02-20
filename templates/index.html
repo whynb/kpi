@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+<head>
+    {% include 'html/stitle.html' %}
+    {% include 'html/scss.html' %}
+    {% include 'html/sjs.html' %}
+</head>
+<body>
+    {% include 'html/spassword.html' %}
+
+    <!-- Start Navigation -->
+    <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
+        <div class="container">
+            {% include 'html/sheader.html' %}
+            {% include 'html/smenu.html' %}
+        </div>
+    </nav>
+    <!-- End Navigation -->
+
+    <div class="clearfix"></div>
+
+    <!-- Start Content -->
+    <div class="column">
+        <div class="column-right" style="height: 1000px">
+            <ul class="nav navbar-nav">
+                {% for menu in menus %}
+                    <br>
+                    {% for item in menu['items'] %}
+                        <li><a href="{{ item['url'] }}">{{ item['name'] }}</a></li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <!-- End Content -->
+
+<script>
+    console.log(getCookie('payroll'));
+
+</script>
+
+</body>
+</html>

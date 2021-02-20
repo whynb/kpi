@@ -1,0 +1,22 @@
+<!-- Collect the nav links, forms, and other content for toggling -->
+<div class="collapse navbar-collapse" id="navbar-menu">
+    <ul class="nav navbar-nav">
+        {% for menu in menus %}
+            {% if menu['items'] | length > 1 %}
+                <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ menu['name'] }}</a>
+                <ul class="dropdown-menu">
+                    {% for item in menu['items'] %}
+                        <li><a href="{{ item['url'] }}">{{ item['name'] }}</a></li>
+                    {% endfor %}
+                </ul>
+                </li>
+            {% endif %}
+            {% if menu['items'] | length == 1 %}
+                {% for item in menu['items'] %}
+                    <li><a href="{{ item['url'] }}">{{ item['name'] }}</a></li>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div><!-- /.navbar-collapse -->

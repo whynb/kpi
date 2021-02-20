@@ -1,0 +1,14 @@
+<span class="input-group-addon"><i class="fa fa-calendar" onclick="dateIconClick(this)"></i></span>
+<script>
+    var dateIconClickEnabled = true;
+    function dateIconClick(obj){
+        if (dateIconClickEnabled) {
+            $('#'+$(obj).parent().siblings()[0].getAttribute('id')).datepicker('show');
+            dateIconClickEnabled = false;
+        }
+        else {
+            $('#'+$(obj).parent().siblings()[0].getAttribute('id')).datepicker('hide');
+            dateIconClickEnabled = true;
+        }
+    }
+</script>

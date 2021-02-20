@@ -1,0 +1,16 @@
+<script>
+    function button_download(fn, type) {
+        $('#table').tableExport({
+            type: type,
+            mso: { fileFormat:'xlsx', xslx: { formatId: { date: 14, numbers: 1 } } },
+            hyperlinkIgnore: true,
+            onCellHtmlHyperlink: function($cell, row, col, href, cellText) {
+                return cellText.toString().replace(/请输入/g, "");
+            },
+            exportHiddenCells: true,
+            htmlContent: true,
+            ignoreColumn: [0],
+            fileName: fn,
+        });
+    }
+</script>

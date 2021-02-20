@@ -1,0 +1,164 @@
+
+<style type="text/css">table {table-layout:auto;} th, td{word-break:keep-all;}  .fixed-table-container thead th .th-inner{ white-space:nowrap; }
+</style>
+
+<script type="text/javascript">
+    var columns = [];
+    var items = [];
+    var table_titles = [];
+
+    function align(columns) {
+        for (var i=0; i < columns.length; i++) {
+            columns[i].align = 'center';
+            columns[i].halign= 'center';
+            columns[i].valign = "middle";
+
+            // if (columns[i].field.substr(0, 4) == 'item') {
+            //     var v = "function(rows) { var sum = 0; for (var j=0; j<rows.length; j++) { sum += parseFloat(rows[j]."
+            //         + columns[i].field + "); } return sum.toFixed(2); };";
+            //     columns[i].footerFormatter = new Function("return " + v)();
+            // }
+
+            if (columns[i].field == 'note') columns[i].width = '100px';
+        }
+        return columns;
+    }
+
+    function DateFormatter(value, row, index) {
+        if (value == null || value == undefined || value.length < 10) return value;
+        return value.substring(0, 10);
+    }
+
+    function build_title(items) {
+        columns = [{ checkbox: true }];
+        for (var i=0; i < items.length; i++){
+            var col = {title: items[i].title, field: items[i].field, sortable : true,};
+            if (items[i].editable == 'True') {
+                col = {
+                    title: items[i].title, field: items[i].field, sortable : true,
+                    editable: {
+                        type: "text",
+                        emptytext: "请输入",
+                        validate: function (v) { if($.trim(v) == '') return '请重新输入！'; },
+                    },
+                };
+            }
+            if (items[i].type == 'date') col.formatter = DateFormatter;
+            columns.push(col);
+        }
+        console.log(columns);
+        columns = align(columns);
+    }
+
+    function build_table() {
+        $('#table').bootstrapTable('destroy').bootstrapTable({
+            url: '/jx/get_data',               //请求后台的URL（*）
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            singleSelect: false,
+            locale: 'zh-CN',
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            queryParams: function (params) {
+                var sort = params['sort'];
+                if (sort == undefined) sort = "";
+                var temp = {               // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                    limit: params.limit,   // 页面大小
+                    offset: params.offset, // 页码
+                    sort: sort,
+                    order: params.order,
+                    search: params.search,
+                    code:  $selected_node.code,
+                    type:  $selected_node.type,
+                    start: $('#selectStartDate').val(),
+                    end: $('#selectEndDate').val(),
+                    menu: "{{ menu }}"
+                };
+                return temp;
+            }, //传递参数（*）
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageSize: 25,                       //每页的记录行数（*）
+            pageList: [10, 25, 50, 'all'],        //可供选择的每页的行数（*）
+            showExport: false,                   //是否显示导出按钮
+            exportDataType: "all",              //basic', 'all', 'selected'.
+            buttonsAlign: "right",              //按钮位置
+            exportTypes: ['csv', 'excel'],             //导出文件类型
+            exportOptions: { ignoreColumn: [0], fileName: '{{ tips }}'},  //文件名称设置 NOT work at x-editable
+            search: true,                       //是否显示表格搜索，根据表格类型进行客户端搜索或者服务端搜索
+            searchOnEnterKey: true,
+            showRefresh: true,                  //是否显示刷新按钮
+            showColumns: false,                 //是否显示所有的列
+            clickToSelect: true,                //是否启用点击选中行
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            idField: "id",                      //used by x-editable
+            undefinedText: '',
+            onLoadSuccess: function (data) {
+                var h = $(".column-right").height(); if (h < 500) h = 500; $(".column-left").height(h);
+                $('.fixed-table-loading.table.table-bordered.table-hover').hide();
+            },
+            columns: columns,
+
+            onEditableSave: function (field, row, oldValue, $el) {
+                var data = row;
+                data.field = field;
+                data.menu = '{{ menu }}';
+                $.ajax({
+                    type: "post",
+                    url: "{{ url('edit') }}",
+                    headers: {"X-CSRFToken": getCookie('csrftoken')},
+                    data: data,
+                    dataType: 'JSON',
+                    success: function (data, status) { if (status == "success") { $.hulla.send(data.msg, "warning"); } },
+                    error: function () { $.hulla.send('在线编辑异常，请重试！', "danger"); },
+                    complete: function () { refreshTable();}
+                });
+            }
+
+        });
+
+        // by jinjia2 without http get
+        {% for column in hide_columns %}
+            $('#table').bootstrapTable('hideColumn', '{{ column }}');
+        {% else %}
+            $('#table').bootstrapTable('hideColumn', 'id');
+            $('#table').bootstrapTable('hideColumn', 'note');
+        {% endfor %}
+    }
+
+    function initTable() {
+        var queryParams = {
+            limit: "1000",
+            offset: "0",
+            sort: "",
+            order: "asc",
+            search: "",
+            code:  $selected_node.code,
+            type:  $selected_node.type,
+            start: $('#selectStartDate').val(),
+            end: $('#selectEndDate').val(),
+            menu: "{{ menu }}"
+        };
+
+        $.ajax({
+            type: "GET",
+            url: "{{ url('get_title') }}",
+            data: queryParams,
+            dataType: 'json',
+            success: function(data){
+                table_titles = data;
+                build_title(data);
+                console.log(columns);
+                build_table();
+            },
+            error: function(r, s, e) {
+                $.hulla.send("获得{{ tips }}出错，请重试！", "danger");
+            }
+        });
+    }
+
+    function refreshTable() { setTimeout(function () { $('#table').bootstrapTable('refresh'); }, 100); }
+
+    $(function() { setTimeout(function () { initTable(); }, 200); })
+
+</script>

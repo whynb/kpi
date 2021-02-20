@@ -1,0 +1,143 @@
+<div class="modal fade" id="modal_file_upload" tabindex="-1" role="dialog">
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="modal_file_form" onsubmit="modal_upload_submit(this)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="height:50px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="modal_file_title"></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group input-group" style="width:500px;margin:10px 0px 0px 30px;">
+                        <div class="col-md-12">
+                                <div class="form-group" hidden><input id='modal_file_function' type="text" name="Function"></div>
+                                <div class="form-group">
+                                    <input id="modal_file_name" class="fileinput" type="file" name="FileName" accept=".xlsx">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="modal_file_footer">
+                    <div class="col-md-12">
+                        <button id="modal_file_submit" type="button" class="btn btn-primary"><span class="fa fa-upload"></span> 上传 </button>
+                        <button id="modal_file_cancel" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> 关闭 </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% include 'html/sprogress.html' %}
+
+<script>
+    // no progress modal
+    function modal_upload_submit___(obj) {
+        if ($('#modal_file_name').val() == '') {
+            $.hulla.send("请选择文件先...", "warning");
+            return;
+        }
+
+        var fd = new FormData($('#modal_file_form')[0]);
+        var url = "{{ url('jx_upload_file') }}";
+        obj.disabled = true;
+        $.ajax({
+            type: 'post',
+            url: url,
+            headers: {"X-CSRFToken": getCookie('csrftoken')},
+            data: fd,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.success == true) {
+                    $.hulla.send(data.msg, "warning");
+                    $('#modal_file_name').fileinput('clear');
+                    $('#modal_file_upload').modal('hide');
+                    refresh();
+                }
+                else $.hulla.send(data.msg, "danger");
+                obj.disabled = false;
+            },
+            error: function (req, status, err) {
+                $.hulla.send("上传失败", "danger");
+                $('#modal_file_upload').modal('hide');
+                obj.disabled = false;
+            }
+        });
+    }
+
+    // have progress modal
+    function modal_upload_submit(obj) {
+        if ($('#modal_file_name').val() == '') {
+            $.hulla.send("请选择文件先...", "warning");
+            return;
+        }
+
+        $('#progress_check').hide();
+        startProgressBar('上传文件开始，请耐心等待...')
+
+        var fd = new FormData($('#modal_file_form')[0]);
+        var url = "{{ url('jx_upload_file') }}";
+        obj.disabled = true;
+        $.ajax({
+            type: 'post',
+            url: url,
+            headers: {"X-CSRFToken": getCookie('csrftoken')},
+            data: fd,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                pauseProgressBar(data.msg, data.success);
+                if (data.success == true) {
+                    $('#modal_file_submit').removeAttr('disabled');
+                    $('#modal_file_name').fileinput('clear');
+                    $('#modal_file_upload').modal('hide');
+                    refresh(); // refreshTable();
+                }
+                $('#modal_file_submit').removeAttr('disabled');
+                // refreshTable();
+                // refresh();
+            },
+            error: function (req, status, err) {
+                pauseProgressBar("上传失败", false);
+                $('#modal_file_upload').modal('hide');
+                $('#modal_file_submit').removeAttr('disabled');
+            }
+        });
+    }
+
+    function init_file_upload(name, url) {
+        var control = $('#' + name);
+        control.fileinput({
+            rtl: true,
+            language: 'zh',
+            allowedFileExtensions: ['xlsx'],
+            maxFileCount: 1,
+            maxFileSize: 2000,
+            uploadUrl: url, //上传的地址
+            showPreview: true,
+            allowPreviewTypes: ['xlsx'],
+            browseClass: "btn btn-primary", //按钮样式
+            previewFileIcon: "<i class='fa fa-upload'></i>",
+            dropZoneTitle: "拖拽一个.xlsx文件到这里...",
+            showCancel: false,
+            showUpload: false
+        });
+    }
+
+    function button_upload(title, func) {
+        $.hulla.send(title, "info");
+        $('#modal_file_title').html(title);
+        $('#modal_file_function').val(func);
+
+        $('#modal_file_name').fileinput('clear');
+        $('#modal_file_upload').modal({backdrop: 'static', keyboard: false});
+    }
+
+    $(function() {
+        init_file_upload("modal_file_name", "");
+        $("#modal_file_cancel").click(function () { $('#modal_file_name').fileinput('clear'); });
+        $("#modal_file_submit").click(function () { modal_upload_submit(this); });
+    });
+</script>

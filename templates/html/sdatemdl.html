@@ -1,0 +1,52 @@
+<div class="has-warning">
+    <label class="col-sm-4 control-label text-right">起始月份：</label>
+    <div class="col-sm-8">
+        <div class="input-group date">
+            <input type="text" class="form-control" id="selectModalStart">
+            {% include 'html/scalendar.html' %}
+        </div>
+    </div>
+</div>
+<br><br>
+
+<div class="has-warning">
+    <label class="col-sm-4 control-label text-right">终止月份：</label>
+    <div class="col-sm-8">
+        <div class="input-group date">
+            <input type="text" class="form-control" id="selectModalEnd">
+            {% include 'html/scalendar.html' %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#selectModalStart').datepicker({
+        language: "zh-CN",
+        format: "yyyy-mm",
+        startDate: "2015-01",
+        // startDate: "today",  // issue-52
+        endDate: "2099-12",
+        startView: 1,
+        minViewMode: 1,
+        maxViewMode: 2,
+        orientation: "bottom left",
+        todayBtn: "linked",
+        autoclose: true
+    });
+    $('#selectModalStart').val(moment(new Date().getTime()).format('YYYY-MM'));
+
+    $('#selectModalEnd').datepicker({
+        language: "zh-CN",
+        format: "yyyy-mm",
+        startDate: "2015-01",
+        // startDate: "today",  // issue-52
+        endDate: "2099-12",
+        startView: 1,
+        minViewMode: 1,
+        maxViewMode: 2,
+        orientation: "bottom left",
+        todayBtn: "linked",
+        autoclose: true
+    });
+    $('#selectModalEnd').val("2099-12");
+</script>

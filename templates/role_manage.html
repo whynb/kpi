@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    {% include 'html/stitle.html' %}
+    {% include 'html/scss.html' %}
+    {% include 'html/sjs.html' %}
+</head>
+
+<body>
+    {% include 'html/spassword.html' %}
+
+    <!-- Start Navigation -->
+    <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
+        <div class="container">
+            {% include 'html/sheader.html' %}
+            {% include 'html/smenu.html' %}
+        </div>
+    </nav>
+    <!-- End Navigation -->
+
+    <div class="clearfix"></div>
+
+
+    <div class="column">
+        <div class="column-right" style="height: 1000px;">
+
+    <div class="col-md-3">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h5>角色名称</h5>
+            </div>
+            <div class="box-content">
+                <div class="breadcrumb">
+                    <button class="btn btn-inverse btn-default" id="btn_add"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加角色</button>
+                </div>
+                <ul id="ul_roles">
+                    {% for role in roles %}
+                    <li>
+                        <a href="#" id="role_{{loop.index}}" onclick="role_onclick('{{role.role_name}}')">
+                            <h5><i class="fa fa-tag"></i>{{role.role_name}}</h5>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7" hidden="hidden" id="rolediv">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="" id="menu_name">
+                <h5>菜单权限</h5>
+            </div>
+            <div class="box-content">
+                <div class="breadcrumb">
+                    <button class="btn btn-inverse btn-default" onclick="delrole_onclick(menu_name.innerText)"><i class="fa fa-remove"></i>&nbsp;&nbsp;删除角色</button>
+                    <button class="btn btn-inverse btn-default" onclick="addpow_onclick(menu_name.innerText)"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加菜单</button>
+                </div>
+                <table id="roletable" >
+                </table>
+            </div>
+        </div>
+    </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="addModal1" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" role="document">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4>提示</h4>
+                    <h4 hidden="hidden" id="mdlPara"></h4>
+                </div>
+                <div class="modal-body" >
+                   <h4>是否确认删除角色?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="delete_role()" ><span class="fa fa-ok" aria-hidden="true"></span> &nbsp;确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-remove" aria-hidden="true"></span>&nbsp; 关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:400px;">
+            <div class="modal-content" role="document">
+                <div class="modal-header" style="height:50px;">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4>添加菜单</h4>
+                    <h4 hidden="hidden" id="rolename"></h4>
+                </div>
+                <div class="modal-body" >
+                    <div class="input-group input-group-lg" style="margin:10px;" >
+                        <table id="addtable" >
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="addpowersave_onclick()"><span class="fa fa-plus" aria-hidden="true"></span>  确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-remove" aria-hidden="true"></span>  关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myAddLabel" aria-hidden="true">
+        <form class="form-horizontal" method="post" enctype="multipart/form-data" id="roleform">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+        <div class="modal-dialog">
+            <div class="modal-content" role="document">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4>添加角色</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-tag"></i>&nbsp;角色名称</span>
+                        {{roleform.role_name}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="rolesave_onclick()"><span class="fa fa-save" aria-hidden="true"></span>  保存</button>
+                    <button type="button" class="btn btn-default" onclick="clear_onclick()" data-dismiss="modal"><span class="fa fa-remove" aria-hidden="true"></span>  关闭</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+
+<script>
+
+    $("#btn_add").click(function () {
+        $("#myAddLabel").text("新增");
+        $('#myModal').modal({backdrop: 'static', keyboard: false});
+    });
+
+
+    function clear_onclick() {
+        $('#roleform')[0].reset();
+        $('#myModal').modal('hide');
+    }
+
+    function rolesave_onclick() {
+        let isreturn = true;
+        let lis = document.getElementById('ul_roles').getElementsByTagName('li');
+        for (let i = 0; i < lis.length; i++){
+            if (lis[i].innerText.replace(/(^\s*)|(\s*$)/g, "") == document.getElementById('txt_department_name').value){
+                alert('角色名重复，请更改后重试');
+                isreturn = false;
+                break;
+            }
+        }
+        if (isreturn){
+            alert('添加成功！');
+            $('#roleform').submit();
+            $('#roleform')[0].reset();
+            $('#myModal').modal('hide');
+            window.location.replace("{{ url('role_manage') }}");
+        }
+    }
+
+function role_onclick(role_name){
+    menu_name.innerHTML = "<h5>"+role_name+"</h5>";
+    $('#roletable').bootstrapTable('destroy');
+    $.getJSON("{{ url('getpower') }}?role_name="+role_name, function(ret){
+        $('#roletable').bootstrapTable({
+            data: ret,
+            locale:'zh-CN',
+            striped: true,                      //是否显示行间隔色
+            sortable: true,           //是否启用排序
+            sortOrder: "asc",          //排序方式
+            classes: 'table-no-bordered',
+            columns:[
+                {
+                    title: "菜单名称",
+                    field: "menu_name",
+                    sortable : true,
+                    width : '200px',
+                    align: "center",
+                    valign: "middle"
+                },{
+                    field: 'menu_classify',
+                    title: '所属分类',
+                    sortable : true,
+                    width : '200px',
+                    align: "center",
+                    valign: "middle"
+                },{
+                    field:'id',
+                    title: '删除菜单',
+                    width : '150px',
+                    align: "center",
+                    valign: "middle",
+                    formatter: function(value,row,index){
+                        return '<a class="delete btn btn-danger btn-sm" ><i class="fa fa-trash icon-white"></i>&nbsp;&nbsp;删除</a>';
+                    },
+                    events:{
+                        'click .delete': function(e, value, row, index) {
+                            //alert(value);
+                            menu_onclick(row.menu_name, role_name);
+                        }
+                    }
+                },{
+                    field: 'permission',
+                    title: '权限',
+                    align: "center",
+                    valign: "middle",
+                    editable: {
+                        'type': 'checklist',
+                        'title': '权限',
+                        source: [
+                            {value: 1, text: '增'},
+                            {value: 2, text: '删'},
+                            {value: 3, text: '改'},
+                            {value: 4, text: '查'},
+                            {value: 5, text: '导入'},
+                            {value: 6, text: '导出'}
+                        ]
+                    }
+                }
+            ],
+            onEditableSave: function (field, row, oldValue, $el) {
+                var c = row['permission'].join(',');
+                var x = {menu_id:row['id'],role_name:role_name,permission:c};
+                $.ajax({
+                    type: "post",
+                    url: "/jx/edit_permission",
+                    data: x,
+                    headers: {"X-CSRFToken": getCookie('csrftoken')},
+                    dataType: 'JSON',
+                    success: function (data, status) {
+                        if (status == "success") {
+                            alert('编辑成功');
+                            refresh();
+                        }
+                    },
+                    error: function () { alert('编辑失败'); }
+                });}
+        });
+    });
+    $('#rolediv').show();
+}
+
+function addpow_onclick(menuname){
+    $('#addtable').bootstrapTable('destroy');
+    $.getJSON("{{ url('get_other_power') }}?role_name="+menuname, function(ret){
+        $('#rolename').html(menuname);
+        $('#addtable').bootstrapTable({
+            data: ret,
+            locale:'zh-CN',
+            striped: true,                      //是否显示行间隔色
+            sortable: true,           //是否启用排序
+            sortOrder: "asc",          //排序方式
+            classes:'table-no-bordered',
+            columns:[
+                {
+                    title: "全选",
+                    field: "select",
+                    checkbox: true,
+                    width: 20,//宽度
+                    align: "center",//水平
+                    valign: "middle"//垂直
+                },{
+                    field: 'menu_name',
+                    title: '菜单名称',
+                    sortable : true,
+                    width : '200px',
+                    align: "center",
+                    valign: "middle",
+                    sorter: chineseSort
+                },{
+                    field:'menu_classify',
+                    title: '所属分类',
+                    sortable : true,
+                    width : '150px',
+                    align: "center",
+                    valign: "middle",
+                    sorter: chineseSort
+                }]
+
+        });
+    });
+    $('#addModal').modal({backdrop: 'static', keyboard: false});
+}
+
+function delrole_onclick(role){
+    $('#mdlPara').html(role);
+    console.log(role);
+    $('#addModal1').modal({backdrop: 'static', keyboard: false});
+}
+
+function addpowersave_onclick(){
+    var rolename = document.getElementById("rolename").innerHTML;
+    var urlget = "?role="+rolename + "&menu=";
+    if($('#addtable').bootstrapTable('getSelections').length == 0){
+        alert('请至少选择一个菜单');
+        return;
+    }
+    $.map($('#addtable').bootstrapTable('getSelections'),function(row){
+        urlget += row.id+"_";
+    });
+
+    urlget=urlget.substring(0,urlget.length-1);
+    $.get("{{ url('add_power') }}"+urlget, function(ret){
+        alert(ret);
+        $('#addModal').modal('hide');
+        role_onclick(rolename);
+    });
+}
+
+function menu_onclick(menuname, roleid){
+    // TODO: modal to confirm
+    alert('是否删除该权限？');
+    $.get("{{ url('del_power') }}?role="+roleid+"&menu="+menuname, function(ret){
+        alert(ret);
+        role_onclick(menu_name.innerText);
+    });
+}
+
+function refresh() {
+    setTimeout(function() {
+        $('#roletable').bootstrapTable('refresh');
+    }, 200);
+}
+
+function delete_role(){
+    let role = $('#mdlPara').html();
+
+    $.get("{{ url('del_role') }}?role="+role, function(ret){
+        alert(ret);
+        window.location.replace("{{ url('role_manage') }}");
+    });
+}
+
+</script>
+
+</body>
+</html>

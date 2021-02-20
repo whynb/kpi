@@ -1,0 +1,39 @@
+<script>
+    var flat_department = get_flat_department();
+    function get_flat_department() {
+        var result = [];
+        // $.ajax({
+        //     url: "{{ url('get_allfinstat') }}"+'?m=d',
+        //     async: false,
+        //     type: "get",
+        //     data: {},
+        //     success: function (ret) {
+        //         if (ret) {
+        //             for(var i=0; i < ret.length; i++) {
+        //                 result.push({ value: ret[i]['name'].replace(/&nbsp;/g, ''), text: ret[i]['name'].replace(/&nbsp;&nbsp;/g, '　') });
+        //             }
+        //         }
+        //     }
+        // });
+        return result;
+    }
+
+    var flat_finstat = get_flat_finstat();
+    function get_flat_finstat() {
+        var result = [];
+        // $.ajax({
+        //     url: "{{ url('get_allfinstat') }}",
+        //     async: false,
+        //     type: "get",
+        //     data: {},
+        //     success: function (ret) {
+        //         if (ret) {
+        //             for(var i=0; i < ret.length; i++) {
+        //                 result.push({ value: ret[i]['name'].replace(/&nbsp;/g, ''), text: ret[i]['name'].replace(/&nbsp;&nbsp;/g, '　') });
+        //             }
+        //         }
+        //     }
+        // });
+        return result;
+    }
+</script>

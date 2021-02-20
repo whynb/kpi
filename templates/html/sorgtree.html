@@ -1,0 +1,39 @@
+<script>
+    var initSelectableTree = function() {
+        $.ajax({
+            type: 'get',
+            url: tree_url,
+            data: {
+                method: tree_data_method,
+                month: $('#selectStartDate').val(),
+                monthe: $('#selectEndDate').val(),
+                orgid: $orgid,
+            },
+            dataType: 'json',
+            success: function (ret) {
+                if (ret.success == false) $.hulla.send(ret.tag, "danger");
+                else {
+                    var tw = $('#treeview-selectable').treeview({
+                        data: ret.data,
+                		highlightSearchResults: false,
+                        onNodeUnselected: function (event, node) { unselectNode(node); },
+                        onNodeSelected: function(event, node) { selectNode(node); },
+                    });
+                    $('#treeview-selectable').treeview('selectNode', [findSelectableNodes($selected_node.text)[0], {silent: true}]);
+                    return tw;
+                }
+            },
+            error: function (ret, status, error) {
+                $.hulla.send("获得组织结构失败，请重试！", "danger");
+                console.log(status, error);
+            }
+        });
+    };
+
+    var $selectableTree;
+    setTimeout(function () { $selectableTree = initSelectableTree(); }, 100);
+
+    var findSelectableNodes = function(name) {
+        return $('#treeview-selectable').treeview('search', [ name, { ignoreCase: false, exactMatch: false} ]);
+    };
+</script>

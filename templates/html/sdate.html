@@ -1,0 +1,47 @@
+<div class="input-group date" style="width:120px;">
+    <input type="text" class="form-control" id="selectStartDate" onchange="refresh()">
+    {% include 'html/scalendar.html' %}
+</div>
+<span>&nbsp;</span>
+<div class="input-group"><label>至</label></div>
+<span>&nbsp;</span>
+<div class="input-group date" style="width:120px;">
+    <input type="text" class="form-control" id="selectEndDate" onchange="refresh()">
+    {% include 'html/scalendar.html' %}
+</div>
+<span>&nbsp;</span>
+<script>
+    $('#selectStartDate').datepicker({
+        language: "zh-CN",
+        format: "yyyy-mm",
+        startDate: "2000-01",
+        //startDate: getMonthString(-365*2),
+        endDate: getMonthString(365*2),
+        startView: 1,
+        minViewMode: 1,
+        maxViewMode: 2,
+        orientation: "bottom left",
+        todayBtn: "linked",
+        autoclose: true
+    }).on('changeDate',function(e){
+        //refreshTable();
+    });
+    $('#selectStartDate').val(moment(new Date().getTime()).format('YYYY-MM'));
+
+    $('#selectEndDate').datepicker({
+        language: "zh-CN",
+        format: "yyyy-mm",
+        startDate: "2000-01",
+        //startDate: getMonthString(-365*2),
+        endDate: getMonthString(365*2),
+        startView: 1,
+        minViewMode: 1,
+        maxViewMode: 2,
+        orientation: "bottom left",
+        todayBtn: "linked",
+        autoclose: true
+    }).on('changeDate',function(e){
+        //refreshTable();
+    });
+    $('#selectEndDate').val(moment(new Date().getTime()).format('YYYY-MM'));
+</script>

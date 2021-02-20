@@ -1,0 +1,64 @@
+<div class="modal fade" id="modal_delete" tabindex="-1" role="dialog">
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="modal_delete_form" onsubmit="modal_submit_delete(this)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="height:50px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="modal_delete_title">删除{{ tips }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group input-group" style="width:500px;margin:10px 0px 0px 30px;">
+                        <div class="col-md-12">
+                            <h5 class="modal-title" id="modal_delete_content">确定删除{{ tips }}吗？</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="modal_delete_footer">
+                    <div class="col-md-12">
+                        <button id="modal_delete_submit" type="button" class="btn btn-primary"><span class="fa fa-check"></span> 确定 </button>
+                        <button id="modal_delete_cancel" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> 取消 </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    function button_delete(){
+        var selects = getSelections();
+        if (selects.length == 0) return;
+        $('#modal_delete').modal({backdrop: 'static', keyboard: false});
+    }
+
+    function modal_submit_delete(obj) {
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('delete_data') }}",
+            headers: {"X-CSRFToken": getCookie('csrftoken')},
+            data: {id: JSON.stringify(getSelections()), menu: '{{ menu }}' },
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    $.hulla.send('成功删除数据！', "success");
+                    $('#modal_delete').modal('hide');
+                    // refreshTable();
+                    refresh();
+                }
+                else $.hulla.send('删除数据失败，请联系管理员！', "danger");
+            },
+            error: function (req, status, err) {
+                $.hulla.send('删除数据异常，请联系管理员！', "danger");
+                $('#modal_delete').modal('hide');
+            }
+        });
+    }
+
+    $(function() {
+        $("#modal_delete_cancel").click(function () { $('#modal_delete').modal('hide'); });
+        $("#modal_delete_submit").click(function () { modal_submit_delete(this); });
+    });
+
+
+</script>

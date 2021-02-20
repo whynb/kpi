@@ -1,0 +1,25 @@
+.select,
+#locale {
+  width: 100%;
+}
+
+.like {
+  margin-right: 10px;
+}
+
+.sal_margin {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.sal_menu_right {
+    text-align: right;
+}
+
+.input-large {
+      width: 100px;
+}
+
+.datepicker > div {
+    display: inherit;
+}
