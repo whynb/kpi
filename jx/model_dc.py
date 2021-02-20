@@ -53,7 +53,7 @@ class DC_ZZJGJBSJXX(Base):
         }
 
     @staticmethod
-    def get_unique_condition() -> []:
+    def get_unique_condition() -> List[str]:
         return ['DWH']
 
 
@@ -98,7 +98,7 @@ class DC_JZGJCSJXX(Base):  # 教职工基础数据信息
         }
 
     @staticmethod
-    def get_unique_condition() -> []:
+    def get_unique_condition() -> List[str]:
         return ['JZGH']
 
 
@@ -141,7 +141,7 @@ class DC_XMJFXX(Base):  # 项目经费信息
         }
 
     @staticmethod
-    def get_unique_condition() -> []:
+    def get_unique_condition() -> List[str]:
         return ['XMBH']
 
 
