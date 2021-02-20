@@ -1,13 +1,14 @@
 # coding: utf-8
+
 import rule_engine
 from jx.sqlalchemy_env import *
 from jx.model_dict import KpiObjectBase
 
 # define object module to get dynamic class name
 try:
-    module = __import__('module')
-except ImportError:
     module = __import__('jx.module', fromlist=(["module"]))
+except ImportError:
+    module = __import__('module')
 
 
 # define the custom context to set the resolver
@@ -112,17 +113,17 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
         }
 
     @staticmethod
-    def get_unique_condition() -> []:
+    def get_unique_condition() -> List[str]:
         return ['GZH']
 
     # TODO: edit as view_sql
     @staticmethod
-    def get_search_columns() -> []:
+    def get_search_columns() -> List[str]:
         return ['GZH', 'DWH', 'DWMC', 'KHLX', 'KHZL', 'XXKLZL', 'KHMC', 'KHSJDX']
 
     # TODO: edit as view_sql
     @staticmethod
-    def get_title_columns() -> []:
+    def get_title_columns() -> List[dict]:
         return [
             {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'field': 'GZH', 'title': '规则号', 'editable': 'True', 'type': 'text', },
@@ -236,12 +237,12 @@ class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
 
     # TODO: edit as view_sql
     @staticmethod
-    def get_search_columns() -> []:
+    def get_search_columns() -> List[str]:
         return ['JZGH', 'DWH', 'GZH', 'KHNF', 'KHMX']
 
     # TODO: edit as view_sql
     @staticmethod
-    def get_title_columns() -> []:
+    def get_title_columns() -> List[str]:
         return [
             {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', },
