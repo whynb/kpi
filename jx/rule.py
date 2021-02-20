@@ -242,7 +242,7 @@ class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
 
     # TODO: edit as view_sql
     @staticmethod
-    def get_title_columns() -> List[str]:
+    def get_title_columns() -> List[dict]:
         return [
             {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', },
