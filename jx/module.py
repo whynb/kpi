@@ -114,15 +114,15 @@ class VIEW_ZZJGJBSJXX(Base):  # 组织机构基本数据信息
         return sql_v1
 
     @staticmethod
-    def get_hide_columns() -> []:
+    def get_hide_columns() -> List[str]:
         return ['id', 'stamp', 'note']
 
     @staticmethod
-    def get_search_columns() -> []:
+    def get_search_columns() -> List[str]:
         return ['DWMC']
 
     @staticmethod
-    def get_title_columns() -> []:
+    def get_title_columns() -> List[dict]:
         return [
             {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', },
@@ -146,7 +146,7 @@ class VIEW_ZZJGJBSJXX(Base):  # 组织机构基本数据信息
         ]
 
     @staticmethod
-    def get_managed_departments(_department_id) -> []:
+    def get_managed_departments(_department_id) -> list:
         departments = [_department_id]
         try:
             dpmts_query = db.query(VIEW_ZZJGJBSJXX)
@@ -209,11 +209,11 @@ class VIEW_JZGJCSJXX(Base):  # 教职工基础数据信息
         return sql_v1
 
     @staticmethod
-    def get_hide_columns() -> []:
+    def get_hide_columns() -> List[str]:
         return ['id', 'stamp', 'note']
 
     @staticmethod
-    def get_title_columns() -> []:
+    def get_title_columns() -> List[dict]:
         return [
             {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', },
@@ -233,11 +233,11 @@ class VIEW_JZGJCSJXX(Base):  # 教职工基础数据信息
         ]
 
     @staticmethod
-    def get_search_columns() -> []:
+    def get_search_columns() -> List[str]:
         return ['XM']
 
     @staticmethod
-    def get_managed_departments(_payroll) -> []:
+    def get_managed_departments(_payroll) -> List[str]:
         try:
             users_query = db.query(VIEW_JZGJCSJXX)
             users_query = users_query.filter(VIEW_JZGJCSJXX.JZGH == str(_payroll))
@@ -300,11 +300,11 @@ class VIEW_XMJFXX(Base):  # 项目经费信息
         return sql_v1
 
     @staticmethod
-    def get_hide_columns() -> []:
+    def get_hide_columns() -> List[str]:
         return ['id', 'stamp', 'note']
 
     @staticmethod
-    def get_title_columns() -> []:
+    def get_title_columns() -> List[str]:
         return [
             {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', },
@@ -324,7 +324,7 @@ class VIEW_XMJFXX(Base):  # 项目经费信息
         ]
 
     @staticmethod
-    def get_search_columns() -> []:
+    def get_search_columns() -> List:
         return ['JZGH', 'DWH', 'XMBH', 'JBRXM']
 
 
@@ -418,9 +418,9 @@ def generate_class_view(file='./module.py'):
     """
     import re
     try:
-        module = __import__('module')
-    except ImportError:
         module = __import__('jx.module', fromlist=(["module"]))
+    except ImportError:
+        module = __import__('module')
 
     with open(file, 'r') as f:
         for line in f.readlines():

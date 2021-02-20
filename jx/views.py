@@ -52,9 +52,9 @@ def get_menu(payroll):
 def get_module_static_method(class_name, method, module_name='module', view_prefix='view'):
     try:
         try:
-            module = __import__(module_name)
-        except ImportError:
             module = __import__('jx.'+module_name, fromlist=([module_name]))
+        except ImportError:
+            module = __import__(module_name)
 
         v_class = getattr(module, (view_prefix + '_' + class_name).upper())
         return getattr(v_class, method)()
