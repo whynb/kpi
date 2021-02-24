@@ -48,7 +48,7 @@ why-space {
 
                 {% if editable[4] %}
                     <button id="upload" class="btn btn-info" onclick="button_upload('上传{{ tips }}', '{{ menu }}')"><i class="fa fa-upload"></i> 上传</button>
-                    <button id="upload" class="btn btn-success" onclick="button_run()"><i class="fa fa-upload"></i> 计算</button>
+                    <button id="upload" class="btn btn-primary" onclick="button_run()"><i class="fa fa-calculator"></i> 计算</button>
                 {% endif %}
             </div>
             <table id="table" class="table table-bordered table-striped"></table>
@@ -111,7 +111,7 @@ why-space {
                     refreshTable();
                 }
             },
-            error: function () { $.hulla.send('在线编辑异常，请重试！', "danger"); },
+            error: function () { $.hulla.send('考核运算异常，请联系管理员！', "danger"); },
             complete: function () { refreshTable();}
         });
     }

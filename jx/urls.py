@@ -30,15 +30,18 @@ urlpatterns = [
     url(r'^get_title', function.get_title, name='get_title'),
     url(r'^get_data', function.get_data, name='get_data'),
     url(r'^delete_data', function.delete_data, name='delete_data'),
+    url(r'^create_data', function.create_data, name='create_data'),
     url(r'^edit', function.edit, name='edit'),
     url(r'^run_kpi', function.run_kpi, name='run_kpi'),
 
     url(r'^base/*/', views.base, name='base'),  # 基本数据信息
 
-
     # 绩效考核管理
-    url(r'^jxkhgz/$', views.jxkhgz, name='jxkhgz'),
-    url(r'^khjgmx/$', views.khjgmx, name='khjgmx'),
+    url(r'^khpc/$', views.khpc, name='khpc'),  # 考核批次
+    url(r'^jxkhgz/$', views.jxkhgz, name='jxkhgz'),  # 绩效考核规则
+    url(r'^khgzdz/$', views.khgzdz, name='khgzdz'),  # 考核规则定制
+    url(r'^khjgmx/$', views.khjgmx, name='khjgmx'),  # 绩效考核结果
+    url(r'^khjghz/$', views.khjghz, name='khjghz'),  # 考核结果汇总
 
 ]
 

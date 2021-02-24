@@ -357,3 +357,57 @@ def khjgmx(req):
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
         }
     )
+
+
+@check_login
+def khpc(req):
+    payroll = req.COOKIES.get('payroll')
+    menu = req.get_full_path().split('/')[2]
+    return render(
+        req,
+        'base.html',
+        {
+            'tips': get_menu_name(req),
+            'menu': menu,
+            'menus': get_menu(payroll),
+            'editable': get_role_menu_permission(req),
+            'with_users': get_with_users(req),
+            'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+        }
+    )
+
+
+@check_login
+def khgzdz(req):
+    payroll = req.COOKIES.get('payroll')
+    menu = req.get_full_path().split('/')[2]
+    return render(
+        req,
+        'base.html',
+        {
+            'tips': get_menu_name(req),
+            'menu': menu,
+            'menus': get_menu(payroll),
+            'editable': get_role_menu_permission(req),
+            'with_users': get_with_users(req),
+            'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+        }
+    )
+
+
+@check_login
+def khjghz(req):
+    payroll = req.COOKIES.get('payroll')
+    menu = req.get_full_path().split('/')[2]
+    return render(
+        req,
+        'base.html',
+        {
+            'tips': get_menu_name(req),
+            'menu': menu,
+            'menus': get_menu(payroll),
+            'editable': get_role_menu_permission(req),
+            'with_users': get_with_users(req),
+            'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+        }
+    )

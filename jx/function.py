@@ -13,6 +13,9 @@ from django.conf import settings
 import pandas as pd
 
 
+rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', ]
+
+
 def calculate_kpi(_payroll):
     from jx.module import VIEW_JZGJCSJXX
     departments = VIEW_JZGJCSJXX.get_managed_departments(str(_payroll))
@@ -310,16 +313,26 @@ def get_objects_between(name, start, end):
 @check_login
 @sys_error
 def jx_upload_file(req):
+    # TODO: summarize notes and errors in line <br> and tip, such as adds, updates, columns ignored, cell error
+    # TODO: verify if unique columns existence
     from jx.sqlalchemy_env import cursor, conn
 
-    def __format_value(v, fm):
+    def __format_value(vv, fm, enum_values=None):
         """
-        TODO: format v per key[k][1] if defined
-        :param v:
+        TODO: format vv per key[k][1] if defined
+        :param vv:
         :param fm:
         :return:
         """
-        if fm == "DateTime":
+        if enum_values is None:
+            enum_values = []
+
+        if fm == 'Enum':
+            from typing import Iterable
+            return '' if not isinstance(enum_values, Iterable) else (vv if vv in enum_values else enum_values[0])
+
+        elif fm == "DateTime":
+            v = str(vv).replace('-', '').replace(' ', '').replace(':', '')
             y, m, d = '1970', '01', '01'
             hh, mm, ss = '00', '00', '00'
             try:
@@ -344,7 +357,7 @@ def jx_upload_file(req):
                 sys_info()
             return y + '-' + m + '-' + d + ' ' + hh + ':' + mm + ':' + ss
 
-        return v
+        return vv
 
     def __row_replace_key(__row, __key, uniq=None):
         if uniq is None:
@@ -358,6 +371,8 @@ def jx_upload_file(req):
             if k in __key:
                 if len(__key[k]) > 1:
                     v = __format_value(v, __key[k][1])
+                elif len(__key[k]) > 2:
+                    v = __format_value(v, __key[k][1], __key[k][2])
                 res[__key[k][0]] = v
                 cc_str += str(__key[k][0]) + ', '
                 vv_str += "'" + str(v).replace("'", "char(39)") + "', "
@@ -382,7 +397,7 @@ def jx_upload_file(req):
         except ImportError:
             model_dr = __import__('model_dr')
 
-        if function in ['jxkhgz']:
+        if function in rule_tables:
             table_prefix = 'kh'
             try:
                 model_dr = __import__('jx.rule', fromlist=(["rule"]))
@@ -533,7 +548,7 @@ def edit(req):
             return JsonResponse({'success': False, 'msg': '更新失败：值中含有 null'})
 
         v['table_prefix'] = 'dr'
-        if v['menu'] in ['jxkhgz']:
+        if v['menu'] in rule_tables:
             v['table_prefix'] = 'kh'
 
         v['set_to'] = set_to
@@ -559,7 +574,7 @@ def get_title(req):
     # start|end  # start/end date from FE
     module_name = 'module'
     view_prefix = 'view'
-    if v['menu'] in ['jxkhgz', 'khjgmx']:
+    if v['menu'] in rule_tables:
         module_name = 'rule'
         view_prefix = 'kh'
 
@@ -647,6 +662,35 @@ def get_data(req):
 @check_login
 @sys_error
 def delete_data(req):
+    payroll = str(req.COOKIES.get('payroll'))
+    # TODO: check delete auth ???
+
+    v = eval(str(req.POST.dict()))
+    v['table'] = "dr_" + v['menu']
+    v['id_in'] = v['id'].replace('[', '(').replace(']', ')')
+
+    sql_delete = """ DELETE FROM %(table)s WHERE id IN %(id_in)s """ % v
+    # TODO: add more WHERE conditions to keep system safe
+    # 1. zzjgjbsjxx can't delete parent and current
+    # 2. jzgjcsjxx can't delete self and admin
+    # 3. other conditions ???
+
+    cursor = connection.cursor()
+    logger.info(sql_delete)
+    cursor.execute(sql_delete)
+
+    return JsonResponse({'success': True, 'msg': '删除数据成功'})
+
+
+@check_login
+@sys_error
+def create_data(req):
+    v = eval(str(req.POST.dict()))
+    print(v)
+
+
+    return JsonResponse({'success': True, 'msg': '新建数据成功'})
+
     payroll = str(req.COOKIES.get('payroll'))
     # TODO: check delete auth ???
 

@@ -123,6 +123,7 @@ class VIEW_ZZJGJBSJXX(Base):  # 组织机构基本数据信息
 
     @staticmethod
     def get_title_columns() -> List[dict]:
+        # TODO: multi-sources to update dr data
         return [
             {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', },
@@ -160,6 +161,20 @@ class VIEW_ZZJGJBSJXX(Base):  # 组织机构基本数据信息
             pass
 
         return list(set(departments))
+
+    @staticmethod
+    def get_parent_department(_department_id) -> list:
+        try:
+            dpmts_query = db.query(VIEW_ZZJGJBSJXX)
+            dpmts_query = dpmts_query.filter(VIEW_ZZJGJBSJXX.DWH == str(_department_id))
+            dpmts = dpmts_query.all()
+
+            for dpmt in dpmts:
+                return str(dpmt.LSDWH)
+        except:
+            logger.error(sys_info())
+
+        return ''
 
 
 class VIEW_JZGJCSJXX(Base):  # 教职工基础数据信息

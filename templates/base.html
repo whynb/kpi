@@ -39,11 +39,11 @@ why-space {
             <div class="form-group form-inline" id="toolbar">
                 {% include 'html/sdate.html' %}
                 {% if editable[0] %}
-                <!-- button id="create" class="btn btn-default" onclick="button_create()"><i class="fa fa-plus"></i> 新建</button -->
+                    <button id="create" class="btn btn-warning" onclick="button_create()"><i class="fa fa-plus"></i> 新建</button>
                 {% endif %}
 
                 {% if editable[1] %}
-                <button id="create" class="btn btn-danger" onclick="button_delete()"><i class="fa fa-remove"></i> 删除</button>
+                    <button id="create" class="btn btn-danger" onclick="button_delete()"><i class="fa fa-remove"></i> 删除</button>
                 {% endif %}
 
                 {% if editable[5] %}
@@ -73,6 +73,103 @@ why-space {
     {% if editable[1] %}
         {% include 'html/sdelete.html' %}
     {% endif %}
+
+
+    <div class="modal fade" id="modal_create" tabindex="-1" role="dialog">
+        <form class="form-horizontal" method="post" enctype="multipart/form-data" id="modal_create_form" onsubmit="modal_submit_create(this)">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="height:50px;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title" id="modal_add_title"> 新建{{ tips }}</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="input-group input-group col-sm-12" style="width:500px;margin:10px 0px 0px 30px;">
+                            <div class="form-group has-warning">
+                                <label class="col-sm-5 control-label">Id: </label>
+                                <div class="col-sm-7 ">
+                                    <input type="text" name="CompanyId" id="txtCmpId" class="form-control" placeholder="Id">
+                                </div>
+                            </div>
+
+                            <div class="form-group has-warning" hidden>
+                                <input type="text" name="Slctcomtype" id="txtslctcomtype" class="form-control">
+                            </div>
+                            <div class="form-group has-warning">
+                                <label class="col-sm-5 control-label">单位类型: </label>
+                                <div class=" col-sm-7">
+                                    <select class="selectpicker" data-width="200" title="选择单位类型" id="slctcomtype" onchange="stpcityChange()">
+                                        <option value="-1">  全部类型</option>
+                                        <option value="2">  类型</option>
+                                    </select>
+                                    <script>
+                                        function stpcityChange(){ $('#txtslctcomtype').val($('#slctcomtype').val()); }
+                                    </script>
+                               </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer" id="modal_create_footer">
+                        <div class="col-md-12">
+                            <button id="modal_create_submit" type="button" class="btn btn-primary"><span class="fa fa-check"></span> 确定 </button>
+                            <button id="modal_create_cancel" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> 取消 </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+
+        function reset_create_form(){
+            $('#modal_create_form')[0].reset();
+            // TODO: check if all inputs reset or not; if not, add additional reset method per data type
+        }
+
+        function button_create(){
+            reset_create_form();
+            $('#modal_create').modal({backdrop: 'static', keyboard: false});
+        }
+
+        function modal_submit_create(obj) {
+            var formData = new FormData(document.getElementById("modal_create_form"));
+            $.ajax({
+                type: 'POST',
+                url: "{{ url('create_data') }}",
+                headers: {"X-CSRFToken": getCookie('csrftoken')},
+                data: formData,
+                dataType: 'JSON',
+                processData:false,   //  告诉jquery不要处理发送的数据
+                contentType:false,   // 告诉jquery不要设置content-Type请求头
+                success: function (data) {
+                    if (data.success == true) {
+                        $.hulla.send('成功新建数据！', "success");
+                        $('#modal_create').modal('hide');
+                        // refreshTable();
+                        refresh();
+                    }
+                    else $.hulla.send('新建数据失败，请联系管理员！', "danger");
+                },
+                error: function (req, status, err) {
+                    $.hulla.send('新建数据异常，请联系管理员！', "danger");
+                    // $('#modal_create').modal('hide');
+                }
+            });
+        }
+
+        $(function() {
+            $("#modal_create_cancel").click(function () { $('#modal_create').modal('hide'); });
+            $("#modal_create_submit").click(function () { modal_submit_create(this); });
+        });
+
+
+    </script>
+
+
 
 <script>
     var tree_url = "{{ url('get_allhrdpmt') }}";

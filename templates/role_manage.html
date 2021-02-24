@@ -165,178 +165,189 @@
         }
     }
 
-function role_onclick(role_name){
-    menu_name.innerHTML = "<h5>"+role_name+"</h5>";
-    $('#roletable').bootstrapTable('destroy');
-    $.getJSON("{{ url('getpower') }}?role_name="+role_name, function(ret){
-        $('#roletable').bootstrapTable({
-            data: ret,
-            locale:'zh-CN',
-            striped: true,                      //是否显示行间隔色
-            sortable: true,           //是否启用排序
-            sortOrder: "asc",          //排序方式
-            classes: 'table-no-bordered',
-            columns:[
-                {
-                    title: "菜单名称",
-                    field: "menu_name",
-                    sortable : true,
-                    width : '200px',
-                    align: "center",
-                    valign: "middle"
-                },{
-                    field: 'menu_classify',
-                    title: '所属分类',
-                    sortable : true,
-                    width : '200px',
-                    align: "center",
-                    valign: "middle"
-                },{
-                    field:'id',
-                    title: '删除菜单',
-                    width : '150px',
-                    align: "center",
-                    valign: "middle",
-                    formatter: function(value,row,index){
-                        return '<a class="delete btn btn-danger btn-sm" ><i class="fa fa-trash icon-white"></i>&nbsp;&nbsp;删除</a>';
-                    },
-                    events:{
-                        'click .delete': function(e, value, row, index) {
-                            //alert(value);
-                            menu_onclick(row.menu_name, role_name);
+    function role_onclick(role_name){
+        menu_name.innerHTML = "<h5>"+role_name+"</h5>";
+        $('#roletable').bootstrapTable('destroy');
+        $.getJSON("{{ url('getpower') }}?role_name="+role_name, function(ret){
+            console.log(window.innerHeight);
+            $('#roletable').bootstrapTable({
+                data: ret,
+                locale:'zh-CN',
+                striped: true,                      //是否显示行间隔色
+                sortable: true,           //是否启用排序
+                sortOrder: "asc",          //排序方式
+                classes: 'table-no-bordered',
+                height: window.innerHeight - 100,
+                columns:[
+                    {
+                        title: "菜单名称",
+                        field: "menu_name",
+                        sortable : true,
+                        width : '200px',
+                        align: "center",
+                        valign: "middle"
+                    },{
+                        field: 'menu_classify',
+                        title: '所属分类',
+                        sortable : true,
+                        width : '200px',
+                        align: "center",
+                        valign: "middle"
+                    },{
+                        field:'id',
+                        title: '删除菜单',
+                        width : '150px',
+                        align: "center",
+                        valign: "middle",
+                        formatter: function(value,row,index){
+                            return '<a class="delete btn btn-danger btn-sm" ><i class="fa fa-trash icon-white"></i>&nbsp;&nbsp;删除</a>';
+                        },
+                        events:{
+                            'click .delete': function(e, value, row, index) {
+                                //alert(value);
+                                menu_onclick(row.menu_name, role_name);
+                            }
+                        }
+                    },{
+                        field: 'permission',
+                        title: '权限',
+                        align: "center",
+                        valign: "middle",
+                        editable: {
+                            'type': 'checklist',
+                            'title': '权限',
+                            source: [
+                                {value: 1, text: '增'},
+                                {value: 2, text: '删'},
+                                {value: 3, text: '改'},
+                                {value: 4, text: '查'},
+                                {value: 5, text: '导入'},
+                                {value: 6, text: '导出'}
+                            ]
                         }
                     }
-                },{
-                    field: 'permission',
-                    title: '权限',
-                    align: "center",
-                    valign: "middle",
-                    editable: {
-                        'type': 'checklist',
-                        'title': '权限',
-                        source: [
-                            {value: 1, text: '增'},
-                            {value: 2, text: '删'},
-                            {value: 3, text: '改'},
-                            {value: 4, text: '查'},
-                            {value: 5, text: '导入'},
-                            {value: 6, text: '导出'}
-                        ]
-                    }
-                }
-            ],
-            onEditableSave: function (field, row, oldValue, $el) {
-                var c = row['permission'].join(',');
-                var x = {menu_id:row['id'],role_name:role_name,permission:c};
-                $.ajax({
-                    type: "post",
-                    url: "/jx/edit_permission",
-                    data: x,
-                    headers: {"X-CSRFToken": getCookie('csrftoken')},
-                    dataType: 'JSON',
-                    success: function (data, status) {
-                        if (status == "success") {
-                            alert('编辑成功');
-                            refresh();
-                        }
-                    },
-                    error: function () { alert('编辑失败'); }
-                });}
+                ],
+                onEditableSave: function (field, row, oldValue, $el) {
+                    var c = row['permission'].join(',');
+                    var x = {menu_id:row['id'],role_name:role_name,permission:c};
+                    $.ajax({
+                        type: "post",
+                        url: "/jx/edit_permission",
+                        data: x,
+                        headers: {"X-CSRFToken": getCookie('csrftoken')},
+                        dataType: 'JSON',
+                        success: function (data, status) {
+                            if (status == "success") {
+                                alert('编辑成功');
+                                refresh();
+                            }
+                        },
+                        error: function () { alert('编辑失败'); }
+                    });}
+            });
         });
-    });
-    $('#rolediv').show();
-}
-
-function addpow_onclick(menuname){
-    $('#addtable').bootstrapTable('destroy');
-    $.getJSON("{{ url('get_other_power') }}?role_name="+menuname, function(ret){
-        $('#rolename').html(menuname);
-        $('#addtable').bootstrapTable({
-            data: ret,
-            locale:'zh-CN',
-            striped: true,                      //是否显示行间隔色
-            sortable: true,           //是否启用排序
-            sortOrder: "asc",          //排序方式
-            classes:'table-no-bordered',
-            columns:[
-                {
-                    title: "全选",
-                    field: "select",
-                    checkbox: true,
-                    width: 20,//宽度
-                    align: "center",//水平
-                    valign: "middle"//垂直
-                },{
-                    field: 'menu_name',
-                    title: '菜单名称',
-                    sortable : true,
-                    width : '200px',
-                    align: "center",
-                    valign: "middle",
-                    sorter: chineseSort
-                },{
-                    field:'menu_classify',
-                    title: '所属分类',
-                    sortable : true,
-                    width : '150px',
-                    align: "center",
-                    valign: "middle",
-                    sorter: chineseSort
-                }]
-
-        });
-    });
-    $('#addModal').modal({backdrop: 'static', keyboard: false});
-}
-
-function delrole_onclick(role){
-    $('#mdlPara').html(role);
-    console.log(role);
-    $('#addModal1').modal({backdrop: 'static', keyboard: false});
-}
-
-function addpowersave_onclick(){
-    var rolename = document.getElementById("rolename").innerHTML;
-    var urlget = "?role="+rolename + "&menu=";
-    if($('#addtable').bootstrapTable('getSelections').length == 0){
-        alert('请至少选择一个菜单');
-        return;
+        $('#rolediv').show();
     }
-    $.map($('#addtable').bootstrapTable('getSelections'),function(row){
-        urlget += row.id+"_";
+    
+    function addpow_onclick(menuname){
+        $('#addtable').bootstrapTable('destroy');
+        $.getJSON("{{ url('get_other_power') }}?role_name="+menuname, function(ret){
+            $('#rolename').html(menuname);
+            $('#addtable').bootstrapTable({
+                data: ret,
+                locale:'zh-CN',
+                striped: true,                      //是否显示行间隔色
+                sortable: true,           //是否启用排序
+                sortOrder: "asc",          //排序方式
+                classes:'table-no-bordered',
+                columns:[
+                    {
+                        title: "全选",
+                        field: "select",
+                        checkbox: true,
+                        width: 20,//宽度
+                        align: "center",//水平
+                        valign: "middle"//垂直
+                    },{
+                        field: 'menu_name',
+                        title: '菜单名称',
+                        sortable : true,
+                        width : '200px',
+                        align: "center",
+                        valign: "middle",
+                        sorter: chineseSort
+                    },{
+                        field:'menu_classify',
+                        title: '所属分类',
+                        sortable : true,
+                        width : '150px',
+                        align: "center",
+                        valign: "middle",
+                        sorter: chineseSort
+                    }]
+    
+            });
+        });
+        $('#addModal').modal({backdrop: 'static', keyboard: false});
+    }
+    
+    function delrole_onclick(role){
+        $('#mdlPara').html(role);
+        console.log(role);
+        $('#addModal1').modal({backdrop: 'static', keyboard: false});
+    }
+    
+    function addpowersave_onclick(){
+        var rolename = document.getElementById("rolename").innerHTML;
+        var urlget = "?role="+rolename + "&menu=";
+        if($('#addtable').bootstrapTable('getSelections').length == 0){
+            alert('请至少选择一个菜单');
+            return;
+        }
+        $.map($('#addtable').bootstrapTable('getSelections'),function(row){
+            urlget += row.id+"_";
+        });
+    
+        urlget=urlget.substring(0,urlget.length-1);
+        $.get("{{ url('add_power') }}"+urlget, function(ret){
+            alert(ret);
+            $('#addModal').modal('hide');
+            role_onclick(rolename);
+        });
+    }
+    
+    function menu_onclick(menuname, roleid){
+        // TODO: modal to confirm
+        alert('是否删除该权限？');
+        $.get("{{ url('del_power') }}?role="+roleid+"&menu="+menuname, function(ret){
+            alert(ret);
+            role_onclick(menu_name.innerText);
+        });
+    }
+    
+    function refresh() {
+        setTimeout(function() {
+            $('#roletable').bootstrapTable('refresh');
+        }, 200);
+    }
+    
+    function delete_role(){
+        let role = $('#mdlPara').html();
+    
+        $.get("{{ url('del_role') }}?role="+role, function(ret){
+            alert(ret);
+            window.location.replace("{{ url('role_manage') }}");
+        });
+    }
+
+    $(function() {
+        // TODO: auto resize bootstrap table while window resized
+        // window.onresize(new function() {
+        //     $('#roletable').bootstrapTable('resetView', {
+        //         height: window.innerHeight - 100,
+        //     });
+        // });
     });
-
-    urlget=urlget.substring(0,urlget.length-1);
-    $.get("{{ url('add_power') }}"+urlget, function(ret){
-        alert(ret);
-        $('#addModal').modal('hide');
-        role_onclick(rolename);
-    });
-}
-
-function menu_onclick(menuname, roleid){
-    // TODO: modal to confirm
-    alert('是否删除该权限？');
-    $.get("{{ url('del_power') }}?role="+roleid+"&menu="+menuname, function(ret){
-        alert(ret);
-        role_onclick(menu_name.innerText);
-    });
-}
-
-function refresh() {
-    setTimeout(function() {
-        $('#roletable').bootstrapTable('refresh');
-    }, 200);
-}
-
-function delete_role(){
-    let role = $('#mdlPara').html();
-
-    $.get("{{ url('del_role') }}?role="+role, function(ret){
-        alert(ret);
-        window.location.replace("{{ url('role_manage') }}");
-    });
-}
 
 </script>
 
