@@ -54,6 +54,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
                 kh.id AS id,
                 kh.GZH AS GZH,
                 kh.DWH AS DWH,
+                dw.DWMC AS DWMC,
                 kh.KHLX AS KHLX,
                 kh.KHZL AS KHZL,
                 kh.XXKLZL AS XXKLZL,
@@ -66,9 +67,18 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
                 kh.stamp AS stamp,
                 kh.note AS note            
             FROM kh_jxkhgz kh
+            LEFT JOIN dr_zzjgjbsjxx dw ON dw.DWH=kh.DWH
             WHERE 1=1
         """
         return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['kh_jxkhgz']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['kh_jxkhgz']
 
     @staticmethod
     def get_column_label() -> dict:
@@ -102,21 +112,21 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
-            {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
-            {'field': 'GZH', 'title': '规则号', 'editable': 'True', 'type': 'text', },
-            {'field': 'DWH', 'title': '单位号', 'editable': 'True', 'type': 'text', },
-            {'field': 'DWMC', 'title': '单位名称', 'editable': 'True', 'type': 'text', },
-            {'field': 'KHLX', 'title': '考核类型', 'editable': 'True', 'type': 'text', },
-            {'field': 'KHZL', 'title': '考核子类', 'editable': 'True', 'type': 'text', },
-            {'field': 'XXKLZL', 'title': '详细考核子类', 'editable': 'True', 'type': 'text', },
-            {'field': 'KHMC', 'title': '考核名称', 'editable': 'True', 'type': 'text', },
-            {'field': 'KHSJDX', 'title': '考核数据对象', 'editable': 'True', 'type': 'text', },
-            {'field': 'GZTJ', 'title': '规则条件', 'editable': 'True', 'type': 'text', },
-            {'field': 'JXFSJS', 'title': '绩效分数计算', 'editable': 'True', 'type': 'text', },
-            {'field': 'KHMXMB', 'title': '考核明细模版', 'editable': 'True', 'type': 'text', },
-            {'field': 'KHJGDX', 'title': '考核结果对象', 'editable': 'True', 'type': 'text', },
-            {'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
-            {'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'GZH', 'title': '规则号', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'DWH', 'title': '单位号', 'editable': 'True', 'type': 'text', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'KHLX', 'title': '考核类型', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'KHZL', 'title': '考核子类', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'XXKLZL', 'title': '详细考核子类', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'KHSJDX', 'title': '考核数据对象', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'GZTJ', 'title': '规则条件', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'JXFSJS', 'title': '绩效分数计算', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'KHMXMB', 'title': '考核明细模版', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'KHJGDX', 'title': '考核结果对象', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
+            {'table': 'kh_jxkhgz', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
         ]
 
     def __init__(self, GZH, DWH, KHLX, KHZL, XXKLZL, KHMC, KHSJDX, GZTJ, JXFSJS, KHMXMB, KHJGDX, stamp=now(), note=''):
@@ -173,6 +183,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
 
 
 # TODO: 手工增减业绩点???
+# TODO: 例外名单，object_type, object_id
 class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
 
     __tablename__ = "kh_khjgmx"  # 考核结果明细
@@ -208,24 +219,32 @@ class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
         """
         return sql_v1
 
-    # TODO: edit as view_sql
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['kh_khjgmx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['kh_khjgmx']
+
+    # NOTE: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['JZGH', 'DWH', 'GZH', 'KHNF', 'KHMX']
 
-    # TODO: edit as view_sql
+    # NOTE: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
-            {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
-            {'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', },
-            {'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', },
-            {'field': 'GZH', 'title': '规则号', 'editable': 'False', 'type': 'text', },
-            {'field': 'KHNF', 'title': '考核年份', 'editable': 'False', 'type': 'date', },
-            {'field': 'KHJD', 'title': '考核绩点', 'editable': 'False', 'type': 'text', },
-            {'field': 'KHMX', 'title': '考核明细', 'editable': 'False', 'type': 'text', },
-            {'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
-            {'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_khjgmx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjgmx', 'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjgmx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjgmx', 'field': 'GZH', 'title': '规则号', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjgmx', 'field': 'KHNF', 'title': '考核年份', 'editable': 'False', 'type': 'date', },
+            {'table': 'kh_khjgmx', 'field': 'KHJD', 'title': '考核绩点', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjgmx', 'field': 'KHMX', 'title': '考核明细', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjgmx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
+            {'table': 'kh_khjgmx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
         ]
 
     def __init__(self, JZGH, DWH, GZH, KHJD, KHMX, KHNF=now(), stamp=now(), note=''):
@@ -282,6 +301,14 @@ class KH_KHPC(Base, KpiObjectBase):  # 考核批次
         return sql_v1
 
     @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['kh_khpc']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['kh_khpc']
+
+    @staticmethod
     def get_column_label() -> dict:
         return {
             'ID': ['id'],
@@ -308,16 +335,16 @@ class KH_KHPC(Base, KpiObjectBase):  # 考核批次
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
-            {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
-            {'field': 'DWH', 'title': '单位号', 'editable': 'True', 'type': 'text', },
-            {'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'text', },
-            {'field': 'KHNF', 'title': '考核年份', 'editable': 'True', 'type': 'year', },  # TODO: type.year
-            {'field': 'RQQD', 'title': '日期起点', 'editable': 'True', 'type': 'date', },
-            {'field': 'RQZD', 'title': '日期终点', 'editable': 'True', 'type': 'date', },
-            {'field': 'JHZT', 'title': '激活状态', 'editable': 'True', 'type': 'enum', 'value': ['未激活', '已激活'], },  # TODO: type.enum, value set/1st default
-            {'field': 'FBZT', 'title': '发布状态', 'editable': 'True', 'type': 'enum', 'value': ['未发布', '已发布'], },
-            {'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
-            {'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_khpc', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khpc', 'field': 'DWH', 'title': '单位号', 'editable': 'True', 'type': 'text', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khpc', 'field': 'KHNF', 'title': '考核年份', 'editable': 'True', 'type': 'year', },
+            {'table': 'kh_khpc', 'field': 'RQQD', 'title': '日期起点', 'editable': 'True', 'type': 'date', },
+            {'table': 'kh_khpc', 'field': 'RQZD', 'title': '日期终点', 'editable': 'True', 'type': 'date', },
+            {'table': 'kh_khpc', 'field': 'JHZT', 'title': '激活状态', 'editable': 'True', 'type': 'enum', 'value': ['未激活', '已激活'], },  # TODO: type.enum, value set/1st default
+            {'table': 'kh_khpc', 'field': 'FBZT', 'title': '发布状态', 'editable': 'True', 'type': 'enum', 'value': ['未发布', '已发布'], },
+            {'table': 'kh_khpc', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
+            {'table': 'kh_khpc', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
         ]
 
     def __init__(self, DWH, KHNF=now(), RQQD=now(), RQZD=now(), JHZT='已激活', FBZT='已发布', stamp=now(), note=''):
@@ -366,6 +393,14 @@ class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
         return sql_v1
 
     @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['kh_khgzdz']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['kh_khgzdz']
+
+    @staticmethod
     def get_column_label() -> dict:
         return {
             'ID': ['id'],
@@ -390,15 +425,15 @@ class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
-            {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
-            {'field': 'DWH', 'title': '单位号', 'editable': 'True', 'type': 'text', },
-            {'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'text', },
-            {'field': 'KHNF', 'title': '考核年份', 'editable': 'True', 'type': 'year', },
-            {'field': 'GZH', 'title': '规则号', 'editable': 'True', 'type': 'text', },
-            {'field': 'KHMC', 'title': '考核名称', 'editable': 'False', 'type': 'text', },
-            {'field': 'GZQY', 'title': '规则启用', 'editable': 'True', 'type': 'enum', 'value': ['未启用', '已启用'], },
-            {'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
-            {'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_khgzdz', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khgzdz', 'field': 'DWH', 'title': '单位号', 'editable': 'True', 'type': 'text', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khgzdz', 'field': 'KHNF', 'title': '考核年份', 'editable': 'True', 'type': 'year', },
+            {'table': 'kh_khgzdz', 'field': 'GZH', 'title': '规则号', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khgzdz', 'field': 'GZQY', 'title': '规则启用', 'editable': 'True', 'type': 'enum', 'value': ['未启用', '已启用'], },
+            {'table': 'kh_khgzdz', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
+            {'table': 'kh_khgzdz', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
         ]
 
     def __init__(self, DWH, KHNF, GZH, GZQY='已启用', stamp=now(), note=''):
@@ -449,6 +484,14 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
         return sql_v1
 
     @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['kh_khjghz']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['kh_khjghz']
+
+    @staticmethod
     def get_column_label() -> dict:
         return {
             'ID': ['id'],
@@ -473,17 +516,17 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
-            {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
-            {'field': 'DWH', 'title': '单位号', 'editable': 'True', 'type': 'text', },
-            {'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'text', },
-            {'field': 'LSDWH', 'title': '隶属单位号', 'editable': 'False', 'type': 'text', },
-            {'field': 'LSDWMC', 'title': '隶属单位名称', 'editable': 'False', 'type': 'text', },
-            {'field': 'KHNF', 'title': '考核年份', 'editable': 'True', 'type': 'year', },
-            {'field': 'GZH', 'title': '规则号', 'editable': 'True', 'type': 'text', },
-            {'field': 'KHMC', 'title': '考核名称', 'editable': 'False', 'type': 'text', },
-            {'field': 'KHJDHJ', 'title': '考核绩点合计', 'editable': 'False', 'type': 'text', },
-            {'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
-            {'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_khjghz', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjghz', 'field': 'DWH', 'title': '单位号', 'editable': 'True', 'type': 'text', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjghz', 'field': 'LSDWH', 'title': '隶属单位号', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'LSDWMC', 'title': '隶属单位名称', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjghz', 'field': 'KHNF', 'title': '考核年份', 'editable': 'True', 'type': 'year', },
+            {'table': 'kh_khjghz', 'field': 'GZH', 'title': '规则号', 'editable': 'True', 'type': 'text', },
+            {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjghz', 'field': 'KHJDHJ', 'title': '考核绩点合计', 'editable': 'False', 'type': 'text', },
+            {'table': 'kh_khjghz', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
+            {'table': 'kh_khjghz', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
         ]
 
     def __init__(self, DWH, KHNF, GZH, KHJDHJ, stamp=now(), note=''):

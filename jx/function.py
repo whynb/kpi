@@ -13,7 +13,33 @@ from django.conf import settings
 import pandas as pd
 
 
-rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', ]
+rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz',
+               'kh_khpc', 'kh_jxkhgz', 'kh_khgzdz', 'kh_khjgmx', 'kh_khjghz', ]
+
+
+def get_column_info(class_name, field):
+    try:
+        model = __import__('jx.module', fromlist=(["module"]))
+    except ImportError:
+        model = __import__('module')
+
+    if class_name in rule_tables:
+        try:
+            model = __import__('jx.rule', fromlist=(["rule"]))
+        except ImportError:
+            model = __import__('rule')
+
+    model_class = getattr(model, class_name.upper())
+    columns = model_class.get_title_columns()
+
+    try:
+        for column_ in columns:
+            if column_['field'] == str(field):
+                return column_
+    except:
+        logger.error(sys_info())
+
+    return {}
 
 
 def calculate_kpi(_payroll):
@@ -310,6 +336,40 @@ def get_objects_between(name, start, end):
     return m1 | m2 | m3
 
 
+def get_module_class(function):
+    class_prefix = 'view'
+    try:
+        module = __import__('jx.module', fromlist=(["module"]))
+    except ImportError:
+        module = __import__('module')
+
+    if function in rule_tables:
+        class_prefix = 'kh'
+        try:
+            module = __import__('jx.rule', fromlist=(["rule"]))
+        except ImportError:
+            module = __import__('rule')
+
+    module_class = getattr(module, (class_prefix + '_' + function).upper())
+    return module_class
+
+
+def get_model_dr_class(low_class_name):
+    try:
+        model_dr = __import__('jx.model_dr', fromlist=(["model_dr"]))
+    except ImportError:
+        model_dr = __import__('model_dr')
+
+    if low_class_name[:2] == 'kh':
+        try:
+            model_dr = __import__('jx.rule', fromlist=(["rule"]))
+        except ImportError:
+            model_dr = __import__('rule')
+
+    model_dr_class = getattr(model_dr, low_class_name.upper())
+    return model_dr_class
+
+
 @check_login
 @sys_error
 def jx_upload_file(req):
@@ -386,49 +446,38 @@ def jx_upload_file(req):
 
     try:
         function, file_name = save_file(req)
+        module_class = get_module_class(function)
+        upload_tables = module_class.get_upload_tables()
 
         df = pd.read_excel(file_name, na_values='')  # 这个会直接默认读取到这个Excel的第一个表单
         df = df.where(df.notnull(), '')
 
-        table_prefix = "dr"
+        for upload_table in upload_tables:
+            model_dr_class = get_model_dr_class(upload_table)
+            table = model_dr_class.__tablename__
+            columns = model_dr_class.get_column_label()
+            unique = model_dr_class.get_unique_condition()
 
-        try:
-            model_dr = __import__('jx.model_dr', fromlist=(["model_dr"]))
-        except ImportError:
-            model_dr = __import__('model_dr')
+            sql_where = " WHERE 1=1 "
+            for u in unique:
+                sql_where += " AND " + u + "='%(" + u + ")s'"
 
-        if function in rule_tables:
-            table_prefix = 'kh'
-            try:
-                model_dr = __import__('jx.rule', fromlist=(["rule"]))
-            except ImportError:
-                model_dr = __import__('rule')
+            sql_count = "SELECT COUNT(*) AS count FROM %(table)s" % {'table': table} + sql_where
 
-        model_dr_class = getattr(model_dr, (table_prefix + '_' + function).upper())
-        table = model_dr_class.__tablename__
-        columns = model_dr_class.get_column_label()
-        unique = model_dr_class.get_unique_condition()
+            for record in df.to_dict('records'):
+                rec, c_str, v_str, u_str = __row_replace_key(record, columns, unique)
+                cursor.execute(sql_count % rec)
+                result = cursor.fetchall()
+                if result[0][0]:  # update
+                    sql = "UPDATE %(table)s SET " % {'table': table} + u_str + sql_where % rec
+                else:  # insert
+                    sql = """ 
+                        INSERT INTO %(table)s (%(columns)s) VALUES (%(values)s) 
+                    """ % {'table': table, 'columns': c_str, 'values': v_str, }
 
-        sql_where = " WHERE 1=1 "
-        for u in unique:
-            sql_where += " AND " + u + "='%(" + u + ")s'"
-
-        sql_count = "SELECT COUNT(*) AS count FROM %(table)s" % {'table': table} + sql_where
-
-        for record in df.to_dict('records'):
-            rec, c_str, v_str, u_str = __row_replace_key(record, columns, unique)
-            cursor.execute(sql_count % rec)
-            result = cursor.fetchall()
-            if result[0][0]:  # update
-                sql = "UPDATE %(table)s SET " % {'table': table} + u_str + sql_where % rec
-            else:  # insert
-                sql = """ 
-                    INSERT INTO %(table)s (%(columns)s) VALUES (%(values)s) 
-                """ % {'table': table, 'columns': c_str, 'values': v_str, }
-
-            logger.info(sql)
-            cursor.execute(sql)
-            conn.commit()  # NOTE: 必须commit; 否则独占数据库链接；可以考虑使用django connection自动commit
+                logger.info(sql)
+                cursor.execute(sql)
+                conn.commit()  # NOTE: 必须commit; 否则独占数据库链接；可以考虑使用django connection自动commit
 
         return JsonResponse({'success': True, 'msg': '文件处理成功，请检验数据!'})
 
@@ -536,7 +585,7 @@ def get_allhrdpmt(req):
 
 
 @check_login
-def edit(req):
+def edit__(req):
     """
     :param req: id=30&DWJC=00000C&field=DWJC&menu=zzjgjbsjxx
     :return:
@@ -553,6 +602,50 @@ def edit(req):
 
         v['set_to'] = set_to
         sql_update = "UPDATE %(table_prefix)s_%(menu)s SET %(field)s='%(set_to)s' WHERE id=%(id)s" % v
+
+        cursor = connection.cursor()
+        logger.info(sql_update)
+        cursor.execute(sql_update)
+
+        return JsonResponse({'success': True, 'msg': '成功更新为：' + set_to})
+
+    except Error:  # django.db.utils.Error
+        logger.error(sys_info())
+        return JsonResponse({'success': False, 'msg': '更新失败：数据库错误'})
+
+
+@check_login
+def edit(req):
+    """
+    :param req: id=30&DWJC=00000C&field=DWJC&menu=zzjgjbsjxx
+    :return:
+    """
+    try:
+        v = eval(str(req.POST.dict()))
+        set_to = trim(str(v[v['field']]))
+        if set_to.find('null') != -1:
+            return JsonResponse({'success': False, 'msg': '更新失败：值中含有 null'})
+
+        v['class_name'] = 'view_' + v['menu']
+        if v['menu'] in rule_tables:
+            v['class_name'] = 'kh_' + v['menu']
+
+        column = get_column_info(v['class_name'], v['field'])
+        model_dr_class = get_model_dr_class(column['table'])
+        unique = model_dr_class.get_unique_condition()
+
+        where = '1=1'
+        for u in unique:
+            if u not in v:
+                return JsonResponse({'success': False, 'msg': '更新失败：数据唯一性条件不满足'})
+            where += ' AND ' + u + "='%(" + u + ")s'"
+        if where == '1=1':
+            return JsonResponse({'success': False, 'msg': '更新失败：数据更新条件未定义'})
+
+        v['set_to'] = set_to
+        v['where'] = where % v
+        v['table'] = column['table']
+        sql_update = "UPDATE %(table)s SET %(field)s='%(set_to)s' WHERE %(where)s" % v
 
         cursor = connection.cursor()
         logger.info(sql_update)
@@ -666,19 +759,38 @@ def delete_data(req):
     # TODO: check delete auth ???
 
     v = eval(str(req.POST.dict()))
-    v['table'] = "dr_" + v['menu']
-    v['id_in'] = v['id'].replace('[', '(').replace(']', ')')
+    data = json.loads(v['data'])
+    function = v['menu']
+    count = v['count']
 
-    sql_delete = """ DELETE FROM %(table)s WHERE id IN %(id_in)s """ % v
-    # TODO: add more WHERE conditions to keep system safe
-    # 1. zzjgjbsjxx can't delete parent and current
-    # 2. jzgjcsjxx can't delete self and admin
-    # 3. other conditions ???
+    module_class = get_module_class(function)
+    upload_tables = module_class.get_delete_tables()
 
-    cursor = connection.cursor()
-    logger.info(sql_delete)
-    cursor.execute(sql_delete)
+    from jx.sqlalchemy_env import cursor, conn
+    for d_table in upload_tables:
+        model_dr_class = get_model_dr_class(d_table)
+        unique = model_dr_class.get_unique_condition()
 
+        where = '1=1'
+        for u in unique:
+            where += ' AND ' + u + "='%(" + u + ")s'"
+        if where == '1=1':
+            continue
+
+        for c in range(0, int(count)):
+
+            sql_delete = """ DELETE FROM %(table)s WHERE %(where)s """ % {'table': d_table, 'where': where % data[c]}
+
+            # TODO: add more WHERE conditions to keep system safe
+            # 1. zzjgjbsjxx can't delete parent and current
+            # 2. jzgjcsjxx can't delete self and admin
+            # 3. other conditions ???
+
+            # cursor = connection.cursor()  # change to SQLAlchemy cursor to keep delete transaction
+            logger.info(sql_delete)
+            cursor.execute(sql_delete)
+
+    conn.commit()
     return JsonResponse({'success': True, 'msg': '删除数据成功'})
 
 
@@ -687,6 +799,9 @@ def delete_data(req):
 def create_data(req):
     v = eval(str(req.POST.dict()))
     print(v)
+
+
+
 
 
     return JsonResponse({'success': True, 'msg': '新建数据成功'})

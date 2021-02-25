@@ -12,6 +12,14 @@ class KpiObjectBase:
         return 'SELECT 0'
 
     @staticmethod
+    def get_upload_tables() -> List[str]:
+        return []
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return []
+
+    @staticmethod
     def get_column_label() -> dict:
         return {
             'ID': ['id'],

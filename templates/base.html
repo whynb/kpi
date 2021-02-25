@@ -86,6 +86,10 @@ why-space {
                     <div class="modal-body">
 
                         <div class="input-group input-group col-sm-12" style="width:500px;margin:10px 0px 0px 30px;">
+
+                            <!-- TODO: FE select column from table by table-name -->
+                            <!-- TODO: FE select static data from table by table-name -->
+                            
                             <div class="form-group has-warning">
                                 <label class="col-sm-5 control-label">Id: </label>
                                 <div class="col-sm-7 ">
@@ -214,7 +218,7 @@ why-space {
         }
         var res = [];
         for (var i=0; i<select.length; i++)
-            res.push(select[i].id);
+            res.push(select[i]);
         return res;
     }
 

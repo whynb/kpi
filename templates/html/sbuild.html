@@ -24,6 +24,16 @@
         return columns;
     }
 
+    function YearFormatter(value, row, index) {
+        if (value == null || value == undefined || value.length < 10) return value;
+        return value.substring(0, 4);
+    }
+
+    function MonthFormatter(value, row, index) {
+        if (value == null || value == undefined || value.length < 10) return value;
+        return value.substring(0, 7);
+    }
+
     function DateFormatter(value, row, index) {
         if (value == null || value == undefined || value.length < 10) return value;
         return value.substring(0, 10);
@@ -44,6 +54,8 @@
                 };
             }
             if (items[i].type == 'date') col.formatter = DateFormatter;
+            if (items[i].type == 'year') col.formatter = YearFormatter;
+            if (items[i].type == 'month') col.formatter = MonthFormatter;
             columns.push(col);
         }
         console.log(columns);
@@ -109,9 +121,16 @@
                     headers: {"X-CSRFToken": getCookie('csrftoken')},
                     data: data,
                     dataType: 'JSON',
-                    success: function (data, status) { if (status == "success") { $.hulla.send(data.msg, "warning"); } },
+                    success: function (data, status) {
+                        if (status == "success") { $.hulla.send(data.msg, "warning"); }
+                        // refresh();
+                        build_table();
+                    },
                     error: function () { $.hulla.send('在线编辑异常，请重试！', "danger"); },
-                    complete: function () { refreshTable();}
+                    complete: function () {
+                        // refreshTable();
+                        refresh();
+                    }
                 });
             }
 
@@ -122,6 +141,7 @@
             $('#table').bootstrapTable('hideColumn', '{{ column }}');
         {% else %}
             $('#table').bootstrapTable('hideColumn', 'id');
+            $('#table').bootstrapTable('hideColumn', 'stamp');
             $('#table').bootstrapTable('hideColumn', 'note');
         {% endfor %}
     }

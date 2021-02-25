@@ -33,11 +33,12 @@
     }
 
     function modal_submit_delete(obj) {
+        var sel = getSelections();
         $.ajax({
             type: 'POST',
             url: "{{ url('delete_data') }}",
             headers: {"X-CSRFToken": getCookie('csrftoken')},
-            data: {id: JSON.stringify(getSelections()), menu: '{{ menu }}' },
+            data: {data: JSON.stringify(getSelections()), menu: '{{ menu }}', count: sel.length},
             dataType: 'JSON',
             success: function (data) {
                 if (data.success == true) {
