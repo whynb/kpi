@@ -1,0 +1,219 @@
+
+<div class="modal fade" id="modal_create" tabindex="-1" role="dialog">
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="modal_create_form" onsubmit="modal_submit_create(this)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="height:50px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="modal_add_title"> 新建{{ tips }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group input-group col-sm-12" style="width:500px;margin:10px 0px 0px 30px;">
+                        <!-- TODO: select dynamic data from table with WHERE condition, such as managed DWMC -->
+                        <!-- TODO: default value for number input -->
+                        {% for title in title_columns %}
+                            {% if title['create'] in ['False'] %}
+                                <div class="form-group has-warning" hidden>
+                                    <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}">
+                                    </div>
+                                </div>
+                            {% else %}
+
+                            {% if title['type'] in ['table'] %}
+                                <div class="form-group has-warning" hidden>
+                                    <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control">
+                                </div>
+                                <div class="form-group has-warning">
+                                    <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                                    <div class=" col-sm-8">
+                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()">
+                                            {% with fields = static_fields(title['value']) %}
+                                                {% for val in static_func(payroll, title['value'], title['where']) %}
+                                                    {% if loop.index == 1 %}
+                                                        <option value="{{ val[fields[0]] }}" selected>{{ val[fields[1]] }}</option>
+                                                    {% else %}
+                                                        <option value="{{ val[fields[0]] }}">{{ val[fields[1]] }}</option>
+                                                    {% endif %}
+
+                                                {% endfor %}
+                                                <script hidden>
+                                                    function {{ title['field'] }}_change(){
+                                                        $('#{{ fields[0] }}').val($('#select_{{ title['field'] }}').val());
+                                                        $('#{{ title['field'] }}').val($('#select_{{ title['field'] }}').find("option:selected")[0].textContent);
+                                                    }
+                                                </script>
+                                            {% endwith %}
+                                        </select>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if title['type'] in ['static'] %}
+                                <div class="form-group has-warning" hidden>
+                                    <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control">
+                                </div>
+                                <div class="form-group has-warning">
+                                    <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                                    <div class=" col-sm-8">
+                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()">
+                                            {% with fields = static_fields(title['value']) %}
+                                                {% for val in static_func(payroll, title['value']) %}
+                                                    {% if loop.index == 1 %}
+                                                        <option value="{{ val[fields[0]] }}" selected>{{ val[fields[1]] }}</option>
+                                                    {% else %}
+                                                        <option value="{{ val[fields[0]] }}">{{ val[fields[1]] }}</option>
+                                                    {% endif %}
+
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </select>
+                                        <script>
+                                            function {{ title['field'] }}_change(){ $('#{{ title['field'] }}').val($('#select_{{ title['field'] }}').val()); }
+                                        </script>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if title['type'] in ['text', 'float'] %}
+                                <div class="form-group has-warning">
+                                    <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if title['type'] in ['date'] %}
+                            <div class="form-group has-warning">
+                                <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                                <div class="col-sm-8">
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" name="{{ title['field'] }}" id="timeinput_{{ title['field'] }}">
+                                    {% include 'html/scalendar.html' %}
+                                </div>
+                                </div>
+                            </div>
+                                <script>
+                                    $(function() {
+                                        $('#timeinput_{{ title['field'] }}').datepicker({
+                                            language: "zh-CN",
+                                            format: "yyyy-mm-dd",
+                                            startView: 0,
+                                            minViewMode: 0,
+                                            maxViewMode: 2,
+                                            todayBtn: "linked",
+                                            autoclose: true,
+                                        }).noConflict().on('changeDate',function(e){
+                                        });
+                                    });
+                                </script>
+                            {% endif %}
+                            {% if title['type'] in ['year'] %}
+                            <div class="form-group has-warning">
+                            <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                            <div class="col-sm-8">
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" name="{{ title['field'] }}" id="timeinput_{{ title['field'] }}">
+                                    {% include 'html/scalendar.html' %}
+                                </div>
+                            </div>
+                            </div>
+                                <script>
+                                    $(function() {
+                                        $('#timeinput_{{ title['field'] }}').datepicker({
+                                            language: "zh-CN",
+                                            format: "yyyy",
+                                            startView: 2,
+                                            minViewMode: 2,
+                                            maxViewMode: 2,
+                                            autoclose: true,
+                                        }).noConflict().on('changeDate',function(e){
+                                        });
+                                    });
+                                </script>
+                            {% endif %}
+                            {% if title['type'] in ['enum'] %}
+                                <div class="form-group has-warning" hidden>
+                                    <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control">
+                                </div>
+                                <div class="form-group has-warning">
+                                    <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                                    <div class=" col-sm-8">
+                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()">
+                                            {% for val in title['value'] %}
+                                                {% if loop.index == 1 %}
+                                                    <option value="{{ val }}" selected>{{ val }}</option>
+                                                {% else %}
+                                                    <option value="{{ val }}">{{ val }}</option>
+                                                {% endif %}
+
+                                            {% endfor %}
+                                        </select>
+                                        <script>
+                                            function {{ title['field'] }}_change(){ $('#{{ title['field'] }}').val($('#select_{{ title['field'] }}').val()); }
+                                        </script>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% endif %}
+                        {% endfor %}
+                        <div class="modal-footer" id="modal_create_footer">
+                            <div class="col-md-12">
+                                <button id="modal_create_submit" type="button" class="btn btn-primary"><span class="fa fa-check"></span> 确定 </button>
+                                <button id="modal_create_cancel" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> 取消 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    function reset_create_form(){
+        $('#modal_create_form')[0].reset();
+        // TODO: check if all inputs reset or not; if not, add additional reset method per data type
+    }
+
+    function button_create(){
+        reset_create_form();
+        $('#modal_create').modal({backdrop: 'static', keyboard: false});
+    }
+
+    function modal_submit_create(obj) {
+        // TODO: validate inputted form data; define function validate_create() or let BE to validate
+        var formData = new FormData(document.getElementById("modal_create_form"));
+        formData.append('create_data_item', '{{ menu }}');
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('create_data') }}",
+            headers: {"X-CSRFToken": getCookie('csrftoken')},
+            data: formData,
+            dataType: 'JSON',
+            processData:false,   //  告诉jquery不要处理发送的数据
+            contentType:false,   // 告诉jquery不要设置content-Type请求头
+            success: function (data) {
+                if (data.success == true) {
+                    $.hulla.send('成功新建数据！', "success");
+                    $('#modal_create').modal('hide');
+                    // refreshTable();
+                    refresh();
+                }
+                else $.hulla.send(data.msg, "danger");
+            },
+            error: function (req, status, err) {
+                $.hulla.send('新建数据异常，请联系管理员！', "danger");
+                // $('#modal_create').modal('hide');
+            }
+        });
+    }
+
+    $(function() {
+        // $("#modal_create_cancel").click(function () { $('#modal_create').modal('hide'); });
+        $("#modal_create_submit").click(function () { modal_submit_create(this); });
+    });
+
+</script>
+

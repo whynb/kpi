@@ -17,6 +17,50 @@ rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz',
                'kh_khpc', 'kh_jxkhgz', 'kh_khgzdz', 'kh_khjgmx', 'kh_khjghz', ]
 
 
+def get_field_name(s):
+    try:
+        _s = s.split(',')
+        return _s[1:]
+    
+    except:
+        logger.error(sys_info())
+
+    return []
+
+
+def get_static_data(payroll, s, where=''):
+    try:
+        _s = s.split(',')
+
+        sql = "SELECT"
+        for f in range(1, len(_s)):
+            sql += ' ' + str(_s[f]) + ','
+        sql = sql[:-1]
+        sql += " FROM " + str(_s[0])
+
+        # TODO: more where condition, e.x.: 'DWH IN %(departments)s'
+        if where != '':
+            condition = ""
+            if where == 'DWH IN %(departments)s':
+                from jx.module import VIEW_JZGJCSJXX
+                ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
+                condition = " WHERE " + where % {'departments': str(ds).replace('[', '(').replace(']', ')')}
+
+            sql += condition
+
+        cursor = connection.cursor()
+        logger.info(sql)
+        cursor.execute(sql)
+        sql_result = dictfetchall(cursor)
+
+        return sql_result
+
+    except:
+        logger.error(sys_info())
+
+    return []
+
+
 def get_column_info(class_name, field):
     try:
         model = __import__('jx.module', fromlist=(["module"]))
@@ -370,79 +414,81 @@ def get_model_dr_class(low_class_name):
     return model_dr_class
 
 
+def __format_value(vv, fm, enum_values=None):
+    """
+    TODO: format vv per key[k][1] if defined
+    :param vv:
+    :param fm:
+    :return:
+    """
+    if enum_values is None:
+        enum_values = []
+
+    if fm == 'Enum':
+        from typing import Iterable
+        return '' if not isinstance(enum_values, Iterable) else (vv if vv in enum_values else enum_values[0])
+
+    elif fm == "DateTime":
+        v = str(vv).replace('-', '').replace(' ', '').replace(':', '')
+        y, m, d = '1970', '01', '01'
+        hh, mm, ss = '00', '00', '00'
+        try:
+            if len(v) >= 4:
+                y = str(int(v[:4]))
+            if len(v) >= 6:
+                m = str(int(v[4:6]))
+                m = ('0' + m) if len(m) == 1 else m
+            if len(v) >= 8:
+                d = str(int(v[6:8]))
+                d = ('0' + d) if len(d) == 1 else d
+            if len(v) >= 10:
+                hh = str(int(v[8:10]))
+                hh = ('0' + hh) if len(hh) == 1 else hh
+            if len(v) >= 12:
+                mm = str(int(v[10:12]))
+                mm = ('0' + mm) if len(mm) == 1 else mm
+            if len(v) >= 14:
+                ss = str(int(v[12:14]))
+                ss = ('0' + ss) if len(ss) == 1 else ss
+        except:
+            sys_info()
+        return y + '-' + m + '-' + d + ' ' + hh + ':' + mm + ':' + ss
+
+    return vv
+
+
+def __row_replace_key(__row, __key, uniq=None):
+    if uniq is None:
+        uniq = []
+
+    res = {}
+    cc_str, vv_str, uu_str = '', '', ''
+    for kk, vv in __row.items():
+        k = trim(str(kk))
+        v = trim(str(vv))
+        if k in __key:
+            if len(__key[k]) > 1:
+                v = __format_value(v, __key[k][1])
+            elif len(__key[k]) > 2:
+                v = __format_value(v, __key[k][1], __key[k][2])
+            res[__key[k][0]] = v
+            cc_str += str(__key[k][0]) + ', '
+            vv_str += "'" + str(v).replace("'", "char(39)") + "', "
+            if str(__key[k][0]) not in uniq:
+                uu_str += str(__key[k][0]) + "='" + str(v).replace("'", "char(39)") + "', "
+        else:
+            # res[k] = v  # ignore useless fields
+            pass
+
+    return res, cc_str[:-2], vv_str[:-2], uu_str[:-2]
+
+
 @check_login
 @sys_error
 def jx_upload_file(req):
     # TODO: summarize notes and errors in line <br> and tip, such as adds, updates, columns ignored, cell error
     # TODO: verify if unique columns existence
     from jx.sqlalchemy_env import cursor, conn
-
-    def __format_value(vv, fm, enum_values=None):
-        """
-        TODO: format vv per key[k][1] if defined
-        :param vv:
-        :param fm:
-        :return:
-        """
-        if enum_values is None:
-            enum_values = []
-
-        if fm == 'Enum':
-            from typing import Iterable
-            return '' if not isinstance(enum_values, Iterable) else (vv if vv in enum_values else enum_values[0])
-
-        elif fm == "DateTime":
-            v = str(vv).replace('-', '').replace(' ', '').replace(':', '')
-            y, m, d = '1970', '01', '01'
-            hh, mm, ss = '00', '00', '00'
-            try:
-                if len(v) >= 4:
-                    y = str(int(v[:4]))
-                if len(v) >= 6:
-                    m = str(int(v[4:6]))
-                    m = ('0' + m) if len(m) == 1 else m
-                if len(v) >= 8:
-                    d = str(int(v[6:8]))
-                    d = ('0' + d) if len(d) == 1 else d
-                if len(v) >= 10:
-                    hh = str(int(v[8:10]))
-                    hh = ('0' + hh) if len(hh) == 1 else hh
-                if len(v) >= 12:
-                    mm = str(int(v[10:12]))
-                    mm = ('0' + mm) if len(mm) == 1 else mm
-                if len(v) >= 14:
-                    ss = str(int(v[12:14]))
-                    ss = ('0' + ss) if len(ss) == 1 else ss
-            except:
-                sys_info()
-            return y + '-' + m + '-' + d + ' ' + hh + ':' + mm + ':' + ss
-
-        return vv
-
-    def __row_replace_key(__row, __key, uniq=None):
-        if uniq is None:
-            uniq = []
-
-        res = {}
-        cc_str, vv_str, uu_str = '', '', ''
-        for kk, vv in __row.items():
-            k = trim(str(kk))
-            v = trim(str(vv))
-            if k in __key:
-                if len(__key[k]) > 1:
-                    v = __format_value(v, __key[k][1])
-                elif len(__key[k]) > 2:
-                    v = __format_value(v, __key[k][1], __key[k][2])
-                res[__key[k][0]] = v
-                cc_str += str(__key[k][0]) + ', '
-                vv_str += "'" + str(v).replace("'", "char(39)") + "', "
-                if str(__key[k][0]) not in uniq:
-                    uu_str += str(__key[k][0]) + "='" + str(v).replace("'", "char(39)") + "', "
-            else:
-                # res[k] = v  # ignore useless fields
-                pass
-
-        return res, cc_str[:-2], vv_str[:-2], uu_str[:-2]
 
     try:
         function, file_name = save_file(req)
@@ -518,7 +564,8 @@ def get_department_users(dept):
 @sys_error
 def get_allhrdpmt(req):
     method = req.GET.get('method')
-    method_in = ('True', 'False')
+    # method_in = ('True', 'False')  # NOTE: control if add users
+    method_in = ('True')
 
     payroll = req.COOKIES.get('payroll')
     user = get_user_information(payroll)
@@ -582,36 +629,6 @@ def get_allhrdpmt(req):
 
     # response as bootstrap-treeview
     return JsonResponse({'success': True, 'tag': u'刷新成功', 'data': data})
-
-
-@check_login
-def edit__(req):
-    """
-    :param req: id=30&DWJC=00000C&field=DWJC&menu=zzjgjbsjxx
-    :return:
-    """
-    try:
-        v = eval(str(req.POST.dict()))
-        set_to = trim(str(v[v['field']]))
-        if set_to.find('null') != -1:
-            return JsonResponse({'success': False, 'msg': '更新失败：值中含有 null'})
-
-        v['table_prefix'] = 'dr'
-        if v['menu'] in rule_tables:
-            v['table_prefix'] = 'kh'
-
-        v['set_to'] = set_to
-        sql_update = "UPDATE %(table_prefix)s_%(menu)s SET %(field)s='%(set_to)s' WHERE id=%(id)s" % v
-
-        cursor = connection.cursor()
-        logger.info(sql_update)
-        cursor.execute(sql_update)
-
-        return JsonResponse({'success': True, 'msg': '成功更新为：' + set_to})
-
-    except Error:  # django.db.utils.Error
-        logger.error(sys_info())
-        return JsonResponse({'success': False, 'msg': '更新失败：数据库错误'})
 
 
 @check_login
@@ -723,7 +740,7 @@ def get_data(req):
         if v['menu'] == 'zzjgjbsjxx':  # 组织机构基本数据信息
             sql_where += " AND (DWH='%(department)s' OR LSDWH='%(department)s')"
         else:
-            sql_where += " AND DWH='%(department)s'"
+            sql_where += " AND DWH='%(department)s'"  # TODO: DWH IN ('', '') -> VIEW_ZZJGJBSJXX.get_managed_departments
     else:
         sql_where += " AND 1=0"
     sql_where %= v
@@ -797,33 +814,73 @@ def delete_data(req):
 @check_login
 @sys_error
 def create_data(req):
-    v = eval(str(req.POST.dict()))
-    print(v)
-
-
-
-
-
-    return JsonResponse({'success': True, 'msg': '新建数据成功'})
-
     payroll = str(req.COOKIES.get('payroll'))
-    # TODO: check delete auth ???
+    # TODO: create auth verification
+    # TODO: additional check and default value set
+
+    def __translate_column_to_chinese(columns, col):
+        for k, v in columns.items():
+            if v[0] == col:
+                return k
+        return ''
+
+    def __transform_key_to_chinese(vv, columns):
+        res = {}
+        for k, v in vv.items():
+            nk = __translate_column_to_chinese(columns, k)
+            res[nk] = v
+        return res
 
     v = eval(str(req.POST.dict()))
-    v['table'] = "dr_" + v['menu']
-    v['id_in'] = v['id'].replace('[', '(').replace(']', ')')
+    function = v['create_data_item']
 
-    sql_delete = """ DELETE FROM %(table)s WHERE id IN %(id_in)s """ % v
-    # TODO: add more WHERE conditions to keep system safe
-    # 1. zzjgjbsjxx can't delete parent and current
-    # 2. jzgjcsjxx can't delete self and admin
-    # 3. other conditions ???
+    module_class = get_module_class(function)
+    upload_tables = module_class.get_delete_tables()
 
-    cursor = connection.cursor()
-    logger.info(sql_delete)
-    cursor.execute(sql_delete)
+    from jx.sqlalchemy_env import cursor, conn
+    for d_table in upload_tables:
+        model_dr_class = get_model_dr_class(d_table)
+        columns = model_dr_class.get_column_label()
+        unique = model_dr_class.get_unique_condition()
 
-    return JsonResponse({'success': True, 'msg': '删除数据成功'})
+        where = '1=1'
+        for u in unique:
+            if not len(trim(v[u])):
+                return JsonResponse({'success': False, 'msg': '创建失败：' + str(u) + '为空'})  # TODO: to Chinese readable
+            where += ' AND ' + u + "='%(" + u + ")s'"
+        if where == '1=1':
+            continue
+
+        sql_count = """ SELECT COUNT(*) AS count FROM %(table)s WHERE %(where)s 
+        """ % {'table': d_table, 'where': where % v}
+        logger.info(sql_count)
+        cursor.execute(sql_count)
+        count = cursor.fetchall()
+        if count[0][0] > 0:
+            return JsonResponse({'success': False, 'msg': '创建失败：数据主键重复'})
+
+        tv = v  # TODO: check key existence before pop
+        tv.pop('id')
+        tv.pop('stamp')
+        tv.pop('note')
+
+        rec, c_str, v_str, u_str = __row_replace_key(
+            __transform_key_to_chinese(tv, columns), columns, unique
+        )
+        sql_insert = """ INSERT INTO %(table)s (%(columns)s) VALUES (%(values)s) 
+        """ % {'table': d_table, 'columns': c_str, 'values': v_str, }
+
+        logger.info(sql_insert)
+        from pymysql.err import DataError
+        try:
+            cursor.execute(sql_insert)
+            cursor.fetchall()
+        except DataError as e:
+            logger.error(sys_info())
+            return JsonResponse({'success': False, 'msg': '创建失败: ' + str(e)})  # TODO: translate exception
+
+    conn.commit()
+    return JsonResponse({'success': True, 'msg': '新建数据成功'})
 
 
 @check_login
