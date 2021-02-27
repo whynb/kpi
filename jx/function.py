@@ -13,35 +13,33 @@ from django.conf import settings
 import pandas as pd
 
 
-rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz',
-               'kh_khpc', 'kh_jxkhgz', 'kh_khgzdz', 'kh_khjgmx', 'kh_khjghz', ]
+rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
+               'kh_khpc', 'kh_jxkhgz', 'kh_khgzdz', 'kh_khjgmx', 'kh_khjghz', 'kh_bcykh']
 
 
 def get_field_name(s):
+    """
+        Refer to below get_static_data to get [col1,col2,...] used by FE Jinja2
+    """
     try:
-        _s = s.split(',')
-        return _s[1:]
-    
+        return s[s.find(':')+1:].split(',')
     except:
         logger.error(sys_info())
-
     return []
 
 
 def get_static_data(payroll, s, where=''):
+    """
+        Transfer select data from DB to FE by Jinja2 templates->function method
+        s: "table_name:col1,col2,..."
+        where: additional where condition to get dynamic data
+        TODO: more where condition, e.x.: 'DWH IN %(departments)s'
+    """
     try:
-        _s = s.split(',')
-
-        sql = "SELECT"
-        for f in range(1, len(_s)):
-            sql += ' ' + str(_s[f]) + ','
-        sql = sql[:-1]
-        sql += " FROM " + str(_s[0])
-
-        # TODO: more where condition, e.x.: 'DWH IN %(departments)s'
+        sql = "SELECT " + s[s.find(':')+1:] + " FROM " + s[:s.find(':')]
         if where != '':
             condition = ""
-            if where == 'DWH IN %(departments)s':
+            if where.find('DWH IN %(departments)s') != -1:
                 from jx.module import VIEW_JZGJCSJXX
                 ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
                 condition = " WHERE " + where % {'departments': str(ds).replace('[', '(').replace(']', ')')}
@@ -86,39 +84,56 @@ def get_column_info(class_name, field):
     return {}
 
 
-def calculate_kpi(_payroll):
-    from jx.module import VIEW_JZGJCSJXX
-    departments = VIEW_JZGJCSJXX.get_managed_departments(str(_payroll))
+def calculate_kpi(departments, year, start, end, _payroll, db):
+    from jx.rule import KH_JXKHGZ, KH_KHJGMX, KH_KHGZDZ, KH_BCYKH
 
-    from jx.sqlalchemy_env import db
-    from jx.rule import KH_JXKHGZ, KH_KHJGMX
-    # TODO: additional query options
+    # 获得参与部门的已启用规则
+    active_gzh = []
+    gzdz_query = db.query(KH_KHGZDZ)
+    gzdz_query = gzdz_query.filter(KH_KHGZDZ.DWH.in_(departments), KH_KHGZDZ.KHNF == year, KH_KHGZDZ.GZQY == '已启用')
+    gzdz_data = gzdz_query.all()
+    if not gzdz_data:
+        import datetime  # for year.strftime
+        logger.error('no active rules for ' + str(_payroll) + '@' + year.strftime("%Y"))
+        return
+    for gzdz in gzdz_data:
+        active_gzh.append(gzdz.GZH)
+
+    # 获得参与部门的不参与考核教职工
+    bcykh = []
+    bcykh_query = db.query(KH_BCYKH)
+    bcykh_query = bcykh_query.filter(KH_BCYKH.DWH.in_(departments), KH_BCYKH.KHNF == year, KH_BCYKH.CYZT == '不参与')
+    bcykh_data = bcykh_query.all()
+    for data in bcykh_data:
+        bcykh.append(data.JZGH)
+
+    # 获得参与部门的所有运算规则
     rules_query = db.query(KH_JXKHGZ)
-    rules_query = rules_query.filter(KH_JXKHGZ.DWH.in_(departments))
+    rules_query = rules_query.filter(KH_JXKHGZ.DWH.in_(departments), KH_JXKHGZ.GZH.in_(active_gzh))
     rules = rules_query.all()
 
+    # 对获得的每个规则进行运算
     for rule in rules:
         try:
+            # 根据规则定义的参与考核的类名获得参与考核对象
+            # TODO: All modules SHOULD have JZGH(payroll), stamp
             class_to_check = rule.get_input_class()  # get class to check
             data_query = db.query(class_to_check)  # query out by class defined in rule
             data_query = data_query.filter(class_to_check.DWH.in_(departments))
-
-            # TODO: additional query options, such as timestamp
-            # filter by additional condition input from FE such as KPI batch id/period
-            # data_query = data_query.filter(class_to_check.timestamp.between(start, end))
-
+            data_query = data_query.filter(class_to_check.JZGH.notin_(bcykh))  # filter out not included JZGH
+            data_query = data_query.filter(class_to_check.stamp.between(start, end))  # filter stamp out of start-end
             data_query = data_query.order_by(-class_to_check.id)  # order which is useless in rule calculation
             data = data_query.all()  # get dataset
             if len(data) == 0:
                 continue
 
             for x in data:  # for each data
-                logger.debug(x.__dict__)  # TODO: logger
+                logger.debug(x.__dict__)
                 try:
                     if not rule.match(x):  # match rule condition
                         continue
 
-                    logger.debug(rule.calculate(x))  # TODO: print/output/save rule calculation
+                    logger.debug(rule.calculate(x))
                     logger.debug(rule.get_output_template() % x.__dict__ % rule.__dict__)
 
                     # Save
@@ -126,22 +141,60 @@ def calculate_kpi(_payroll):
                         JZGH=x.JZGH,
                         DWH=rule.DWH,
                         GZH=rule.GZH,
+                        KHNF=year,
                         KHJD=rule.calculate(x),
                         KHMX=rule.get_output_template() % x.__dict__ % rule.__dict__
                     )
                     db.add(obj)
-                    db.commit()
                 except:
                     logger.error(sys_info())
                     pass
+
+                db.commit()
         except:
             logger.error(sys_info())
             pass
+    return
 
 
-def summarize_kpi(_payroll):
-    # TODO: how to summarize ??? while calculate->save
-    pass
+def summarize_kpi(departments, year, db):
+    from jx.rule import KH_KHJGMX, KH_KHJGHZ
+
+    data_query = db.query(KH_KHJGMX)
+    data_query = data_query.filter(KH_KHJGMX.DWH.in_(departments), KH_KHJGMX.KHNF == year)
+    data_set = data_query.all()
+
+    set_query_all = db.query(KH_KHJGHZ)
+    for data in data_set:
+        def save(DWH, KHNF, JZGH, GZH, cur=False):
+
+            set_to_query = set_query_all.filter(
+                KH_KHJGHZ.DWH == DWH, KH_KHJGHZ.KHNF == KHNF,
+                KH_KHJGHZ.JZGH == JZGH, KH_KHJGHZ.GZH == GZH
+            )
+            set_to = set_to_query.all()
+            obj = None
+            if not set_to:
+                obj = KH_KHJGHZ(DWH=DWH, KHNF=KHNF, JZGH=JZGH, GZH=GZH, KHJDHJ=0.0)
+                db.add(obj)
+            else:
+                obj = set_to[0]
+
+            obj.KHJDHJ += data.KHJD
+            obj.save()
+            db.commit()
+
+            if cur:  # 按上级部门汇总绩点
+                logger.info(obj.LSDWH)
+                if obj.LSDWH and trim(str(obj.LSDWH)) != '' and obj.LSDWH != 'None':
+                    obj = save(obj.LSDWH, KHNF, JZGH, GZH, cur)
+            return obj
+
+        save(data.DWH, data.KHNF, data.JZGH, '', False)  # 汇总教职工个人绩点
+        save(data.DWH, data.KHNF, '', data.GZH, True)  # 按规则汇总部门绩点
+        save(data.DWH, data.KHNF, '', '', True)  # 按部门汇总绩点
+
+        db.commit()
     return
 
 
@@ -333,7 +386,7 @@ def get_department(req):
 
 
 def get_dwh(req):
-    # TODO: get DWH
+    # TODO: get DWH while compose upload files
     logger.info(req.COOKIES.get('payroll'))
     return '.'
 
@@ -414,6 +467,15 @@ def get_model_dr_class(low_class_name):
     return model_dr_class
 
 
+def __get_column_definition(columns, column):
+    for k_, v_ in columns.items():
+        if len(v_) < 1:
+            return []
+        if v_[0] == column:
+            return v_
+    return []
+
+
 def __format_value(vv, fm, enum_values=None):
     """
     TODO: format vv per key[k][1] if defined
@@ -467,10 +529,10 @@ def __row_replace_key(__row, __key, uniq=None):
         k = trim(str(kk))
         v = trim(str(vv))
         if k in __key:
-            if len(__key[k]) > 1:
-                v = __format_value(v, __key[k][1])
-            elif len(__key[k]) > 2:
+            if len(__key[k]) > 2:
                 v = __format_value(v, __key[k][1], __key[k][2])
+            elif len(__key[k]) > 1:
+                v = __format_value(v, __key[k][1])
             res[__key[k][0]] = v
             cc_str += str(__key[k][0]) + ', '
             vv_str += "'" + str(v).replace("'", "char(39)") + "', "
@@ -659,6 +721,10 @@ def edit(req):
         if where == '1=1':
             return JsonResponse({'success': False, 'msg': '更新失败：数据更新条件未定义'})
 
+        # NOTE: update by id
+        if unique == [v['field']] and column['table'] == v['class_name']:
+            where = "id='%(id)s'"
+
         v['set_to'] = set_to
         v['where'] = where % v
         v['table'] = column['table']
@@ -673,6 +739,14 @@ def edit(req):
     except Error:  # django.db.utils.Error
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '更新失败：数据库错误'})
+
+
+@check_login
+def get_col_def(req):
+    payroll = str(req.COOKIES.get('payroll'))
+    v = eval(str(req.GET.dict()))
+    print(v)
+    return JsonResponse(get_static_data(payroll, v['value'], v['where']), safe=False)
 
 
 @check_login
@@ -701,11 +775,12 @@ def get_data(req):
 
     module_name = 'module'
     view_prefix = 'view'
-    if v['menu'] in []:
+    if v['menu'] in rule_tables:
         module_name = 'rule'
         view_prefix = 'kh'
 
-    v['table'] = (view_prefix + "_" + v['menu']).upper().lower()  # change to lower due to un-support upper SQL on Linux
+    # v['table'] = (view_prefix + "_" + v['menu']).upper().lower()
+    v['table'] = ("view_" + v['menu']).upper().lower()  # change to lower due to un-support upper SQL on Linux
     v['start'] += "-01 00:00:00"
     v['end'] = month_end(v['end'])
     if 'sort' not in v or v['sort'] in ('', None):
@@ -770,7 +845,6 @@ def get_data(req):
 
 
 @check_login
-@sys_error
 def delete_data(req):
     payroll = str(req.COOKIES.get('payroll'))
     # TODO: check delete auth ???
@@ -811,8 +885,32 @@ def delete_data(req):
     return JsonResponse({'success': True, 'msg': '删除数据成功'})
 
 
+def __format_create_value(v, columns):
+    val = {}
+
+    for k_, v_ in v.items():
+        _v = v_
+        col_def = __get_column_definition(columns, k_)
+        if len(col_def) > 1:
+            if col_def[1] == 'DateTime':
+                _v = __format_value(v_, 'DateTime')
+            if col_def[1] == 'Enum' and _v == '':
+                _v = __format_value(_v, 'Enum', col_def[2])
+
+        if k_ not in ('id', 'stamp', 'note'):
+            val[k_] = _v
+
+    # NOTE: 增减业绩点
+    if 'create_data_item' in v:
+        if v['create_data_item'] == 'khjgmx':
+            val['note'] = v['note']
+            val['GZH'] = 'ZZZ'
+            val['stamp'] = now()
+
+    return val
+
+
 @check_login
-@sys_error
 def create_data(req):
     payroll = str(req.COOKIES.get('payroll'))
     # TODO: create auth verification
@@ -831,8 +929,8 @@ def create_data(req):
             res[nk] = v
         return res
 
-    v = eval(str(req.POST.dict()))
-    function = v['create_data_item']
+    _v = eval(str(req.POST.dict()))
+    function = _v['create_data_item']
 
     module_class = get_module_class(function)
     upload_tables = module_class.get_delete_tables()
@@ -843,30 +941,27 @@ def create_data(req):
         columns = model_dr_class.get_column_label()
         unique = model_dr_class.get_unique_condition()
 
+        tv = __format_create_value(_v, columns)
+
         where = '1=1'
         for u in unique:
-            if not len(trim(v[u])):
+            if u in tv and not len(trim(tv[u])):
                 return JsonResponse({'success': False, 'msg': '创建失败：' + str(u) + '为空'})  # TODO: to Chinese readable
             where += ' AND ' + u + "='%(" + u + ")s'"
         if where == '1=1':
             continue
 
         sql_count = """ SELECT COUNT(*) AS count FROM %(table)s WHERE %(where)s 
-        """ % {'table': d_table, 'where': where % v}
+        """ % {'table': d_table, 'where': where % tv}
         logger.info(sql_count)
         cursor.execute(sql_count)
         count = cursor.fetchall()
         if count[0][0] > 0:
             return JsonResponse({'success': False, 'msg': '创建失败：数据主键重复'})
 
-        tv = v  # TODO: check key existence before pop
-        tv.pop('id')
-        tv.pop('stamp')
-        tv.pop('note')
+        c_key = __transform_key_to_chinese(tv, columns)
+        rec, c_str, v_str, u_str = __row_replace_key(c_key, columns, unique)
 
-        rec, c_str, v_str, u_str = __row_replace_key(
-            __transform_key_to_chinese(tv, columns), columns, unique
-        )
         sql_insert = """ INSERT INTO %(table)s (%(columns)s) VALUES (%(values)s) 
         """ % {'table': d_table, 'columns': c_str, 'values': v_str, }
 
@@ -875,6 +970,7 @@ def create_data(req):
         try:
             cursor.execute(sql_insert)
             cursor.fetchall()
+            pass
         except DataError as e:
             logger.error(sys_info())
             return JsonResponse({'success': False, 'msg': '创建失败: ' + str(e)})  # TODO: translate exception
@@ -935,14 +1031,81 @@ def staffinfo(req):
 @check_login
 @sys_error
 def run_kpi(req):
-    logger.info(req.COOKIES.get('payroll'))
     try:
-        # TODO: clear first
+        from jx.rule import KH_KHJGMX, KH_KHJGHZ, KH_KHPC
+        from jx.sqlalchemy_env import db
+        from jx.module import VIEW_JZGJCSJXX
 
-        calculate_kpi(req.COOKIES.get('payroll'))
-        summarize_kpi(req.COOKIES.get('payroll'))
+        payroll = req.COOKIES.get('payroll')
+        departments = VIEW_JZGJCSJXX.get_managed_departments(str(payroll))
+
+        # get latest active year
+        query = db.query(KH_KHPC)
+        query = query.filter(KH_KHPC.DWH.in_(departments), KH_KHPC.JHZT == '已激活')
+        query = query.order_by(-KH_KHPC.KHNF)
+        query_out = query.all()
+        if not query_out:
+            return JsonResponse({'success': False, 'msg': '未找到已激活考核年份！'})
+        year = query_out[0].KHNF
+        FBZT = query_out[0].FBZT
+        start = query_out[0].RQQD
+        end = query_out[0].RQZD
+
+        # clear first
+        query = db.query(KH_KHJGMX)
+        query = query.filter(KH_KHJGMX.DWH.in_(departments), KH_KHJGMX.KHNF == year)
+        query_out = query.all()
+        for out in query_out:
+            db.delete(out)
+            continue
+        query = db.query(KH_KHJGHZ)
+        query = query.filter(KH_KHJGHZ.DWH.in_(departments), KH_KHJGHZ.KHNF == year)
+        query_out = query.all()
+        for out in query_out:
+            db.delete(out)
+            continue
+        db.commit()
+
+        calculate_kpi(departments, year, start, end, req.COOKIES.get('payroll'), db)
+
+        if FBZT == '已发布':
+            summarize_kpi(departments, year, db)
+
         return JsonResponse({'success': True, 'msg': '绩效考核运行成功，请核查数据！'})
 
     except:
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '绩效考核运行失败：数据库错误'})
+
+
+@check_login
+def custermize_kpi(req):
+    # TODO: 不考核教职工可在教职工页面采用相同方法
+    try:
+        payroll = str(req.COOKIES.get('payroll'))
+
+        v = eval(str(req.POST.dict()))
+        data = json.loads(v['data'])
+        year = __format_value(v['year'], "DateTime")
+        user = get_user_information(payroll)
+
+        from jx.sqlalchemy_env import db
+        from jx.rule import KH_KHGZDZ
+
+        for index in data:
+            query = db.query(KH_KHGZDZ)
+            query = query.filter(KH_KHGZDZ.DWH == user['DWH'], KH_KHGZDZ.KHNF == year, KH_KHGZDZ.GZH == index)
+            query_out = query.all()
+            for out in query_out:
+                db.delete(out)
+            db.commit()
+
+            obj = KH_KHGZDZ(user['DWH'], year, index).save()
+            db.add(obj)
+        db.commit()
+
+        return JsonResponse({'success': True, 'msg': '绩效考核定制成功，请核查数据！'})
+
+    except:
+        logger.error(sys_info())
+        return JsonResponse({'success': False, 'msg': '绩效考核定制失败：数据库错误'})

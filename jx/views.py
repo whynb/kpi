@@ -335,7 +335,7 @@ def jxkhgz(req):
     menu = req.get_full_path().split('/')[2]
     return render(
         req,
-        'base.html',
+        'jxkhgz.html',
         {
             'payroll': payroll,
             'tips': get_menu_name(req),
@@ -344,6 +344,7 @@ def jxkhgz(req):
             'editable': get_role_menu_permission(req),
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
@@ -366,6 +367,7 @@ def khjgmx(req):
             'editable': get_role_menu_permission(req),
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
@@ -388,6 +390,7 @@ def khpc(req):
             'editable': get_role_menu_permission(req),
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
@@ -410,6 +413,7 @@ def khgzdz(req):
             'editable': get_role_menu_permission(req),
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
@@ -418,6 +422,29 @@ def khgzdz(req):
 
 @check_login
 def khjghz(req):
+    from jx.function import get_static_data, get_field_name
+    payroll = req.COOKIES.get('payroll')
+    menu = req.get_full_path().split('/')[2]
+    return render(
+        req,
+        'khjghz.html',
+        {
+            'payroll': payroll,
+            'tips': get_menu_name(req),
+            'menu': menu,
+            'menus': get_menu(payroll),
+            'editable': get_role_menu_permission(req),
+            'with_users': get_with_users(req),
+            'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'static_func': get_static_data,
+            'static_fields': get_field_name,
+        }
+    )
+
+
+@check_login
+def bcykh(req):
     from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]
@@ -432,7 +459,9 @@ def khjghz(req):
             'editable': get_role_menu_permission(req),
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
     )
+

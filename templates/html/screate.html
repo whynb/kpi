@@ -12,7 +12,7 @@
                         <!-- TODO: select dynamic data from table with WHERE condition, such as managed DWMC -->
                         <!-- TODO: default value for number input -->
                         {% for title in title_columns %}
-                            {% if title['create'] in ['False'] %}
+                            {% if title['create'] in ['False', 'false', 'f', 'F'] %}
                                 <div class="form-group has-warning" hidden>
                                     <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
                                     <div class="col-sm-8">
@@ -142,10 +142,14 @@
                                             {% for val in title['value'] %}
                                                 {% if loop.index == 1 %}
                                                     <option value="{{ val }}" selected>{{ val }}</option>
+                                                    <script hidden>
+                                                        $(function() {
+                                                            $('#{{ title['field'] }}').val({{ val }});
+                                                        });
+                                                    </script>
                                                 {% else %}
                                                     <option value="{{ val }}">{{ val }}</option>
                                                 {% endif %}
-
                                             {% endfor %}
                                         </select>
                                         <script>
@@ -157,12 +161,12 @@
 
                             {% endif %}
                         {% endfor %}
-                        <div class="modal-footer" id="modal_create_footer">
-                            <div class="col-md-12">
-                                <button id="modal_create_submit" type="button" class="btn btn-primary"><span class="fa fa-check"></span> 确定 </button>
-                                <button id="modal_create_cancel" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> 取消 </button>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="modal_create_footer">
+                    <div class="col-md-12">
+                        <button id="modal_create_submit" type="button" class="btn btn-primary"><span class="fa fa-check"></span> 确定 </button>
+                        <button id="modal_create_cancel" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> 取消 </button>
                     </div>
                 </div>
             </div>
@@ -175,6 +179,7 @@
     function reset_create_form(){
         $('#modal_create_form')[0].reset();
         // TODO: check if all inputs reset or not; if not, add additional reset method per data type
+        // TODO: clear all selectpicker
     }
 
     function button_create(){

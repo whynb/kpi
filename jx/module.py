@@ -1,7 +1,7 @@
 # coding: utf-8
 # 规则引擎使用，不需要移植到数据库；view模型改变后，需重新手工执行rule.py
 # TODO: search tips
-# TODO: view performance. sync between tables???
+# TODO: view performance. possible to move view to table and sync between tables
 
 from jx.sqlalchemy_env import *
 
@@ -350,12 +350,12 @@ class VIEW_XMJFXX(Base):  # 项目经费信息
     @staticmethod
     def get_title_columns() -> List[str]:
         # NOTE: enum data: 'type': 'enum', 'value': ['未启用', '已启用'],
-        # NOTE: static data from db: 'type': 'static', 'value': 'jx_usertype,id,usertype_name', 'where': ''
-        # NOTE: SQL data from db: 'type': 'table', 'value': 'dr_zzjgjbsjxx,DWH,DWMC', 'where': 'DWH IN %(departments)s'
+        # NOTE: static data from db: 'type': 'static', 'value': 'jx_usertype:id,usertype_name', 'where': ''
+        # NOTE: SQL data from db: 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'
         return [
             {'table': 'dr_xmjfxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
             {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'table', 'create': 'True', 'value': 'dr_zzjgjbsjxx,DWH,DWMC', 'where': 'DWH IN %(departments)s'},
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'table', 'create': 'True', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'},
             {'table': 'dr_xmjfxx', 'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_xmjfxx', 'field': 'JHJFZE', 'title': '计划经费总额', 'editable': 'True', 'type': 'float', 'create': 'True', },
             {'table': 'dr_xmjfxx', 'field': 'XMJFLYM', 'title': '项目经费来源码', 'editable': 'False', 'type': 'text', 'create': 'True', },
@@ -422,6 +422,7 @@ def get_class_attribute(file='./module.py'):
                     one_class['columns'] = []
                     continue
 
+                # TODO: class/classname is useful. field definition can be replaced by class.get_title_columns()
                 m_column = re.match(r'(.*) = Column\(\'(.*)\', (.*), (.*)\) {2}# (.*)', ls)
                 if m_column:
                     one_class['columns'].append(

@@ -38,7 +38,7 @@
             type: 'POST',
             url: "{{ url('delete_data') }}",
             headers: {"X-CSRFToken": getCookie('csrftoken')},
-            data: {data: JSON.stringify(getSelections()), menu: '{{ menu }}', count: sel.length},
+            data: {data: JSON.stringify(sel), menu: '{{ menu }}', count: sel.length},
             dataType: 'JSON',
             success: function (data) {
                 if (data.success == true) {
