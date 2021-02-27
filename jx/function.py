@@ -182,7 +182,7 @@ def summarize_kpi(departments, year, db):
 
             obj.KHJDHJ += data.KHJD
             obj.save()
-            db.commit()
+            # db.commit()
 
             if cur:  # 按上级部门汇总绩点
                 logger.info(obj.LSDWH)
@@ -1053,7 +1053,7 @@ def run_kpi(req):
 
         # clear first
         query = db.query(KH_KHJGMX)
-        query = query.filter(KH_KHJGMX.DWH.in_(departments), KH_KHJGMX.KHNF == year)
+        query = query.filter(KH_KHJGMX.DWH.in_(departments), KH_KHJGMX.KHNF == year, KH_KHJGMX.GZH.notin_(['ZZZ']))
         query_out = query.all()
         for out in query_out:
             db.delete(out)
