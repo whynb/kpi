@@ -350,7 +350,7 @@ class VIEW_XMJFXX(Base):  # 项目经费信息
     @staticmethod
     def get_title_columns() -> List[str]:
         # NOTE: enum data: 'type': 'enum', 'value': ['未启用', '已启用'],
-        # NOTE: static data from db: 'type': 'static', 'value': 'jx_usertype:id,usertype_name', 'where': ''
+        # NOTE: static data from db: 'type': 'static', 'value': 'jx_usertype:id:usertype_name', 'where': ''
         # NOTE: SQL data from db: 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'
         return [
             {'table': 'dr_xmjfxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
