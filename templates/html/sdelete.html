@@ -38,7 +38,7 @@
             type: 'POST',
             url: "{{ url('delete_data') }}",
             headers: {"X-CSRFToken": getCookie('csrftoken')},
-            data: {data: JSON.stringify(getSelections()), menu: '{{ menu }}', count: sel.length},
+            data: {data: JSON.stringify(sel), menu: '{{ menu }}', count: sel.length},
             dataType: 'JSON',
             success: function (data) {
                 if (data.success == true) {
@@ -57,7 +57,7 @@
     }
 
     $(function() {
-        $("#modal_delete_cancel").click(function () { $('#modal_delete').modal('hide'); });
+        // $("#modal_delete_cancel").click(function () { $('#modal_delete').modal('hide'); });
         $("#modal_delete_submit").click(function () { modal_submit_delete(this); });
     });
 

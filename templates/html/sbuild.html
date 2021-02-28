@@ -39,11 +39,11 @@
         return value.substring(0, 10);
     }
 
-    function build_title(items) {
+    function build_title___(items) {
         columns = [{ checkbox: true }];
         for (var i=0; i < items.length; i++){
             var col = {title: items[i].title, field: items[i].field, sortable : true,};
-            if (items[i].editable == 'True') {
+            if (items[i].editable == 'True' || items[i].editable == 'T') {
                 col = {
                     title: items[i].title, field: items[i].field, sortable : true,
                     editable: {
@@ -58,6 +58,76 @@
             if (items[i].type == 'month') col.formatter = MonthFormatter;
             columns.push(col);
         }
+        console.log(columns);
+        columns = align(columns);
+    }
+
+    function build_title(items) {
+        columns = [{ checkbox: true }];
+        var col = {};
+        var source = [];
+
+        {% for title in title_columns %}
+            col = {title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,};
+            {% if title['editable'] in ['True', 'true', 't', 'T'] %}
+                {% if title['type'] in ['static', 'table'] %}
+                    source = [];
+                    {% with fields = static_fields(title['value']) %}
+                        {% for val in static_func(payroll, title['value'], title['where']) %}
+                            // TODO: value: "val[fields[0]]" to connect select option id
+                            // TODO: How to map to its id column
+                            source.push( {value: "{{ val[fields[1]] }}", text: "{{ val[fields[1]] }}"} );
+                        {% endfor %}
+                    {% endwith %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            emptytext: '--',
+                            type: "select",
+                            source: source,  // NOTE: source can be a function, but not sure can get from BE
+                            validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
+                        },
+                    };
+                {% endif %}
+                {% if title['type'] in ['text', 'float', 'year', 'month', 'date'] %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            type: "text",
+                            emptytext: "请输入",
+                            validate: function (v) { if($.trim(v) == '') return '请重新输入！'; },
+                        },
+                    };
+                {% endif %}
+
+                {% if title['type'] in ['enum'] %}
+                    source = [];
+                    {% for val in title['value'] %}
+                        source.push( {value: "{{ val }}", text: "{{ val }}"} );
+                    {% endfor %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            emptytext: '--',
+                            type: "select",
+                            source: source,
+                            validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
+                        },
+                    };
+                {% endif %}
+            {% endif %}
+            {% if title['type'] in ['date'] %}
+                col.formatter = DateFormatter;
+            {% endif %}
+            {% if title['type'] in ['year'] %}
+                col.formatter = YearFormatter;
+            {% endif %}
+            {% if title['type'] in ['month'] %}
+                col.formatter = MonthFormatter;
+            {% endif %}
+            columns.push(col);
+        {% endfor %}
+
         console.log(columns);
         columns = align(columns);
     }
