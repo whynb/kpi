@@ -195,7 +195,7 @@ class VIEW_BKSJXZXS(Base):  # 本科生教学总学时
     JZGH = Column('JZGH', String(16), unique=True, default='')  # 教职工号
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
     JHXSS = Column('JHXSS', String(16), default='')  # 计划学时数
-    KCJBM  = Column('KCJBM ', String(16), default='')  # 课程级别码
+    KCJBM  = Column('KCJBM', String(16), default='')  # 课程级别码
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
