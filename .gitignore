@@ -1,14 +1,16 @@
 
 *.pyc
-*.pyc
-jx/__pycache__/function.cpython-37.pyc
-*.pyc
 .DS_Store
 templates/.DS_Store
 jx/__pycache__/function.cpython-37.pyc
 jx/__pycache__/module.cpython-37.pyc
 jx/__pycache__/urls.cpython-37.pyc
 jx/__pycache__/views.cpython-37.pyc
-templates/.DS_Store
-.DS_Store
 jx/.DS_Store
+.idea/workspace.xml
+.idea/workspace.xml
+.idea/misc.xml
+.idea/kpi.iml
+jx/sqlalchemy_env.py
+kpi/.DS_Store
+kpi/settings.py

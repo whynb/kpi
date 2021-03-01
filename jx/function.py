@@ -125,7 +125,6 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
     for rule in rules:
         try:
             # 根据规则定义的参与考核的类名获得参与考核对象
-            # TODO: All modules SHOULD have JZGH(payroll), stamp
             class_to_check = rule.get_input_class()  # get class to check
             data_query = db.query(class_to_check)  # query out by class defined in rule
             data_query = data_query.filter(class_to_check.DWH.in_(departments))
@@ -489,7 +488,7 @@ def __format_value(vv, fm, enum_values=None):
     """
     TODO: format vv per key[k][1] if defined
     :param vv:
-    :param fm:
+    :param fm: 'Enum'｜"DateTime"
     :return:
     """
     if enum_values is None:
@@ -855,6 +854,13 @@ def get_data(req):
 
 
 @check_login
+@sys_error
+def get_class_view(req):
+    from jx.module import generate_class_view
+    return JsonResponse(generate_class_view((''.join([settings.BASE_DIR, '/jx/module.py'])), False), safe=False)
+
+
+@check_login
 def delete_data(req):
     payroll = str(req.COOKIES.get('payroll'))
     # TODO: check delete auth ???
@@ -911,6 +917,7 @@ def __format_create_value(v, columns):
             val[k_] = _v
 
     # NOTE: 增减业绩点
+    # TODO: 增减业绩点子类??? by 'ZZZ' as rule prefix???
     if 'create_data_item' in v:
         if v['create_data_item'] == 'khjgmx':
             val['note'] = v['note']

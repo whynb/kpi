@@ -74,8 +74,6 @@
                     source = [];
                     {% with fields = static_fields(title['value']) %}
                         {% for val in static_func(payroll, title['value'], title['where']) %}
-                            // TODO: value: "val[fields[0]]" to connect select option id
-                            // TODO: How to map to its id column
                             source.push( {value: "{{ val[fields[1]] }}", text: "{{ val[fields[1]] }}"} );
                         {% endfor %}
                     {% endwith %}
@@ -93,8 +91,6 @@
                     source = [];
                     {% with fields = static_fields(title['value']) %}
                         {% for val in static_func(payroll, title['value'], title['where']) %}
-                            // TODO: value: "val[fields[0]]" to connect select option id
-                            // TODO: How to map to its id column
                             source.push( {value: "{{ val[fields[0]] }}", text: "{{ val[fields[1]] }}"} );
                         {% endfor %}
                     {% endwith %}
@@ -118,7 +114,6 @@
                         },
                     };
                 {% endif %}
-
                 {% if title['type'] in ['enum'] %}
                     source = [];
                     {% for val in title['value'] %}
@@ -134,6 +129,24 @@
                         },
                     };
                 {% endif %}
+                {% if title['type'] in ['class'] %}
+                    {% if menu in ['jxkhgz'] %}
+                    source = [];
+                    {% for val in class_view %}
+                        source.push( {value: "{{ val['class'] }}", text: "{{ val['name'] }}"} );
+                    {% endfor %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            emptytext: '',
+                            type: "select",
+                            source: source,
+                            validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
+                        },
+                    };
+                    {% endif %}
+                {% endif %}
+
             {% endif %}
             {% if title['type'] in ['date'] %}
                 col.formatter = DateFormatter;

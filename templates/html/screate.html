@@ -9,7 +9,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-group input-group col-sm-12" style="width:500px;margin:10px 0px 0px 30px;">
-                        <!-- TODO: select dynamic data from table with WHERE condition, such as managed DWMC -->
                         <!-- TODO: default value for number input -->
                         {% for title in title_columns %}
                             {% if title['create'] in ['False', 'false', 'f', 'F'] %}
@@ -48,6 +47,29 @@
                                         </select>
                                     </div>
                                 </div>
+                            {% endif %}
+                            {% if title['type'] in ['class'] %}
+                            {% if menu in ['jxkhgz'] %}
+                                <div class="form-group has-warning" hidden>
+                                    <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control">
+                                </div>
+                                <div class="form-group has-warning">
+                                    <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                                    <div class=" col-sm-8">
+                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()">
+                                            {% for val in class_view %}
+                                                <option value="{{ val['class'] }}">{{ val['name'] }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <script>
+                                            function {{ title['field'] }}_change(){
+                                                $('#{{ title['field'] }}').val($('#select_{{ title['field'] }}').val());
+                                                // TODO: action for 绩效考核规则->选择考核数据对象: translate by str replace?
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                            {% endif %}
                             {% endif %}
                             {% if title['type'] in ['static', 'inline'] %}
                                 <div class="form-group has-warning" hidden>
