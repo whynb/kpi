@@ -205,6 +205,7 @@ class VIEW_BKSJXZXS(Base):  # 本科生教学总学时
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
+
     @staticmethod
     def sql() -> str:
         sql_v1 = """
