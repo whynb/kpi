@@ -28,17 +28,24 @@ urlpatterns = [
     url(r'^get_department', function.get_department, name='get_department'),
     url(r'^get_allhrdpmt', function.get_allhrdpmt, name='get_allhrdpmt'),
     url(r'^get_title', function.get_title, name='get_title'),
+    url(r'^get_col_def', function.get_col_def, name='get_col_def'),
     url(r'^get_data', function.get_data, name='get_data'),
+    url(r'^get_class_view', function.get_class_view, name='get_class_view'),
     url(r'^delete_data', function.delete_data, name='delete_data'),
+    url(r'^create_data', function.create_data, name='create_data'),
     url(r'^edit', function.edit, name='edit'),
     url(r'^run_kpi', function.run_kpi, name='run_kpi'),
+    url(r'^custermize_kpi', function.custermize_kpi, name='custermize_kpi'),
 
     url(r'^base/*/', views.base, name='base'),  # 基本数据信息
 
-
     # 绩效考核管理
-    url(r'^jxkhgz/$', views.jxkhgz, name='jxkhgz'),
-    url(r'^khjgmx/$', views.khjgmx, name='khjgmx'),
+    url(r'^khpc/$', views.khpc, name='khpc'),  # 考核批次
+    url(r'^jxkhgz/$', views.jxkhgz, name='jxkhgz'),  # 绩效考核规则
+    url(r'^khgzdz/$', views.khgzdz, name='khgzdz'),  # 考核规则定制
+    url(r'^khjgmx/$', views.khjgmx, name='khjgmx'),  # 绩效考核结果
+    url(r'^khjghz/$', views.khjghz, name='khjghz'),  # 考核结果汇总
+    url(r'^bcykh/$', views.bcykh, name='bcykh'),  # 不参与考核
 
 ]
 

@@ -113,8 +113,7 @@ def get_role_menu_permission(req):
 
 def can_login(req):
     """
-    TODO: custermize login check by payroll cookie
-    :param req:
+    :param req: http request
     :return: True - can login, False - can not
     """
 
@@ -131,10 +130,8 @@ def can_login(req):
 
     payroll = req.COOKIES.get('payroll', '')
     if payroll and len(payroll):
-
-        # TODO: verify login here
-
-        return True
+        users = SysUser.objects.filter(payroll__exact=payroll)
+        return True if users else False
 
     return False
 
@@ -266,7 +263,7 @@ def role_manage(req):
         roleform = RoleForm()
 
     usercode = req.COOKIES.get('payroll')
-    roles = Role.objects.all()
+    roles = Role.objects.all()  # TODO: filter out by login payroll, such as sysuser type and role
     return render(
         req,
         'role_manage.html',
@@ -307,53 +304,164 @@ def role_assign(req):
 
 @check_login
 def base(req):
+    from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[3]
     return render(
         req,
         'base.html',
         {
+            'payroll': payroll,
             'tips': get_menu_name(req),
             'menu': menu,
             'menus': get_menu(payroll),
             'editable': get_role_menu_permission(req),
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns'),
-        }
+            'title_columns': get_module_static_method(menu, 'get_title_columns'),
+            'static_func': get_static_data,
+            'static_fields': get_field_name,
+        },
     )
 
 
 @check_login
 def jxkhgz(req):
+    from jx.function import get_static_data, get_field_name
+    from jx.module import generate_class_view
+
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]
     return render(
         req,
-        'base.html',
+        'jxkhgz.html',
         {
+            'payroll': payroll,
             'tips': get_menu_name(req),
             'menu': menu,
             'menus': get_menu(payroll),
             'editable': get_role_menu_permission(req),
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'static_func': get_static_data,
+            'static_fields': get_field_name,
+            'class_view': generate_class_view((''.join([settings.BASE_DIR, '/jx/module.py'])), False),
         }
     )
 
 
 @check_login
 def khjgmx(req):
+    from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]
     return render(
         req,
         'khjgmx.html',
         {
+            'payroll': payroll,
             'tips': get_menu_name(req),
             'menu': menu,
             'menus': get_menu(payroll),
             'editable': get_role_menu_permission(req),
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'static_func': get_static_data,
+            'static_fields': get_field_name,
         }
     )
+
+
+@check_login
+def khpc(req):
+    from jx.function import get_static_data, get_field_name
+    payroll = req.COOKIES.get('payroll')
+    menu = req.get_full_path().split('/')[2]
+    return render(
+        req,
+        'base.html',
+        {
+            'payroll': payroll,
+            'tips': get_menu_name(req),
+            'menu': menu,
+            'menus': get_menu(payroll),
+            'editable': get_role_menu_permission(req),
+            'with_users': get_with_users(req),
+            'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'static_func': get_static_data,
+            'static_fields': get_field_name,
+        }
+    )
+
+
+@check_login
+def khgzdz(req):
+    from jx.function import get_static_data, get_field_name
+    payroll = req.COOKIES.get('payroll')
+    menu = req.get_full_path().split('/')[2]
+    return render(
+        req,
+        'base.html',
+        {
+            'payroll': payroll,
+            'tips': get_menu_name(req),
+            'menu': menu,
+            'menus': get_menu(payroll),
+            'editable': get_role_menu_permission(req),
+            'with_users': get_with_users(req),
+            'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'static_func': get_static_data,
+            'static_fields': get_field_name,
+        }
+    )
+
+
+@check_login
+def khjghz(req):
+    from jx.function import get_static_data, get_field_name
+    payroll = req.COOKIES.get('payroll')
+    menu = req.get_full_path().split('/')[2]
+    return render(
+        req,
+        'khjghz.html',
+        {
+            'payroll': payroll,
+            'tips': get_menu_name(req),
+            'menu': menu,
+            'menus': get_menu(payroll),
+            'editable': get_role_menu_permission(req),
+            'with_users': get_with_users(req),
+            'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'static_func': get_static_data,
+            'static_fields': get_field_name,
+        }
+    )
+
+
+@check_login
+def bcykh(req):
+    from jx.function import get_static_data, get_field_name
+    payroll = req.COOKIES.get('payroll')
+    menu = req.get_full_path().split('/')[2]
+    return render(
+        req,
+        'base.html',
+        {
+            'payroll': payroll,
+            'tips': get_menu_name(req),
+            'menu': menu,
+            'menus': get_menu(payroll),
+            'editable': get_role_menu_permission(req),
+            'with_users': get_with_users(req),
+            'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
+            'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'static_func': get_static_data,
+            'static_fields': get_field_name,
+        }
+    )
+

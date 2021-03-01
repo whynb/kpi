@@ -5,13 +5,6 @@
     {% include 'html/scss.html' %}
     {% include 'html/sjs.html' %}
 </head>
-
-<style>
-why-space {
-  letter-spacing:12px
-}
-</style>
-
 <body>
     <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
         <div class="container">
@@ -39,16 +32,20 @@ why-space {
             <div class="form-group form-inline" id="toolbar">
                 {% include 'html/sdate.html' %}
                 {% if editable[0] %}
-                <!-- button id="create" class="btn btn-success" onclick="button_create()"><i class="fa fa-plus"></i> 新建</button -->
+                    <button id="create" class="btn btn-warning" onclick="button_create()"><i class="fa fa-plus"></i> 新建</button>
+                {% endif %}
+
+                {% if editable[1] %}
+                    <button id="create" class="btn btn-danger" onclick="button_delete()"><i class="fa fa-remove"></i> 删除</button>
                 {% endif %}
 
                 {% if editable[5] %}
-                    <button id="download" class="btn btn-danger" onclick="button_download('{{ tips }}-'+getDateString(0)+'-'+getHourMinute(), 'excel')"><i class="fa fa-download"></i> 下载</button>
+                    <button id="download" class="btn btn-success" onclick="button_download('{{ tips }}-'+getDateString(0)+'-'+getHourMinute(), 'excel')"><i class="fa fa-download"></i> 下载</button>
                 {% endif %}
 
                 {% if editable[4] %}
                     <button id="upload" class="btn btn-info" onclick="button_upload('上传{{ tips }}', '{{ menu }}')"><i class="fa fa-upload"></i> 上传</button>
-                    <button id="upload" class="btn btn-success" onclick="button_run()"><i class="fa fa-upload"></i> 计算</button>
+                    <button id="upload" class="btn btn-primary" onclick="button_run()"><i class="fa fa-calculator"></i> 计算</button>
                 {% endif %}
             </div>
             <table id="table" class="table table-bordered table-striped"></table>
@@ -58,8 +55,22 @@ why-space {
 
     {% include 'html/sbuild.html' %}
     {% include 'html/sorgtree.html' %}
-    {% include 'html/supload.html' %}
-    {% include 'html/sdownload.html' %}
+
+    {% if editable[4] %}
+        {% include 'html/supload.html' %}
+    {% endif %}
+
+    {% if editable[5] %}
+        {% include 'html/sdownload.html' %}
+    {% endif %}
+
+    {% if editable[1] %}
+        {% include 'html/sdelete.html' %}
+    {% endif %}
+
+    {% if editable[0] %}
+        {% include 'html/screate.html' %}
+    {% endif %}
 
 <script>
     var tree_url = "{{ url('get_allhrdpmt') }}";
@@ -92,13 +103,26 @@ why-space {
             return;
         }
         $selectableTree = initSelectableTree();
-        $('#table').bootstrapTable('destroy');
+        // $('#table').bootstrapTable('destroy');
         refreshTable();
+    }
+
+    function getSelections() {
+        var select = $("#table").bootstrapTable('getSelections');
+        if (select.length <= 0) {
+            $.hulla.send('请选择有效数据！', "danger");
+            return [];
+        }
+        var res = [];
+        for (var i=0; i<select.length; i++)
+            res.push(select[i]);
+        return res;
     }
 
     $(function() {})
 
     function button_run() {
+        // TODO: add modal to show running progress
         $.ajax({
             type: "post",
             url: "{{ url('run_kpi') }}",
@@ -106,12 +130,13 @@ why-space {
             data: {},
             dataType: 'JSON',
             success: function (data, status) {
-                if (status == "success") {
+                if (data.success == true) {
                     $.hulla.send(data.msg, "warning");
                     refreshTable();
                 }
+                else { $.hulla.send(data.msg, "danger"); }
             },
-            error: function () { $.hulla.send('在线编辑异常，请重试！', "danger"); },
+            error: function () { $.hulla.send('考核运算异常，请联系管理员！', "danger"); },
             complete: function () { refreshTable();}
         });
     }

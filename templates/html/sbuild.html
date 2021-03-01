@@ -24,16 +24,26 @@
         return columns;
     }
 
+    function YearFormatter(value, row, index) {
+        if (value == null || value == undefined || value.length < 10) return value;
+        return value.substring(0, 4);
+    }
+
+    function MonthFormatter(value, row, index) {
+        if (value == null || value == undefined || value.length < 10) return value;
+        return value.substring(0, 7);
+    }
+
     function DateFormatter(value, row, index) {
         if (value == null || value == undefined || value.length < 10) return value;
         return value.substring(0, 10);
     }
 
-    function build_title(items) {
+    function build_title___(items) {
         columns = [{ checkbox: true }];
         for (var i=0; i < items.length; i++){
             var col = {title: items[i].title, field: items[i].field, sortable : true,};
-            if (items[i].editable == 'True') {
+            if (items[i].editable == 'True' || items[i].editable == 'T') {
                 col = {
                     title: items[i].title, field: items[i].field, sortable : true,
                     editable: {
@@ -44,8 +54,112 @@
                 };
             }
             if (items[i].type == 'date') col.formatter = DateFormatter;
+            if (items[i].type == 'year') col.formatter = YearFormatter;
+            if (items[i].type == 'month') col.formatter = MonthFormatter;
             columns.push(col);
         }
+        console.log(columns);
+        columns = align(columns);
+    }
+
+    function build_title(items) {
+        columns = [{ checkbox: true }];
+        var col = {};
+        var source = [];
+
+        {% for title in title_columns %}
+            col = {title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,};
+            {% if title['editable'] in ['True', 'true', 't', 'T'] %}
+                {% if title['type'] in ['static', 'table'] %}
+                    source = [];
+                    {% with fields = static_fields(title['value']) %}
+                        {% for val in static_func(payroll, title['value'], title['where']) %}
+                            source.push( {value: "{{ val[fields[1]] }}", text: "{{ val[fields[1]] }}"} );
+                        {% endfor %}
+                    {% endwith %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            emptytext: '--',
+                            type: "select",
+                            source: source,  // NOTE: source can be a function, but not sure can get from BE
+                            validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
+                        },
+                    };
+                {% endif %}
+                {% if title['type'] in ['inline'] %}
+                    source = [];
+                    {% with fields = static_fields(title['value']) %}
+                        {% for val in static_func(payroll, title['value'], title['where']) %}
+                            source.push( {value: "{{ val[fields[0]] }}", text: "{{ val[fields[1]] }}"} );
+                        {% endfor %}
+                    {% endwith %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            emptytext: '--',
+                            type: "select",
+                            source: source,  // NOTE: source can be a function, but not sure can get from BE
+                            validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
+                        },
+                    };
+                {% endif %}
+                {% if title['type'] in ['text', 'float', 'year', 'month', 'date'] %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            type: "text",
+                            emptytext: "请输入",
+                            validate: function (v) { if($.trim(v) == '') return '请重新输入！'; },
+                        },
+                    };
+                {% endif %}
+                {% if title['type'] in ['enum'] %}
+                    source = [];
+                    {% for val in title['value'] %}
+                        source.push( {value: "{{ val }}", text: "{{ val }}"} );
+                    {% endfor %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            emptytext: '--',
+                            type: "select",
+                            source: source,
+                            validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
+                        },
+                    };
+                {% endif %}
+                {% if title['type'] in ['class'] %}
+                    {% if menu in ['jxkhgz'] %}
+                    source = [];
+                    {% for val in class_view %}
+                        source.push( {value: "{{ val['class'] }}", text: "{{ val['name'] }}"} );
+                    {% endfor %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            emptytext: '',
+                            type: "select",
+                            source: source,
+                            validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
+                        },
+                    };
+                    {% endif %}
+                {% endif %}
+
+            {% endif %}
+            {% if title['type'] in ['date'] %}
+                col.formatter = DateFormatter;
+            {% endif %}
+            {% if title['type'] in ['year'] %}
+                col.formatter = YearFormatter;
+            {% endif %}
+            {% if title['type'] in ['month'] %}
+                col.formatter = MonthFormatter;
+            {% endif %}
+            columns.push(col);
+        {% endfor %}
+
         console.log(columns);
         columns = align(columns);
     }
@@ -85,6 +199,8 @@
             buttonsAlign: "right",              //按钮位置
             exportTypes: ['csv', 'excel'],             //导出文件类型
             exportOptions: { ignoreColumn: [0], fileName: '{{ tips }}'},  //文件名称设置 NOT work at x-editable
+
+            // TODO: use title color or placeholder to show search columns scope
             search: true,                       //是否显示表格搜索，根据表格类型进行客户端搜索或者服务端搜索
             searchOnEnterKey: true,
             showRefresh: true,                  //是否显示刷新按钮
@@ -109,9 +225,16 @@
                     headers: {"X-CSRFToken": getCookie('csrftoken')},
                     data: data,
                     dataType: 'JSON',
-                    success: function (data, status) { if (status == "success") { $.hulla.send(data.msg, "warning"); } },
+                    success: function (data, status) {
+                        if (status == "success") { $.hulla.send(data.msg, "warning"); }
+                        // refresh();
+                        build_table();
+                    },
                     error: function () { $.hulla.send('在线编辑异常，请重试！', "danger"); },
-                    complete: function () { refreshTable();}
+                    complete: function () {
+                        // refreshTable();
+                        refresh();
+                    }
                 });
             }
 
@@ -122,6 +245,7 @@
             $('#table').bootstrapTable('hideColumn', '{{ column }}');
         {% else %}
             $('#table').bootstrapTable('hideColumn', 'id');
+            $('#table').bootstrapTable('hideColumn', 'stamp');
             $('#table').bootstrapTable('hideColumn', 'note');
         {% endfor %}
     }

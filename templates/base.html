@@ -5,13 +5,6 @@
     {% include 'html/scss.html' %}
     {% include 'html/sjs.html' %}
 </head>
-
-<style>
-why-space {
-  letter-spacing:12px
-}
-</style>
-
 <body>
     <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
         <div class="container">
@@ -35,15 +28,15 @@ why-space {
                 </div>
             </div>
         </div>
-        <div class="column-right">
+        <div class="column-right" style="height: 1000px">
             <div class="form-group form-inline" id="toolbar">
                 {% include 'html/sdate.html' %}
                 {% if editable[0] %}
-                <!-- button id="create" class="btn btn-default" onclick="button_create()"><i class="fa fa-plus"></i> 新建</button -->
+                    <button id="create" class="btn btn-warning" onclick="button_create()"><i class="fa fa-plus"></i> 新建</button>
                 {% endif %}
 
                 {% if editable[1] %}
-                <button id="create" class="btn btn-danger" onclick="button_delete()"><i class="fa fa-remove"></i> 删除</button>
+                    <button id="create" class="btn btn-danger" onclick="button_delete()"><i class="fa fa-remove"></i> 删除</button>
                 {% endif %}
 
                 {% if editable[5] %}
@@ -73,6 +66,12 @@ why-space {
     {% if editable[1] %}
         {% include 'html/sdelete.html' %}
     {% endif %}
+
+    {% if editable[0] %}
+        {% include 'html/screate.html' %}
+    {% endif %}
+
+
 
 <script>
     var tree_url = "{{ url('get_allhrdpmt') }}";
@@ -117,7 +116,7 @@ why-space {
         }
         var res = [];
         for (var i=0; i<select.length; i++)
-            res.push(select[i].id);
+            res.push(select[i]);
         return res;
     }
 
