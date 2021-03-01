@@ -594,7 +594,7 @@ class VIEW_HJCGJBSJXX(Base):
 
     @staticmethod
     def get_hide_columns() -> List[str]:
-        return ['id', 'JZGH', 'stamp', 'note']
+        return ['id', 'stamp', 'note']
 
     @staticmethod
     def get_title_columns() -> List[str]:

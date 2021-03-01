@@ -14,3 +14,6 @@ jx/.DS_Store
 jx/sqlalchemy_env.py
 kpi/.DS_Store
 kpi/settings.py
+.idea/workspace.xml
+.DS_Store
+jx/.DS_Store
