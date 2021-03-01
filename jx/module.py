@@ -327,6 +327,85 @@ class VIEW_XMJFXX(Base):  # 项目经费信息
     def get_search_columns() -> List:
         return ['JZGH', 'DWH', 'XMBH', 'JBRXM']
 
+class VIEW_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_kjqklwjbsjxx'  # 科技期刊论文基本数据信息
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    DWH = Column('DWH', String(16), default='')  # 单位号
+
+    LWBH = Column('LWBH', String(16), default='')  # 论文编号
+    LWMC = Column('LWMC', String(128), unique=True, default='')  # 论文名称
+    LWLXM = Column('LWLXM', String(16), default='')  # 论文类型码
+    DYZZ = Column('DYZZ', String(16), default='')  # 第一作者
+    CYRY = Column('CYRY', String(128), unique=True, default='')  # 参与人员
+    TXZZ = Column('TXZZ', String(16), default='')  # 通讯作者
+    JSQK = Column('JSQK', String(128), unique=True, default='')  # 检索情况
+    JQY = Column('JQY', String(128), unique=True, default='')  # 卷期页
+    WDWZZPX = Column('WDWZZPX', String(16), default='')  # 外单位作者排序
+    BZXYBJZDSYS = Column('BZXYBJZDSYS', String(16), default='')  # 标注学院部级重点实验室
+    FBRQ = Column('FBRQ', DateTime, default=now())  # 发表日期
+    JH = Column('JH', String(16), default='')  # 卷号
+    QH = Column('QH', String(16), default='')  # 期号
+    LRSJ = Column('LRSJ', DateTime, default=now())  # 录入时间
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+            CREATE VIEW view_kjqklwjbsjxx AS
+            SELECT 
+                dr.id AS id,
+                jz.DWH AS DWH,            
+                dr.LWBH  AS LWBH,            
+                dr.LWMC AS LWMC,            
+                dr.LWLXM AS LWLXM,            
+                dr.DYZZ AS DYZZ,            
+                dr.CYRY AS CYRY,            
+                dr.TXZZ AS TXZZ,            
+                dr.JSQK AS JSQK,            
+                dr.JQY AS JQY,            
+                dr.WDWZZPX AS WDWZZPX,            
+                dr.BZXYBJZDSYS AS BZXYBJZDSYS,            
+                kj.FBRQ AS FBRQ,      
+                kj.JH AS JH,
+                kj.QH AS QH,
+                kj.LRSJ AS LRSJ
+            FROM dr_kjqklwjbsjxx dr
+            LEFT JOIN dc_kjqklwjbsjxx dc ON dc.LWBH=dr.LWBH
+            LEFT JOIN dr_kjlwfbxx kj ON kj.LWBH=dr.LWBH
+            LEFT JOIN dr_jzgjcsjxx jz ON jz.JZGH=dr.DYZZ
+            WHERE 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_hide_columns() -> []:
+        return ['id','LRSJ ']
+
+    @staticmethod
+    def get_title_columns() -> []:
+        return [
+            {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
+            {'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', },
+            {'field': 'LWBH', 'title': '论文编号', 'editable': 'False', 'type': 'text', },
+            {'field': 'LWMC', 'title': '论文名称', 'editable': 'False', 'type': 'text', },
+            {'field': 'LWLXM', 'title': '论文类型码', 'editable': 'True', 'type': 'text', },
+            {'field': 'DYZZ', 'title': '第一作者', 'editable': 'False', 'type': 'text', },
+            {'field': 'CYRY', 'title': '参与人员', 'editable': 'False', 'type': 'text', },
+            {'field': 'TXZZ', 'title': '通讯作者', 'editable': 'False', 'type': 'text', },
+            {'field': 'JSQK', 'title': '检索情况', 'editable': 'False', 'type': 'text', },
+            {'field': 'JQY', 'title': '卷期页', 'editable': 'False', 'type': 'text', },
+            {'field': 'WDWZZPX', 'title': '外单位作者排序', 'editable': 'False', 'type': 'text', },
+            {'field': 'BZXYBJZDSYS ', 'title': '标注学院部级重点实验室', 'editable': 'False', 'type': 'text', },
+            {'field': 'FBRQ ', 'title': '发表日期', 'editable': 'False', 'type': 'date', },
+            {'field': 'JH', 'title': '卷号', 'editable': 'False', 'type': 'text', },
+            {'field': 'QH', 'title': '期号', 'editable': 'False', 'type': 'text', },
+            {'field': 'LRSJ ', 'title': '录入时间', 'editable': 'True', 'type': 'date', },
+        ]
+
+    @staticmethod
+    def get_search_columns() -> []:
+        return ['LWBH']
 
 def get_class_attribute(file='./module.py'):
     """
