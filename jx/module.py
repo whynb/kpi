@@ -187,6 +187,97 @@ class VIEW_ZZJGJBSJXX(Base):  # 组织机构基本数据信息
         return ''
 
 
+class VIEW_BKSJXZXS(Base):  # 本科生教学总学时
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_bksjxzxs'  # 本科生教学总学时
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    JZGH = Column('JZGH', String(16), unique=True, default='')  # 教职工号
+    KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
+    JHXSS = Column('JHXSS', String(16), default='')  # 计划学时数
+    KCJBM  = Column('KCJBM', String(16), default='')  # 课程级别码
+    JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
+    WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
+    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
+    XQDM = Column('XQDM', String(16), default='')  # 学期
+    XNDM = Column('XNDM', DateTime, default='')  # 学年
+    HBS = Column('HBS', String(16), default='')  # 合班数
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+            CREATE VIEW view_bksjxzxs AS
+            SELECT 
+                pk.id AS id,            
+                pk.JSGH AS JZGH,            
+                pk.KKXND AS XNDM,            
+                pk.KKXQM AS XQDM,            
+                kc.LLXS AS JHXSS,            
+                pk.ZLXS AS ZLXS,            
+                pk.HBS AS HBS,            
+                pk.WYKCTJM AS WYKCTJM,            
+                pk.JXMSJBM AS JXMSJBM,     
+                kc.KCH AS KCH,         
+                jp.KCJBM AS KCJBM,             
+                pk.stamp AS stamp,            
+                pk.note AS note            
+            FROM dr_pksjxx pk
+            LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
+            LEFT JOIN dr_xnxqxx xn ON xn.XNDM=pk.KKXND
+            LEFT JOIN dr_bks_jpkc jp ON jp.KCH=pk.KCH
+            WHERE 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_pksjxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_pksjxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note']
+
+    @staticmethod
+    def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_pksjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_pksjxx', 'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_pksjxx', 'field': 'KCH', 'title': '课程号', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_pksjxx', 'field': 'JHXSS', 'title': '计划学时数', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_pksjxx', 'field': 'KCJBM', 'title': '课程级别码', 'editable': 'True', 'type': 'text', },
+            {'table': 'dr_pksjxx', 'field': 'JXMSJBM', 'title': '教学名师级别码', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'WYKCTJM', 'title': '外语课程调节码', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'XQDM', 'title': '学期', 'editable': 'False', 'type': 'date', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'XNDM', 'title': '学年', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', },
+        ]
+
+    @staticmethod
+    def get_search_columns() -> List[str]:
+        return ['JZGH']
+
+    @staticmethod
+    def get_managed_departments(_payroll) -> List[str]:
+        try:
+            users_query = db.query(VIEW_JZGJCSJXX)
+            users_query = users_query.filter(VIEW_JZGJCSJXX.JZGH == str(_payroll))
+            users = users_query.all()
+            return VIEW_ZZJGJBSJXX.get_managed_departments(users[0].DWH)
+        except:
+            return []
+
+
+
 class VIEW_JZGJCSJXX(Base):  # 教职工基础数据信息
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_jzgjcsjxx'  # 教职工基础数据信息
