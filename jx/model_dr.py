@@ -310,7 +310,7 @@ class DR_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
     HJCGMC = Column('HJCGMC', String(16), unique=True, default='')  # 获奖成果名称
     XMLYM = Column('XMLYM', String(16), default='')  # 项目来源码
     DWH = Column('DWH', String(16), default='')  # 单位号
-    HJRQ = Column('HJRQ', String(16), default='')  # 获奖日期
+    HJRQ = Column('HJRQ', DateTime, default=now())  # 获奖日期
     CGHJLBM = Column('CGHJLBM', String(16), default='')  # 成果获奖类别码
     KJJLB = Column('KJJLB', String(16), default='')  # 科技奖类别
     JLDJM = Column('JLDJM', String(16), default='')  # 奖励等级码
