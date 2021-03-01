@@ -22,7 +22,16 @@ def get_field_name(s):
         Refer to below get_static_data to get [col1,col2,...] used by FE Jinja2
     """
     try:
-        return s[s.find(':')+1:].split(',')
+        res = []
+        arr = s[s.find(':') + 1:].split(',')
+        for a in arr:
+            if a.find('AS') != -1:
+                res.append(trim(a[a.find('AS')+2:]))
+            elif a.find('as') != -1:
+                res.append(trim(a[a.find('as')+2:]))
+            else:
+                res.append(a)
+        return res
     except:
         logger.error(sys_info())
     return []
@@ -728,7 +737,7 @@ def edit(req):
         v['set_to'] = set_to
         v['where'] = where % v
         v['table'] = column['table']
-        sql_update = "UPDATE %(table)s SET %(field)s='%(set_to)s' WHERE %(where)s" % v
+        sql_update = "UPDATE %(table)s SET %(field)s=\"%(set_to)s\" WHERE %(where)s" % v
 
         cursor = connection.cursor()
         logger.info(sql_update)
