@@ -697,9 +697,9 @@ class KH_BCYKH(Base, KpiObjectBase):  # 不参与考核
 
 
 if __name__ == '__main__':
-    # from module import VIEW_ZZJGJBSJXX
-    # print(VIEW_ZZJGJBSJXX.get_managed_departments('00000B'))
-    # exit(0)
+    from jx.module import VIEW_ZZJGJBSJXX
+    print(VIEW_ZZJGJBSJXX.get_managed_departments('00000B'))
+    exit(0)
 
     Base.metadata.create_all(engine)  # CREATE ALL
     exit(0)
