@@ -22,7 +22,16 @@ def get_field_name(s):
         Refer to below get_static_data to get [col1,col2,...] used by FE Jinja2
     """
     try:
-        return s[s.find(':')+1:].split(',')
+        res = []
+        arr = s[s.find(':') + 1:].split(',')
+        for a in arr:
+            if a.find('AS') != -1:
+                res.append(trim(a[a.find('AS')+2:]))
+            elif a.find('as') != -1:
+                res.append(trim(a[a.find('as')+2:]))
+            else:
+                res.append(a)
+        return res
     except:
         logger.error(sys_info())
     return []
@@ -728,12 +737,13 @@ def edit(req):
         v['set_to'] = set_to
         v['where'] = where % v
         v['table'] = column['table']
-        sql_update = "UPDATE %(table)s SET %(field)s='%(set_to)s' WHERE %(where)s" % v
+        sql_update = "UPDATE %(table)s SET %(field)s=\"%(set_to)s\" WHERE %(where)s" % v
 
         cursor = connection.cursor()
         logger.info(sql_update)
         cursor.execute(sql_update)
 
+        # TODO: add meaningful words and translate to Chinese
         return JsonResponse({'success': True, 'msg': '成功更新为：' + set_to})
 
     except Error:  # django.db.utils.Error
@@ -966,17 +976,17 @@ def create_data(req):
         """ % {'table': d_table, 'columns': c_str, 'values': v_str, }
 
         logger.info(sql_insert)
-        from pymysql.err import DataError
+        from pymysql.err import Error
         try:
             cursor.execute(sql_insert)
             cursor.fetchall()
             pass
-        except DataError as e:
+        except Error as e:
             logger.error(sys_info())
             return JsonResponse({'success': False, 'msg': '创建失败: ' + str(e)})  # TODO: translate exception
 
     conn.commit()
-    return JsonResponse({'success': True, 'msg': '新建数据成功'})
+    return JsonResponse({'success': True, 'msg': '新建数据成功'})  # TODO: add meaningful words and translate to Chinese
 
 
 @check_login

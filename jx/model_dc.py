@@ -152,6 +152,108 @@ ALTER TABLE DC_XMJFXX ADD stamp TIMESTAMP(6);
 """
 
 
+# yangchen
+class DC_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
+
+    __tablename__ = 'dc_hjcgjbsjxx'  # 获奖成果基本数据信息
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    HJCGBH = Column('HJCGBH', String(16), unique=True, default='')  # 获奖成果编号
+    HJCGMC = Column('HJCGMC', String(16), unique=True, default='')  # 获奖成果名称
+    XMLYM = Column('XMLYM', String(16), default='')  # 项目来源码
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    HJRQ = Column('HJRQ', DateTime, default=now())  # 获奖日期
+    CGHJLBM = Column('CGHJLBM', String(16), default='')  # 成果获奖类别码
+    KJJLB = Column('KJJLB', String(16), default='')  # 科技奖类别
+    JLDJM = Column('JLDJM', String(16), default='')  # 奖励等级码
+    HJJBM = Column('HJJBM', String(16), default='')  # 获奖级别码
+    XKLYM = Column('XKLYM', String(16), default='')  # 学科领域
+    BJDW = Column('BJDW', String(16), default='')  # 颁奖单位
+    SSXMBH = Column('SSXMBH', String(16), default='')  # 所属项目编号
+    DWPM = Column('DWPM', String(16), default='')  # 单位排名
+    XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
+    FZRYH = Column('FZRYH', String(16), default='')  # 负责人员号
+    FZRXM = Column('FZRXM', String(16), default='')  # 负责人姓名
+    YJXK = Column('YJXK', String(16), default='')  # 一级学科
+    DWMC = Column('DWMC', String(16), default='')  # 单位名称
+    YJSMC = Column('YJSMC', String(16), default='')  # 研究所名称
+    CGXS = Column('CGXS', String(16), default='')  # 成果形式
+    HJMC = Column('HJMC', String(16), default='')  # 获奖名称
+    HJBH = Column('HJBH', String(16), default='')  # 获奖编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '获奖成果编号': ['HJCGBH'],
+            '获奖成果名称': ['HJCGMC'],
+            '项目来源码': ['XMLYM'],
+            '单位号': ['DWH'],
+            '获奖日期': ['ZCRQ', 'DateTime'],
+            '成果获奖类别码': ['CGHJLBM'],
+            '科技奖类别': ['KJJLB'],
+            '奖励等级码': ['JLDJM'],
+            '获奖级别码': ['HJJBM'],
+            '学科领域': ['XKLYM'],
+            '颁奖单位': ['BJDW'],
+            '所属项目编号': ['SSXMBH'],
+            '单位排名': ['DWPM'],
+            '学科门类(科技)码': ['XKMLKJM'],
+            '负责人员号': ['FZRYH'],
+            '负责人姓名': ['FZRXM'],
+            '一级学科': ['YJXK'],
+            '单位名称': ['DWMC'],
+            '研究所名称': ['YJSMC'],
+            '成果形式': ['CGXS'],
+            '获奖名称': ['HJMC'],
+            '获奖编号': ['HJBH'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['HJCGBH', 'HJCGMC']
+
+
+class DC_KJCGRYXX_JL(Base):
+    __tablename__ = 'dc_kjcgryxx_jl'  # 科技成果(获奖成果)人员信息
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
+    JSM = Column('JSM', String(16), default='')  # 角色码
+    ZXZS = Column('ZXZS', String(16), default='')  # 撰写字数
+    PMZRS = Column('PMZRS', String(16), default='')  # 排名/总人数
+    GXL = Column('GXL', Float, default=0.0)  # 贡献率
+    XM = Column('XM', String(16), default='')  # 姓名
+    SZDW = Column('SZDW', String(16), default='')  # 所在单位
+    RYLX = Column('RYLX', String(16), default='')  # 人员类型
+    HJCGBH = Column('HJCGBH', String(16), default='')  # 获奖成果编号
+    KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '人员号': ['RYH'],
+            '角色码': ['JSM'],
+            '撰写字数': ['ZXZS'],
+            '排名/总人数': ['PMZRS'],
+            '贡献率': ['GXL'],
+            '姓名': ['XM'],
+            '所在单位': ['SZDW'],
+            '人员类型': ['RYLX'],
+            '获奖成果编号': ['HJCGBH'],
+            '科技成果人员编号': ['KJCGRYBH'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['RYH']
+
+
 if __name__ == '__main__':
     try:
         Base.metadata.create_all(engine)
