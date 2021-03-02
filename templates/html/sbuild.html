@@ -89,6 +89,25 @@
                         },
                     };
                 {% endif %}
+                {% if title['type'] in ['inline'] %}
+                    source = [];
+                    {% with fields = static_fields(title['value']) %}
+                        {% for val in static_func(payroll, title['value'], title['where']) %}
+                            // TODO: value: "val[fields[0]]" to connect select option id
+                            // TODO: How to map to its id column
+                            source.push( {value: "{{ val[fields[0]] }}", text: "{{ val[fields[1]] }}"} );
+                        {% endfor %}
+                    {% endwith %}
+                    col = {
+                        title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        editable: {
+                            emptytext: '--',
+                            type: "select",
+                            source: source,  // NOTE: source can be a function, but not sure can get from BE
+                            validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
+                        },
+                    };
+                {% endif %}
                 {% if title['type'] in ['text', 'float', 'year', 'month', 'date'] %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
@@ -167,6 +186,8 @@
             buttonsAlign: "right",              //按钮位置
             exportTypes: ['csv', 'excel'],             //导出文件类型
             exportOptions: { ignoreColumn: [0], fileName: '{{ tips }}'},  //文件名称设置 NOT work at x-editable
+
+            // TODO: use title color or placeholder to show search columns scope
             search: true,                       //是否显示表格搜索，根据表格类型进行客户端搜索或者服务端搜索
             searchOnEnterKey: true,
             showRefresh: true,                  //是否显示刷新按钮

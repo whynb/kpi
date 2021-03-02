@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if title['type'] in ['static'] %}
+                            {% if title['type'] in ['static', 'inline'] %}
                                 <div class="form-group has-warning" hidden>
                                     <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control">
                                 </div>

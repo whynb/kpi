@@ -10,7 +10,7 @@ from typing import List
 
 
 # engine = create_engine('sqlite:///data.db', echo=True)
-engine = create_engine('mysql+pymysql://root:P1ssW0rd@47.94.148.26:3306/kpi?charset=utf8', echo=True)
+engine = create_engine('mysql+pymysql://root:password@localhost:3306/kpi?charset=utf8', echo=True)
 Database = sessionmaker(bind=engine)
 db = Database()
 
