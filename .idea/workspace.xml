@@ -3,14 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0e33467a-a2c2-4898-a485-c6249944cabf" name="Default Changelist" comment="comment out test rule">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kpi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kpi.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codestream.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codestream.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/function.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/function.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/model_dr.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/role_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/role_manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/rule.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/rule.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,7 +220,7 @@
       <workItem from="1614145972070" duration="111213000" />
       <workItem from="1614516939705" duration="1844000" />
       <workItem from="1614562518820" duration="6770000" />
-      <workItem from="1614609248842" duration="8148000" />
+      <workItem from="1614609248842" duration="9689000" />
     </task>
     <task id="LOCAL-00001" summary="comment out test rule">
       <created>1614562628875</created>
