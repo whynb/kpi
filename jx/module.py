@@ -481,12 +481,12 @@ class VIEW_XMJFXX(Base):  # 项目经费信息
 
 
 class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
-    __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_hjcgjbsjxx'  # 获奖成果基本数据信息
+    __table_args__ = {'extend_existing': True}
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    HJCGBH = Column('HJCGBH', String(16), unique=True, default='')  # 获奖成果编号
-    HJCGMC = Column('HJCGMC', String(16), unique=True, default='')  # 获奖成果名称
+    HJCGBH = Column('HJCGBH', String(16), default='')  # 获奖成果编号
+    HJCGMC = Column('HJCGMC', String(16), default='')  # 获奖成果名称
     XMLYM = Column('XMLYM', String(16), default='')  # 项目来源码
     DWH = Column('DWH', String(16), default='')  # 单位号
     HJRQ = Column('HJRQ', DateTime, default=now())  # 获奖日期
@@ -500,7 +500,6 @@ class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
     DWPM = Column('DWPM', String(16), default='')  # 单位排名
     XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
     FZRYH = Column('FZRYH', String(16), default='')  # 负责人员号
-    JZGH = Column('JZGH', String(16), default='')  # 教职工号
     FZRXM = Column('FZRXM', String(16), default='')  # 负责人姓名
     YJXK = Column('YJXK', String(16), default='')  # 一级学科
     DWMC = Column('DWMC', String(16), default='')  # 单位名称
@@ -508,6 +507,7 @@ class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
     CGXS = Column('CGXS', String(16), default='')  # 成果形式
     HJMC = Column('HJMC', String(16), default='')  # 获奖名称
     HJBH = Column('HJBH', String(16), default='')  # 获奖编号
+    JZGH = Column('JZGH', String(16), default='')  # 教职工号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -532,7 +532,6 @@ class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
                dr_hjcg.DWPM AS DWPM,
                dr_hjcg.XKMLKJM AS XKMLKJM,
                dr_hjcg.FZRYH AS FZRYH,
-               dr_hjcg.FZRYH AS JZGH,
                dr_hjcg.FZRXM AS FZRXM,
                dr_hjcg.YJXK AS YJXK,
                dr_hjcg.DWMC AS DWMC,
@@ -544,7 +543,6 @@ class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
                dr_hjcg.note AS note
             FROM dr_hjcgjbsjxx dr_hjcg
             LEFT JOIN dc_hjcgjbsjxx dc_hjcg ON dr_hjcg.HJCGBH = dr_hjcg.HJCGBH
-            LEFT JOIN dr_kjcgryxx_jl dr_kjcg ON dr_hjcg.HJCGBH = dr_kjcg.HJCGBH
             WHERE 1=1
         """
         return sql_v1
@@ -559,7 +557,7 @@ class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
 
     @staticmethod
     def get_hide_columns() -> List[str]:
-        return ['id', 'JZGH', 'stamp', 'note']
+        return ['id', 'stamp', 'note', 'RYH']
 
     @staticmethod
     def get_title_columns() -> List[str]:
@@ -573,15 +571,13 @@ class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
              'create': 'True', },
             {'table': 'dr_hjcgjbsjxx', 'field': 'HJCGMC', 'title': '获奖成果名称', 'editable': 'T', 'type': 'text',
              'create': 'True', },
+            {'table': 'dr_hjcgjbsjxx', 'field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text',
+             'create': 'F', },
             {'table': 'dr_hjcgjbsjxx', 'field': 'FZRYH', 'title': '负责人员号', 'editable': 'False', 'type': 'text',
              'create': 'F', },
             {'table': 'dr_hjcgjbsjxx', 'field': 'FZRXM', 'title': '负责人姓名', 'editable': 'T', 'type': 'table',
              'value': 'dr_jzgjcsjxx:JZGH AS FZRYH,XM AS FZRXM', 'where': "DWH IN %(departments)s AND JZGH!='admin'",
              'create': 'T', },
-            {'table': 'dr_kjcgryxx_jl', 'field': 'PMZRS', 'title': '排名/总人数', 'editable': 'T', 'type': 'text',
-             'create': 'True', },
-            {'table': 'dr_kjcgryxx_jl', 'field': 'GXL', 'title': '贡献率', 'editable': 'T', 'type': 'text',
-             'create': 'True', },
             {'table': 'dr_hjcgjbsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'F', 'type': 'text',
              'create': 'false', },
             {'table': 'dr_hjcgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'T', 'type': 'table',
@@ -591,11 +587,11 @@ class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
             {'table': 'dr_hjcgjbsjxx', 'field': 'HJRQ', 'title': '获奖日期', 'editable': 'true', 'type': 'date',
              'create': 'True', },
             {'table': 'dr_hjcgjbsjxx', 'field': 'CGHJLBM', 'title': '成果获奖类别码', 'editable': 'True', 'type': 'inline',
-             'create': 'True', 'value': 'st_ky_cghjlb:DM AS CGHJLBM,MC', 'where': ''},
+             'create': 'F', 'value': 'st_ky_cghjlb:DM AS CGHJLBM,MC', 'where': ''},
             {'table': 'dr_hjcgjbsjxx', 'field': 'KJJLB', 'title': '科技奖类别', 'editable': 'False', 'type': 'text',
              'create': 'False', },
             {'table': 'dr_hjcgjbsjxx', 'field': 'JLDJM', 'title': '奖励等级码', 'editable': 'true', 'type': 'inline',
-             'create': 'T', 'value': 'st_jldj:JLDJM,JLDJMC', 'where': ''},
+             'create': 'T', 'value': 'st_jldj:DM as JLDJM,MC', 'where': ''},
             {'table': 'dr_hjcgjbsjxx', 'field': 'HJJBM', 'title': '获奖级别码', 'editable': 'False', 'type': 'text',
              'create': 'False', },  # need value
             {'table': 'dr_hjcgjbsjxx', 'field': 'BJDW', 'title': '颁奖单位', 'editable': 'T', 'type': 'text',
@@ -611,6 +607,23 @@ class VIEW_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
             {'table': 'dr_hjcgjbsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text',
              'create': 'False', },
         ]
+
+
+class VIEW_KJCGRYXX_JL(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_kjcgryxx_jl'  # 获奖成果基本数据信息
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
+    JSM = Column('JSM', String(16), default='')  # 角色码
+    ZXZS = Column('ZXZS', String(16), default='')  # 撰写字数
+    PMZRS = Column('PMZRS', String(16), default='')  # 排名/总人数
+    GXL = Column('GXL', Float, default=0.0)  # 贡献率
+    XM = Column('XM', String(16), default='')  # 姓名
+    SZDW = Column('SZDW', String(16), default='')  # 所在单位
+    RYLX = Column('RYLX', String(16), default='')  # 人员类型
+    HJCGBH = Column('HJCGBH', String(16), default='')  # 获奖成果编号
+    KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
 
 
 def get_class_attribute(file='./module.py'):

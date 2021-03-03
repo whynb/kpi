@@ -339,7 +339,7 @@ class DR_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
             '获奖成果名称': ['HJCGMC'],
             '项目来源码': ['XMLYM'],
             '单位号': ['DWH'],
-            '获奖日期': ['ZCRQ', 'DateTime'],
+            '获奖日期': ['HJRQ', 'DateTime'],
             '成果获奖类别码': ['CGHJLBM'],
             '科技奖类别': ['KJJLB'],
             '奖励等级码': ['JLDJM'],
