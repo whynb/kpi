@@ -206,7 +206,8 @@ class KH_KHJGMX(Base, KpiObjectBase):
 
     JZGH = Column('JZGH', String(16), default='')  # 教职工号
     DWH = Column('DWH', String(16), default='')  # 单位号
-    GZH = Column('GZH', String(128), default='')  # 规则号
+    # GZH = Column('GZH', String(128), default='')  # 规则号
+    GZH = Column('GZH', ForeignKey(KH_JXKHGZ.GZH))  # 规则号
     KHNF = Column('KHNF', DateTime, default=now())  # 考核年份
     KHJD = Column('KHJD', Float, default=0.0)  # 考核绩点
     KHMX = Column('KHMX', Text, default='')  # 考核明细

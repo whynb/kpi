@@ -580,7 +580,6 @@ class VIEW_KJQKLWJBSJXX(Base):
                 dr.stamp AS stamp,            
                 dr.note AS note            
             FROM dr_kjqklwjbsjxx dr
-            LEFT JOIN dc_kjqklwjbsjxx dc ON dc.LWBH=dr.LWBH
             LEFT JOIN dr_kjlwfbxx kj ON kj.LWBH=dr.LWBH
             LEFT JOIN dr_jzgjcsjxx jz ON jz.JZGH=dr.DYZZ
             WHERE 1=1

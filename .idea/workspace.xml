@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0e33467a-a2c2-4898-a485-c6249944cabf" name="Default Changelist" comment="comment out test rule">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codestream.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codestream.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/model_dc.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/model_dr.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/rule.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/rule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/sqlalchemy_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/sqlalchemy_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kpi/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kpi/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +33,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.module">
+  <component name="RunManager" selected="Python.model_dc">
     <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -197,8 +201,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.module" />
         <item itemvalue="Python.model_dc" />
+        <item itemvalue="Python.module" />
         <item itemvalue="Python.model_dr" />
         <item itemvalue="Python.rule" />
         <item itemvalue="Python.manage" />
@@ -220,7 +224,7 @@
       <workItem from="1614145972070" duration="111213000" />
       <workItem from="1614516939705" duration="1844000" />
       <workItem from="1614562518820" duration="6770000" />
-      <workItem from="1614609248842" duration="9689000" />
+      <workItem from="1614609248842" duration="12931000" />
     </task>
     <task id="LOCAL-00001" summary="comment out test rule">
       <created>1614562628875</created>
@@ -272,9 +276,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614511439873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1614771798090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614597006466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614597014202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1614779245054" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614779182644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614780287091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$https_server.coverage" NAME="https server Coverage Results" MODIFIED="1614392324196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614510869797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1614511451514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
