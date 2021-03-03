@@ -25,7 +25,7 @@ def get_menu(payroll):
         return -1
 
     user = SysUser.objects.get(payroll=payroll)
-    menu_list = Role.objects.get(id=user.role_id).menu.all().values()
+    menu_list = Role.objects.get(id=user.role_id).menu.all().order_by('menu_icon').values()
     menus = []
 
     for m in menu_list:
@@ -113,8 +113,7 @@ def get_role_menu_permission(req):
 
 def can_login(req):
     """
-    TODO: custermize login check by payroll cookie
-    :param req:
+    :param req: http request
     :return: True - can login, False - can not
     """
 
@@ -131,10 +130,8 @@ def can_login(req):
 
     payroll = req.COOKIES.get('payroll', '')
     if payroll and len(payroll):
-
-        # TODO: verify login here
-
-        return True
+        users = SysUser.objects.filter(payroll__exact=payroll)
+        return True if users else False
 
     return False
 
@@ -266,7 +263,7 @@ def role_manage(req):
         roleform = RoleForm()
 
     usercode = req.COOKIES.get('payroll')
-    roles = Role.objects.all()  # TODO: filter out by login payroll
+    roles = Role.objects.all()  # TODO: filter out by login payroll, such as sysuser type and role
     return render(
         req,
         'role_manage.html',
@@ -331,6 +328,8 @@ def base(req):
 @check_login
 def jxkhgz(req):
     from jx.function import get_static_data, get_field_name
+    from jx.module import generate_class_view
+
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]
     return render(
@@ -347,6 +346,7 @@ def jxkhgz(req):
             'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
+            'class_view': generate_class_view((''.join([settings.BASE_DIR, '/jx/module.py'])), False),
         }
     )
 

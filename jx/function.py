@@ -125,7 +125,6 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
     for rule in rules:
         try:
             # 根据规则定义的参与考核的类名获得参与考核对象
-            # TODO: All modules SHOULD have JZGH(payroll), stamp
             class_to_check = rule.get_input_class()  # get class to check
             data_query = db.query(class_to_check)  # query out by class defined in rule
             data_query = data_query.filter(class_to_check.DWH.in_(departments))
@@ -395,9 +394,11 @@ def get_department(req):
 
 
 def get_dwh(req):
-    # TODO: get DWH while compose upload files
-    logger.info(req.COOKIES.get('payroll'))
-    return '.'
+    try:
+        return str(get_user_information(str(req.COOKIES.get('payroll')))['DWH'])
+    except:
+        logger.error(sys_info())
+        return '.'
 
 
 def save_file(req):
@@ -489,7 +490,7 @@ def __format_value(vv, fm, enum_values=None):
     """
     TODO: format vv per key[k][1] if defined
     :param vv:
-    :param fm:
+    :param fm: 'Enum'｜"DateTime"
     :return:
     """
     if enum_values is None:
@@ -552,6 +553,21 @@ def __row_replace_key(__row, __key, uniq=None):
             pass
 
     return res, cc_str[:-2], vv_str[:-2], uu_str[:-2]
+
+
+def __translate_column_to_chinese(columns, col):
+    for k, v in columns.items():
+        if v[0] == col:
+            return k
+    return ''
+
+
+def __transform_key_to_chinese(vv, columns):
+    res = {}
+    for k, v in vv.items():
+        nk = __translate_column_to_chinese(columns, k)
+        res[nk] = v
+    return res
 
 
 @check_login
@@ -743,6 +759,7 @@ def edit(req):
         logger.info(sql_update)
         cursor.execute(sql_update)
 
+        # TODO: add meaningful words and translate to Chinese
         return JsonResponse({'success': True, 'msg': '成功更新为：' + set_to})
 
     except Error:  # django.db.utils.Error
@@ -824,7 +841,9 @@ def get_data(req):
         if v['menu'] == 'zzjgjbsjxx':  # 组织机构基本数据信息
             sql_where += " AND (DWH='%(department)s' OR LSDWH='%(department)s')"
         else:
-            sql_where += " AND DWH='%(department)s'"  # TODO: DWH IN ('', '') -> VIEW_ZZJGJBSJXX.get_managed_departments
+            from jx.module import VIEW_ZZJGJBSJXX
+            __dpts = VIEW_ZZJGJBSJXX.get_managed_departments(v['department'])
+            sql_where += " AND DWH IN " + str(__dpts).replace('[', '(').replace(']', ')')
     else:
         sql_where += " AND 1=0"
     sql_where %= v
@@ -854,6 +873,13 @@ def get_data(req):
 
 
 @check_login
+@sys_error
+def get_class_view(req):
+    from jx.module import generate_class_view
+    return JsonResponse(generate_class_view((''.join([settings.BASE_DIR, '/jx/module.py'])), False), safe=False)
+
+
+@check_login
 def delete_data(req):
     payroll = str(req.COOKIES.get('payroll'))
     # TODO: check delete auth ???
@@ -864,21 +890,24 @@ def delete_data(req):
     count = v['count']
 
     module_class = get_module_class(function)
-    upload_tables = module_class.get_delete_tables()
+    delete_tables = module_class.get_delete_tables()
 
+    msg = ''
     from jx.sqlalchemy_env import cursor, conn
-    for d_table in upload_tables:
+    for d_table in delete_tables:
         model_dr_class = get_model_dr_class(d_table)
         unique = model_dr_class.get_unique_condition()
+        msg_tablename = model_dr_class.__tablename__CH__ if hasattr(model_dr_class, '__tablename__CH__') \
+            else model_dr_class.__tablename__
 
         where = '1=1'
         for u in unique:
             where += ' AND ' + u + "='%(" + u + ")s'"
         if where == '1=1':
+            msg += msg_tablename + ': 删除失败, 未定义数据唯一性条件<br>'
             continue
 
         for c in range(0, int(count)):
-
             sql_delete = """ DELETE FROM %(table)s WHERE %(where)s """ % {'table': d_table, 'where': where % data[c]}
 
             # TODO: add more WHERE conditions to keep system safe
@@ -886,12 +915,16 @@ def delete_data(req):
             # 2. jzgjcsjxx can't delete self and admin
             # 3. other conditions ???
 
-            # cursor = connection.cursor()  # change to SQLAlchemy cursor to keep delete transaction
-            logger.info(sql_delete)
-            cursor.execute(sql_delete)
+            try:
+                # cursor = connection.cursor()  # change to SQLAlchemy cursor to keep delete transaction
+                cursor.execute(sql_delete)
+                msg += msg_tablename + ': 删除数据成功<br>'
+            except Error as e:
+                logger.error(sys_info())
+                msg += msg_tablename + ': 删除失败, ' + str(e) + '<br>'
 
     conn.commit()
-    return JsonResponse({'success': True, 'msg': '删除数据成功'})
+    return JsonResponse({'success': True, 'msg': msg})
 
 
 def __format_create_value(v, columns):
@@ -910,6 +943,7 @@ def __format_create_value(v, columns):
             val[k_] = _v
 
     # NOTE: 增减业绩点
+    # TODO: 增减业绩点子类??? by 'ZZZ' as rule prefix???
     if 'create_data_item' in v:
         if v['create_data_item'] == 'khjgmx':
             val['note'] = v['note']
@@ -925,39 +959,37 @@ def create_data(req):
     # TODO: create auth verification
     # TODO: additional check and default value set
 
-    def __translate_column_to_chinese(columns, col):
-        for k, v in columns.items():
-            if v[0] == col:
-                return k
-        return ''
-
-    def __transform_key_to_chinese(vv, columns):
-        res = {}
-        for k, v in vv.items():
-            nk = __translate_column_to_chinese(columns, k)
-            res[nk] = v
-        return res
-
     _v = eval(str(req.POST.dict()))
     function = _v['create_data_item']
 
     module_class = get_module_class(function)
-    upload_tables = module_class.get_delete_tables()
+    create_tables = module_class.get_create_tables()
 
+    msg = ''
     from jx.sqlalchemy_env import cursor, conn
-    for d_table in upload_tables:
+    for d_table in create_tables:
         model_dr_class = get_model_dr_class(d_table)
         columns = model_dr_class.get_column_label()
         unique = model_dr_class.get_unique_condition()
+        msg_tablename = model_dr_class.__tablename__CH__ if hasattr(model_dr_class, '__tablename__CH__') \
+            else model_dr_class.__tablename__
 
         tv = __format_create_value(_v, columns)
 
         where = '1=1'
+        msg_unique = ': 创建失败, 数据主键为空 '
         for u in unique:
             if u in tv and not len(trim(tv[u])):
-                return JsonResponse({'success': False, 'msg': '创建失败：' + str(u) + '为空'})  # TODO: to Chinese readable
+                msg_unique += __translate_column_to_chinese(columns, u) + ' '
+                # return JsonResponse({'success': False, 'msg': '创建失败：' + str(u) + '为空'})
             where += ' AND ' + u + "='%(" + u + ")s'"
+
+        if msg_unique != ': 创建失败, 数据主键为空 ':
+            msg += msg_tablename + msg_unique + '<br>'
+            continue
+
         if where == '1=1':
+            msg += msg_tablename + ': 创建失败, 未定义数据唯一性条件<br>'
             continue
 
         sql_count = """ SELECT COUNT(*) AS count FROM %(table)s WHERE %(where)s 
@@ -966,7 +998,10 @@ def create_data(req):
         cursor.execute(sql_count)
         count = cursor.fetchall()
         if count[0][0] > 0:
-            return JsonResponse({'success': False, 'msg': '创建失败：数据主键重复'})
+            # TODO: update
+            msg += msg_tablename + ': 创建失败, 数据主键重复<br>'
+            continue
+            # return JsonResponse({'success': False, 'msg': '创建失败：数据主键重复'})
 
         c_key = __transform_key_to_chinese(tv, columns)
         rec, c_str, v_str, u_str = __row_replace_key(c_key, columns, unique)
@@ -975,17 +1010,18 @@ def create_data(req):
         """ % {'table': d_table, 'columns': c_str, 'values': v_str, }
 
         logger.info(sql_insert)
-        from pymysql.err import DataError
+        from pymysql.err import Error
         try:
             cursor.execute(sql_insert)
-            cursor.fetchall()
-            pass
-        except DataError as e:
+            # cursor.fetchall()
+            msg += msg_tablename + ': 新建数据成功<br>'
+        except Error as e:
             logger.error(sys_info())
-            return JsonResponse({'success': False, 'msg': '创建失败: ' + str(e)})  # TODO: translate exception
+            msg += msg_tablename + ': 创建失败, ' + str(e) + '<br>'
+            # return JsonResponse({'success': False, 'msg': '创建失败: ' + str(e)})  # TODO: translate exception
 
     conn.commit()
-    return JsonResponse({'success': True, 'msg': '新建数据成功'})
+    return JsonResponse({'success': True, 'msg': msg})
 
 
 @check_login

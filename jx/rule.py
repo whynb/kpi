@@ -15,7 +15,7 @@ except ImportError:
 context = rule_engine.Context(resolver=rule_engine.resolve_attribute)
 
 
-class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
+class KH_JXKHGZ(Base, KpiObjectBase):
     """
         Rule object mataches with rule.
         sqlalchemy:
@@ -32,7 +32,8 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
         # 考核结果对象: object storing the rule's value
     """
 
-    __tablename__ = "kh_jxkhgz"  # 绩效考核规则
+    __tablename__ = "kh_jxkhgz"
+    __tablename__CH__ = "绩效考核规则"
     # TODO: unique: 单位号-考核类型-考核子类-详细考核子类
     # TODO: 单位号 shouldn't empty while create
     # TODO: 单位号 should exist while update
@@ -90,6 +91,10 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
         return ['kh_jxkhgz']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['kh_jxkhgz']
+
+    @staticmethod
     def get_hide_columns() -> List[str]:
         return ['id', 'stamp', 'KHJGDX']
 
@@ -116,12 +121,10 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
     def get_unique_condition() -> List[str]:
         return ['GZH']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['GZH', 'DWH', 'DWMC', 'KHLX', 'KHZL', 'XXKLZL', 'KHMC', 'KHSJDX']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
@@ -133,7 +136,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
             {'table': 'kh_jxkhgz', 'field': 'KHZL', 'title': '考核子类', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'XXKLZL', 'title': '详细考核子类', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'True', 'type': 'text', 'create': 'T', },
-            {'table': 'kh_jxkhgz', 'field': 'KHSJDX', 'title': '考核数据对象', 'editable': 'True', 'type': 'text', 'create': 'T', },
+            {'table': 'kh_jxkhgz', 'field': 'KHSJDX', 'title': '考核数据对象', 'editable': 'True', 'type': 'class', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'GZTJ', 'title': '规则条件', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'JXFSJS', 'title': '绩效分数计算', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHMXMB', 'title': '考核明细模版', 'editable': 'True', 'type': 'text', 'create': 'T', },
@@ -195,9 +198,9 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
         return value.evaluate(obj) if len(self.JXFSJS) else 0.0
 
 
-class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
-
-    __tablename__ = "kh_khjgmx"  # 考核结果明细
+class KH_KHJGMX(Base, KpiObjectBase):
+    __tablename__ = "kh_khjgmx"
+    __tablename__CH__ = "考核结果明细"
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
 
@@ -259,6 +262,10 @@ class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
         return ['kh_khjgmx']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['kh_khjgmx']
+
+    @staticmethod
     def get_hide_columns() -> List[str]:
         return ['id']
 
@@ -300,19 +307,9 @@ class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
         self.note = note
 
 
-"""
-ALTER TABLE KH_JXKHGZ ADD stamp TIMESTAMP(6);
-ALTER TABLE KH_KHJGMX ADD stamp TIMESTAMP(6);
-ALTER TABLE KH_KHPC MODIFY stamp TIMESTAMP(6);
-ALTER TABLE KH_KHGZDZ MODIFY stamp TIMESTAMP(6);
-ALTER TABLE KH_KHJGHZ MODIFY stamp TIMESTAMP(6);
-ALTER TABLE KH_BCYKH MODIFY stamp TIMESTAMP(6);
-"""
-
-
-class KH_KHPC(Base, KpiObjectBase):  # 考核批次
-
-    __tablename__ = "kh_khpc"  # 考核批次
+class KH_KHPC(Base, KpiObjectBase):
+    __tablename__ = "kh_khpc"
+    __tablename__CH__ = "考核批次"
     __table_args__ = (UniqueConstraint('DWH', 'KHNF', name='_kh_khpc_dwh_khnf_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
@@ -372,12 +369,10 @@ class KH_KHPC(Base, KpiObjectBase):  # 考核批次
     def get_unique_condition() -> List[str]:
         return ['DWH', 'KHNF']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['DWMC', 'DWH', 'KHNF']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
@@ -404,9 +399,9 @@ class KH_KHPC(Base, KpiObjectBase):  # 考核批次
         self.note = note
 
 
-class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
-
-    __tablename__ = "kh_khgzdz"  # 考核规则定制
+class KH_KHGZDZ(Base, KpiObjectBase):
+    __tablename__ = "kh_khgzdz"
+    __tablename__CH__ = "考核规则定制"
     __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'GZH', name='_kh_khgzdz_dwh_khnf_gzh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
@@ -443,6 +438,10 @@ class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
         return ['kh_khgzdz']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['kh_khgzdz']
+
+    @staticmethod
     def get_delete_tables() -> List[str]:
         return ['kh_khgzdz']
 
@@ -462,12 +461,10 @@ class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
     def get_unique_condition() -> List[str]:
         return ['DWH', 'KHNF', 'GZH']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['DWMC', 'DWH', 'KHNF', 'GZH', 'KHMC']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
@@ -491,10 +488,9 @@ class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
         self.note = note
 
 
-class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
-    # TODO: add footer total
-
-    __tablename__ = "kh_khjghz"  # 考核结果汇总
+class KH_KHJGHZ(Base, KpiObjectBase):  # TODO: add footer total
+    __tablename__ = "kh_khjghz"
+    __tablename__CH__ = "考核结果汇总"
     __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'GZH', 'JZGH', name='_kh_khjghz_dwh_khnf_gzh_jzgh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
@@ -546,6 +542,10 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
         return ['kh_khjghz']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['kh_khjghz']
+
+    @staticmethod
     def get_hide_columns() -> List[str]:
         return ['id', 'LSDWMC', 'LSDWH']
 
@@ -566,12 +566,10 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
     def get_unique_condition() -> List[str]:
         return ['DWH', 'KHNF', 'GZH', 'JZGH']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['DWMC', 'DWH', "DATE_FORMAT(KHNF,'%Y')", 'XM', 'GZH', 'KHMC', 'KHLX', 'KHZL', 'XXKLZL']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
@@ -610,9 +608,9 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
         self.note = note
 
 
-class KH_BCYKH(Base, KpiObjectBase):  # 不参与考核
-
-    __tablename__ = "kh_bcykh"  # 不参与考核
+class KH_BCYKH(Base, KpiObjectBase):
+    __tablename__ = "kh_bcykh"
+    __tablename__CH__ = "不参与考核"
     __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'JZGH', name='_kh_bcykh_dwh_khnf_jzgh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
@@ -651,6 +649,10 @@ class KH_BCYKH(Base, KpiObjectBase):  # 不参与考核
 
     @staticmethod
     def get_delete_tables() -> List[str]:
+        return ['kh_bcykh']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
         return ['kh_bcykh']
 
     @staticmethod
@@ -697,11 +699,17 @@ class KH_BCYKH(Base, KpiObjectBase):  # 不参与考核
 
 
 if __name__ == '__main__':
-    # from jx.module import VIEW_ZZJGJBSJXX
-    # print(VIEW_ZZJGJBSJXX.get_managed_departments('00000B'))
-    # exit(0)
 
-    Base.metadata.create_all(engine)  # CREATE ALL
+    """
+    ALTER TABLE KH_JXKHGZ ADD stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHJGMX ADD stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHPC MODIFY stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHGZDZ MODIFY stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHJGHZ MODIFY stamp TIMESTAMP(6);
+    ALTER TABLE KH_BCYKH MODIFY stamp TIMESTAMP(6);
+    """
+
+    Base.metadata.create_all(engine)
     exit(0)
 
     # Example: SQLAlchemy add-commit-rollback
@@ -743,9 +751,4 @@ if __name__ == '__main__':
     # # db.add_all([User(name='用户2'), User(name='用户3'),])  # 2. 添加多条数据
     # db.commit()  # 结束记得提交, 数据才能保存在数据库中
     # db.close()  # 关闭会话
-
-    # run_kpi()
-
-    # print(get_class_attribute())  # TODO: provide as URL
-
     exit(0)
