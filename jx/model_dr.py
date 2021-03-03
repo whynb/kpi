@@ -300,7 +300,7 @@ ALTER TABLE DR_BKS_JPKC ADD stamp TIMESTAMP(6);
 """
 
 
-#yangchen
+# yangchen
 class DR_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
 
     __tablename__ = 'dr_hjcgjbsjxx'  # 获奖成果基本数据信息
@@ -310,7 +310,7 @@ class DR_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
     HJCGMC = Column('HJCGMC', String(16), unique=True, default='')  # 获奖成果名称
     XMLYM = Column('XMLYM', String(16), default='')  # 项目来源码
     DWH = Column('DWH', String(16), default='')  # 单位号
-    HJRQ = Column('HJRQ', String(16), default='')  # 获奖日期
+    HJRQ = Column('HJRQ', DateTime, default=now())  # 获奖日期
     CGHJLBM = Column('CGHJLBM', String(16), default='')  # 成果获奖类别码
     KJJLB = Column('KJJLB', String(16), default='')  # 科技奖类别
     JLDJM = Column('JLDJM', String(16), default='')  # 奖励等级码
@@ -339,7 +339,7 @@ class DR_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
             '获奖成果名称': ['HJCGMC'],
             '项目来源码': ['XMLYM'],
             '单位号': ['DWH'],
-            '获奖日期': ['ZCRQ', 'DateTime'],
+            '获奖日期': ['HJRQ', 'DateTime'],
             '成果获奖类别码': ['CGHJLBM'],
             '科技奖类别': ['KJJLB'],
             '奖励等级码': ['JLDJM'],
@@ -363,6 +363,7 @@ class DR_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
 
     @staticmethod
     def get_unique_condition() -> List[str]:
+        # TODO: individual unique condition OR combined
         return ['HJCGBH', 'HJCGMC']
 
 
@@ -400,6 +401,73 @@ class DR_KJCGRYXX_JL(Base):
     @staticmethod
     def get_unique_condition() -> List[str]:
         return ['RYH']
+
+
+class DR_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
+
+    __tablename__ = 'dr_kjqklwjbsjxx'  # 科技期刊论文基本数据信息
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    LWBH= Column('LWBH', String(16), default='')  # 论文编号
+    LWMC = Column('LWMC', String(128), unique=True, default='')  # 论文名称
+    LWLXM= Column('LWLXM', String(16), default='')  # 论文类型码
+    DYZZ= Column('DYZZ', String(16), default='')  # 第一作者
+    CYRY = Column('CYRY', String(128), unique=True, default='')  # 参与人员
+    TXZZ= Column('TXZZ', String(16), default='')  # 通讯作者
+    JSQK = Column('JSQK', String(128), unique=True, default='')  # 检索情况
+    JQY = Column('JQY', String(128), unique=True, default='')  # 卷期页
+    WDWZZPX = Column('WDWZZPX', String(16), default='')  # 外单位作者排序
+    BZXYBJZDSYS = Column('BZXYBJZDSYS', String(16), default='') # 标注学院部级重点实验室
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '论文编号': ['LWBH'],
+            '论文名称': ['LWMC'],
+            '论文类型码': ['LWLXM'],
+            '第一作者': ['DYZZ'],
+            '参与人员': ['CYRY'],
+            '通讯作者': ['TXZZ'],
+            '检索情况': ['JSQK'],
+            '卷期页': ['JQY'],
+            '外单位作者排序': ['WDWZZPX'],
+            '标注学院部级重点实验室': ['BZXYBJZDSYS'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['LWBH']
+
+
+class DR_KJLWFBXX(Base):  # 科技论文发表信息
+
+    __tablename__ = 'dr_kjlwfbxx'  # 科技论文发表信息
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    KWMC = Column('KWMC', String(16), default='')  # 刊物名称
+    LWBH = Column('LWBH', String(16), default='')  # 论文编号
+    FBRQ = Column('FBRQ', DateTime, default=now())  # 发表日期
+    JH= Column('JH', String(16), default='')  # 卷号
+    QH = Column('QH', String(16), default='')  # 期号
+    LRSJ = Column('LRSJ', DateTime, default=now())  # 录入时间
+
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '刊物名称': ['KWMC'],
+            '论文编号': ['LWBH'],
+            '发表日期': ['FBRQ', 'DateTime'],
+            '卷号': ['JH'],
+            '期号': ['QH'],
+            '录入时间': ['LRSJ ', 'DateTime'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['LWBH']
 
 if __name__ == '__main__':
     try:

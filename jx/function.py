@@ -22,7 +22,16 @@ def get_field_name(s):
         Refer to below get_static_data to get [col1,col2,...] used by FE Jinja2
     """
     try:
-        return s[s.find(':')+1:].split(',')
+        res = []
+        arr = s[s.find(':') + 1:].split(',')
+        for a in arr:
+            if a.find('AS') != -1:
+                res.append(trim(a[a.find('AS')+2:]))
+            elif a.find('as') != -1:
+                res.append(trim(a[a.find('as')+2:]))
+            else:
+                res.append(a)
+        return res
     except:
         logger.error(sys_info())
     return []
@@ -116,7 +125,6 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
     for rule in rules:
         try:
             # 根据规则定义的参与考核的类名获得参与考核对象
-            # TODO: All modules SHOULD have JZGH(payroll), stamp
             class_to_check = rule.get_input_class()  # get class to check
             data_query = db.query(class_to_check)  # query out by class defined in rule
             data_query = data_query.filter(class_to_check.DWH.in_(departments))
@@ -480,7 +488,7 @@ def __format_value(vv, fm, enum_values=None):
     """
     TODO: format vv per key[k][1] if defined
     :param vv:
-    :param fm:
+    :param fm: 'Enum'｜"DateTime"
     :return:
     """
     if enum_values is None:
@@ -728,12 +736,13 @@ def edit(req):
         v['set_to'] = set_to
         v['where'] = where % v
         v['table'] = column['table']
-        sql_update = "UPDATE %(table)s SET %(field)s='%(set_to)s' WHERE %(where)s" % v
+        sql_update = "UPDATE %(table)s SET %(field)s=\"%(set_to)s\" WHERE %(where)s" % v
 
         cursor = connection.cursor()
         logger.info(sql_update)
         cursor.execute(sql_update)
 
+        # TODO: add meaningful words and translate to Chinese
         return JsonResponse({'success': True, 'msg': '成功更新为：' + set_to})
 
     except Error:  # django.db.utils.Error
@@ -845,6 +854,13 @@ def get_data(req):
 
 
 @check_login
+@sys_error
+def get_class_view(req):
+    from jx.module import generate_class_view
+    return JsonResponse(generate_class_view((''.join([settings.BASE_DIR, '/jx/module.py'])), False), safe=False)
+
+
+@check_login
 def delete_data(req):
     payroll = str(req.COOKIES.get('payroll'))
     # TODO: check delete auth ???
@@ -901,6 +917,7 @@ def __format_create_value(v, columns):
             val[k_] = _v
 
     # NOTE: 增减业绩点
+    # TODO: 增减业绩点子类??? by 'ZZZ' as rule prefix???
     if 'create_data_item' in v:
         if v['create_data_item'] == 'khjgmx':
             val['note'] = v['note']
@@ -966,17 +983,17 @@ def create_data(req):
         """ % {'table': d_table, 'columns': c_str, 'values': v_str, }
 
         logger.info(sql_insert)
-        from pymysql.err import DataError
+        from pymysql.err import Error
         try:
             cursor.execute(sql_insert)
             cursor.fetchall()
             pass
-        except DataError as e:
+        except Error as e:
             logger.error(sys_info())
             return JsonResponse({'success': False, 'msg': '创建失败: ' + str(e)})  # TODO: translate exception
 
     conn.commit()
-    return JsonResponse({'success': True, 'msg': '新建数据成功'})
+    return JsonResponse({'success': True, 'msg': '新建数据成功'})  # TODO: add meaningful words and translate to Chinese
 
 
 @check_login

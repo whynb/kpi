@@ -116,12 +116,10 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
     def get_unique_condition() -> List[str]:
         return ['GZH']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['GZH', 'DWH', 'DWMC', 'KHLX', 'KHZL', 'XXKLZL', 'KHMC', 'KHSJDX']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
@@ -133,7 +131,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
             {'table': 'kh_jxkhgz', 'field': 'KHZL', 'title': '考核子类', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'XXKLZL', 'title': '详细考核子类', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'True', 'type': 'text', 'create': 'T', },
-            {'table': 'kh_jxkhgz', 'field': 'KHSJDX', 'title': '考核数据对象', 'editable': 'True', 'type': 'text', 'create': 'T', },
+            {'table': 'kh_jxkhgz', 'field': 'KHSJDX', 'title': '考核数据对象', 'editable': 'True', 'type': 'class', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'GZTJ', 'title': '规则条件', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'JXFSJS', 'title': '绩效分数计算', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHMXMB', 'title': '考核明细模版', 'editable': 'True', 'type': 'text', 'create': 'T', },
@@ -300,16 +298,6 @@ class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
         self.note = note
 
 
-"""
-ALTER TABLE KH_JXKHGZ ADD stamp TIMESTAMP(6);
-ALTER TABLE KH_KHJGMX ADD stamp TIMESTAMP(6);
-ALTER TABLE KH_KHPC MODIFY stamp TIMESTAMP(6);
-ALTER TABLE KH_KHGZDZ MODIFY stamp TIMESTAMP(6);
-ALTER TABLE KH_KHJGHZ MODIFY stamp TIMESTAMP(6);
-ALTER TABLE KH_BCYKH MODIFY stamp TIMESTAMP(6);
-"""
-
-
 class KH_KHPC(Base, KpiObjectBase):  # 考核批次
 
     __tablename__ = "kh_khpc"  # 考核批次
@@ -372,12 +360,10 @@ class KH_KHPC(Base, KpiObjectBase):  # 考核批次
     def get_unique_condition() -> List[str]:
         return ['DWH', 'KHNF']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['DWMC', 'DWH', 'KHNF']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
@@ -462,12 +448,10 @@ class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
     def get_unique_condition() -> List[str]:
         return ['DWH', 'KHNF', 'GZH']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['DWMC', 'DWH', 'KHNF', 'GZH', 'KHMC']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
@@ -566,12 +550,10 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
     def get_unique_condition() -> List[str]:
         return ['DWH', 'KHNF', 'GZH', 'JZGH']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['DWMC', 'DWH', "DATE_FORMAT(KHNF,'%Y')", 'XM', 'GZH', 'KHMC', 'KHLX', 'KHZL', 'XXKLZL']
 
-    # TODO: edit as view_sql
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
@@ -697,11 +679,17 @@ class KH_BCYKH(Base, KpiObjectBase):  # 不参与考核
 
 
 if __name__ == '__main__':
-    # from jx.module import VIEW_ZZJGJBSJXX
-    # print(VIEW_ZZJGJBSJXX.get_managed_departments('00000B'))
-    # exit(0)
 
-    Base.metadata.create_all(engine)  # CREATE ALL
+    """
+    ALTER TABLE KH_JXKHGZ ADD stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHJGMX ADD stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHPC MODIFY stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHGZDZ MODIFY stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHJGHZ MODIFY stamp TIMESTAMP(6);
+    ALTER TABLE KH_BCYKH MODIFY stamp TIMESTAMP(6);
+    """
+
+    Base.metadata.create_all(engine)
     exit(0)
 
     # Example: SQLAlchemy add-commit-rollback
@@ -743,9 +731,4 @@ if __name__ == '__main__':
     # # db.add_all([User(name='用户2'), User(name='用户3'),])  # 2. 添加多条数据
     # db.commit()  # 结束记得提交, 数据才能保存在数据库中
     # db.close()  # 关闭会话
-
-    # run_kpi()
-
-    # print(get_class_attribute())  # TODO: provide as URL
-
     exit(0)
