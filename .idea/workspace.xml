@@ -22,6 +22,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager" selected="Django Server.kpi">
@@ -207,14 +209,13 @@
       <created>1613826880546</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1613826880546</updated>
-      <workItem from="1613826882521" duration="17323000" />
-      <workItem from="1613927621676" duration="5489000" />
-      <workItem from="1614085509733" duration="502000" />
-      <workItem from="1614132244059" duration="4206000" />
-      <workItem from="1614145972070" duration="111213000" />
-      <workItem from="1614516939705" duration="1844000" />
-      <workItem from="1614562518820" duration="6770000" />
+      <updated>1613798282173</updated>
+      <workItem from="1613798284166" duration="679000" />
+      <workItem from="1613799011249" duration="1909000" />
+      <workItem from="1613813250289" duration="255000" />
+      <workItem from="1613813666287" duration="635000" />
+      <workItem from="1613825698320" duration="28000" />
+      <workItem from="1614254407486" duration="24913000" />
     </task>
     <task id="LOCAL-00001" summary="comment out test rule">
       <created>1614562628875</created>
@@ -230,7 +231,63 @@
       <option name="project" value="LOCAL" />
       <updated>1614563075524</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="2月28日">
+      <created>1614520213247</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1614520213247</updated>
+    </task>
+    <task id="LOCAL-00004" summary="2月28日">
+      <created>1614520256332</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1614520256332</updated>
+    </task>
+    <task id="LOCAL-00005" summary="3月1日">
+      <created>1614559475873</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1614559475873</updated>
+    </task>
+    <task id="LOCAL-00006" summary="3月1日">
+      <created>1614559562769</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1614559562769</updated>
+    </task>
+    <task id="LOCAL-00007" summary="3月1日">
+      <created>1614561834315</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1614561834315</updated>
+    </task>
+    <task id="LOCAL-00008" summary="module">
+      <created>1614562938573</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1614562938573</updated>
+    </task>
+    <task id="LOCAL-00009" summary="module">
+      <created>1614562996978</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1614562996978</updated>
+    </task>
+    <task id="LOCAL-00010" summary="module">
+      <created>1614563621015</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1614563621015</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,8 +318,78 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="comment out test rule" />
-    <option name="LAST_COMMIT_MESSAGE" value="comment out test rule" />
+    <MESSAGE value="test comments again" />
+    <MESSAGE value="228" />
+    <MESSAGE value="2月28日" />
+    <MESSAGE value="3月1日" />
+    <MESSAGE value="module" />
+    <option name="LAST_COMMIT_MESSAGE" value="module" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="490" y="138" width="800" height="684" key="#Inspections" timestamp="1614411756609">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state x="490" y="138" width="800" height="684" key="#Inspections/72.27.1646.899@72.27.1646.899" timestamp="1614411756609" />
+    <state x="522" y="27" width="867" height="899" key="CommitChangelistDialog2" timestamp="1614563620843">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state x="522" y="27" width="867" height="899" key="CommitChangelistDialog2/72.27.1646.899@72.27.1646.899" timestamp="1614563620843" />
+    <state width="1592" height="176" key="GridCell.Tab.0.bottom" timestamp="1614520509861">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="1592" height="176" key="GridCell.Tab.0.bottom/72.27.1646.899@72.27.1646.899" timestamp="1614520509861" />
+    <state width="1592" height="176" key="GridCell.Tab.0.center" timestamp="1614520509861">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="1592" height="176" key="GridCell.Tab.0.center/72.27.1646.899@72.27.1646.899" timestamp="1614520509861" />
+    <state width="1592" height="176" key="GridCell.Tab.0.left" timestamp="1614520509861">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="1592" height="176" key="GridCell.Tab.0.left/72.27.1646.899@72.27.1646.899" timestamp="1614520509861" />
+    <state width="1592" height="176" key="GridCell.Tab.0.right" timestamp="1614520509861">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="1592" height="176" key="GridCell.Tab.0.right/72.27.1646.899@72.27.1646.899" timestamp="1614520509861" />
+    <state width="1592" height="274" key="GridCell.Tab.1.bottom" timestamp="1614509917810">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="1592" height="274" key="GridCell.Tab.1.bottom/72.27.1646.899@72.27.1646.899" timestamp="1614509917810" />
+    <state width="1592" height="274" key="GridCell.Tab.1.center" timestamp="1614509917809">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="1592" height="274" key="GridCell.Tab.1.center/72.27.1646.899@72.27.1646.899" timestamp="1614509917809" />
+    <state width="1592" height="274" key="GridCell.Tab.1.left" timestamp="1614509917809">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="1592" height="274" key="GridCell.Tab.1.left/72.27.1646.899@72.27.1646.899" timestamp="1614509917809" />
+    <state width="1592" height="274" key="GridCell.Tab.1.right" timestamp="1614509917810">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="1592" height="274" key="GridCell.Tab.1.right/72.27.1646.899@72.27.1646.899" timestamp="1614509917810" />
+    <state x="599" y="189" width="582" height="581" key="MultipleFileMergeDialog" timestamp="1614254608369">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state x="599" y="189" width="582" height="581" key="MultipleFileMergeDialog/72.27.1646.899@72.27.1646.899" timestamp="1614254608369" />
+    <state x="376" y="111" width="1037" height="737" key="SettingsEditor" timestamp="1614564617023">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state x="376" y="111" width="1037" height="737" key="SettingsEditor/72.27.1646.899@72.27.1646.899" timestamp="1614564617023" />
+    <state x="490" y="211" width="800" height="538" key="Vcs.Push.Dialog.v2" timestamp="1614563622821">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state x="490" y="211" width="800" height="538" key="Vcs.Push.Dialog.v2/72.27.1646.899@72.27.1646.899" timestamp="1614563622821" />
+    <state x="172" y="127" width="1446" height="699" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1614520356840">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state x="172" y="127" width="1446" height="699" key="com.intellij.history.integration.ui.views.FileHistoryDialog/72.27.1646.899@72.27.1646.899" timestamp="1614520356840" />
+    <state x="661" y="392" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614564565549">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state x="661" y="392" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1646.899@72.27.1646.899" timestamp="1614564565549" />
+    <state x="621" y="114" width="537" height="731" key="git4idea.branch.GitSmartOperationDialog" timestamp="1614254582437">
+      <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state x="621" y="114" width="537" height="731" key="git4idea.branch.GitSmartOperationDialog/72.27.1646.899@72.27.1646.899" timestamp="1614254582437" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614511439873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
