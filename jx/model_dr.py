@@ -509,6 +509,36 @@ class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     def get_unique_condition() -> []:
         return ['LWBH']
 
+class DR_KJLWSLQK(Base):  # 科技论文收录情况
+
+    __tablename__ = 'dr_kjlwslqk'  # 科技论文收录情况
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    LWBH = Column('LWBH', String(16), default='')  # 论文编号
+    SLLX = Column('SLLX', String(16), default='')  # 收录类型
+    SLBH = Column('SLBH', String(16), default='')  # 收录编号
+    SLSJ = Column('SLSJ', String(16), default='')  # 收录时间
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '论文编号': ['LWBH'],
+            '收录类型': ['SLLX'],
+            '收录编号': ['SLBH'],
+            '收录时间': ['SLSJ'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['LWBH']
+
+
+
 if __name__ == '__main__':
 
     """

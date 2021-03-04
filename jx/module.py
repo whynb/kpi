@@ -539,6 +539,9 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     DWH = Column('DWH', String(16), default='')  # 单位号
+    SLLX = Column('SLLX', String(16), default='')  # 收录类型
+    SLBH = Column('SLBH', String(16), default='')  # 收录编号
+    SLSJ = Column('SLSJ', String(16), default='')  # 收录时间
     RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
     JSM = Column('JSM', String(16), default='')  # 角色码
     ZXZS = Column('ZXZS', String(16), default='')  # 撰写字数
@@ -602,6 +605,7 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
                 dr.note AS note     
             FROM dr_kjcgryxx_lw dr
             LEFT JOIN dc_kjcgryxx_lw dc ON dc.LWBH=dr.LWBH
+            LEFT JOIN dr_kjlwslqk sl ON sl.LWBH=dr.LWBH
             LEFT JOIN dr_kjqklwjbsjxx qk ON qk.LWBH=dr.LWBH
             LEFT JOIN dr_kjlwfbxx kj ON kj.LWBH=dr.LWBH
             LEFT JOIN dr_jzgjcsjxx jz ON jz.JZGH=dr.RYH
@@ -626,6 +630,9 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
         return [
             {'table': 'dr_kjcgryxx_lw','field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False',},
             {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'False', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLLX', 'title': '收录类型', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLBH', 'title': '收录编号', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLSJ', 'title': '收录时间', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjcgryxx_lw','field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjcgryxx_lw', 'field': 'JSM', 'title': '角色码', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjcgryxx_lw', 'field': 'ZXZS', 'title': '撰写字数', 'editable': 'False', 'type': 'text','create': 'True', },
