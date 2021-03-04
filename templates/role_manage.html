@@ -56,7 +56,7 @@
                     <button class="btn btn-inverse btn-default" onclick="delrole_onclick(menu_name.innerText)"><i class="fa fa-remove"></i>&nbsp;&nbsp;删除角色</button>
                     <button class="btn btn-inverse btn-default" onclick="addpow_onclick(menu_name.innerText)"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加菜单</button>
                 </div>
-                <table id="roletable" >
+                <table id="roletable" class="table table-condensed bootstrap-datatable datatable responsive">
                 </table>
             </div>
         </div>
@@ -212,6 +212,7 @@
                         field: 'permission',
                         title: '权限',
                         align: "center",
+                        width : '150px',
                         valign: "middle",
                         editable: {
                             'type': 'checklist',

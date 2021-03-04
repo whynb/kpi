@@ -15,7 +15,7 @@ except ImportError:
 context = rule_engine.Context(resolver=rule_engine.resolve_attribute)
 
 
-class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
+class KH_JXKHGZ(Base, KpiObjectBase):
     """
         Rule object mataches with rule.
         sqlalchemy:
@@ -32,7 +32,8 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
         # 考核结果对象: object storing the rule's value
     """
 
-    __tablename__ = "kh_jxkhgz"  # 绩效考核规则
+    __tablename__ = "kh_jxkhgz"
+    __tablename__CH__ = "绩效考核规则"
     # TODO: unique: 单位号-考核类型-考核子类-详细考核子类
     # TODO: 单位号 shouldn't empty while create
     # TODO: 单位号 should exist while update
@@ -87,6 +88,10 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
 
     @staticmethod
     def get_delete_tables() -> List[str]:
+        return ['kh_jxkhgz']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
         return ['kh_jxkhgz']
 
     @staticmethod
@@ -193,15 +198,16 @@ class KH_JXKHGZ(Base, KpiObjectBase):  # 绩效考核规则
         return value.evaluate(obj) if len(self.JXFSJS) else 0.0
 
 
-class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
-
-    __tablename__ = "kh_khjgmx"  # 考核结果明细
+class KH_KHJGMX(Base, KpiObjectBase):
+    __tablename__ = "kh_khjgmx"
+    __tablename__CH__ = "考核结果明细"
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
 
     JZGH = Column('JZGH', String(16), default='')  # 教职工号
     DWH = Column('DWH', String(16), default='')  # 单位号
-    GZH = Column('GZH', String(128), default='')  # 规则号
+    # GZH = Column('GZH', String(128), default='')  # 规则号
+    GZH = Column('GZH', ForeignKey(KH_JXKHGZ.GZH))  # 规则号
     KHNF = Column('KHNF', DateTime, default=now())  # 考核年份
     KHJD = Column('KHJD', Float, default=0.0)  # 考核绩点
     KHMX = Column('KHMX', Text, default='')  # 考核明细
@@ -257,6 +263,10 @@ class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
         return ['kh_khjgmx']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['kh_khjgmx']
+
+    @staticmethod
     def get_hide_columns() -> List[str]:
         return ['id']
 
@@ -298,9 +308,9 @@ class KH_KHJGMX(Base, KpiObjectBase):  # 考核结果明细
         self.note = note
 
 
-class KH_KHPC(Base, KpiObjectBase):  # 考核批次
-
-    __tablename__ = "kh_khpc"  # 考核批次
+class KH_KHPC(Base, KpiObjectBase):
+    __tablename__ = "kh_khpc"
+    __tablename__CH__ = "考核批次"
     __table_args__ = (UniqueConstraint('DWH', 'KHNF', name='_kh_khpc_dwh_khnf_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
@@ -390,9 +400,9 @@ class KH_KHPC(Base, KpiObjectBase):  # 考核批次
         self.note = note
 
 
-class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
-
-    __tablename__ = "kh_khgzdz"  # 考核规则定制
+class KH_KHGZDZ(Base, KpiObjectBase):
+    __tablename__ = "kh_khgzdz"
+    __tablename__CH__ = "考核规则定制"
     __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'GZH', name='_kh_khgzdz_dwh_khnf_gzh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
@@ -426,6 +436,10 @@ class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
 
     @staticmethod
     def get_upload_tables() -> List[str]:
+        return ['kh_khgzdz']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
         return ['kh_khgzdz']
 
     @staticmethod
@@ -475,10 +489,9 @@ class KH_KHGZDZ(Base, KpiObjectBase):  # 考核规则定制
         self.note = note
 
 
-class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
-    # TODO: add footer total
-
-    __tablename__ = "kh_khjghz"  # 考核结果汇总
+class KH_KHJGHZ(Base, KpiObjectBase):  # TODO: add footer total
+    __tablename__ = "kh_khjghz"
+    __tablename__CH__ = "考核结果汇总"
     __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'GZH', 'JZGH', name='_kh_khjghz_dwh_khnf_gzh_jzgh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
@@ -527,6 +540,10 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
 
     @staticmethod
     def get_delete_tables() -> List[str]:
+        return ['kh_khjghz']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
         return ['kh_khjghz']
 
     @staticmethod
@@ -592,9 +609,9 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # 考核结果汇总
         self.note = note
 
 
-class KH_BCYKH(Base, KpiObjectBase):  # 不参与考核
-
-    __tablename__ = "kh_bcykh"  # 不参与考核
+class KH_BCYKH(Base, KpiObjectBase):
+    __tablename__ = "kh_bcykh"
+    __tablename__CH__ = "不参与考核"
     __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'JZGH', name='_kh_bcykh_dwh_khnf_jzgh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
@@ -633,6 +650,10 @@ class KH_BCYKH(Base, KpiObjectBase):  # 不参与考核
 
     @staticmethod
     def get_delete_tables() -> List[str]:
+        return ['kh_bcykh']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
         return ['kh_bcykh']
 
     @staticmethod

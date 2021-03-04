@@ -25,7 +25,7 @@ def get_menu(payroll):
         return -1
 
     user = SysUser.objects.get(payroll=payroll)
-    menu_list = Role.objects.get(id=user.role_id).menu.all().values()
+    menu_list = Role.objects.get(id=user.role_id).menu.all().order_by('menu_icon').values()
     menus = []
 
     for m in menu_list:
