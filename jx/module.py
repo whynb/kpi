@@ -591,24 +591,36 @@ class VIEW_KJQKLWJBSJXX(Base):
         return ['id', 'LRSJ']
 
     @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_kjcgryxx_lw','dr_kjqklwjbsjxx','dr_kjlwfbxx',]
+
+    @staticmethod
     def get_title_columns() -> []:
         return [
-            {'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
-            {'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', },
-            {'field': 'LWBH', 'title': '论文编号', 'editable': 'False', 'type': 'text', },
-            {'field': 'LWMC', 'title': '论文名称', 'editable': 'False', 'type': 'text', },
-            {'field': 'LWLXM', 'title': '论文类型码', 'editable': 'True', 'type': 'text', },
-            {'field': 'DYZZ', 'title': '第一作者', 'editable': 'False', 'type': 'text', },
-            {'field': 'CYRY', 'title': '参与人员', 'editable': 'False', 'type': 'text', },
-            {'field': 'TXZZ', 'title': '通讯作者', 'editable': 'False', 'type': 'text', },
-            {'field': 'JSQK', 'title': '检索情况', 'editable': 'False', 'type': 'text', },
-            {'field': 'JQY', 'title': '卷期页', 'editable': 'False', 'type': 'text', },
-            {'field': 'WDWZZPX', 'title': '外单位作者排序', 'editable': 'False', 'type': 'text', },
-            {'field': 'BZXYBJZDSYS ', 'title': '标注学院部级重点实验室', 'editable': 'False', 'type': 'text', },
-            {'field': 'FBRQ ', 'title': '发表日期', 'editable': 'False', 'type': 'date', },
-            {'field': 'JH', 'title': '卷号', 'editable': 'False', 'type': 'text', },
-            {'field': 'QH', 'title': '期号', 'editable': 'False', 'type': 'text', },
-            {'field': 'LRSJ ', 'title': '录入时间', 'editable': 'True', 'type': 'date', },
+            {'table': 'dr_kjcgryxx_lw','field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False',},
+            {'table': 'dr_kjcgryxx_lw','field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'JSM', 'title': '角色码', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'ZXZS', 'title': '撰写字数', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'PMZRS', 'title': '排名/总人数', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'GXL', 'title': '贡献率', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'XM', 'title': '姓名', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'SZDW', 'title': '所在单位', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'RYLX', 'title': '人员类型', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'LWBH', 'title': '论文编号', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'KJCGRYBH', 'title': '科技成果人员编号', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjqklwjbsjxx','field': 'LWMC', 'title': '论文名称', 'editable': 'False', 'type': 'text', 'create': 'True',},
+            {'table': 'dr_kjqklwjbsjxx','field': 'LWLXM', 'title': '论文类型码', 'editable': 'True', 'type': 'text', 'create': 'True',},
+            {'table': 'dr_kjqklwjbsjxx','field': 'DYZZ', 'title': '第一作者', 'editable': 'False', 'type': 'text', 'create': 'True',},
+            {'table': 'dr_kjqklwjbsjxx','field': 'CYRY', 'title': '参与人员', 'editable': 'False', 'type': 'text', 'create': 'True',},
+            {'table': 'dr_kjqklwjbsjxx','field': 'TXZZ', 'title': '通讯作者', 'editable': 'False', 'type': 'text', 'create': 'True',},
+            {'table': 'dr_kjqklwjbsjxx','field': 'JSQK', 'title': '检索情况', 'editable': 'False', 'type': 'text', 'create': 'True',},
+            {'table': 'dr_kjqklwjbsjxx','field': 'JQY', 'title': '卷期页', 'editable': 'False', 'type': 'text', 'create': 'True',},
+            {'table': 'dr_kjqklwjbsjxx','field': 'WDWZZPX', 'title': '外单位作者排序', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjqklwjbsjxx','field': 'BZXYBJZDSYS', 'title': '标注学院部级重点实验室', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjlwfbxx', 'field': 'FBRQ', 'title': '发表日期', 'editable': 'True', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_kjlwfbxx','field': 'JH', 'title': '卷号', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjlwfbxx','field': 'QH', 'title': '期号', 'editable': 'False', 'type': 'text', 'create': 'True',},
+            {'table': 'dr_kjlwfbxx','field': 'LRSJ', 'title': '录入时间', 'editable': 'True', 'type': 'date', 'create': 'True',},
         ]
 
     @staticmethod

@@ -168,8 +168,8 @@ DATABASES = {
 #       'HOST': '47.94.148.26',
 
 # local
-         'PASSWORD': 'password',
-         'HOST': '127.0.0.1',
+         'PASSWORD': '1',
+         'HOST': '',
 
 # port
         'PORT': '3306',

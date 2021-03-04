@@ -469,6 +469,42 @@ class DR_KJLWFBXX(Base):
     def get_unique_condition() -> []:
         return ['LWBH']
 
+class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
+
+    __tablename__ = 'dr_kjcgryxx_lw'  # 科技成果(论文)人员信息
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
+    JSM = Column('JSM', String(16), default='')  # 角色码
+    ZXZS= Column('ZXZS', String(16), default='')  # 撰写字数
+    PMZRS= Column('PMZRS', String(16), default='')  # 排名/总人数
+    GXL = Column('GXL', String(16), default='')  # 贡献率
+    XM= Column('XM', String(16), default='')  # 姓名
+    SZDW = Column('SZDW', String(16), default='')  # 所在单位
+    RYLX = Column('RYLX', String(16), default='')  # 人员类型
+    LWBH = Column('LWBH', String(16), default='')  # 论文编号
+    KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '人员号': ['RYH'],
+            '角色码': ['JSM'],
+            '撰写字数': ['ZXZS'],
+            '排名/总人数': ['PMZRS'],
+            '第一作者': ['DYZZ'],
+            '参与人员': ['CYRY'],
+            '通讯作者': ['TXZZ'],
+            '检索情况': ['JSQK'],
+            '卷期页': ['JQY'],
+            '外单位作者排序': ['WDWZZPX'],
+            '标注学院部级重点实验室': ['BZXYBJZDSYS'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['LWBH']
 
 if __name__ == '__main__':
 
