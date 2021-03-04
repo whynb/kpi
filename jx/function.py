@@ -18,9 +18,7 @@ rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
 
 
 def get_field_name(s):
-    """
-        Refer to below get_static_data to get [col1,col2,...] used by FE Jinja2
-    """
+    # NOTE: Refer to below get_static_data to get [col1,col2,...] used by FE Jinja2
     try:
         res = []
         arr = s[s.find(':') + 1:].split(',')

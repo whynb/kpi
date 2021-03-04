@@ -18,3 +18,5 @@ kpi/settings.py
 .idea/codestream.xml
 .idea/workspace.xml
 kpi/settings.py
+
+.vscode/settings.json
