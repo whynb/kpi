@@ -398,7 +398,7 @@ class DR_KJCGRYXX_JL(Base):
 
 class DR_KJQKLWJBSJXX(Base):
     __tablename__ = 'dr_kjqklwjbsjxx'
-    __tablename__CH__ = '科技期刊论文基本数据信息息'
+    __tablename__CH__ = '科技期刊论文基本数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     LWBH= Column('LWBH', String(16), default='')  # 论文编号
@@ -484,6 +484,8 @@ class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     RYLX = Column('RYLX', String(16), default='')  # 人员类型
     LWBH = Column('LWBH', String(16), default='')  # 论文编号
     KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -493,13 +495,14 @@ class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
             '角色码': ['JSM'],
             '撰写字数': ['ZXZS'],
             '排名/总人数': ['PMZRS'],
-            '第一作者': ['DYZZ'],
-            '参与人员': ['CYRY'],
-            '通讯作者': ['TXZZ'],
-            '检索情况': ['JSQK'],
-            '卷期页': ['JQY'],
-            '外单位作者排序': ['WDWZZPX'],
-            '标注学院部级重点实验室': ['BZXYBJZDSYS'],
+            '贡献率': ['GXL'],
+            '姓名': ['XM'],
+            '所在单位': ['SZDW'],
+            '人员类型': ['RYLX'],
+            '论文编号': ['LWBH'],
+            '科技成果人员编号': ['KJCGRYBH'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
         }
 
     @staticmethod

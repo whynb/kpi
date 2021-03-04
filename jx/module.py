@@ -532,14 +532,23 @@ class VIEW_XMJFXX(Base):
         return ['JZGH', 'DWH', 'DWMC', 'XMBH', 'JBRXM']
 
 
-class VIEW_KJQKLWJBSJXX(Base):
+class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     __table_args__ = {'extend_existing': True}
-    __tablename__ = 'view_kjqklwjbsjxx'
-    __tablename__CH__ = '科技期刊论文基本数据信息'
+    __tablename__ = 'view_kjcgryxx_lw'  # 科技成果(论文)人员信息
+    __tablename__CH__ = '科技成果(论文)人员信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     DWH = Column('DWH', String(16), default='')  # 单位号
+    RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
+    JSM = Column('JSM', String(16), default='')  # 角色码
+    ZXZS = Column('ZXZS', String(16), default='')  # 撰写字数
+    PMZRS = Column('PMZRS', String(16), default='')  # 排名/总人数
+    GXL = Column('GXL', String(16), default='')  # 贡献率
+    XM = Column('XM', String(16), default='')  # 姓名
+    SZDW = Column('SZDW', String(16), default='')  # 所在单位
+    RYLX = Column('RYLX', String(16), default='')  # 人员类型
     LWBH = Column('LWBH', String(16), default='')  # 论文编号
+    KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
     LWMC = Column('LWMC', String(128), unique=True, default='')  # 论文名称
     LWLXM = Column('LWLXM', String(16), default='')  # 论文类型码
     DYZZ = Column('DYZZ', String(16), default='')  # 第一作者
@@ -555,33 +564,47 @@ class VIEW_KJQKLWJBSJXX(Base):
     LRSJ = Column('LRSJ', DateTime, default=now())  # 录入时间
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
+    JZGH = Column('JZGH', String(16), unique=True, default='')  # 教职工号
+
 
     @staticmethod
     def sql() -> str:
         sql_v1 = """
-            CREATE VIEW view_kjqklwjbsjxx AS
+            CREATE VIEW view_kjcgryxx_lw AS
             SELECT 
                 dr.id AS id,
-                jz.DWH AS DWH,            
-                dr.LWBH  AS LWBH,            
-                dr.LWMC AS LWMC,            
-                dr.LWLXM AS LWLXM,            
-                dr.DYZZ AS DYZZ,            
-                dr.CYRY AS CYRY,            
-                dr.TXZZ AS TXZZ,            
-                dr.JSQK AS JSQK,            
-                dr.JQY AS JQY,            
-                dr.WDWZZPX AS WDWZZPX,            
-                dr.BZXYBJZDSYS AS BZXYBJZDSYS,            
+                jz.DWH AS DWH,
+                dr.RYH AS RYH,
+                dr.RYH AS JZGH,
+                dr.JSM AS JSM,
+                dr.ZXZS AS ZXZS,
+                dr.PMZRS AS PMZRS,
+                dr.GXL AS GXL,
+                dr.XM AS XM,
+                dr.SZDW AS SZDW,
+                dr.RYLX AS RYLX,
+                dr.LWBH AS LWBH,
+                dr.KJCGRYBH AS KJCGRYBH,                         
+                qk.LWMC AS LWMC,            
+                qk.LWLXM AS LWLXM,            
+                qk.DYZZ AS DYZZ,            
+                qk.CYRY AS CYRY,            
+                qk.TXZZ AS TXZZ,            
+                qk.JSQK AS JSQK,            
+                qk.JQY AS JQY,            
+                qk.WDWZZPX AS WDWZZPX,            
+                qk.BZXYBJZDSYS AS BZXYBJZDSYS,            
                 kj.FBRQ AS FBRQ,      
                 kj.JH AS JH,
                 kj.QH AS QH,
                 kj.LRSJ AS LRSJ,
-                dr.stamp AS stamp,            
-                dr.note AS note            
-            FROM dr_kjqklwjbsjxx dr
+                kj.FBRQ AS stamp,            
+                dr.note AS note     
+            FROM dr_kjcgryxx_lw dr
+            LEFT JOIN dc_kjcgryxx_lw dc ON dc.LWBH=dr.LWBH
+            LEFT JOIN dr_kjqklwjbsjxx qk ON qk.LWBH=dr.LWBH
             LEFT JOIN dr_kjlwfbxx kj ON kj.LWBH=dr.LWBH
-            LEFT JOIN dr_jzgjcsjxx jz ON jz.JZGH=dr.DYZZ
+            LEFT JOIN dr_jzgjcsjxx jz ON jz.JZGH=dr.RYH
             WHERE 1=1
         """
         return sql_v1
@@ -591,6 +614,10 @@ class VIEW_KJQKLWJBSJXX(Base):
         return ['id', 'LRSJ']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_kjcgryxx_lw','dr_kjqklwjbsjxx','dr_kjlwfbxx',]
+
+    @staticmethod
     def get_delete_tables() -> List[str]:
         return ['dr_kjcgryxx_lw','dr_kjqklwjbsjxx','dr_kjlwfbxx',]
 
@@ -598,6 +625,7 @@ class VIEW_KJQKLWJBSJXX(Base):
     def get_title_columns() -> []:
         return [
             {'table': 'dr_kjcgryxx_lw','field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False',},
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'False', },
             {'table': 'dr_kjcgryxx_lw','field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjcgryxx_lw', 'field': 'JSM', 'title': '角色码', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjcgryxx_lw', 'field': 'ZXZS', 'title': '撰写字数', 'editable': 'False', 'type': 'text','create': 'True', },
