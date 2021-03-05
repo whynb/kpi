@@ -57,25 +57,87 @@ class DR_ZZJGJBSJXX(Base):  # 组织机构基本数据信息
         return ['DWH']
 
 
-class DR_PKSJXX(Base):  # 排课数据信息
+class DR_BJSJXX(Base):
+    '''
+ 班级数据信息
+[描  述]本数据类规定了有关（行政）班级的基本数据项。 表 4 班级数据信息(BJSJXX)
+数据项名 中文简称 类型 值空间 归属部门
+BH 班号 C  教务处、研究生院、学生处
+BJ 班级 C  教务处、研究生院、学生处
+JBNY 建班年月 C  教务处、研究生院、学生处
+RXNF 入学年份 C  教务处、研究生院、学生处
+FDYH 辅导员号 C(8)  教务处、研究生院、学生处
+BDS 班导师 C(8)  教务处、研究生院、学生处
+SSXY 所属学院 C(6) ZZJGJBSJXX 组织机构基本数据信息 教务处、研究生院、学生处
+SSZY 所属专业 C  教务处、研究生院、学生处
+XSLB 学生类别 C  教务处、研究生院、学生处
+QYBZ 启用标志 C  教务处、研究生院、学
+    '''
 
-    __tablename__ = 'dr_pksjxx'  # 排课数据信息
+    __tablename__ = 'dr_bjsjxx'
+    __tablename__CN__ = '班级数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    JSGH = Column('JSGH', String(16), unique=True, default='')  # 教师工号
-    KCH  = Column('KCH', String(16), default='')  # 课程号
-    JSXM  = Column('JSXM', String(16), default='')  # 教师姓名
-    KKXND  = Column('KKXND', String(16), default='')  # 开课学年度
-    SKBJH  = Column('SKBJH', String(16), default='')  # 上课班级号
-    KKXQM  = Column('KKXQM', String(16), default='')  # 开课学期码
-    ZXXS  = Column('ZXXS', String(16), default='')  # 总学时
-    JXMSJBM  = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
-    WYKCTJM  = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
-    ZLXS  = Column('ZLXS', String(16), default='')  # 质量系数
-    HBS  = Column('HBS', String(16), default='')  # 合班数
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
+    BH = Column('BH', String(16), default='')  # 班号
+    BJ = Column('BJ', String(16), default='')  # 班级
+    JBNY = Column('JBNY', DateTime, default=now())  # 建班年月
+    RXNF = Column('RXNF', DateTime, default=now())  # 入学年份
+    FDYH = Column('FDYH', String(16), default='')  # 辅导员号
+    BDS = Column('BDS', String(16), default='')  # 班导师
+    SSXY = Column('SSXY', String(16), default='')  # 所属学院
+    SSZY = Column('SSZY', String(16), default='')  # 所属专业
+    XSLB = Column('XSLB', String(16), default='')  # 学生类别
+    QYBZ = Column('QYBZ', String(16), default='')  # 启用标志
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+            '班号': ['BH'],
+            '班级': ['BJ'],
+            '建班年月': ['JBNY', 'DateTime'],
+            '入学年份': ['RXNF', 'DateTime'],
+            '辅导员号': ['FDYH'],
+            '班导师': ['BDS'],
+            '所属学院': ['SSXY'],
+            '所属专业': ['SSZY'],
+            '学生类别': ['XSLB'],
+            '启用标志': ['QYBZ'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['BH']
+
+
+class DR_PKSJXX(Base):  # 排课数据信息
+
+    __tablename__ = 'dr_pksjxx'  # 排课数据信息
+    __table_args__ = (UniqueConstraint(
+        'JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH',
+        name='_dr_pksjxx_jsgh_kch_kkxnd_kkxqm_skbjh_uc'),
+    )
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    KCH = Column('KCH', String(16), default='')  # 课程号
+    JSXM = Column('JSXM', String(16), default='')  # 教师姓名
+    KKXND = Column('KKXND', String(16), default='')  # 开课学年度
+    SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
+    KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
+    ZXXS = Column('ZXXS', String(16), default='')  # 总学时
+    ZKJHXS = Column('ZKJHXS', String(16), default='')  # 助课计划学时
+    JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
+    WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
+    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
+    HBS = Column('HBS', String(16), default='')  # 合班数
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -88,6 +150,7 @@ class DR_PKSJXX(Base):  # 排课数据信息
             '上课班级号': ['SKBJH'],
             '开课学期码': ['KKXQM'],
             '总学时': ['ZXXS'],
+            '助课计划学时': ['ZKJHXS'],
             '教学名师级别码': ['JXMSJBM'],
             '外语课程调节码': ['WYKCTJM'],
             '质量系数': ['ZLXS'],
@@ -98,7 +161,7 @@ class DR_PKSJXX(Base):  # 排课数据信息
 
     @staticmethod
     def get_unique_condition() -> List[str]:
-        return ['JSGH']
+        return ['JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH']
 
 
 class DR_KCSJXX(Base):  # 课程数据信息
@@ -106,12 +169,12 @@ class DR_KCSJXX(Base):  # 课程数据信息
     __tablename__ = 'dr_kcsjxx'  # 课程数据信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    KCH  = Column('KCH', String(16), unique=True, default='')  # 课程号
-    KCMC  = Column('KCMC', String(16), default='')  # 课程名称
-    ZXS  = Column('ZXS', String(16), default='')  # 总学时
-    LLXS  = Column('LLXS', String(16), default='')  # 理论学时
-    SYXS  = Column('SYXS', String(16), default='')  # 实验学时
-    SJXS  = Column('SJXS', String(16), default='')  # 实践学时
+    KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
+    KCMC = Column('KCMC', String(16), default='')  # 课程名称
+    ZXS = Column('ZXS', String(16), default='')  # 总学时
+    LLXS = Column('LLXS', String(16), default='')  # 理论学时
+    SYXS = Column('SYXS', String(16), default='')  # 实验学时
+    SJXS = Column('SJXS', String(16), default='')  # 实践学时
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -133,19 +196,22 @@ class DR_KCSJXX(Base):  # 课程数据信息
     def get_unique_condition() -> List[str]:
         return ['KCH']
 
+
 class DR_XNXQXX(Base):  # 学年学期信息
 
     __tablename__ = 'dr_xnxqxx'  # 学年学期信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    XQMC  = Column('XQMC', String(16), unique=True, default='')  # 学期名称
-    XNXQM  = Column('XNXQM', String(16), default='')  # 学年学期名
-    XNDM  = Column('XNDM', String(16), default='')  # 学年代码
-    XQDM  = Column('XQDM', String(16), default='')  # 学期代码
-    XNMC  = Column('XNMC', String(16), default='')  # 学年名称
-    XQLXDM  = Column('XQLXDM', String(16), default='')  # 学期类型代码
-    XQLXMC  = Column('XQLXMC', String(16), default='')  # 学期类型名称
-    SFDQXQ  = Column('SFDQXQ', String(16), default='')  # 是否当前学期
+    XQMC = Column('XQMC', String(16), unique=True, default='')  # 学期名称
+    XNXQM = Column('XNXQM', String(16), default='')  # 学年学期名
+    XNDM = Column('XNDM', String(16), default='')  # 学年代码
+    XQDM = Column('XQDM', String(16), default='')  # 学期代码
+    XNMC = Column('XNMC', String(16), default='')  # 学年名称
+    QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
+    ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
+    XQLXDM = Column('XQLXDM', String(16), default='')  # 学期类型代码
+    XQLXMC = Column('XQLXMC', String(16), default='')  # 学期类型名称
+    SFDQXQ = Column('SFDQXQ', String(16), default='')  # 是否当前学期
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -158,6 +224,8 @@ class DR_XNXQXX(Base):  # 学年学期信息
             '学年代码': ['XNDM'],
             '学期代码': ['XQDM'],
             '学年名称': ['XNMC'],
+            '起始上课周': ['QSSKZ'],
+            '终止上课周': ['ZZSKZ'],
             '学期类型代码': ['XQLXDM'],
             '学期类型名称': ['XQLXMC'],
             '是否当前学期': ['SFDQXQ'],
@@ -175,11 +243,11 @@ class DR_BKS_JPKC(Base):  # 本科精品课程
     __tablename__ = 'dr_bks_jpkc'  # 本科精品课程
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    KCH  = Column('KCH', String(16), unique=True, default='')  # 课程号
-    KCMC  = Column('KCMC', String(16), default='')  # 课程名称
-    KCJBM  = Column('KCJBM', String(16), default='')  # 课程级别码
-    FZRGH  = Column('FZRGH', String(16), default='')  # 负责人工号
-    DWH  = Column('DWH', String(16), default='')  # 单位号
+    KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
+    KCMC = Column('KCMC', String(16), default='')  # 课程名称
+    KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
+    FZRGH = Column('FZRGH', String(16), default='')  # 负责人工号
+    DWH = Column('DWH', String(16), default='')  # 单位号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 

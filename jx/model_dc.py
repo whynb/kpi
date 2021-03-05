@@ -69,6 +69,7 @@ class DC_PKSJXX(Base):  # 排课数据信息
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
     KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
+    ZKJHXS = Column('ZKJHXS', String(16), default='')  # 助课计划学时
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
@@ -87,6 +88,7 @@ class DC_PKSJXX(Base):  # 排课数据信息
             '上课班级号': ['SKBJH'],
             '开课学期码': ['KKXQM'],
             '总学时': ['ZXXS'],
+            '助课计划学时': ['ZKJHXS'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
         }
@@ -101,12 +103,12 @@ class DC_KCSJXX(Base):  # 课程数据信息
     __tablename__ = 'dc_kcsjxx'  # 课程数据信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    KCH  = Column('KCH', String(16), unique=True, default='')  # 课程号
-    KCMC  = Column('KCMC', String(16), default='')  # 课程名称
-    ZXS  = Column('ZXS', String(16), default='')  # 总学时
-    LLXS  = Column('LLXS', String(16), default='')  # 理论学时
-    SYXS  = Column('SYXS', String(16), default='')  # 实验学时
-    SJXS  = Column('SJXS', String(16), default='')  # 实践学时
+    KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
+    KCMC = Column('KCMC', String(16), default='')  # 课程名称
+    ZXS = Column('ZXS', String(16), default='')  # 总学时
+    LLXS = Column('LLXS', String(16), default='')  # 理论学时
+    SYXS = Column('SYXS', String(16), default='')  # 实验学时
+    SJXS = Column('SJXS', String(16), default='')  # 实践学时
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -138,6 +140,8 @@ class DC_XNXQXX(Base):  # 学年学期信息
     XNDM  = Column('XNDM', String(16), default='')  # 学年代码
     XQDM  = Column('XQDM', String(16), default='')  # 学期代码
     XNMC  = Column('XNMC', String(16), default='')  # 学年名称
+    QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
+    ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
     XQLXDM  = Column('XQLXDM', String(16), default='')  # 学期类型代码
     XQLXMC  = Column('XQLXMC', String(16), default='')  # 学期类型名称
     SFDQXQ  = Column('SFDQXQ', String(16), default='')  # 是否当前学期
@@ -153,6 +157,8 @@ class DC_XNXQXX(Base):  # 学年学期信息
             '学年代码': ['XNDM'],
             '学期代码': ['XQDM'],
             '学年名称': ['XNMC'],
+            '起始上课周': ['QSSKZ'],
+            '终止上课周': ['ZZSKZ'],
             '学期类型代码': ['XQLXDM'],
             '学期类型名称': ['XQLXMC'],
             '是否当前学期': ['SFDQXQ'],
