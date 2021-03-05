@@ -517,6 +517,7 @@ class DC_KJLWSLQK(Base):  # 科技论文收录情况
     SLLX = Column('SLLX', String(16), default='')  # 收录类型
     SLBH = Column('SLBH', String(16), default='')  # 收录编号
     SLSJ = Column('SLSJ', String(16), default='')  # 收录时间
+    SLQH = Column('SLQH', String(16), default='')  # 收录区号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 

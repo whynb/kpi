@@ -542,6 +542,7 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     SLLX = Column('SLLX', String(16), default='')  # 收录类型
     SLBH = Column('SLBH', String(16), default='')  # 收录编号
     SLSJ = Column('SLSJ', String(16), default='')  # 收录时间
+    SLQH = Column('SLLX', String(16), default='')  # 收录区号
     RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
     JSM = Column('JSM', String(16), default='')  # 角色码
     ZXZS = Column('ZXZS', String(16), default='')  # 撰写字数
@@ -577,6 +578,10 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
             SELECT 
                 dr.id AS id,
                 jz.DWH AS DWH,
+                sl.SLLX AS SLLX,
+                sl.SLBH AS SLBH,
+                sl.SLSJ AS SLSJ,
+                sl.SLQH AS SLQH,
                 dr.RYH AS RYH,
                 dr.RYH AS JZGH,
                 dr.JSM AS JSM,
@@ -619,20 +624,21 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
 
     @staticmethod
     def get_create_tables() -> List[str]:
-        return ['dr_kjcgryxx_lw','dr_kjqklwjbsjxx','dr_kjlwfbxx',]
+        return ['dr_kjcgryxx_lw','dr_kjlwslqk','dr_kjqklwjbsjxx','dr_kjlwfbxx',]
 
     @staticmethod
     def get_delete_tables() -> List[str]:
-        return ['dr_kjcgryxx_lw','dr_kjqklwjbsjxx','dr_kjlwfbxx',]
+        return ['dr_kjcgryxx_lw','dr_kjlwslqk','dr_kjqklwjbsjxx','dr_kjlwfbxx',]
 
     @staticmethod
     def get_title_columns() -> []:
         return [
             {'table': 'dr_kjcgryxx_lw','field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False',},
             {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'False', },
-            {'table': 'dr_kjlwslqk', 'field': 'SLLX', 'title': '收录类型', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLLX', 'title': '收录类型', 'editable': 'False', 'type': 'inline','value': 'KY_LZSL:DM,MC', 'where': " ", 'create': 'True', },
             {'table': 'dr_kjlwslqk', 'field': 'SLBH', 'title': '收录编号', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjlwslqk', 'field': 'SLSJ', 'title': '收录时间', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLSJ', 'title': '收录时间', 'editable': 'False', 'type': 'date','create': 'True', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLQH', 'title': '收录区号', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjcgryxx_lw','field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjcgryxx_lw', 'field': 'JSM', 'title': '角色码', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjcgryxx_lw', 'field': 'ZXZS', 'title': '撰写字数', 'editable': 'False', 'type': 'text','create': 'True', },
@@ -650,8 +656,8 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
             {'table': 'dr_kjqklwjbsjxx','field': 'TXZZ', 'title': '通讯作者', 'editable': 'False', 'type': 'text', 'create': 'True',},
             {'table': 'dr_kjqklwjbsjxx','field': 'JSQK', 'title': '检索情况', 'editable': 'False', 'type': 'text', 'create': 'True',},
             {'table': 'dr_kjqklwjbsjxx','field': 'JQY', 'title': '卷期页', 'editable': 'False', 'type': 'text', 'create': 'True',},
-            {'table': 'dr_kjqklwjbsjxx','field': 'WDWZZPX', 'title': '外单位作者排序', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjqklwjbsjxx','field': 'BZXYBJZDSYS', 'title': '标注学院部级重点实验室', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjqklwjbsjxx','field': 'WDWZZPX', 'title': '外单位作者排序', 'editable': 'False', 'type': 'enum', 'value': ['无','第一', '其他'],'create': 'True', },
+            {'table': 'dr_kjqklwjbsjxx','field': 'BZXYBJZDSYS', 'title': '标注学院部级重点实验室', 'editable': 'False', 'type': 'enum','value': ['无','未收录','收录'],'create': 'True', },
             {'table': 'dr_kjlwfbxx', 'field': 'FBRQ', 'title': '发表日期', 'editable': 'True', 'type': 'date', 'create': 'True', },
             {'table': 'dr_kjlwfbxx','field': 'JH', 'title': '卷号', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjlwfbxx','field': 'QH', 'title': '期号', 'editable': 'False', 'type': 'text', 'create': 'True',},
