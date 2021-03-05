@@ -1,33 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0e33467a-a2c2-4898-a485-c6249944cabf" name="Default Changelist" comment="comment out test rule" />
+    <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="module+1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="views" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
-  <component name="ProjectId" id="1okNyAyo2bu87lVwgQZgQo9HQHD" />
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
+  <component name="ProjectId" id="1ojS0HgoDSIZrLca3gx5PUZsSA4" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Django Server.kpi">
-    <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.module">
+    <configuration name="https server" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -41,7 +99,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
-      <option name="PARAMETERS" value="runserver 8000" />
+      <option name="PARAMETERS" value="runserver_plus --insecure --cert cert 0.0.0.0:8000" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -115,51 +173,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="rule" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="kpi" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/jx" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/jx/rule.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <module name="kpi" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../../kpi/venv/bin/python" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="http://127.0.0.1:8000/jx/" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="kpi" type="Python.DjangoServer" factoryName="Django server">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -168,16 +181,16 @@
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="kpi.settings" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../../kpi/venv/bin/python" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8001" />
+      <option name="port" value="8000" />
       <option name="host" value="" />
       <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="http://127.0.0.1:8001/jx/" />
+      <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
       <option name="runNoReload" value="false" />
       <option name="useCustomRunCommand" value="false" />
@@ -185,28 +198,29 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django Server.kpi" />
-      <item itemvalue="Python.manage" />
-      <item itemvalue="Python.model_dc" />
-      <item itemvalue="Python.model_dr" />
+      <item itemvalue="Django server.kpi" />
+      <item itemvalue="Python.https server" />
       <item itemvalue="Python.module" />
-      <item itemvalue="Python.rule" />
+      <item itemvalue="Python.model_dr" />
+      <item itemvalue="Python.model_dc" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.module" />
-        <item itemvalue="Python.model_dc" />
         <item itemvalue="Python.model_dr" />
-        <item itemvalue="Python.rule" />
-        <item itemvalue="Python.manage" />
+        <item itemvalue="Python.model_dc" />
+        <item itemvalue="Python.https server" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0e33467a-a2c2-4898-a485-c6249944cabf" name="Default Changelist" comment="" />
-      <created>1613826880546</created>
+      <changelist id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="" />
+      <created>1613798282173</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1613798282173</updated>
@@ -215,21 +229,23 @@
       <workItem from="1613813250289" duration="255000" />
       <workItem from="1613813666287" duration="635000" />
       <workItem from="1613825698320" duration="28000" />
-      <workItem from="1614254407486" duration="24913000" />
+      <workItem from="1614254407486" duration="27678000" />
+      <workItem from="1614735161282" duration="19205000" />
+      <workItem from="1614836943556" duration="4934000" />
     </task>
-    <task id="LOCAL-00001" summary="comment out test rule">
-      <created>1614562628875</created>
+    <task id="LOCAL-00001" summary="test comments again">
+      <created>1613798792460</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1614562628875</updated>
+      <updated>1613798792460</updated>
     </task>
-    <task id="LOCAL-00002" summary="comment out test rule">
-      <created>1614563075524</created>
+    <task id="LOCAL-00002" summary="228">
+      <created>1614520045112</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1614563075524</updated>
+      <updated>1614520045112</updated>
     </task>
     <task id="LOCAL-00003" summary="2月28日">
       <created>1614520213247</created>
@@ -287,11 +303,25 @@
       <option name="project" value="LOCAL" />
       <updated>1614563621015</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="module+1">
+      <created>1614564668666</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1614564668666</updated>
+    </task>
+    <task id="LOCAL-00012" summary="module+1">
+      <created>1614904714490</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1614904714490</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -299,23 +329,18 @@
         <entry key="MAIN">
           <value>
             <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/dev" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
+              <option name="TEXT_FILTER_SETTINGS">
+                <TextFilterSettings>
+                  <option name="REGEX" value="true" />
+                  <option name="MATCH_CASE" value="true" />
+                </TextFilterSettings>
               </option>
+              <option name="COLUMN_ORDER" />
             </State>
           </value>
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test comments again" />
@@ -323,83 +348,120 @@
     <MESSAGE value="2月28日" />
     <MESSAGE value="3月1日" />
     <MESSAGE value="module" />
-    <option name="LAST_COMMIT_MESSAGE" value="module" />
+    <MESSAGE value="module+1" />
+    <option name="LAST_COMMIT_MESSAGE" value="module+1" />
   </component>
   <component name="WindowStateProjectService">
     <state x="490" y="138" width="800" height="684" key="#Inspections" timestamp="1614411756609">
       <screen x="72" y="27" width="1646" height="899" />
     </state>
     <state x="490" y="138" width="800" height="684" key="#Inspections/72.27.1646.899@72.27.1646.899" timestamp="1614411756609" />
-    <state x="522" y="27" width="867" height="899" key="CommitChangelistDialog2" timestamp="1614563620843">
+    <state x="751" y="138" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614566458113">
       <screen x="72" y="27" width="1646" height="899" />
     </state>
-    <state x="522" y="27" width="867" height="899" key="CommitChangelistDialog2/72.27.1646.899@72.27.1646.899" timestamp="1614563620843" />
-    <state width="1592" height="176" key="GridCell.Tab.0.bottom" timestamp="1614520509861">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state x="751" y="138" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1646.899@72.27.1646.899" timestamp="1614566458113" />
+    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2" timestamp="1614904713369">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1592" height="176" key="GridCell.Tab.0.bottom/72.27.1646.899@72.27.1646.899" timestamp="1614520509861" />
-    <state width="1592" height="176" key="GridCell.Tab.0.center" timestamp="1614520509861">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state x="522" y="27" width="867" height="899" key="CommitChangelistDialog2/72.27.1646.899@72.27.1646.899" timestamp="1614564668471" />
+    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1614904713369" />
+    <state width="1497" height="218" key="GridCell.Tab.0.bottom" timestamp="1614839946184">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1592" height="176" key="GridCell.Tab.0.center/72.27.1646.899@72.27.1646.899" timestamp="1614520509861" />
-    <state width="1592" height="176" key="GridCell.Tab.0.left" timestamp="1614520509861">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state width="1331" height="367" key="GridCell.Tab.0.bottom/72.27.1646.899@72.27.1646.899" timestamp="1614751598319" />
+    <state width="1497" height="218" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1614839946184" />
+    <state width="1497" height="218" key="GridCell.Tab.0.center" timestamp="1614839946183">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1592" height="176" key="GridCell.Tab.0.left/72.27.1646.899@72.27.1646.899" timestamp="1614520509861" />
-    <state width="1592" height="176" key="GridCell.Tab.0.right" timestamp="1614520509861">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state width="1331" height="367" key="GridCell.Tab.0.center/72.27.1646.899@72.27.1646.899" timestamp="1614751598319" />
+    <state width="1497" height="218" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1614839946183" />
+    <state width="1497" height="218" key="GridCell.Tab.0.left" timestamp="1614839946183">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1592" height="176" key="GridCell.Tab.0.right/72.27.1646.899@72.27.1646.899" timestamp="1614520509861" />
-    <state width="1592" height="274" key="GridCell.Tab.1.bottom" timestamp="1614509917810">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state width="1331" height="367" key="GridCell.Tab.0.left/72.27.1646.899@72.27.1646.899" timestamp="1614751598318" />
+    <state width="1497" height="218" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1614839946183" />
+    <state width="1497" height="218" key="GridCell.Tab.0.right" timestamp="1614839946184">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1331" height="367" key="GridCell.Tab.0.right/72.27.1646.899@72.27.1646.899" timestamp="1614751598319" />
+    <state width="1497" height="218" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1614839946184" />
+    <state width="1200" height="335" key="GridCell.Tab.1.bottom" timestamp="1614752645622">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1592" height="274" key="GridCell.Tab.1.bottom/72.27.1646.899@72.27.1646.899" timestamp="1614509917810" />
-    <state width="1592" height="274" key="GridCell.Tab.1.center" timestamp="1614509917809">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state width="1200" height="335" key="GridCell.Tab.1.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1614752645622" />
+    <state width="1200" height="335" key="GridCell.Tab.1.center" timestamp="1614752645621">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1592" height="274" key="GridCell.Tab.1.center/72.27.1646.899@72.27.1646.899" timestamp="1614509917809" />
-    <state width="1592" height="274" key="GridCell.Tab.1.left" timestamp="1614509917809">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state width="1200" height="335" key="GridCell.Tab.1.center/72.27.1848.1053@72.27.1848.1053" timestamp="1614752645621" />
+    <state width="1200" height="335" key="GridCell.Tab.1.left" timestamp="1614752645621">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1592" height="274" key="GridCell.Tab.1.left/72.27.1646.899@72.27.1646.899" timestamp="1614509917809" />
-    <state width="1592" height="274" key="GridCell.Tab.1.right" timestamp="1614509917810">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state width="1200" height="335" key="GridCell.Tab.1.left/72.27.1848.1053@72.27.1848.1053" timestamp="1614752645621" />
+    <state width="1200" height="335" key="GridCell.Tab.1.right" timestamp="1614752645621">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1592" height="274" key="GridCell.Tab.1.right/72.27.1646.899@72.27.1646.899" timestamp="1614509917810" />
-    <state x="599" y="189" width="582" height="581" key="MultipleFileMergeDialog" timestamp="1614254608369">
+    <state width="1200" height="335" key="GridCell.Tab.1.right/72.27.1848.1053@72.27.1848.1053" timestamp="1614752645621" />
+    <state width="273" height="606" key="HiddenNamespacesPopup" timestamp="1614691272564">
       <screen x="72" y="27" width="1646" height="899" />
+    </state>
+    <state width="273" height="606" key="HiddenNamespacesPopup/72.27.1646.899@72.27.1646.899" timestamp="1614691272564" />
+    <state x="247" y="122" width="1478" height="879" key="MergeDialog" timestamp="1614754973909">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="247" y="122" width="1478" height="879" key="MergeDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1614754973909" />
+    <state x="664" y="217" width="582" height="581" key="MultipleFileMergeDialog" timestamp="1614754981771">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="599" y="189" width="582" height="581" key="MultipleFileMergeDialog/72.27.1646.899@72.27.1646.899" timestamp="1614254608369" />
-    <state x="376" y="111" width="1037" height="737" key="SettingsEditor" timestamp="1614564617023">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state x="664" y="217" key="MultipleFileMergeDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1614754981771" />
+    <state x="413" y="125" width="1037" height="737" key="SettingsEditor" timestamp="1614836438325">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="376" y="111" width="1037" height="737" key="SettingsEditor/72.27.1646.899@72.27.1646.899" timestamp="1614564617023" />
-    <state x="490" y="211" width="800" height="538" key="Vcs.Push.Dialog.v2" timestamp="1614563622821">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state x="413" y="125" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1614836438325" />
+    <state x="541" y="243" width="800" height="538" key="Vcs.Push.Dialog.v2" timestamp="1614904732566">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="490" y="211" width="800" height="538" key="Vcs.Push.Dialog.v2/72.27.1646.899@72.27.1646.899" timestamp="1614563622821" />
-    <state x="172" y="127" width="1446" height="699" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1614520356840">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state x="490" y="211" width="800" height="538" key="Vcs.Push.Dialog.v2/72.27.1646.899@72.27.1646.899" timestamp="1614564673114" />
+    <state x="541" y="243" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1614904732566" />
+    <state x="884" y="421" width="375" height="263" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1614835566091">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="795" y="363" width="375" height="263" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/72.27.1646.899@72.27.1646.899" timestamp="1614740937925" />
+    <state x="884" y="421" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/72.27.1848.1053@72.27.1848.1053" timestamp="1614835566091" />
+    <state x="184" y="144" width="1624" height="819" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1614834340667">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="172" y="127" width="1446" height="699" key="com.intellij.history.integration.ui.views.FileHistoryDialog/72.27.1646.899@72.27.1646.899" timestamp="1614520356840" />
-    <state x="661" y="392" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614564565549">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state x="184" y="144" width="1624" height="819" key="com.intellij.history.integration.ui.views.FileHistoryDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1614834340667" />
+    <state x="650" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1614836951766">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="650" y="381" key="com.intellij.ide.util.TipDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1614836951766" />
+    <state x="538" y="101" width="806" height="779" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1614836506108">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="487" y="90" width="806" height="779" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1646.899@72.27.1646.899" timestamp="1614751137511" />
+    <state x="538" y="101" width="806" height="779" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1848.1053@72.27.1848.1053" timestamp="1614836506108" />
+    <state x="733" y="455" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614754579090">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="661" y="392" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1646.899@72.27.1646.899" timestamp="1614564565549" />
+    <state x="733" y="455" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1848.1053@72.27.1848.1053" timestamp="1614754579090" />
     <state x="621" y="114" width="537" height="731" key="git4idea.branch.GitSmartOperationDialog" timestamp="1614254582437">
       <screen x="72" y="27" width="1646" height="899" />
     </state>
     <state x="621" y="114" width="537" height="731" key="git4idea.branch.GitSmartOperationDialog/72.27.1646.899@72.27.1646.899" timestamp="1614254582437" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614511439873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1614608605257" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614597006466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614597014202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614740974817" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$https_server.coverage" NAME="https server Coverage Results" MODIFIED="1614392324196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614510869797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/dev_sjq_kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1614511451514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi$manage.coverage" NAME="manage Coverage Results" MODIFIED="1613921282927" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/kpi$rule.coverage" NAME="rule Coverage Results" MODIFIED="1614441141839" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614839300738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$manage.coverage" NAME="https server Coverage Results" MODIFIED="1613813474271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1614839917052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
   </component>
 </project>
