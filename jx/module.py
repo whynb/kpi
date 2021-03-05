@@ -331,18 +331,18 @@ QYBZ 启用标志 C  教务处、研究生院、学
         return [
             {'table': 'dr_bjsjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
             {'table': 'dr_bjsjxx', 'field': 'BH', 'title': '班号', 'editable': 'False', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_bjsjxx', 'field': 'BJ', 'title': '班级', 'editable': 'T', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_bjsjxx', 'field': 'JBNY', 'title': '建班年月', 'editable': 'T', 'type': 'date', 'create': 'True', },
-            {'table': 'dr_bjsjxx', 'field': 'RXNF', 'title': '入学年份', 'editable': 'T', 'type': 'year', 'create': 'True', },
-            {'table': 'dr_bjsjxx', 'field': 'FDYH', 'title': '辅导员号', 'editable': 'False', 'type': 'text', 'create': 'F', },
-            {'table': 'dr_bjsjxx', 'field': 'FDYXM', 'title': '辅导员姓名', 'editable': 'T', 'type': 'table', 'create': 'True','value': 'dr_jzgjcsjxx:JZGH AS FDYH,XM AS FDYXM', 'where': "DWH IN %(departments)s AND JZGH!='admin'", },
-            {'table': 'dr_bjsjxx', 'field': 'BDS', 'title': '班导师', 'editable': 'False', 'type': 'text', 'create': 'F', },
-            {'table': 'dr_bjsjxx', 'field': 'BDSXM', 'title': '班导师姓名', 'editable': 'T', 'type': 'table', 'create': 'True', 'value': 'dr_jzgjcsjxx:JZGH AS BDS,XM AS BDSXM', 'where': "DWH IN %(departments)s AND JZGH!='admin'",},
-            {'table': 'dr_bjsjxx', 'field': 'SSXY', 'title': '所属学院', 'editable': 'False', 'type': 'text', 'create': 'F', },
-            {'table': 'dr_bjsjxx', 'field': 'SSXYMC', 'title': '所属学院名称', 'editable': 'T', 'type': 'table', 'create': 'True', 'value': 'dr_zzjgjbsjxx:DWH AS SSXY,DWMC AS SSXYMC', 'where': 'DWH IN %(departments)s'},
-            {'table': 'dr_bjsjxx', 'field': 'SSZY', 'title': '所属专业', 'editable': 'T', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_bjsjxx', 'field': 'XSLB', 'title': '学生类别', 'editable': 'T', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_bjsjxx', 'field': 'QYBZ', 'title': '启用标志', 'editable': 'T', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_bjsjxx', 'field': 'BJ', 'title': '班级', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_bjsjxx', 'field': 'JBNY', 'title': '建班年月', 'editable': 'True', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_bjsjxx', 'field': 'RXNF', 'title': '入学年份', 'editable': 'True', 'type': 'year', 'create': 'True', },
+            {'table': 'dr_bjsjxx', 'field': 'FDYH', 'title': '辅导员号', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_bjsjxx', 'field': 'FDYXM', 'title': '辅导员姓名', 'editable': 'True', 'type': 'table', 'create': 'True','value': 'dr_jzgjcsjxx:JZGH AS FDYH,XM AS FDYXM', 'where': "DWH IN %(departments)s AND JZGH!='admin'", },
+            {'table': 'dr_bjsjxx', 'field': 'BDS', 'title': '班导师', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_bjsjxx', 'field': 'BDSXM', 'title': '班导师姓名', 'editable': 'True', 'type': 'table', 'create': 'True', 'value': 'dr_jzgjcsjxx:JZGH AS BDS,XM AS BDSXM', 'where': "DWH IN %(departments)s AND JZGH!='admin'",},
+            {'table': 'dr_bjsjxx', 'field': 'SSXY', 'title': '所属学院', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_bjsjxx', 'field': 'SSXYMC', 'title': '所属学院名称', 'editable': 'True', 'type': 'table', 'create': 'True', 'value': 'dr_zzjgjbsjxx:DWH AS SSXY,DWMC AS SSXYMC', 'where': 'DWH IN %(departments)s'},
+            {'table': 'dr_bjsjxx', 'field': 'SSZY', 'title': '所属专业', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_bjsjxx', 'field': 'XSLB', 'title': '学生类别', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_bjsjxx', 'field': 'QYBZ', 'title': '启用标志', 'editable': 'True', 'type': 'text', 'create': 'True', },
             {'table': 'dr_bjsjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
             {'table': 'dr_bjsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
         ]
@@ -369,6 +369,7 @@ class VIEW_BKSJXZXS(Base):
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
+    BH = Column('BH', String(16), default='')  # 班号
     HBS = Column('HBS', String(16), default='')  # 合班数
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
@@ -384,7 +385,8 @@ class VIEW_BKSJXZXS(Base):
                 pk.KKXQM AS XQDM,            
                 kc.LLXS AS JHXSS,             
                 pk.ZLXS AS ZLXS,            
-                pk.HBS AS HBS,            
+                pk.HBS AS HBS,      
+                bj.BH AS BH,         
                 pk.WYKCTJM AS WYKCTJM,            
                 pk.JXMSJBM AS JXMSJBM,     
                 kc.KCH AS KCH,         
@@ -396,6 +398,7 @@ class VIEW_BKSJXZXS(Base):
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
             LEFT JOIN dr_xnxqxx xn ON xn.XNDM=pk.KKXND
             LEFT JOIN dr_bks_jpkc jp ON jp.KCH=pk.KCH
+            LEFT JOIN dr_bjsjxx bj ON bj.BH=pk.SKBJH
             left join dr_jzgjcsjxx dr_jzg on dr_jzg.JZGH = pk.JSGH
             WHERE 1=1
         """
@@ -425,8 +428,9 @@ class VIEW_BKSJXZXS(Base):
             {'table': 'dr_pksjxx', 'field': 'WYKCTJM', 'title': '外语课程调节码', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_pksjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_pksjxx', 'field': 'XQDM', 'title': '学期', 'editable': 'False', 'type': 'date', 'create': 'True', },
-            {'table': 'dr_pksjxx', 'field': 'XNDM', 'title': '学年', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_pksjxx', 'field': 'XNDM', 'title': '学年', 'editable': 'False', 'type': 'year', 'create': 'True', },
             {'table': 'dr_pksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_bjsjxx', 'field': 'BH', 'title': '班号', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_jzg', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'false', },
             {'table': 'dr_pksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
             {'table': 'dr_pksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
