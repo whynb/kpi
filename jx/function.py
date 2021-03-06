@@ -11,6 +11,7 @@ from django.forms.models import model_to_dict
 from django.db.utils import *
 from django.conf import settings
 import pandas as pd
+from jx.exception import *
 
 
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
@@ -410,17 +411,22 @@ def save_file(req):
 
     function = trim(req.POST.get('Function'))
     f = req.FILES.get("FileName", None)  # 获取上传的文件，如果没有文件，则默认为None
+    if not f:
+        raise FileSaveException('上传文件名为空')
 
-    d = settings.UPLOAD_DIR + '/jx/' + get_dwh(req) + '/' + function + '/' + today().replace('-', '/')
-    if not os.path.exists(d):
-        os.makedirs(d)
+    try:
+        d = settings.UPLOAD_DIR + '/jx/' + get_dwh(req) + '/' + function + '/' + today().replace('-', '/')
+        if not os.path.exists(d):
+            os.makedirs(d)
 
-    ff = os.path.join(d, get_file_prefix(d) + f.name)
-    df = open(ff, 'wb+')  # 打开特定的文件进行二进制的写操作
-    for chunk in f.chunks():  # 分块写入文件
-        df.write(chunk)
-    df.close()
-    return function, ff
+        ff = os.path.join(d, get_file_prefix(d) + f.name)
+        df = open(ff, 'wb+')  # 打开特定的文件进行二进制的写操作
+        for chunk in f.chunks():  # 分块写入文件
+            df.write(chunk)
+        df.close()
+        return function, ff
+    except:
+        raise FileSaveException('保存文件失败: ' + f.name)
 
 
 def get_objects_between(name, start, end):
@@ -611,6 +617,10 @@ def jx_upload_file(req):
                 conn.commit()  # NOTE: 必须commit; 否则独占数据库链接；可以考虑使用django connection自动commit
 
         return JsonResponse({'success': True, 'msg': '文件处理成功，请检验数据!'})
+
+    except FileSaveException as e:
+        logger.error(e)
+        return JsonResponse({'success': False, 'msg': str(e)})
 
     except:
         logger.error(sys_info())
@@ -874,7 +884,7 @@ def get_data(req):
 @sys_error
 def get_class_view(req):
     from jx.module import generate_class_view
-    return JsonResponse(generate_class_view((''.join([settings.BASE_DIR, '/jx/module.py'])), False), safe=False)
+    return JsonResponse(generate_class_view('module', False), safe=False)
 
 
 @check_login
@@ -940,12 +950,10 @@ def __format_create_value(v, columns):
         if k_ not in ('id', 'stamp', 'note'):
             val[k_] = _v
 
-    # NOTE: 增减业绩点
-    # TODO: 增减业绩点子类??? by 'ZZZ' as rule prefix???
+    # NOTE: 考核结果明细有 note and stamp
     if 'create_data_item' in v:
         if v['create_data_item'] == 'khjgmx':
             val['note'] = v['note']
-            val['GZH'] = 'ZZZ'
             val['stamp'] = now()
 
     return val
@@ -975,15 +983,15 @@ def create_data(req):
         tv = __format_create_value(_v, columns)
 
         where = '1=1'
-        msg_unique = ': 创建失败, 数据主键为空 '
+        msg_unique = ''
         for u in unique:
             if u in tv and not len(trim(tv[u])):
                 msg_unique += __translate_column_to_chinese(columns, u) + ' '
                 # return JsonResponse({'success': False, 'msg': '创建失败：' + str(u) + '为空'})
             where += ' AND ' + u + "='%(" + u + ")s'"
 
-        if msg_unique != ': 创建失败, 数据主键为空 ':
-            msg += msg_tablename + msg_unique + '<br>'
+        if msg_unique != '':
+            msg += msg_tablename + ': 创建失败, 数据主键为空 ' + msg_unique + '<br>'
             continue
 
         if where == '1=1':
@@ -1096,7 +1104,7 @@ def run_kpi(req):
 
         # clear first
         query = db.query(KH_KHJGMX)
-        query = query.filter(KH_KHJGMX.DWH.in_(departments), KH_KHJGMX.KHNF == year, KH_KHJGMX.GZH.notin_(['ZZZ']))
+        query = query.filter(KH_KHJGMX.DWH.in_(departments), KH_KHJGMX.KHNF == year, KH_KHJGMX.GZH.notlike('ZJ%'))
         query_out = query.all()
         for out in query_out:
             db.delete(out)

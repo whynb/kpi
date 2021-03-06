@@ -104,7 +104,7 @@
                         },
                     };
                 {% endif %}
-                {% if title['type'] in ['text', 'float', 'year', 'month', 'date'] %}
+                {% if title['type'] in ['text', 'textarea', 'float', 'year', 'month', 'date'] %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
                         editable: {
@@ -199,8 +199,6 @@
             buttonsAlign: "right",              //按钮位置
             exportTypes: ['csv', 'excel'],             //导出文件类型
             exportOptions: { ignoreColumn: [0], fileName: '{{ tips }}'},  //文件名称设置 NOT work at x-editable
-
-            // TODO: use title color or placeholder to show search columns scope
             search: true,                       //是否显示表格搜索，根据表格类型进行客户端搜索或者服务端搜索
             searchOnEnterKey: true,
             showRefresh: true,                  //是否显示刷新按钮
@@ -209,9 +207,21 @@
             uniqueId: "id",                     //每一行的唯一标识，一般为主键列
             idField: "id",                      //used by x-editable
             undefinedText: '',
+            onPostBody: function() {
+                $('.search .search-input').attr('placeholder', '搜索带颜色列内容');
+            },
             onLoadSuccess: function (data) {
-                var h = $(".column-right").height(); if (h < 500) h = 500; $(".column-left").height(h);
+                let h = $(".column-right").height(); if (h < 500) h = 500; $(".column-left").height(h);
                 $('.fixed-table-loading.table.table-bordered.table-hover').hide();
+
+                let x = document.getElementsByTagName("th");
+                for (let i = 0; i < x.length; i++) {
+                {% for column in search_columns %}
+                    if (x[i].getAttribute("data-field") == '{{ column }}') {
+                        x[i].firstChild.style.background = '#E0FFFF';
+                    }
+                {% endfor %}
+                }
             },
             columns: columns,
 

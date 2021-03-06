@@ -34,6 +34,8 @@ class KH_JXKHGZ(Base, KpiObjectBase):
 
     __tablename__ = "kh_jxkhgz"
     __tablename__CH__ = "绩效考核规则"
+    __table_args__ = {'extend_existing': True}
+
     # TODO: unique: 单位号-考核类型-考核子类-详细考核子类
     # TODO: 单位号 shouldn't empty while create
     # TODO: 单位号 should exist while update
@@ -137,9 +139,9 @@ class KH_JXKHGZ(Base, KpiObjectBase):
             {'table': 'kh_jxkhgz', 'field': 'XXKLZL', 'title': '详细考核子类', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHSJDX', 'title': '考核数据对象', 'editable': 'True', 'type': 'class', 'create': 'T', },
-            {'table': 'kh_jxkhgz', 'field': 'GZTJ', 'title': '规则条件', 'editable': 'True', 'type': 'text', 'create': 'T', },
-            {'table': 'kh_jxkhgz', 'field': 'JXFSJS', 'title': '绩效分数计算', 'editable': 'True', 'type': 'text', 'create': 'T', },
-            {'table': 'kh_jxkhgz', 'field': 'KHMXMB', 'title': '考核明细模版', 'editable': 'True', 'type': 'text', 'create': 'T', },
+            {'table': 'kh_jxkhgz', 'field': 'GZTJ', 'title': '规则条件', 'editable': 'True', 'type': 'textarea', 'create': 'T', },
+            {'table': 'kh_jxkhgz', 'field': 'JXFSJS', 'title': '绩效分数计算', 'editable': 'True', 'type': 'textarea', 'create': 'T', },
+            {'table': 'kh_jxkhgz', 'field': 'KHMXMB', 'title': '考核明细模版', 'editable': 'True', 'type': 'textarea', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHJGDX', 'title': '考核结果对象', 'editable': 'F', 'type': 'text', 'create': 'F', },
             {'table': 'kh_jxkhgz', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'F', },
             {'table': 'kh_jxkhgz', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'T', },
@@ -201,13 +203,13 @@ class KH_JXKHGZ(Base, KpiObjectBase):
 class KH_KHJGMX(Base, KpiObjectBase):
     __tablename__ = "kh_khjgmx"
     __tablename__CH__ = "考核结果明细"
+    __table_args__ = {'extend_existing': True}
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
 
     JZGH = Column('JZGH', String(16), default='')  # 教职工号
     DWH = Column('DWH', String(16), default='')  # 单位号
-    # GZH = Column('GZH', String(128), default='')  # 规则号
-    GZH = Column('GZH', ForeignKey(KH_JXKHGZ.GZH))  # 规则号
+    GZH = Column('GZH', String(128), default='')  # 规则号
     KHNF = Column('KHNF', DateTime, default=now())  # 考核年份
     KHJD = Column('KHJD', Float, default=0.0)  # 考核绩点
     KHMX = Column('KHMX', Text, default='')  # 考核明细
@@ -247,6 +249,7 @@ class KH_KHJGMX(Base, KpiObjectBase):
             '教职工号': ['JZGH'],
             '单位号': ['DWH'],
             '规则号': ['GZH'],
+            '考核类型': ['KHLX'],
             '考核年份': ['KHNF', 'DateTime'],
             '考核绩点': ['KHJD'],
             '考核明细': ['KHMX'],
@@ -277,7 +280,7 @@ class KH_KHJGMX(Base, KpiObjectBase):
     # NOTE: edit as view_sql
     @staticmethod
     def get_search_columns() -> List[str]:
-        return ['JZGH', 'DWH', 'GZH', 'KHNF', 'KHMX']
+        return ['JZGH', 'DWH', 'KHNF', 'KHMX']
 
     # NOTE: edit as view_sql
     @staticmethod
@@ -290,8 +293,8 @@ class KH_KHJGMX(Base, KpiObjectBase):
             {'table': 'kh_khjgmx', 'field': 'DWH', 'title': '单位号', 'editable': 'F', 'type': 'text', 'create': 'F', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'F', 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'T', },
             {'table': 'kh_khjgmx', 'field': 'GZH', 'title': '规则号', 'editable': 'F', 'type': 'text', 'create': 'F', },
-            {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'F', 'type': 'table', 'value': 'kh_jxkhgz:GZH,KHMC', 'where': "DWH IN %(departments)s AND GZH='ZZZ'", 'create': 'T', },
-            {'table': 'kh_khjgmx', 'field': 'KHJD', 'title': '考核绩点', 'editable': 'F', 'type': 'text', 'create': 'T', },
+            {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'F', 'type': 'table', 'value': 'kh_jxkhgz:GZH,KHMC', 'where': "DWH IN %(departments)s AND SUBSTR(GZH,1,2)='ZJ'", 'create': 'T', },
+            {'table': 'kh_khjgmx', 'field': 'KHJD', 'title': '考核绩点', 'editable': 'F', 'type': 'float', 'create': 'T', },
             {'table': 'kh_khjgmx', 'field': 'KHMX', 'title': '考核明细', 'editable': 'F', 'type': 'text', 'create': 'T', },
             {'table': 'kh_khjgmx', 'field': 'stamp', 'title': '时间戳', 'editable': 'F', 'type': 'date', 'create': 'F', },
             {'table': 'kh_khjgmx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'T', },
@@ -311,7 +314,10 @@ class KH_KHJGMX(Base, KpiObjectBase):
 class KH_KHPC(Base, KpiObjectBase):
     __tablename__ = "kh_khpc"
     __tablename__CH__ = "考核批次"
-    __table_args__ = (UniqueConstraint('DWH', 'KHNF', name='_kh_khpc_dwh_khnf_uc'),)
+    __table_args__ = (
+        UniqueConstraint('DWH', 'KHNF', name='_kh_khpc_dwh_khnf_uc'),
+        {'extend_existing': True},
+    )
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     DWH = Column('DWH', String(16), default='')  # 单位号
@@ -403,7 +409,10 @@ class KH_KHPC(Base, KpiObjectBase):
 class KH_KHGZDZ(Base, KpiObjectBase):
     __tablename__ = "kh_khgzdz"
     __tablename__CH__ = "考核规则定制"
-    __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'GZH', name='_kh_khgzdz_dwh_khnf_gzh_uc'),)
+    __table_args__ = (
+        UniqueConstraint('DWH', 'KHNF', 'GZH', name='_kh_khgzdz_dwh_khnf_gzh_uc'),
+        {'extend_existing': True},
+    )
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     DWH = Column('DWH', String(16), default='')  # 单位号
@@ -492,7 +501,10 @@ class KH_KHGZDZ(Base, KpiObjectBase):
 class KH_KHJGHZ(Base, KpiObjectBase):  # TODO: add footer total
     __tablename__ = "kh_khjghz"
     __tablename__CH__ = "考核结果汇总"
-    __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'GZH', 'JZGH', name='_kh_khjghz_dwh_khnf_gzh_jzgh_uc'),)
+    __table_args__ = (
+        UniqueConstraint('DWH', 'KHNF', 'GZH', 'JZGH', name='_kh_khjghz_dwh_khnf_gzh_jzgh_uc'),
+        {'extend_existing': True},
+    )
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     KHNF = Column('KHNF', DateTime, default=now())  # 考核年份
@@ -612,7 +624,10 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # TODO: add footer total
 class KH_BCYKH(Base, KpiObjectBase):
     __tablename__ = "kh_bcykh"
     __tablename__CH__ = "不参与考核"
-    __table_args__ = (UniqueConstraint('DWH', 'KHNF', 'JZGH', name='_kh_bcykh_dwh_khnf_jzgh_uc'),)
+    __table_args__ = (
+        UniqueConstraint('DWH', 'KHNF', 'JZGH', name='_kh_bcykh_dwh_khnf_jzgh_uc'),
+        {'extend_existing': True},
+    )
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     DWH = Column('DWH', String(16), default='')  # 单位号
@@ -699,6 +714,9 @@ class KH_BCYKH(Base, KpiObjectBase):
         self.note = note
 
 
+class_dict = {key: var for key, var in locals().items() if isinstance(var, type)}
+
+
 if __name__ == '__main__':
 
     """
@@ -711,6 +729,10 @@ if __name__ == '__main__':
     """
 
     Base.metadata.create_all(engine)
+
+    from jx.module import generate_class_view
+    generate_class_view('rule', True)
+
     exit(0)
 
     # Example: SQLAlchemy add-commit-rollback

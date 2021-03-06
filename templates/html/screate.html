@@ -9,7 +9,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-group input-group col-sm-12" style="width:500px;margin:10px 0px 0px 30px;">
-                        <!-- TODO: default value for number input -->
                         {% for title in title_columns %}
                             {% if title['create'] in ['False', 'false', 'f', 'F'] %}
                                 <div class="form-group has-warning" hidden>
@@ -27,7 +26,7 @@
                                 <div class="form-group has-warning">
                                     <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
                                     <div class=" col-sm-8">
-                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()">
+                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()" data-live-search="true">
                                             {% with fields = static_fields(title['value']) %}
                                                 {% for val in static_func(payroll, title['value'], title['where']) %}
                                                     {% if loop.index == 1 %}
@@ -56,7 +55,7 @@
                                 <div class="form-group has-warning">
                                     <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
                                     <div class=" col-sm-8">
-                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()">
+                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()" data-live-search="true">
                                             {% for val in class_view %}
                                                 <option value="{{ val['class'] }}">{{ val['name'] }}</option>
                                             {% endfor %}
@@ -78,7 +77,7 @@
                                 <div class="form-group has-warning">
                                     <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
                                     <div class=" col-sm-8">
-                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()">
+                                        <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()" data-live-search="true">
                                             {% with fields = static_fields(title['value']) %}
                                                 {% for val in static_func(payroll, title['value']) %}
                                                     {% if loop.index == 1 %}
@@ -86,7 +85,6 @@
                                                     {% else %}
                                                         <option value="{{ val[fields[0]] }}">{{ val[fields[1]] }}</option>
                                                     {% endif %}
-
                                                 {% endfor %}
                                             {% endwith %}
                                         </select>
@@ -100,7 +98,19 @@
                                 <div class="form-group has-warning">
                                     <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}">
+                                        <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}"
+                                        {% if title['type'] in ['float'] %}
+                                            value='0'
+                                        {% endif %}
+                                        >
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if title['type'] in ['textarea'] %}
+                                <div class="form-group has-warning">
+                                    <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                                    <div class="col-sm-8">
+                                        <textarea rows="4" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}"></textarea>
                                     </div>
                                 </div>
                             {% endif %}
@@ -124,7 +134,31 @@
                                             maxViewMode: 2,
                                             todayBtn: "linked",
                                             autoclose: true,
-                                        }).noConflict().on('changeDate',function(e){
+                                        }).on('changeDate',function(e){
+                                        });
+                                    });
+                                </script>
+                            {% endif %}
+                            {% if title['type'] in ['month'] %}
+                            <div class="form-group has-warning">
+                            <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
+                            <div class="col-sm-8">
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" name="{{ title['field'] }}" id="timeinput_{{ title['field'] }}">
+                                    {% include 'html/scalendar.html' %}
+                                </div>
+                            </div>
+                            </div>
+                                <script>
+                                    $(function() {
+                                        $('#timeinput_{{ title['field'] }}').datepicker({
+                                            language: "zh-CN",
+                                            format: "yyyy-mm",
+                                            startView: 1,
+                                            minViewMode: 1,
+                                            maxViewMode: 2,
+                                            autoclose: true,
+                                        }).on('changeDate',function(e){
                                         });
                                     });
                                 </script>
@@ -148,7 +182,7 @@
                                             minViewMode: 2,
                                             maxViewMode: 2,
                                             autoclose: true,
-                                        }).noConflict().on('changeDate',function(e){
+                                        }).on('changeDate',function(e){
                                         });
                                     });
                                 </script>
@@ -197,11 +231,13 @@
 </div>
 
 <script>
-
     function reset_create_form(){
         $('#modal_create_form')[0].reset();
-        // TODO: check if all inputs reset or not; if not, add additional reset method per data type
-        // TODO: clear all selectpicker
+        $(".selectpicker").each(function (i, j) {
+            $(j).find("option:selected").attr("selected", false);
+            $(j).find("option").first().attr("selected", true);
+        });
+        $(".selectpicker").selectpicker('refresh');
     }
 
     function button_create(){
@@ -209,8 +245,52 @@
         $('#modal_create').modal({backdrop: 'static', keyboard: false});
     }
 
+    function validate_modal_submit_create() {
+        {% for title in title_columns %}
+            {% if title['field'] in ['id', 'stamp', 'note'] %}
+            {% else %}
+            {% if title['create'] in ['True', 'true', 't', 'T'] %}
+                {% if title['type'] in ['table', 'class', 'static', 'include', 'enum'] %}
+                    if ($('#select_{{ title['field'] }}').val() == '') {
+                        alert('{{ title['title'] }} 不能为空，请重新选择！');
+	                    return false;
+                    }
+                {% endif %}
+                {% if title['type'] in ['text', 'testarea'] %}
+                    if ($('#{{ title['field'] }}').val() == '') {
+                        alert('{{ title['title'] }} 不能为空，请重新输入！');
+	                    return false;
+                    }
+                {% endif %}
+                {% if title['type'] in ['float'] %}
+                    let val = $('#{{ title['field'] }}').val();
+                    if (val == '' || notFloat(val)) {
+                        alert('{{ title['title'] }} 格式错误，请重新输入！');
+	                    return false;
+                    }
+                {% endif %}
+                {% if title['type'] in ['number'] %}
+                    let val = $('#{{ title['field'] }}').val();
+                    if (val == '' || notNumber(val)) {
+                        alert('{{ title['title'] }} 格式错误，请重新输入！');
+	                    return false;
+                    }
+                {% endif %}
+                {% if title['type'] in ['date', 'month', 'year'] %}
+                    if ($('#timeinput_{{ title['field'] }}').val() == '') {
+                        alert('{{ title['title'] }} 不能为空，请重新选择！');
+	                    return false;
+                    }
+                {% endif %}
+            {% endif %}
+            {% endif %}
+        {% endfor %}
+        return true;        
+    }
+
     function modal_submit_create(obj) {
-        // TODO: validate inputted form data; define function validate_create() or let BE to validate
+        if (!validate_modal_submit_create()) { return; }
+
         var formData = new FormData(document.getElementById("modal_create_form"));
         formData.append('create_data_item', '{{ menu }}');
         $.ajax({
@@ -219,7 +299,7 @@
             headers: {"X-CSRFToken": getCookie('csrftoken')},
             data: formData,
             dataType: 'JSON',
-            processData:false,   //  告诉jquery不要处理发送的数据
+            processData:false,   // 告诉jquery不要处理发送的数据
             contentType:false,   // 告诉jquery不要设置content-Type请求头
             success: function (data) {
                 if (data.success == true) {
