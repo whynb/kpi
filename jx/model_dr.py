@@ -402,13 +402,13 @@ class DR_KJQKLWJBSJXX(Base):
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     LWBH= Column('LWBH', String(16), default='')  # 论文编号
-    LWMC = Column('LWMC', String(128), unique=True, default='')  # 论文名称
+    LWMC = Column('LWMC', String(128),default='')  # 论文名称
     LWLXM= Column('LWLXM', String(16), default='')  # 论文类型码
     DYZZ= Column('DYZZ', String(16), default='')  # 第一作者
-    CYRY = Column('CYRY', String(128), unique=True, default='')  # 参与人员
+    CYRY = Column('CYRY', String(128), default='')  # 参与人员
     TXZZ= Column('TXZZ', String(16), default='')  # 通讯作者
-    JSQK = Column('JSQK', String(128), unique=True, default='')  # 检索情况
-    JQY = Column('JQY', String(128), unique=True, default='')  # 卷期页
+    JSQK = Column('JSQK', String(128),  default='')  # 检索情况
+    JQY = Column('JQY', String(128),  default='')  # 卷期页
     WDWZZPX = Column('WDWZZPX', String(16), default='')  # 外单位作者排序
     BZXYBJZDSYS = Column('BZXYBJZDSYS', String(16), default='') # 标注学院部级重点实验室
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
@@ -474,11 +474,11 @@ class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     __tablename__ = 'dr_kjcgryxx_lw'  # 科技成果(论文)人员信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
+    RYH = Column('RYH', String(16), default='')  # 人员号
     JSM = Column('JSM', String(16), default='')  # 角色码
     ZXZS= Column('ZXZS', String(16), default='')  # 撰写字数
     PMZRS= Column('PMZRS', String(16), default='')  # 排名/总人数
-    GXL = Column('GXL', String(16), default='')  # 贡献率
+    GXL = Column('GXL', Float, default=0.0)  # 贡献率
     XM= Column('XM', String(16), default='')  # 姓名
     SZDW = Column('SZDW', String(16), default='')  # 所在单位
     RYLX = Column('RYLX', String(16), default='')  # 人员类型
@@ -530,6 +530,7 @@ class DR_KJLWSLQK(Base):  # 科技论文收录情况
             '收录类型': ['SLLX'],
             '收录编号': ['SLBH'],
             '收录时间': ['SLSJ'],
+            '收录区号': ['SLQH'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
         }
