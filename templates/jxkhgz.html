@@ -162,7 +162,7 @@
     }
 
     function modal_submit_custermize_kpi() {
-        // TODO: modal to confirm
+        if (!confirm('请确定是否进行考核定制？')) return;
         var sel = getSelections();
         var opt = [];
         for (var i=0; i < sel.length; i++) {

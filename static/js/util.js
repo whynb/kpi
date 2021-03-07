@@ -201,3 +201,164 @@ function randomDigital(length) {
 function chineseSort(a, b){
     return a.localeCompare(b);
 }
+
+
+// 判断是否含有class
+function hasClass(el, className) {
+  let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
+  return reg.test(el.className)
+}
+
+// el元素添加某个class
+function addClass(el, className) {
+  if (hasClass(el, className)) {
+    return
+  }
+  let newClass = el.className.split(' ')
+  newClass.push(className)
+  el.className = newClass.join(' ')
+}
+
+// 移除el元素某个class
+function removeClass(el, className) {
+  if (!hasClass(el, className)) {
+    return
+  }
+  let reg = new RegExp('(^|\\s)' + className + '(\\s|$)', 'g')
+  el.className = el.className.replace(reg, ' ')
+}
+
+// 数组去重
+function arrayRemoval(arr) {
+  // 方法一
+  return [...new Set(arr)]
+  // 方法二
+  var obj = {};
+  return arr.filter(ele => {
+    if (!obj[ele]) {
+      obj[ele] = true;
+      return true;
+    }
+  })
+  // 方法三
+  var result = [];
+  arr.forEach(ele => {
+    if (result.indexOf(ele) == -1) {
+      result.push(ele)
+    }
+  })
+  return result;
+}
+
+// 获取当前日期和时间
+function getDateTime() {
+  var date = new Date(),
+    year = date.getFullYear(),
+    month = date.getMonth() + 1,
+    day = date.getDate(),
+    hour = date.getHours() + 1,
+    minute = date.getMinutes(),
+    second = date.getSeconds();
+  month = addZero(month);
+  day = addZero(day);
+  hour = addZero(hour);
+  minute = addZero(minute);
+  second = addZero(second);
+  
+  function addZero(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+  return "" + year + "年" + month + "月" + day + "日" + hour + "时" + minute + "分" + second + "秒"
+}
+
+// 获取浏览器窗口宽高
+function getViewportOffset() {
+  if (window.innerWidth) {
+    return {
+      w: window.innerWidth,
+      h: window.innerHeight
+    }
+  } else {
+    if (document.compatMode === "BackCompat") {
+      return {
+        w: document.body.clientWidth,
+        h: document.body.clientHeight
+      }
+    } else {
+      return {
+        w: document.documentElement.clientWidth,
+        h: document.documentElement.clientHeight
+      }
+    }
+  }
+}
+
+// 获取地址栏参数
+function getHrefParams() {
+  var sHref = window.location.href;
+  var args = sHref.split('?');
+  if (args[0] === sHref) {
+    return '';
+  }
+  var hrefarr = args[1].split('#')[0].split('&');
+  var obj = {};
+  for (var i = 0; i < hrefarr.length; i++) {
+    hrefarr[i] = hrefarr[i].split('=');
+    obj[hrefarr[i][0]] = hrefarr[i][1];
+  }
+  return obj;
+}
+
+// 数组排序
+function sortArr(arr) {
+  // 方法一
+  if (arr.length <= 1) {
+    return arr;
+  }
+  var left = [],
+    right = [];
+  var pIndex = Math.floor(arr.length / 2);
+  var p = arr.splice(pIndex, 1)[0];
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] <= p) {
+      left.push(arr[i]);
+    } else {
+      right.push(arr[i]);
+    }
+  }
+  return sortArr(left).concat([p], sortArr(right));
+  
+  // 方法二
+  for (var i = 0; i < arr.length - 1; i++) {
+    for (var j = i + 1; j < arr.length; j++) {
+      if (arr[i] > arr[j]) {
+        var temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+    }
+  }
+  return arr;
+}
+
+// 异步加载script脚本
+function asyncLoadScript(src) {
+  const s = document.createElement('script');
+  s.type = 'text/JavaScript';
+  s.async = true;
+  s.src = src;
+  const t = document.getElementsByTagName('script')[0];
+  t.parentNode.insertBefore(s, t);
+}
+
+// 回到顶部
+function scrollToTop() {
+  const c = document.documentElement.scrollTop || document.body.scrollTop;
+  if (c > 0) {
+    window.requestAnimationFrame(scrollToTop);
+    window.scrollTo(0, c - c / 8);
+  }
+}

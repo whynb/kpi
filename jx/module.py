@@ -786,22 +786,22 @@ class VIEW_HJCGJBSJXX(Base):
 class_dict = {key: var for key, var in locals().items() if isinstance(var, type)}
 
 
-def generate_class_view(file='./module.py', create_view=True):
+def generate_class_view(name='module', create_view=True):
     """
     Generate view for rule_engine/FE to run after module.py changed.
-    :param file:
+    :param name: module to generate
     :param create_view: True - drop/create view, False - generate view structure for FE
     :return:
     """
     cdf = []
 
     try:
-        module = __import__('jx.module', fromlist=(["module"]))
+        module = __import__('jx.' + name, fromlist=([name]))
     except ImportError:
-        module = __import__('module')
+        module = __import__(name)
 
     for k, v in module.class_dict.items():
-        if k.find('VIEW_') == -1:
+        if k.find('VIEW_') == -1 and k.find('KH_') == -1:
             continue
 
         v_class = getattr(module, k)
@@ -809,8 +809,8 @@ def generate_class_view(file='./module.py', create_view=True):
         if create_view:  # drop/create view
             print('Processing ' + k + ':')
             try:
-                print("1. DROP VIEW " + v_class.__tablename__)
-                cursor.execute("DROP VIEW " + v_class.__tablename__)
+                print("1. DROP VIEW " + v_class.__tablename__.replace('kh_', 'view_'))
+                cursor.execute("DROP VIEW " + v_class.__tablename__.replace('kh_', 'view_'))
             except Error as e:
                 print(e)
             except Exception as e:
@@ -842,7 +842,7 @@ if __name__ == '__main__':
         LEFT JOIN view_zzjgjbsjxx zz ON zz.DWH=jg.DWH;
     """
 
-    print(generate_class_view(file='./module.py', create_view=False))
+    print(generate_class_view(name='module', create_view=False))
     generate_class_view()
 
     exit(0)
