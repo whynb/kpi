@@ -67,6 +67,14 @@ class ExampleModule(Base):
         return ['dr_xmjfxx']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        """
+        定义新增数据时哪些表需要进行新增；新增时会依赖于新增表模型的唯一性条件 get_unique_condition()。
+        如果新增表数据的唯一性条件满足，即数据存在，则提示；不满足，则新增。
+        """
+        return ['dr_xmjfxx']
+
+    @staticmethod
     def get_hide_columns() -> List[str]:
         """
         定义前端表格中哪些字段需要隐藏，元素应与 get_title_columns() 中的 field 一致。
@@ -179,6 +187,10 @@ class VIEW_ZZJGJBSJXX(Base):
 
     @staticmethod
     def get_delete_tables() -> List[str]:
+        return ['dr_zzjgjbsjxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
         return ['dr_zzjgjbsjxx']
 
     @staticmethod
@@ -413,6 +425,10 @@ class VIEW_BKSJXZXS(Base):
         return ['dr_pksjxx']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_pksjxx']
+
+    @staticmethod
     def get_hide_columns() -> List[str]:
         return ['id', 'stamp', 'note']
 
@@ -574,6 +590,10 @@ class VIEW_JZGJCSJXX(Base):
         return ['dr_jzgjcsjxx']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_jzgjcsjxx']
+
+    @staticmethod
     def get_hide_columns() -> List[str]:
         return ['id', 'stamp', 'note']
 
@@ -618,7 +638,6 @@ class VIEW_XMJFXX(Base):
     __tablename__CH__ = '项目经费信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-
     JHJFZE = Column('JHJFZE', Float, unique=True, default=0.0)  # 计划经费总额
     XMJFLYM = Column('XMJFLYM', String(16), default='')  # 项目经费来源码
     BRRQ = Column('BRRQ', DateTime, default=now())  # 拨入日期
@@ -630,12 +649,8 @@ class VIEW_XMJFXX(Base):
     XMBH = Column('XMBH', String(64), unique=True, default='')  # 项目编号
     ZZKS = Column('ZZKS', Float, default=0.0)  # 支出款数
     JZGH = Column('JZGH', String(16), default='')  # 教职工号
-
-    # NOTE1: NOT from dr and dc, FROM other tables or views
-    # NOTE2: used to filter out data
     DWH = Column('DWH', String(16), default='')  # 单位号
     DWMC = Column('DWMC', String(128), default='')  # 单位名称
-
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -677,6 +692,10 @@ class VIEW_XMJFXX(Base):
         return ['dr_xmjfxx']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_xmjfxx']
+
+    @staticmethod
     def get_hide_columns() -> List[str]:
         return ['id', 'stamp', 'note']
 
@@ -705,14 +724,14 @@ class VIEW_XMJFXX(Base):
     def get_search_columns() -> List:
         return ['JZGH', 'DWH', 'DWMC', 'XMBH', 'JBRXM']
 
-class VIEW_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
+
+class VIEW_KJQKLWJBSJXX(Base):
     __table_args__ = {'extend_existing': True}
-    __tablename__ = 'view_kjqklwjbsjxx'  # 科技期刊论文基本数据信息
+    __tablename__ = 'view_kjqklwjbsjxx'
     __tablename__CH__ = '科技期刊论文基本数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     DWH = Column('DWH', String(16), default='')  # 单位号
-
     LWBH = Column('LWBH', String(16), default='')  # 论文编号
     LWMC = Column('LWMC', String(128), unique=True, default='')  # 论文名称
     LWLXM = Column('LWLXM', String(16), default='')  # 论文类型码
@@ -727,6 +746,8 @@ class VIEW_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
     JH = Column('JH', String(16), default='')  # 卷号
     QH = Column('QH', String(16), default='')  # 期号
     LRSJ = Column('LRSJ', DateTime, default=now())  # 录入时间
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def sql() -> str:
@@ -748,9 +769,10 @@ class VIEW_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
                 kj.FBRQ AS FBRQ,      
                 kj.JH AS JH,
                 kj.QH AS QH,
-                kj.LRSJ AS LRSJ
+                kj.LRSJ AS LRSJ,
+                dr.stamp AS stamp,            
+                dr.note AS note            
             FROM dr_kjqklwjbsjxx dr
-            LEFT JOIN dc_kjqklwjbsjxx dc ON dc.LWBH=dr.LWBH
             LEFT JOIN dr_kjlwfbxx kj ON kj.LWBH=dr.LWBH
             LEFT JOIN dr_jzgjcsjxx jz ON jz.JZGH=dr.DYZZ
             WHERE 1=1
@@ -759,7 +781,7 @@ class VIEW_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
 
     @staticmethod
     def get_hide_columns() -> []:
-        return ['id','LRSJ ']
+        return ['id', 'LRSJ']
 
     @staticmethod
     def get_title_columns() -> []:
@@ -785,6 +807,7 @@ class VIEW_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
     @staticmethod
     def get_search_columns() -> []:
         return ['LWBH']
+
 
 class VIEW_HJCGJBSJXX(Base):
     __table_args__ = {'extend_existing': True}
@@ -863,6 +886,10 @@ class VIEW_HJCGJBSJXX(Base):
 
     @staticmethod
     def get_delete_tables() -> List[str]:
+        return ['dr_hjcgjbsjxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
         return ['dr_hjcgjbsjxx']
 
     @staticmethod

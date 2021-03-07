@@ -4,9 +4,9 @@
 from jx.sqlalchemy_env import *
 
 
-class DR_ZZJGJBSJXX(Base):  # 组织机构基本数据信息
-
-    __tablename__ = 'dr_zzjgjbsjxx'  # 组织机构基本数据信息
+class DR_ZZJGJBSJXX(Base):
+    __tablename__ = 'dr_zzjgjbsjxx'
+    __tablename__CH__ = '组织机构基本数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     DWH = Column('DWH', String(128), unique=True, default='')  # 单位号
@@ -150,7 +150,6 @@ class DR_PKSJXX(Base):  # 排课数据信息
             '上课班级号': ['SKBJH'],
             '开课学期码': ['KKXQM'],
             '总学时': ['ZXXS'],
-            '助课计划学时': ['ZKJHXS'],
             '教学名师级别码': ['JXMSJBM'],
             '外语课程调节码': ['WYKCTJM'],
             '质量系数': ['ZLXS'],
@@ -164,9 +163,9 @@ class DR_PKSJXX(Base):  # 排课数据信息
         return ['JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH']
 
 
-class DR_KCSJXX(Base):  # 课程数据信息
-
-    __tablename__ = 'dr_kcsjxx'  # 课程数据信息
+class DR_KCSJXX(Base):
+    __tablename__ = 'dr_kcsjxx'
+    __tablename__CH__ = '课程数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
@@ -197,9 +196,9 @@ class DR_KCSJXX(Base):  # 课程数据信息
         return ['KCH']
 
 
-class DR_XNXQXX(Base):  # 学年学期信息
-
-    __tablename__ = 'dr_xnxqxx'  # 学年学期信息
+class DR_XNXQXX(Base):
+    __tablename__ = 'dr_xnxqxx'
+    __tablename__CH__ = '学年学期信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     XQMC = Column('XQMC', String(16), unique=True, default='')  # 学期名称
@@ -238,9 +237,9 @@ class DR_XNXQXX(Base):  # 学年学期信息
         return ['XNXQM']
 
 
-class DR_BKS_JPKC(Base):  # 本科精品课程
-
-    __tablename__ = 'dr_bks_jpkc'  # 本科精品课程
+class DR_BKS_JPKC(Base):
+    __tablename__ = 'dr_bks_jpkc'
+    __tablename__CH__ = '本科精品课程'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
@@ -269,9 +268,9 @@ class DR_BKS_JPKC(Base):  # 本科精品课程
         return ['KCH']
 
 
-class DR_JZGJCSJXX(Base):  # 教职工基础数据信息
-
-    __tablename__ = 'dr_jzgjcsjxx'  # 教职工基础数据信息
+class DR_JZGJCSJXX(Base):
+    __tablename__ = 'dr_jzgjcsjxx'
+    __tablename__CH__ = '教职工基础数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JZGH = Column('JZGH', String(16), unique=True, default='')  # 教职工号
@@ -314,9 +313,9 @@ class DR_JZGJCSJXX(Base):  # 教职工基础数据信息
         return ['JZGH']
 
 
-class DR_XMJFXX(Base):  # 项目经费信息
-
-    __tablename__ = 'dr_xmjfxx'  # 项目经费信息
+class DR_XMJFXX(Base):
+    __tablename__ = 'dr_xmjfxx'
+    __tablename__CH__ = '项目经费信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JHJFZE = Column('JHJFZE', Float, default=0.0)  # 计划经费总额
@@ -357,21 +356,10 @@ class DR_XMJFXX(Base):  # 项目经费信息
         return ['XMBH']
 
 
-"""
-ALTER TABLE DR_ZZJGJBSJXX ADD stamp TIMESTAMP(6);
-ALTER TABLE DR_JZGJCSJXX ADD stamp TIMESTAMP(6);
-ALTER TABLE DR_XMJFXX ADD stamp TIMESTAMP(6);
-ALTER TABLE DR_PKSJXX ADD stamp TIMESTAMP(6);
-ALTER TABLE DR_KCSJXX ADD stamp TIMESTAMP(6);
-ALTER TABLE DR_XNXQXX ADD stamp TIMESTAMP(6);
-ALTER TABLE DR_BKS_JPKC ADD stamp TIMESTAMP(6);
-"""
-
-
 # yangchen
-class DR_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
-
-    __tablename__ = 'dr_hjcgjbsjxx'  # 获奖成果基本数据信息
+class DR_HJCGJBSJXX(Base):
+    __tablename__ = 'dr_hjcgjbsjxx'
+    __tablename__CH__ = '获奖成果基本数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     HJCGBH = Column('HJCGBH', String(16), unique=True, default='')  # 获奖成果编号
@@ -431,12 +419,12 @@ class DR_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
 
     @staticmethod
     def get_unique_condition() -> List[str]:
-        # TODO: individual unique condition OR combined
         return ['HJCGBH', 'HJCGMC']
 
 
 class DR_KJCGRYXX_JL(Base):
-    __tablename__ = 'dr_kjcgryxx_jl'  # 科技成果(获奖成果)人员信息
+    __tablename__ = 'dr_kjcgryxx_jl'
+    __tablename__CH__ = '科技成果(获奖成果)人员信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
@@ -449,6 +437,8 @@ class DR_KJCGRYXX_JL(Base):
     RYLX = Column('RYLX', String(16), default='')  # 人员类型
     HJCGBH = Column('HJCGBH', String(16), default='')  # 获奖成果编号
     KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -464,6 +454,8 @@ class DR_KJCGRYXX_JL(Base):
             '人员类型': ['RYLX'],
             '获奖成果编号': ['HJCGBH'],
             '科技成果人员编号': ['KJCGRYBH'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
         }
 
     @staticmethod
@@ -471,9 +463,9 @@ class DR_KJCGRYXX_JL(Base):
         return ['RYH']
 
 
-class DR_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
-
-    __tablename__ = 'dr_kjqklwjbsjxx'  # 科技期刊论文基本数据信息
+class DR_KJQKLWJBSJXX(Base):
+    __tablename__ = 'dr_kjqklwjbsjxx'
+    __tablename__CH__ = '科技期刊论文基本数据信息息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     LWBH= Column('LWBH', String(16), default='')  # 论文编号
@@ -486,6 +478,8 @@ class DR_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
     JQY = Column('JQY', String(128), unique=True, default='')  # 卷期页
     WDWZZPX = Column('WDWZZPX', String(16), default='')  # 外单位作者排序
     BZXYBJZDSYS = Column('BZXYBJZDSYS', String(16), default='') # 标注学院部级重点实验室
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -508,18 +502,19 @@ class DR_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
         return ['LWBH']
 
 
-class DR_KJLWFBXX(Base):  # 科技论文发表信息
-
-    __tablename__ = 'dr_kjlwfbxx'  # 科技论文发表信息
+class DR_KJLWFBXX(Base):
+    __tablename__ = 'dr_kjlwfbxx'
+    __tablename__CH__ = '科技论文发表信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     KWMC = Column('KWMC', String(16), default='')  # 刊物名称
     LWBH = Column('LWBH', String(16), default='')  # 论文编号
     FBRQ = Column('FBRQ', DateTime, default=now())  # 发表日期
-    JH= Column('JH', String(16), default='')  # 卷号
+    JH = Column('JH', String(16), default='')  # 卷号
     QH = Column('QH', String(16), default='')  # 期号
     LRSJ = Column('LRSJ', DateTime, default=now())  # 录入时间
-
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -531,22 +526,30 @@ class DR_KJLWFBXX(Base):  # 科技论文发表信息
             '卷号': ['JH'],
             '期号': ['QH'],
             '录入时间': ['LRSJ ', 'DateTime'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
         }
 
     @staticmethod
     def get_unique_condition() -> []:
         return ['LWBH']
 
+
 if __name__ == '__main__':
+
+    """
+    ALTER TABLE DR_ZZJGJBSJXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_JZGJCSJXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_XMJFXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_PKSJXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_KCSJXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_XNXQXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_BKS_JPKC ADD stamp TIMESTAMP(6);
+    """
+
     try:
         Base.metadata.create_all(engine)
-        # obj = DR_ZZJGJBSJXX(DWH='1234', JLNY='19200121')
-        # db.add(obj)
-        # db.commit()
-    except IntegrityError as e:
+    except Error as e:
         print(e)
-
-    except:
-        print(sys_info())
 
     exit(0)
