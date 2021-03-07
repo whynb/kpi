@@ -395,7 +395,7 @@ class DR_KJCGRYXX_JL(Base):
     def get_unique_condition() -> List[str]:
         return ['RYH']
 
-
+#zouyang
 class DR_KJQKLWJBSJXX(Base):
     __tablename__ = 'dr_kjqklwjbsjxx'
     __tablename__CH__ = '科技期刊论文基本数据信息'
@@ -403,8 +403,22 @@ class DR_KJQKLWJBSJXX(Base):
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     LWBH= Column('LWBH', String(16), default='')  # 论文编号
     LWMC = Column('LWMC', String(128),default='')  # 论文名称
-    LWLXM= Column('LWLXM', String(16), default='')  # 论文类型码
-    DYZZ= Column('DYZZ', String(16), default='')  # 第一作者
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    LWLXM = Column('LWLXM', String(16), default='')  # 论文类型码
+    LZLBM = Column('LZLBM', String(16), default='')  # 论著类别码
+    XKLYM = Column('XKLYM', String(16), default='')  # 学科领域
+    XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
+    XMLYM = Column('XMLYM', String(16), default='')  # 项目来源码
+    ZGYZM = Column('ZGYZM', String(16), default='')  # 中国语种码
+    YZM = Column('YZM', String(16), default='')  # 语种码
+    SSXMBH = Column('SSXMBH', String(16), default='')  # 所属项目编号
+    SSJSLY = Column('SSJSLY', String(16), default='')  # 所属技术领域
+    LZSLQKM = Column('LZSLQKM', String(16), default='')  # 论著收录情况码
+    QTSLQK = Column('QTSLQK', String(16), default='')  # 其他收录情况
+    DYZZ = Column('DYZZ', String(16), default='')  # 第一作者
+    DYZZBH = Column('DYZZBH', String(16), default='')  # 第一作者编号
+    XXSM = Column('XXSM', String(16), default='')  # 学校署名
+    YJXK = Column('YJXK', String(16), default='')  # 一级学科
     CYRY = Column('CYRY', String(128), default='')  # 参与人员
     TXZZ= Column('TXZZ', String(16), default='')  # 通讯作者
     JSQK = Column('JSQK', String(128),  default='')  # 检索情况
@@ -420,8 +434,22 @@ class DR_KJQKLWJBSJXX(Base):
             'ID': ['id'],
             '论文编号': ['LWBH'],
             '论文名称': ['LWMC'],
+            '单位号': ['DWH'],
             '论文类型码': ['LWLXM'],
+            '论著类别码': ['LZLBM'],
+            '学科领域': ['XKLYM'],
+            '学科门类(科技)码': ['XKMLKJM'],
+            '项目来源码': ['XMLYM'],
+            '中国语种码': ['ZGYZM'],
+            '语种码': ['YZM'],
+            '所属项目编号': ['SSXMBH'],
+            '所属技术领域': ['SSJSLY'],
+            '论著收录情况码': ['LZSLQKM'],
+            '其他收录情况': ['QTSLQK'],
             '第一作者': ['DYZZ'],
+            '第一作者编号': ['DYZZBH'],
+            '学校署名': ['XXSM'],
+            '一级学科': ['YJXK'],
             '参与人员': ['CYRY'],
             '通讯作者': ['TXZZ'],
             '检索情况': ['JSQK'],
@@ -436,7 +464,7 @@ class DR_KJQKLWJBSJXX(Base):
     def get_unique_condition() -> []:
         return ['LWBH']
 
-
+#zouyang
 class DR_KJLWFBXX(Base):
     __tablename__ = 'dr_kjlwfbxx'
     __tablename__CH__ = '科技论文发表信息'
@@ -469,6 +497,7 @@ class DR_KJLWFBXX(Base):
     def get_unique_condition() -> []:
         return ['LWBH']
 
+#zouyang
 class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
 
     __tablename__ = 'dr_kjcgryxx_lw'  # 科技成果(论文)人员信息
@@ -509,6 +538,7 @@ class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     def get_unique_condition() -> []:
         return ['LWBH']
 
+#zouyang
 class DR_KJLWSLQK(Base):  # 科技论文收录情况
 
     __tablename__ = 'dr_kjlwslqk'  # 科技论文收录情况
@@ -538,7 +568,6 @@ class DR_KJLWSLQK(Base):  # 科技论文收录情况
     @staticmethod
     def get_unique_condition() -> []:
         return ['LWBH']
-
 
 
 if __name__ == '__main__':
