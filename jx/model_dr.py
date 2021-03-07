@@ -153,7 +153,7 @@ class DR_PKSJXX(Base):  # 排课数据信息
             '教学名师级别码': ['JXMSJBM'],
             '外语课程调节码': ['WYKCTJM'],
             '质量系数': ['ZLXS'],
-            '合班数': ['HBS '],
+            '合班数': ['HBS'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
         }
