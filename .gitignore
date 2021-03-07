@@ -20,3 +20,11 @@ kpi/settings.py
 kpi/settings.py
 
 .vscode/settings.json
+static/.DS_Store
+templates/.DS_Store
+templates/.DS_Store
+templates/html/fixedheader.html
+templates/html/fixedheadertable.html
+templates/html/left-right.html
+templates/.DS_Store
+static/.DS_Store

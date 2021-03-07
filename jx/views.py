@@ -319,6 +319,7 @@ def base(req):
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns'),
             'title_columns': get_module_static_method(menu, 'get_title_columns'),
+            'search_columns': get_module_static_method(menu, 'get_search_columns'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         },
@@ -344,9 +345,10 @@ def jxkhgz(req):
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
             'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'search_columns': get_module_static_method(menu, 'get_search_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
-            'class_view': generate_class_view((''.join([settings.BASE_DIR, '/jx/module.py'])), False),
+            'class_view': generate_class_view('module', False),
         }
     )
 
@@ -368,6 +370,7 @@ def khjgmx(req):
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
             'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'search_columns': get_module_static_method(menu, 'get_search_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
@@ -391,6 +394,7 @@ def khpc(req):
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
             'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'search_columns': get_module_static_method(menu, 'get_search_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
@@ -414,6 +418,7 @@ def khgzdz(req):
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
             'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'search_columns': get_module_static_method(menu, 'get_search_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
@@ -437,6 +442,7 @@ def khjghz(req):
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
             'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'search_columns': get_module_static_method(menu, 'get_search_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
@@ -460,6 +466,7 @@ def bcykh(req):
             'with_users': get_with_users(req),
             'hide_columns': get_module_static_method(menu, 'get_hide_columns', module_name='rule', view_prefix='kh'),
             'title_columns': get_module_static_method(menu, 'get_title_columns', module_name='rule', view_prefix='kh'),
+            'search_columns': get_module_static_method(menu, 'get_search_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
         }
