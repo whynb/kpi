@@ -27,7 +27,7 @@ DEBUG = True
 
 COOKIE_TIME_OUT = 36000
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0' 'localhost', '*']
 
 LOGGING = {
     'version': 1,
@@ -168,7 +168,7 @@ DATABASES = {
 #       'HOST': '47.94.148.26',
 
 # local
-         'PASSWORD': 'password',
+        'PASSWORD': 'password',
         'HOST': '127.0.0.1',
 
 # port
