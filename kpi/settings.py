@@ -163,13 +163,13 @@ DATABASES = {
 #        'PASSWORD': 'QAzx1324',
 #        'HOST': '47.93.196.31',
 
-# # test
-#        'PASSWORD': 'P1ssW0rd',
-#        'HOST': '47.94.148.26',
+# test
+#       'PASSWORD': 'P1ssW0rd',
+#       'HOST': '47.94.148.26',
 
 # local
          'PASSWORD': 'password',
-        'HOST': '',
+        'HOST': '127.0.0.1',
 
 # port
         'PORT': '3306',

@@ -370,6 +370,8 @@ class DR_KJCGRYXX_JL(Base):
     RYLX = Column('RYLX', String(16), default='')  # 人员类型
     HJCGBH = Column('HJCGBH', String(16), default='')  # 获奖成果编号
     KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -385,6 +387,8 @@ class DR_KJCGRYXX_JL(Base):
             '人员类型': ['RYLX'],
             '获奖成果编号': ['HJCGBH'],
             '科技成果人员编号': ['KJCGRYBH'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
         }
 
     @staticmethod
@@ -407,6 +411,8 @@ class DR_KJQKLWJBSJXX(Base):
     JQY = Column('JQY', String(128), unique=True, default='')  # 卷期页
     WDWZZPX = Column('WDWZZPX', String(16), default='')  # 外单位作者排序
     BZXYBJZDSYS = Column('BZXYBJZDSYS', String(16), default='') # 标注学院部级重点实验室
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -422,6 +428,8 @@ class DR_KJQKLWJBSJXX(Base):
             '卷期页': ['JQY'],
             '外单位作者排序': ['WDWZZPX'],
             '标注学院部级重点实验室': ['BZXYBJZDSYS'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
         }
 
     @staticmethod
@@ -440,6 +448,8 @@ class DR_KJLWFBXX(Base):
     JH = Column('JH', String(16), default='')  # 卷号
     QH = Column('QH', String(16), default='')  # 期号
     LRSJ = Column('LRSJ', DateTime, default=now())  # 录入时间
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -451,6 +461,8 @@ class DR_KJLWFBXX(Base):
             '卷号': ['JH'],
             '期号': ['QH'],
             '录入时间': ['LRSJ ', 'DateTime'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
         }
 
     @staticmethod
