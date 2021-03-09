@@ -37,9 +37,8 @@ class KH_JXKHGZ(Base, KpiObjectBase):
     __table_args__ = {'extend_existing': True}
 
     # TODO: unique: 单位号-考核类型-考核子类-详细考核子类
-    # TODO: 单位号 shouldn't empty while create
-    # TODO: 单位号 should exist while update
-    # TODO: 单位号 should be user's one while upload except supper admin
+    # TODO: unique: 单位号-规则号
+    # TODO: DWH should be user's one while upload except supper admin if data defined DWH
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
 

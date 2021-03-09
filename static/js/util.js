@@ -2,6 +2,8 @@
  * Created by why on 10/18/17.
  */
 
+function tap(x){ console.log(x); return x; }
+
 function getLastDayOfMonth(m) {
     var lastDay= new Date(m.substring(0, 4), m.substring(5,7), 0);
     var year = lastDay.getFullYear();

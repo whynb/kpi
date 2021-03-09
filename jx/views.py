@@ -9,6 +9,7 @@ from urllib import parse
 from jx.util import *
 from jx.form import *
 from jx.models import *
+from jx.exception import *
 
 
 time_out = settings.COOKIE_TIME_OUT
@@ -80,7 +81,7 @@ def get_with_users(req):
     return True if user.role_id in (1, 2) else False
 
 
-def get_role_menu_permission(req):
+def get_role_menu_permission__(req):
     user = SysUser.objects.get(payroll=req.COOKIES.get('payroll'))
     path = req.get_full_path().split('/')
     menu_addr = str('/' + path[1] + '/' + path[2] + '/')
@@ -100,6 +101,9 @@ def get_role_menu_permission(req):
 
     cursor.execute(sql)
     _dict = dictfetchall(cursor)
+
+    # INFO 2021-03-09 14:30:26,491 views.py views get_role_menu_permission 105: [{'permission': 'y,y,y,y,y,y'}]
+    logger.info(_dict)
     for a in _dict:
         c = []
         b = a['permission'].split(',')
@@ -111,26 +115,45 @@ def get_role_menu_permission(req):
     return []
 
 
+def get_role_menu_permission(req):
+    user = SysUser.objects.get(payroll=req.COOKIES.get('payroll'))
+    path = req.get_full_path().split('/')
+    menu_addr = str('/' + path[1] + '/' + path[2] + '/')
+    if path[2] == 'base':
+        menu_addr += path[3] + '/'
+    menu = Menu.objects.get(menu_addr=menu_addr)
+
+    from jx.sqlalchemy_env import db, text
+    sql = '''
+        SELECT b.permission
+        FROM jx_role_menu b 
+        WHERE b.role_id = :role_id AND b.menu_id = :menu_id
+    '''
+
+    _dict = db.execute(text(sql), {'role_id': user.role_id, 'menu_id': menu.id,}).fetchall()
+    db.commit()  # db.rollback() while execute->except to keep out db deadlock
+    logger.info(_dict)
+    for a in _dict:
+        c = []
+        b = a[0].split(',')
+        for num in range(0, 6):
+            c.append(True if b[num] == 'y' else False)
+
+        return c
+    return []
+
+
 def can_login(req):
     """
     :param req: http request
     :return: True - can login, False - can not
     """
 
-    def log(_req):
-        """
-        TODO: log each request such as who, when, what...
-        :param _req:
-        :return:
-        """
-
-        return _req
-
-    log(req)
-
     payroll = req.COOKIES.get('payroll', '')
     if payroll and len(payroll):
         users = SysUser.objects.filter(payroll__exact=payroll)
+        
+        # TODO: password authentication or cas verification
         return True if users else False
 
     return False
@@ -142,7 +165,23 @@ def check_login(fn):
     :param fn: request
     :return:
     """
+    def log(_req):
+        """
+        TODO: log each request such as who, when, what...
+        :param _req:
+        :return:
+        """
+
+        return _req
+
     def wrapper(req, *args, **kwargs):
+        try:
+            from jx.function import __check_user_auth
+            __check_user_auth(log(req))
+        except UserAuthException:
+            logger.error(sys_info())
+            return JsonResponse({'success': False, 'msg': '登录用户没有授权该项操作'})
+
         try:
             return fn(req, *args, **kwargs) if can_login(req) else HttpResponseRedirect('/jx/')
         except:
@@ -155,6 +194,7 @@ def check_login(fn):
 def sys_error(fn):
     def wrapper(req, *args, **kwargs):
         try:
+            # TODO: verify SQL injection
             # verify req/para to avoid sql injection by check if there are ' ' chars
             v = eval(str(req.POST.dict()))
             for k, val in v.items():
@@ -262,13 +302,18 @@ def role_manage(req):
     else:
         roleform = RoleForm()
 
-    usercode = req.COOKIES.get('payroll')
-    roles = Role.objects.all()  # TODO: filter out by login payroll, such as sysuser type and role
+    payroll = req.COOKIES.get('payroll')
+    user = SysUser.objects.get(payroll__exact=payroll)
+    roles = Role.objects.all()
+    if user.role_id != 1:
+        from django.db.models import Q
+        roles = roles.filter(~Q(id=1))
+        
     return render(
         req,
         'role_manage.html',
         {
-            'menus': get_menu(usercode),
+            'menus': get_menu(payroll),
             'roles': roles,
             'roleform': roleform,
             'tips': get_menu_name(req),
@@ -379,6 +424,8 @@ def khjgmx(req):
 
 @check_login
 def khpc(req):
+    # BUG: 系统bug:考核批次页面，点击超级管理员后，再点击东北大学，考核批次数据不再显示，需要刷新页面; 其他页面也有此类问题
+    # 在某种特定情况重现，但是没有保存log，与SQLAlchemy的事务处理有关；检查 insert/update execute/commit match
     from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]

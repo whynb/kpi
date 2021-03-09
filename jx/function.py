@@ -12,6 +12,7 @@ from django.db.utils import *
 from django.conf import settings
 import pandas as pd
 from jx.exception import *
+from pymysql.err import Error
 
 
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
@@ -205,40 +206,44 @@ def summarize_kpi(departments, year, db):
     return
 
 
+@check_login
+@sys_error
 def role_inline_edit(req):
     try:
         if req.method != 'POST':
             return JsonResponse({'success': False, 'msg': '消息类型错误！'})
 
-        usercode = req.COOKIES.get('payroll')
-        if usercode is None:
-            return JsonResponse({'success': False, 'msg': '请重新登录！'})
-
-        user = SysUser.objects.get(payroll__exact=usercode)
+        payroll = req.COOKIES.get('payroll')
+        user = SysUser.objects.get(payroll__exact=payroll)
         if user.role_id not in (1, 2):
             return JsonResponse({'success': False, 'msg': '登录用户没有权限！'})
 
         payroll_number = req.POST.get('payroll', '')
         if payroll_number == '':
-            return JsonResponse({'success': False, 'msg': '参数错误！'})
+            return JsonResponse({'success': False, 'msg': '参数错误, 用户不存在！'})
 
         payroll_user = SysUser.objects.get(payroll__exact=payroll_number)
-        payroll_user.role_id = int(req.POST.get('role_id', '4'))
+        role_id = int(req.POST.get('role_id', '4'))
+        if role_id == 1:  # 禁止FE修改成为超级管理员
+            return JsonResponse({'success': False, 'msg': '参数错误, 请联系管理员！'})
+        
+        payroll_user.role_id = role_id
         payroll_user.save()
         return JsonResponse({'success': True, 'msg': '修改成功！'})
 
     except SysUser.DoesNotExist:
+        logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '用户不存在，请重新登录！'})
 
     except:
+        logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '系统异常，请联系管理员！'})
 
 
-def getpower(req):
-    role_name = req.GET.get("role_name", "")
+def __get_power(role_name):
     cursor = connection.cursor()
     sql = """
-        SELECT a.id, a.menu_name, a.menu_classify, b.permission
+        SELECT a.id, a.menu_name, a.menu_classify, b.permission, a.menu_addr
         FROM jx_menu a 
         LEFT JOIN jx_role_menu b ON b.menu_id = a.id
         LEFT JOIN jx_role c ON c.id = b.role_id
@@ -256,10 +261,17 @@ def getpower(req):
 
         str1 = ','.join(c)
         a['permission'] = str1
+    return sql_result
 
-    return HttpResponse(json.dumps(sql_result))
+
+@check_login
+@sys_error
+def getpower(req):
+    return HttpResponse(json.dumps(__get_power(req.GET.get("role_name", ""))))
 
 
+@check_login
+@sys_error
 def get_other_power(req):
     role_name = req.GET.get("role_name", "")
     role = Role.objects.filter(role_name=role_name)
@@ -287,7 +299,10 @@ def get_other_power(req):
     return HttpResponse(json.dumps(res))
 
 
+@check_login
+@sys_error
 def add_power(req):
+    from jx.sqlalchemy_env import cursor, conn
     role_name = req.GET.get("role", "")
     menus = req.GET.get("menu", "").split('_')
 
@@ -296,7 +311,7 @@ def add_power(req):
         if not role:
             HttpResponse('菜单或角色不存在')
 
-        cursor = connection.cursor()
+        # cursor = connection.cursor()
         for menu_id in menus:
             cursor.execute(
                 """
@@ -308,12 +323,16 @@ def add_power(req):
                     'permission': "n,n,n,n,n,n",
                 }
             )
+            conn.commit()
         return HttpResponse('添加成功')
 
     except:
+        conn.rollback()
         return HttpResponse('数据库错误')
 
 
+@check_login
+@sys_error
 def del_power(req):
     try:
         role = Role.objects.get(role_name=req.GET.get("role", ""))
@@ -324,9 +343,16 @@ def del_power(req):
         return HttpResponse('数据库错误')
 
 
+@check_login
+@sys_error
 def edit_permission(req):
+    if req.method != 'POST':
+        return HttpResponse(json.dumps(''))
+
+    from jx.sqlalchemy_env import cursor, conn
     role_name = ''
-    if req.method == 'POST':
+
+    try:
         menu_id = req.POST.get('menu_id')
         role_name = req.POST.get('role_name')
         permission = req.POST.get('permission')
@@ -342,7 +368,6 @@ def edit_permission(req):
             permission = ','.join(b)
 
         role = Role.objects.get(role_name=role_name)
-        cursor = connection.cursor()
         cursor.execute(
             """
                 UPDATE jx_role_menu SET permission = '%(permission)s' 
@@ -353,43 +378,34 @@ def edit_permission(req):
                 'permission': permission,
             }
         )
+        conn.commit()
+    except Error:
+        logger.error(sys_info())
+        conn.rollback()
 
     return HttpResponse(json.dumps(role_name))
 
 
+@check_login
+@sys_error
 def del_role(req):
+    from jx.sqlalchemy_env import cursor, conn
     role_name = req.GET.get("role", "")
     role = Role.objects.filter(role_name=role_name)
     if not role:
         return HttpResponse('角色不存在')
 
     try:
-        cursor = connection.cursor()
+        # cursor = connection.cursor()
         sql = "UPDATE jx_sysuser SET role_id = NULL WHERE role_id=" + str(role[0].id)
         cursor.execute(sql)
+        conn.commit()
         role[0].delete()
         return HttpResponse('删除成功')
 
     except:
+        conn.rollback()
         return HttpResponse('数据库错误')
-
-
-def get_department(req):
-    logger.info(req.COOKIES.get('payroll'))
-    return JsonResponse({}, safe=False)
-
-    cur_college = req.GET.get("cur_college", '')
-    try:
-
-        cursor = connection.cursor()
-        sql = """select * from app_curr_department WHERE 1"""
-        if cur_college != '' and cur_college != '-1':
-            sql = sql + """ AND college_id="""+str(cur_college)
-        cursor.execute(sql)
-        dbresult = dictfetchall(cursor)
-        return JsonResponse(dbresult, safe=False)
-    except:
-        return '数据库错误'
 
 
 def get_dwh(req):
@@ -492,11 +508,12 @@ def __get_column_definition(columns, column):
 
 def __format_value(vv, fm, enum_values=None):
     """
-    TODO: format vv per key[k][1] if defined
     :param vv:
     :param fm: 'Enum'｜"DateTime"
+    :enum_values: value set for Enum type data
     :return:
     """
+    
     if enum_values is None:
         enum_values = []
 
@@ -549,9 +566,9 @@ def __row_replace_key(__row, __key, uniq=None):
                 v = __format_value(v, __key[k][1])
             res[__key[k][0]] = v
             cc_str += str(__key[k][0]) + ', '
-            vv_str += "'" + str(v).replace("'", "char(39)") + "', "
+            vv_str += "'" + str(v).replace("'", "\\'") + "', "
             if str(__key[k][0]) not in uniq:
-                uu_str += str(__key[k][0]) + "='" + str(v).replace("'", "char(39)") + "', "
+                uu_str += str(__key[k][0]) + "='" + str(v).replace("'", "\\'") + "', "
         else:
             # res[k] = v  # ignore useless fields
             pass
@@ -572,6 +589,47 @@ def __transform_key_to_chinese(vv, columns):
         nk = __translate_column_to_chinese(columns, k)
         res[nk] = v
     return res
+
+
+def __check_user_auth(req):
+    method = req.method
+    menu = req.POST.get('menu', '') if method == 'POST' else req.GET.get('menu', '')
+
+    _auth = 0
+    req_menus = req.get_full_path().split('/')
+    req_menu = req_menus[2] if req_menus[2] not in ['base'] else req_menus[3]
+    if req_menu in ['create_data', ]:
+        _auth = 1
+    elif req_menu in ['delete_data', ]:
+        _auth = 2
+    elif req_menu in ['edit', 'role_inline_edit']:
+        _auth = 3
+    elif req_menu in ['get_data', ]:
+        _auth = 4
+    elif req_menu in ['jx_upload_file', ]:
+        _auth = 5
+    elif req_menu in ['___download', ]:  # NOTE: coding while support BE download
+        _auth = 6
+    else:
+        _auth = 0
+
+    payroll = req.COOKIES.get('payroll')
+    user = SysUser.objects.get(payroll__exact=payroll)
+    pws = __get_power(user.role.role_name)
+    for pw in pws:
+        _pws = pw['menu_addr'].split('/')
+        _pw = _pws[len(_pws)-2]
+
+        if menu != _pw:
+            continue
+
+        if _auth in eval('[' + pw['permission'] + ']'):
+            return
+
+    if _auth == 0:
+        return
+
+    raise UserAuthException("No Auth: %s to %s @%s" % (payroll, req_menu, menu, ))
 
 
 @check_login
@@ -622,7 +680,8 @@ def jx_upload_file(req):
         logger.error(e)
         return JsonResponse({'success': False, 'msg': str(e)})
 
-    except:
+    except Error:
+        conn.rollback()
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '文件处理失败，请修正后重试！'})
 
@@ -631,7 +690,7 @@ def get_user_information(payroll):
     cursor = connection.cursor()
     cursor.execute(""" SELECT * FROM view_jzgjcsjxx WHERE JZGH='%(payroll)s' """ % {'payroll': payroll})
     select_out = dictfetchall(cursor)
-    return select_out[0] if select_out else []
+    return select_out[0] if select_out else {}
 
 
 def get_top_departments():
@@ -707,6 +766,7 @@ def get_allhrdpmt(req):
 
             # children users
             if method in method_in:
+                uus = get_department_users(d['DWH'])
                 for uu in get_department_users(d['DWH']):
                     insert_user(uu, t[len(t)-1]["nodes"])
 
@@ -717,10 +777,9 @@ def get_allhrdpmt(req):
     search_department(departments, data)
 
     # append first level users
-    if method in method_in:
-        for du in get_department_users(str(user['DWH'])):
-            # continue
-            insert_user(du, data)
+    if method in method_in and user:
+            for du in get_department_users(str(user['DWH'])):
+                insert_user(du, data)
 
     # response as bootstrap-treeview
     return JsonResponse({'success': True, 'tag': u'刷新成功', 'data': data})
@@ -732,6 +791,7 @@ def edit(req):
     :param req: id=30&DWJC=00000C&field=DWJC&menu=zzjgjbsjxx
     :return:
     """
+    from jx.sqlalchemy_env import cursor, conn
     try:
         v = eval(str(req.POST.dict()))
         set_to = trim(str(v[v['field']]))
@@ -763,14 +823,16 @@ def edit(req):
         v['table'] = column['table']
         sql_update = "UPDATE %(table)s SET %(field)s=\"%(set_to)s\" WHERE %(where)s" % v
 
-        cursor = connection.cursor()
+        # cursor = connection.cursor()
         logger.info(sql_update)
         cursor.execute(sql_update)
+        conn.commit()
 
         # TODO: add meaningful words and translate to Chinese
         return JsonResponse({'success': True, 'msg': '成功更新为：' + set_to})
 
-    except Error:  # django.db.utils.Error
+    except Error:
+        conn.rollback()
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '更新失败：数据库错误'})
 
@@ -889,9 +951,6 @@ def get_class_view(req):
 
 @check_login
 def delete_data(req):
-    payroll = str(req.COOKIES.get('payroll'))
-    # TODO: check delete auth ???
-
     v = eval(str(req.POST.dict()))
     data = json.loads(v['data'])
     function = v['menu']
@@ -924,14 +983,19 @@ def delete_data(req):
             # 3. other conditions ???
 
             try:
-                # cursor = connection.cursor()  # change to SQLAlchemy cursor to keep delete transaction
                 cursor.execute(sql_delete)
+                conn.commit()
                 msg += msg_tablename + ': 删除数据成功<br>'
             except Error as e:
+                conn.rollback()
                 logger.error(sys_info())
                 msg += msg_tablename + ': 删除失败, ' + str(e) + '<br>'
-
-    conn.commit()
+    try:
+        conn.commit()
+    except Error:
+        logger.error(sys_info())
+        conn.rollback()
+        
     return JsonResponse({'success': True, 'msg': msg})
 
 
@@ -961,9 +1025,7 @@ def __format_create_value(v, columns):
 
 @check_login
 def create_data(req):
-    payroll = str(req.COOKIES.get('payroll'))
-    # TODO: create auth verification
-    # TODO: additional check and default value set
+    from jx.sqlalchemy_env import cursor, conn
 
     _v = eval(str(req.POST.dict()))
     function = _v['create_data_item']
@@ -972,7 +1034,6 @@ def create_data(req):
     create_tables = module_class.get_create_tables()
 
     msg = ''
-    from jx.sqlalchemy_env import cursor, conn
     for d_table in create_tables:
         model_dr_class = get_model_dr_class(d_table)
         columns = model_dr_class.get_column_label()
@@ -987,7 +1048,6 @@ def create_data(req):
         for u in unique:
             if u in tv and not len(trim(tv[u])):
                 msg_unique += __translate_column_to_chinese(columns, u) + ' '
-                # return JsonResponse({'success': False, 'msg': '创建失败：' + str(u) + '为空'})
             where += ' AND ' + u + "='%(" + u + ")s'"
 
         if msg_unique != '':
@@ -1004,10 +1064,8 @@ def create_data(req):
         cursor.execute(sql_count)
         count = cursor.fetchall()
         if count[0][0] > 0:
-            # TODO: update
             msg += msg_tablename + ': 创建失败, 数据主键重复<br>'
             continue
-            # return JsonResponse({'success': False, 'msg': '创建失败：数据主键重复'})
 
         c_key = __transform_key_to_chinese(tv, columns)
         rec, c_str, v_str, u_str = __row_replace_key(c_key, columns, unique)
@@ -1016,17 +1074,20 @@ def create_data(req):
         """ % {'table': d_table, 'columns': c_str, 'values': v_str, }
 
         logger.info(sql_insert)
-        from pymysql.err import Error
         try:
             cursor.execute(sql_insert)
-            # cursor.fetchall()
             msg += msg_tablename + ': 新建数据成功<br>'
         except Error as e:
+            conn.rollback()
             logger.error(sys_info())
             msg += msg_tablename + ': 创建失败, ' + str(e) + '<br>'
-            # return JsonResponse({'success': False, 'msg': '创建失败: ' + str(e)})  # TODO: translate exception
 
-    conn.commit()
+    try:
+        conn.commit()
+    except Error:
+        logger.error(sys_info())
+        conn.rollback()
+        
     return JsonResponse({'success': True, 'msg': msg})
 
 
@@ -1051,11 +1112,12 @@ def staffinfo(req):
     if user.role_id == 1:
         pass
     elif user.role_id == 2:
-        user_info = get_user_information(payroll)
-        sql_where += " AND DWH='%(department)s'" % {'department': str(user_info['DWH'])}
+        from jx.module import VIEW_JZGJCSJXX 
+        ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
+        sql_where += " AND DWH IN '%(departments)s'" % {'departments': str(ds).replace('[', '(').replace(']', ')')}
     else:
         sql_where += ' AND 1=0'
-
+        
     sql_search = ""
     if 'search' in v and v['search'] not in ('', None):
         search_columns = ['payroll', 'XM', 'DWMC']
@@ -1124,14 +1186,14 @@ def run_kpi(req):
 
         return JsonResponse({'success': True, 'msg': '绩效考核运行成功，请核查数据！'})
 
-    except:
+    except Error:
+        db.rollback()
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '绩效考核运行失败：数据库错误'})
 
 
 @check_login
 def custermize_kpi(req):
-    # TODO: 不考核教职工可在教职工页面采用相同方法
     try:
         payroll = str(req.COOKIES.get('payroll'))
 
@@ -1157,6 +1219,7 @@ def custermize_kpi(req):
 
         return JsonResponse({'success': True, 'msg': '绩效考核定制成功，请核查数据！'})
 
-    except:
+    except Error:
+        db.rollback()  # NOTE: OR open SQLAlchemy autocommit
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '绩效考核定制失败：数据库错误'})

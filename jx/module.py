@@ -1,6 +1,6 @@
 # coding: utf-8
 # 规则引擎使用，不需要移植到数据库；view模型改变后，需重新手工执行rule.py
-# TODO: view performance. possible to move view to table and sync between tables
+# NOTE: view performance. possible to move view to table and sync between tables
 
 from jx.sqlalchemy_env import *
 
@@ -203,6 +203,7 @@ class VIEW_ZZJGJBSJXX(Base):
 
     @staticmethod
     def get_title_columns() -> List[dict]:
+        # TODO: modify as DR_XMJFXX
         return [
             {'table': 'dr_zzjgjbsjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', },
@@ -234,7 +235,8 @@ class VIEW_ZZJGJBSJXX(Base):
             dpmts = dpmts_query.all()
 
             for dpmt in dpmts:
-                departments.extend(VIEW_ZZJGJBSJXX.get_managed_departments(str(dpmt.DWH)))
+                if dpmt:
+                    departments.extend(VIEW_ZZJGJBSJXX.get_managed_departments(str(dpmt.DWH)))
         except:
             logger.error(sys_info())
             pass
@@ -406,6 +408,7 @@ class VIEW_JZGJCSJXX(Base):
 
     @staticmethod
     def get_title_columns() -> List[dict]:
+        # TODO: modify as DR_XMJFXX
         return [
             {'table': 'dr_jzgjcsjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', },
             {'table': 'dr_jzgjcsjxx', 'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', },
@@ -445,7 +448,7 @@ class VIEW_XMJFXX(Base):
     __tablename__CH__ = '项目经费信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    JHJFZE = Column('JHJFZE', Float, unique=True, default=0.0)  # 计划经费总额
+    JHJFZE = Column('JHJFZE', Float, default=0.0)  # 计划经费总额
     XMJFLYM = Column('XMJFLYM', String(16), default='')  # 项目经费来源码
     BRRQ = Column('BRRQ', DateTime, default=now())  # 拨入日期
     BKS = Column('BKS', Float, default=0.0)  # 拨款数
@@ -758,13 +761,16 @@ def generate_class_view(name='module', create_view=True):
             try:
                 print("1. DROP VIEW " + v_class.__tablename__.replace('kh_', 'view_'))
                 cursor.execute("DROP VIEW " + v_class.__tablename__.replace('kh_', 'view_'))
+                conn.commit()
             except Error as e:
+                conn.rollback()
                 print(e)
             except Exception as e:
                 print(e)
 
             print('2. ' + v_class.sql())
             cursor.execute(v_class.sql())
+            conn.commit()
 
         else:  # generate view structure for FE
             cdf.append({

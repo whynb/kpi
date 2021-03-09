@@ -30,6 +30,7 @@
                         <div class="form-group form-inline" id="tabletoolbar">
                             <table border="0">
                                 <tr>
+                                    <!--
                                     <td>
                                         <label class="control-label">  工资号: </label>
                                         <input type="text" name="teacherid" id="paynum" class="form-control"  placeholder="请输入工资号">
@@ -39,13 +40,11 @@
                                         <label class="control-label">  姓名: </label>
                                         <input type="text" name="teacherid" id="staffname" class="form-control" placeholder="请输入姓名">
                                     </td>
-                                    <!--
                                     <td>
                                         <span>&nbsp;    </span>
                                         <label class="control-label">  部门: </label>
                                         <select class="selectpicker" data-width="200" title="--------空--------" id="cur_department"></select>
                                     </td>
-                                    -->
                                     <td>
                                         <span>&nbsp;    </span>
                                         <button id="btn_search" onclick="refresh()" type="button" class="btn btn-danger">
@@ -58,6 +57,7 @@
                                             <span class="fa fa-refresh" aria-hidden="true"></span> 全部
                                         </button>
                                     </td>
+                                    -->
                                 </tr>
                             </table>
                         </div>
@@ -73,14 +73,6 @@
 <script>
 
     $(function () {
-        $.getJSON("{{ url('get_department') }}", function (ret) {
-            $("<option  value=\"-1\">--------空--------</option>").appendTo($('#cur_department'));
-            for (var i = 0; i < ret.length; i++) {
-                $("<option value=" + ret[i]['curr_department_id'] + ">  " + ret[i]['curr_department_name'] + " </option>").appendTo($('#cur_department'));
-            }
-            $('#cur_department').selectpicker('refresh');
-        });
-
         var oTable = new TableInit();
         oTable.Init();
     });
@@ -149,20 +141,24 @@
             onEditableSave: function (field, row, oldValue, $el) {
                 var data = row;
                 data.field = field;
-                data.menu = '{{ menu }}';
+                data.menu = 'role_assign';
                 $.ajax({
                     type: "post",
                     url: "{{ url('role_inline_edit') }}",
                     headers: {"X-CSRFToken": getCookie('csrftoken')},
                     data: data,
                     dataType: 'JSON',
-                    success: function (data, status) { if (status == "success") { $.hulla.send(data.msg, "warning"); } },
+                    success: function (data, status) { 
+                        if (data.success == true) { 
+                            $.hulla.send(data.msg, "warning");
+                        }
+                        else $.hulla.send(data.msg, "danger");
+                    },
                     error: function () { $.hulla.send('在线编辑异常，请重试！', "danger"); },
-                    complete: function () { refreshTable();}
+                    complete: function () { refresh();}
                 });
             }
                     {% endif %}
-
             });
         };
 
