@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="Merge remote-tracking branch 'origin/dev' into dev-qiao&#10;&#10;# Conflicts:&#10;#&#9;.idea/dataSources.local.xml&#10;#&#9;.idea/workspace.xml&#10;#&#9;jx/model_dc.py&#10;#&#9;jx/model_dr.py&#10;#&#9;jx/module.py&#10;#&#9;kpi/settings.py">
+      <change afterPath="$PROJECT_DIR$/.idea/kpi.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/model_dr.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +26,74 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@47.94.148.26" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="views" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="dr_pksjxx: table" type="285a2a93:MysqlImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="kpi: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="views" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
     <select />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
@@ -56,7 +128,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
   </component>
-  <component name="RunManager" selected="Django server.kpi">
+  <component name="RunManager" selected="Python.module">
     <configuration name="https server" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -207,6 +279,7 @@
       <workItem from="1614909064994" duration="3784000" />
       <workItem from="1615096659872" duration="41000" />
       <workItem from="1615096742730" duration="2105000" />
+      <workItem from="1615101389994" duration="10246000" />
     </task>
     <task id="LOCAL-00001" summary="test comments again">
       <created>1613798792460</created>
@@ -320,7 +393,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615096844644</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="0307 qiao">
+      <created>1615101519413</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1615101519413</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -355,18 +435,19 @@
     <MESSAGE value="module3.5" />
     <MESSAGE value="3.5.1" />
     <MESSAGE value="Merge remote-tracking branch 'origin/dev' into dev-qiao&#10;&#10;# Conflicts:&#10;#&#9;.idea/dataSources.local.xml&#10;#&#9;.idea/workspace.xml&#10;#&#9;jx/model_dc.py&#10;#&#9;jx/model_dr.py&#10;#&#9;jx/module.py&#10;#&#9;kpi/settings.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/dev' into dev-qiao&#10;&#10;# Conflicts:&#10;#&#9;.idea/dataSources.local.xml&#10;#&#9;.idea/workspace.xml&#10;#&#9;jx/model_dc.py&#10;#&#9;jx/model_dr.py&#10;#&#9;jx/module.py&#10;#&#9;kpi/settings.py" />
+    <MESSAGE value="0307 qiao" />
+    <option name="LAST_COMMIT_MESSAGE" value="0307 qiao" />
   </component>
   <component name="WindowStateProjectService">
     <state x="490" y="138" width="800" height="684" key="#Inspections" timestamp="1614411756609">
       <screen x="72" y="27" width="1646" height="899" />
     </state>
     <state x="490" y="138" width="800" height="684" key="#Inspections/72.27.1646.899@72.27.1646.899" timestamp="1614411756609" />
-    <state x="834" y="157" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614909178227">
+    <state x="663" y="155" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1615101407908">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="751" y="138" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1646.899@72.27.1646.899" timestamp="1614566458113" />
-    <state x="834" y="157" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1614909178227" />
+    <state x="663" y="155" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615101407908" />
     <state x="662" y="115" width="658" height="883" key="#kpi" timestamp="1615097093804">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -375,11 +456,11 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="662" y="128" width="658" height="857" key="#model_dr/72.27.1848.1053@72.27.1848.1053" timestamp="1614906735670" />
-    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2" timestamp="1615096844254">
+    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2" timestamp="1615101519219">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="522" y="27" width="867" height="899" key="CommitChangelistDialog2/72.27.1646.899@72.27.1646.899" timestamp="1614564668471" />
-    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1615096844254" />
+    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1615101519219" />
     <state x="172" y="127" width="1648" height="853" key="DiffContextDialog" timestamp="1615097552607">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -388,50 +469,51 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="714" y="234" width="424" height="525" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1615097087396" />
-    <state width="1043" height="371" key="GridCell.Tab.0.bottom" timestamp="1615099048662">
+    <state width="1794" height="182" key="GridCell.Tab.0.bottom" timestamp="1615272252028">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1331" height="367" key="GridCell.Tab.0.bottom/72.27.1646.899@72.27.1646.899" timestamp="1614751598319" />
-    <state width="1043" height="371" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1615099048662" />
-    <state width="1043" height="371" key="GridCell.Tab.0.center" timestamp="1615099048661">
+    <state width="1794" height="182" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1615272252028" />
+    <state width="1794" height="182" key="GridCell.Tab.0.center" timestamp="1615272252027">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1331" height="367" key="GridCell.Tab.0.center/72.27.1646.899@72.27.1646.899" timestamp="1614751598319" />
-    <state width="1043" height="371" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1615099048661" />
-    <state width="1043" height="371" key="GridCell.Tab.0.left" timestamp="1615099048661">
+    <state width="1794" height="182" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1615272252027" />
+    <state width="1794" height="182" key="GridCell.Tab.0.left" timestamp="1615272252025">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1331" height="367" key="GridCell.Tab.0.left/72.27.1646.899@72.27.1646.899" timestamp="1614751598318" />
-    <state width="1043" height="371" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1615099048661" />
-    <state width="1043" height="371" key="GridCell.Tab.0.right" timestamp="1615099048662">
+    <state width="1794" height="182" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1615272252025" />
+    <state width="1794" height="182" key="GridCell.Tab.0.right" timestamp="1615272252027">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1331" height="367" key="GridCell.Tab.0.right/72.27.1646.899@72.27.1646.899" timestamp="1614751598319" />
-    <state width="1043" height="371" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1615099048662" />
-    <state width="1200" height="335" key="GridCell.Tab.1.bottom" timestamp="1614752645622">
+    <state width="1794" height="182" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1615272252027" />
+    <state width="1794" height="335" key="GridCell.Tab.1.bottom" timestamp="1615270291522">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1592" height="274" key="GridCell.Tab.1.bottom/72.27.1646.899@72.27.1646.899" timestamp="1614509917810" />
-    <state width="1200" height="335" key="GridCell.Tab.1.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1614752645622" />
-    <state width="1200" height="335" key="GridCell.Tab.1.center" timestamp="1614752645621">
+    <state width="1794" height="335" key="GridCell.Tab.1.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1615270291522" />
+    <state width="1794" height="335" key="GridCell.Tab.1.center" timestamp="1615270291521">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1592" height="274" key="GridCell.Tab.1.center/72.27.1646.899@72.27.1646.899" timestamp="1614509917809" />
-    <state width="1200" height="335" key="GridCell.Tab.1.center/72.27.1848.1053@72.27.1848.1053" timestamp="1614752645621" />
-    <state width="1200" height="335" key="GridCell.Tab.1.left" timestamp="1614752645621">
+    <state width="1794" height="335" key="GridCell.Tab.1.center/72.27.1848.1053@72.27.1848.1053" timestamp="1615270291521" />
+    <state width="1794" height="335" key="GridCell.Tab.1.left" timestamp="1615270291521">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1592" height="274" key="GridCell.Tab.1.left/72.27.1646.899@72.27.1646.899" timestamp="1614509917809" />
-    <state width="1200" height="335" key="GridCell.Tab.1.left/72.27.1848.1053@72.27.1848.1053" timestamp="1614752645621" />
-    <state width="1200" height="335" key="GridCell.Tab.1.right" timestamp="1614752645621">
+    <state width="1794" height="335" key="GridCell.Tab.1.left/72.27.1848.1053@72.27.1848.1053" timestamp="1615270291521" />
+    <state width="1794" height="335" key="GridCell.Tab.1.right" timestamp="1615270291522">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1592" height="274" key="GridCell.Tab.1.right/72.27.1646.899@72.27.1646.899" timestamp="1614509917810" />
-    <state width="1200" height="335" key="GridCell.Tab.1.right/72.27.1848.1053@72.27.1848.1053" timestamp="1614752645621" />
-    <state width="273" height="606" key="HiddenNamespacesPopup" timestamp="1614691272564">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state width="1794" height="335" key="GridCell.Tab.1.right/72.27.1848.1053@72.27.1848.1053" timestamp="1615270291522" />
+    <state width="307" height="710" key="HiddenNamespacesPopup" timestamp="1615103493173">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="273" height="606" key="HiddenNamespacesPopup/72.27.1646.899@72.27.1646.899" timestamp="1614691272564" />
+    <state width="307" height="710" key="HiddenNamespacesPopup/72.27.1848.1053@72.27.1848.1053" timestamp="1615103493173" />
     <state x="247" y="122" width="1478" height="879" key="MergeDialog" timestamp="1614754973909">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -454,16 +536,16 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="172" y="127" width="1648" height="853" key="ShowDiffWithBranchDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615097552607" />
-    <state x="541" y="243" width="800" height="566" key="Vcs.Push.Dialog.v2" timestamp="1614910590223">
+    <state x="541" y="243" width="800" height="566" key="Vcs.Push.Dialog.v2" timestamp="1615101644730">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="490" y="211" width="800" height="538" key="Vcs.Push.Dialog.v2/72.27.1646.899@72.27.1646.899" timestamp="1614564673114" />
-    <state x="541" y="243" width="800" height="566" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1614910590223" />
-    <state x="884" y="421" width="375" height="263" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1615095540003">
+    <state x="541" y="243" width="800" height="566" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1615101644730" />
+    <state x="884" y="421" width="375" height="263" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1615255637611">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="795" y="363" width="375" height="263" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/72.27.1646.899@72.27.1646.899" timestamp="1614740937925" />
-    <state x="884" y="421" width="375" height="263" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/72.27.1848.1053@72.27.1848.1053" timestamp="1615095540003" />
+    <state x="884" y="421" width="375" height="263" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/72.27.1848.1053@72.27.1848.1053" timestamp="1615255637611" />
     <state x="184" y="144" width="1624" height="819" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1614907529461">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -478,11 +560,11 @@
     </state>
     <state x="487" y="90" width="806" height="779" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1646.899@72.27.1646.899" timestamp="1614751137511" />
     <state x="538" y="101" width="806" height="779" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1848.1053@72.27.1848.1053" timestamp="1614836506108" />
-    <state x="733" y="455" width="457" height="175" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1615096877150">
+    <state x="733" y="455" width="457" height="175" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1615101695910">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="661" y="392" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1646.899@72.27.1646.899" timestamp="1614564565549" />
-    <state x="733" y="455" width="457" height="175" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1848.1053@72.27.1848.1053" timestamp="1615096877150" />
+    <state x="733" y="455" width="457" height="175" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1848.1053@72.27.1848.1053" timestamp="1615101695910" />
     <state x="648" y="78" width="1064" height="1002" key="find.popup" timestamp="1615095403669">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -495,8 +577,8 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614740974817" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$https_server.coverage" NAME="https server Coverage Results" MODIFIED="1614392324196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1615095565967" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1615272163261" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/kpi$manage.coverage" NAME="https server Coverage Results" MODIFIED="1613813474271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dev_sjq_kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1615095774318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1615272251998" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
   </component>
 </project>

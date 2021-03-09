@@ -7,5 +7,13 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://47.94.148.26:3306</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Django default" uuid="8584a2d0-f9d0-4a86-b9ec-55ec2d27f693">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/kpi/settings.py</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://47.94.148.26:3306/kpi</jdbc-url>
+    </data-source>
   </component>
 </project>
