@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="Merge remote-tracking branch 'origin/dev' into dev-qiao&#10;&#10;# Conflicts:&#10;#&#9;.idea/dataSources.local.xml&#10;#&#9;.idea/workspace.xml&#10;#&#9;jx/model_dc.py&#10;#&#9;jx/model_dr.py&#10;#&#9;jx/module.py&#10;#&#9;kpi/settings.py">
-      <change afterPath="$PROJECT_DIR$/.idea/kpi.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/model_dr.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
-    </list>
+    <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -279,7 +271,7 @@
       <workItem from="1614909064994" duration="3784000" />
       <workItem from="1615096659872" duration="41000" />
       <workItem from="1615096742730" duration="2105000" />
-      <workItem from="1615101389994" duration="10246000" />
+      <workItem from="1615101389994" duration="10549000" />
     </task>
     <task id="LOCAL-00001" summary="test comments again">
       <created>1613798792460</created>
@@ -400,7 +392,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615101519413</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="实验，实习，理论课新建成共享表格了，如何改正？想法新建一个排课数据信息用于实习的，没有成功。">
+      <created>1615272440686</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1615272440686</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -436,7 +435,8 @@
     <MESSAGE value="3.5.1" />
     <MESSAGE value="Merge remote-tracking branch 'origin/dev' into dev-qiao&#10;&#10;# Conflicts:&#10;#&#9;.idea/dataSources.local.xml&#10;#&#9;.idea/workspace.xml&#10;#&#9;jx/model_dc.py&#10;#&#9;jx/model_dr.py&#10;#&#9;jx/module.py&#10;#&#9;kpi/settings.py" />
     <MESSAGE value="0307 qiao" />
-    <option name="LAST_COMMIT_MESSAGE" value="0307 qiao" />
+    <MESSAGE value="实验，实习，理论课新建成共享表格了，如何改正？想法新建一个排课数据信息用于实习的，没有成功。" />
+    <option name="LAST_COMMIT_MESSAGE" value="实验，实习，理论课新建成共享表格了，如何改正？想法新建一个排课数据信息用于实习的，没有成功。" />
   </component>
   <component name="WindowStateProjectService">
     <state x="490" y="138" width="800" height="684" key="#Inspections" timestamp="1614411756609">
@@ -456,11 +456,11 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="662" y="128" width="658" height="857" key="#model_dr/72.27.1848.1053@72.27.1848.1053" timestamp="1614906735670" />
-    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2" timestamp="1615101519219">
+    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2" timestamp="1615272440333">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="522" y="27" width="867" height="899" key="CommitChangelistDialog2/72.27.1646.899@72.27.1646.899" timestamp="1614564668471" />
-    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1615101519219" />
+    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1615272440333" />
     <state x="172" y="127" width="1648" height="853" key="DiffContextDialog" timestamp="1615097552607">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -536,11 +536,11 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="172" y="127" width="1648" height="853" key="ShowDiffWithBranchDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615097552607" />
-    <state x="541" y="243" width="800" height="566" key="Vcs.Push.Dialog.v2" timestamp="1615101644730">
+    <state x="541" y="243" width="800" height="566" key="Vcs.Push.Dialog.v2" timestamp="1615272447010">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="490" y="211" width="800" height="538" key="Vcs.Push.Dialog.v2/72.27.1646.899@72.27.1646.899" timestamp="1614564673114" />
-    <state x="541" y="243" width="800" height="566" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1615101644730" />
+    <state x="541" y="243" width="800" height="566" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1615272447010" />
     <state x="884" y="421" width="375" height="263" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1615255637611">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
