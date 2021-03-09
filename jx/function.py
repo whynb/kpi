@@ -827,14 +827,17 @@ def edit(req):
         logger.info(sql_update)
         cursor.execute(sql_update)
         conn.commit()
-
-        # TODO: add meaningful words and translate to Chinese
         return JsonResponse({'success': True, 'msg': '成功更新为：' + set_to})
 
     except Error:
         conn.rollback()
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '更新失败：数据库错误'})
+
+    except:
+        conn.rollback()
+        logger.error(sys_info())
+        return JsonResponse({'success': False, 'msg': '更新失败：数据库错误!!!'})
 
 
 @check_login
@@ -849,9 +852,6 @@ def get_col_def(req):
 @sys_error
 def get_title(req):
     v = eval(str(req.GET.dict()))
-    # code  # DWH if type=='d', JZGH if type=='u'
-    # type  # d - department, u - user
-    # start|end  # start/end date from FE
     module_name = 'module'
     view_prefix = 'view'
     if v['menu'] in rule_tables:
@@ -866,7 +866,6 @@ def get_title(req):
 @sys_error
 def get_data(req):
     payroll = str(req.COOKIES.get('payroll'))
-
     v = eval(str(req.GET.dict()))
 
     module_name = 'module'
@@ -875,17 +874,17 @@ def get_data(req):
         module_name = 'rule'
         view_prefix = 'kh'
 
-    # v['table'] = (view_prefix + "_" + v['menu']).upper().lower()
-    v['table'] = ("view_" + v['menu']).upper().lower()  # change to lower due to un-support upper SQL on Linux
+    v['table'] = ("view_" + v['menu']).upper().lower()
     v['start'] += "-01 00:00:00"
+    v['m_start'] = v['start'][:10]
     v['end'] = month_end(v['end'])
+    v['m_end'] = v['end'][:10]
     if 'sort' not in v or v['sort'] in ('', None):
         v['sort'] = 'id'
         v['order'] = 'DESC'
 
     # code  # DWH if type=='d', JZGH if type=='u'
     # type  # d - department, u - user
-    # TODO: use department and payroll to get data
     if 'type' in v:
         if v['type'] == 'd':
             v['department'] = v['code']
@@ -904,7 +903,14 @@ def get_data(req):
     sql_count = """ SELECT COUNT(*) AS count FROM %(table)s """ % v
     sql_content = """ SELECT * FROM %(table)s """ % v
 
+    # NOTE: add stamp as filter condition
     sql_where = " WHERE 1=1 "
+    if v['menu'] not in ('zzjgjbsjxx', 'jzgjcsjxx', ):
+        sql_where += """
+            AND DATE_FORMAT(stamp, '%%Y-%%m-%%d')>='%(m_start)s' 
+            AND DATE_FORMAT(stamp, '%%Y-%%m-%%d')<='%(m_end)s'    
+        """
+
     if v['type'] == 'u':
         sql_where += " AND JZGH='%(payroll)s'"
     elif v['type'] == 'd':
@@ -951,6 +957,7 @@ def get_class_view(req):
 
 @check_login
 def delete_data(req):
+    payroll = str(req.COOKIES.get('payroll'))
     v = eval(str(req.POST.dict()))
     data = json.loads(v['data'])
     function = v['menu']
@@ -974,15 +981,20 @@ def delete_data(req):
             msg += msg_tablename + ': 删除失败, 未定义数据唯一性条件<br>'
             continue
 
+        if function == 'zzjgjbsjxx':  # can't delete parent and current
+            from jx.module import VIEW_ZZJGJBSJXX
+            user = get_user_information(payroll)
+            __dpts = VIEW_ZZJGJBSJXX.get_managed_departments(str(user['DWH'])).remove(str(user['DWH']))
+            where += " AND DWH IN " + str(__dpts).replace('[', '(').replace(']', ')')
+
+        if function == 'jzgjcsjxx':  # can't delete self and admin
+            where += " AND JZGH NOT IN ('admin', '" + payroll + "')"
+
+        # TODO: add more WHERE conditions to keep system safe
         for c in range(0, int(count)):
             sql_delete = """ DELETE FROM %(table)s WHERE %(where)s """ % {'table': d_table, 'where': where % data[c]}
-
-            # TODO: add more WHERE conditions to keep system safe
-            # 1. zzjgjbsjxx can't delete parent and current
-            # 2. jzgjcsjxx can't delete self and admin
-            # 3. other conditions ???
-
             try:
+                logger.info(sql_delete)
                 cursor.execute(sql_delete)
                 conn.commit()
                 msg += msg_tablename + ': 删除数据成功<br>'

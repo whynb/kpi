@@ -99,9 +99,9 @@
                                     <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
                                     <div class="col-sm-8">
                                         {% if title['type'] in ['float'] %}
-                                            <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}" value="0">
+                                            <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}" value="0"/>
                                         {% else %}
-                                            <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}">
+                                            <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}"/>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -263,15 +263,13 @@
                     }
                 {% endif %}
                 {% if title['type'] in ['float'] %}
-                    let val = $('#{{ title['field'] }}').val();
-                    if (val == '' || notFloat(val)) {
+                    if ($('#{{ title['field'] }}').val() == '' || notFloat($('#{{ title['field'] }}').val())) {
                         alert('{{ title['title'] }} 格式错误，请重新输入！');
 	                    return false;
                     }
                 {% endif %}
                 {% if title['type'] in ['number'] %}
-                    let val = $('#{{ title['field'] }}').val();
-                    if (val == '' || notNumber(val)) {
+                    if ($('#{{ title['field'] }}').val() == '' || notNumber($('#{{ title['field'] }}').val())) {
                         alert('{{ title['title'] }} 格式错误，请重新输入！');
 	                    return false;
                     }

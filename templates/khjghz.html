@@ -31,6 +31,21 @@
     <div class="column-right" style="height: 1000px">
         <div class="form-group form-inline" id="toolbar">
             {% include 'html/sdate.html' %}
+
+            <div class="col-sm-5 itemtype" id="checkItemTypes">
+                <script>
+                    $.getJSON("{% url 'sal_get_table' %}?table=sal_itemtype", function(ret){
+                        for(var i=0; i < ret.length-1; i++){
+                            $('<div class="col-sm-4 input-group"><span class="input-group-addon">' +
+                                '<input onclick="getItemData()" type="checkbox" checked="" data-code="' + ret[i].id +
+                                '"></span><input type="text" class="form-control" placeholder="' + ret[i].name +
+                                '" readonly></div>').appendTo($('#checkItemTypes'));
+                        }
+                        // getItemData();
+                    });
+                </script>
+            </div>
+
             {% if editable[5] %}
                 <button id="download" class="btn btn-success" onclick="button_download('{{ tips }}-'+getDateString(0)+'-'+getHourMinute(), 'excel')"><i class="fa fa-download"></i> 下载</button>
             {% endif %}

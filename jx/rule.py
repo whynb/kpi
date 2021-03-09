@@ -497,7 +497,7 @@ class KH_KHGZDZ(Base, KpiObjectBase):
         self.note = note
 
 
-class KH_KHJGHZ(Base, KpiObjectBase):  # TODO: add footer total
+class KH_KHJGHZ(Base, KpiObjectBase):
     __tablename__ = "kh_khjghz"
     __tablename__CH__ = "考核结果汇总"
     __table_args__ = (
@@ -598,7 +598,7 @@ class KH_KHJGHZ(Base, KpiObjectBase):  # TODO: add footer total
             {'table': 'kh_jxkhgz', 'field': 'KHLX', 'title': '考核类型', 'editable': 'F', 'type': 'text', 'create': 'F', },
             {'table': 'kh_jxkhgz', 'field': 'KHZL', 'title': '考核子类', 'editable': 'F', 'type': 'text', 'create': 'F', },
             {'table': 'kh_jxkhgz', 'field': 'XXKLZL', 'title': '详细考核子类', 'editable': 'F', 'type': 'text', 'create': 'F', },
-            {'table': 'kh_khjghz', 'field': 'KHJDHJ', 'title': '考核绩点合计', 'editable': 'F', 'type': 'text', 'create': 'T', },
+            {'table': 'kh_khjghz', 'field': 'KHJDHJ', 'title': '考核绩点合计', 'editable': 'F', 'type': 'float', 'create': 'T', },
             {'table': 'kh_khjghz', 'field': 'stamp', 'title': '时间戳', 'editable': 'F', 'type': 'date', 'create': 'F', },
             {'table': 'kh_khjghz', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'T', },
         ]

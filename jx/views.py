@@ -194,8 +194,7 @@ def check_login(fn):
 def sys_error(fn):
     def wrapper(req, *args, **kwargs):
         try:
-            # TODO: verify SQL injection
-            # verify req/para to avoid sql injection by check if there are ' ' chars
+            # TODO: verify SQL injection. sqlalchemy->text() DOESN'T work due to compose SQL
             v = eval(str(req.POST.dict()))
             for k, val in v.items():
                 if len(k.split(' ')) > 1 or len(val.split(' ')) > 1:
@@ -474,6 +473,7 @@ def khgzdz(req):
 
 @check_login
 def khjghz(req):
+    # TODO: add showing radio condition: '单位'（default），'教职工'，'考核名称'
     from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]
@@ -492,6 +492,7 @@ def khjghz(req):
             'search_columns': get_module_static_method(menu, 'get_search_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
+            'sum_footer': True,
         }
     )
 

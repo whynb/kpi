@@ -13,12 +13,6 @@
             columns[i].halign= 'center';
             columns[i].valign = "middle";
 
-            // if (columns[i].field.substr(0, 4) == 'item') {
-            //     var v = "function(rows) { var sum = 0; for (var j=0; j<rows.length; j++) { sum += parseFloat(rows[j]."
-            //         + columns[i].field + "); } return sum.toFixed(2); };";
-            //     columns[i].footerFormatter = new Function("return " + v)();
-            // }
-
             if (columns[i].field == 'note') columns[i].width = '100px';
         }
         return columns;
@@ -39,36 +33,23 @@
         return value.substring(0, 10);
     }
 
-    function build_title___(items) {
-        columns = [{ checkbox: true }];
-        for (var i=0; i < items.length; i++){
-            var col = {title: items[i].title, field: items[i].field, sortable : true,};
-            if (items[i].editable == 'True' || items[i].editable == 'T') {
-                col = {
-                    title: items[i].title, field: items[i].field, sortable : true,
-                    editable: {
-                        type: "text",
-                        emptytext: "请输入",
-                        validate: function (v) { if($.trim(v) == '') return '请重新输入！'; },
-                    },
-                };
-            }
-            if (items[i].type == 'date') col.formatter = DateFormatter;
-            if (items[i].type == 'year') col.formatter = YearFormatter;
-            if (items[i].type == 'month') col.formatter = MonthFormatter;
-            columns.push(col);
-        }
-        console.log(columns);
-        columns = align(columns);
-    }
-
     function build_title(items) {
-        columns = [{ checkbox: true }];
+        {% if sum_footer %}
+        columns = [{ checkbox: true, footerFormatter: '合计', }];
+        {% else %}
+        columns = [{ checkbox: true, }];
+        {% endif %}
         var col = {};
         var source = [];
 
         {% for title in title_columns %}
-            col = {title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,};
+            col = {
+                title: "{{ title['title'] }}",
+                field: "{{ title['field'] }}",
+                type: "{{ title['type'] }}",
+                sortable : true,
+            };
+            {% if editable[2] %}
             {% if title['editable'] in ['True', 'true', 't', 'T'] %}
                 {% if title['type'] in ['static', 'table'] %}
                     source = [];
@@ -79,6 +60,7 @@
                     {% endwith %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             emptytext: '--',
                             type: "select",
@@ -96,6 +78,7 @@
                     {% endwith %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             emptytext: '--',
                             type: "select",
@@ -107,6 +90,7 @@
                 {% if title['type'] in ['text', 'textarea', 'float', 'year', 'month', 'date'] %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             type: "text",
                             emptytext: "请输入",
@@ -121,6 +105,7 @@
                     {% endfor %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             emptytext: '--',
                             type: "select",
@@ -137,6 +122,7 @@
                     {% endfor %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             emptytext: '',
                             type: "select",
@@ -146,8 +132,9 @@
                     };
                     {% endif %}
                 {% endif %}
-
             {% endif %}
+            {% endif %}
+
             {% if title['type'] in ['date'] %}
                 col.formatter = DateFormatter;
             {% endif %}
@@ -157,6 +144,23 @@
             {% if title['type'] in ['month'] %}
                 col.formatter = MonthFormatter;
             {% endif %}
+
+            {% if sum_footer %}
+            col.footerFormatter = '';
+            if (col.type == 'float') {
+                col.footerFormatter = new Function(
+                    "return function(rows) { var sum=0; for (var j=0; j<rows.length; j++) { sum += parseFloat(rows[j]."
+                    + col.field + "); } return sum.toFixed(2); };"
+                )();
+            }
+            if (col.type == 'number') {
+                col.footerFormatter = new Function(
+                    "return function(rows) { var sum=0; for (var j=0; j<rows.length; j++) { sum += parseFloat(rows[j]."
+                    + col.field + "); } return sum.toFixed(0); };"
+                )();
+            }
+            {% endif %}
+
             columns.push(col);
         {% endfor %}
 
@@ -174,6 +178,11 @@
             locale: 'zh-CN',
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,                   //是否显示分页（*）
+
+            {% if sum_footer %}
+            showFooter: true,
+            {% endif %}
+
             queryParams: function (params) {
                 var sort = params['sort'];
                 if (sort == undefined) sort = "";
