@@ -322,6 +322,60 @@ class DR_BKS_JPKC(Base):
         return ['KCH']
 
 
+class DR_KSAPXX(Base):
+    '''
+
+KSRQ     考试日期 C  教务处、研究生院
+KSSC     考试时长 N  教务处、研究生院
+KSFSLXM  考试方式类型码 C(1) JX_KSFS 考试方式代码 教务处、研究生院
+KCH      课程号 C  教务处、研究生院
+JKRGH    监考人工号 C(8)  教务处、研究生院
+KSJSH    考试教室号 C  教务处、研究生院
+JKRXM    监考人姓名 C  教务处、研究生院
+KSRS     考试人数 N  教务处、研究生院
+
+    '''
+
+    __tablename__ = 'dr_ksapxx'
+    __tablename__CN__ = '考试安排信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    KSRQ = Column('KSRQ', DateTime, default=now())  # 考试日期
+    KSSC = Column('KSSC', String(16), default='')  # 考试时长
+    KSFSLXM = Column('KSFSLXM', String(16), default='')  # 考试方式类型码
+    KCH = Column('KCH', String(16), default='')  # 课程号
+    JKRGH = Column('JKRGH', String(16), default='')  # 监考人工号
+    KSJSH = Column('KSJSH', String(16), default='')  # 考试教室号
+    JKRXM = Column('JKRXM', String(16), default='')  # 监考人姓名
+    KSRS = Column('KSRS', String(16), default='')  # 考试人数
+    SSXY = Column('SSXY', String(16), default='')  # 本次考试所属学院
+    JSSSXY = Column('JSSSXY', String(16), default='')  # 教师所属学院
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+            '考试日期': ['KSRQ', 'DateTime'],
+            '考试时长': ['KSSC'],
+            '考试方式类型码': ['KSFSLXM'],
+            '课程号': ['KCH'],
+            '监考人工号': ['JKRGH'],
+            '考试教室号': ['KSJSH'],
+            '监考人姓名': ['JKRXM'],
+            '考试人数': ['KSRS'],
+            '本次考试所属学院': ['SSXY'],
+            '教师所属学院': ['JSSSXY'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['KCH','KSRQ','KSJSH','SSXY']
+
 class DR_JZGJCSJXX(Base):
     __tablename__ = 'dr_jzgjcsjxx'
     __tablename__CH__ = '教职工基础数据信息'

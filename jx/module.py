@@ -625,6 +625,190 @@ class VIEW_ZDSYXSS(Base):
     def get_search_columns() -> List[str]:
         return ['JSGH']
 
+
+
+class VIEW_KSAPXX(Base):
+    '''
+KSRQ     考试日期 C  教务处、研究生院
+KSSC     考试时长 N  教务处、研究生院
+KSFSLXM  考试方式类型码 C(1) JX_KSFS 考试方式代码 教务处、研究生院
+KCH      课程号 C  教务处、研究生院
+JKRGH    监考人工号 C(8)  教务处、研究生院
+KSJSH    考试教室号 C  教务处、研究生院
+JKRXM    监考人姓名 C  教务处、研究生院
+KSRS     考试人数 N  教务处、研究生院
+    '''
+
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_ksapxx'
+    __tablename__CH__ = '考试安排信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    KSRQ = Column('KSRQ', DateTime, default=now())  # 考试日期
+    KSSC = Column('KSSC', String(16), default='')  # 考试时长
+    KSFSLXM = Column('KSFSLXM', String(16), default='')  # 考试方式类型码
+    KCH = Column('KCH', String(16), default='')  # 课程号
+    JKRGH = Column('JKRGH', String(16), default='')  # 监考人工号
+    KSJSH = Column('KSJSH', String(16), default='')  # 考试教室号
+    JKRXM = Column('JKRXM', String(16), default='')  # 监考人姓名
+    KSRS = Column('KSRS', String(16), default='')  # 考试人数
+    SSXY = Column('SSXY', String(16), default='')  # 本次考试所属学院
+    JSSSXY = Column('JSSSXY', String(16), default='')  # 教师所属学院
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+            CREATE VIEW view_ksapxx AS
+            SELECT 
+                dr.id AS id,         
+                dr.stamp AS stamp,            
+                dr.note AS note,        
+                dr.KSRQ AS KSRQ,            
+                dr.KSSC AS KSSC,            
+                dr.KSFSLXM AS KSFSLXM,            
+                dr.KCH AS KCH,             
+                dr.JKRGH AS JKRGH,            
+                dr.KSJSH AS KSJSH,            
+                dr.JKRXM AS JKRXM,            
+                dr.KSRS AS KSRS,  
+                dr.SSXY AS SSXY,
+                jkr.DWH AS JSSSXY                                 
+            FROM dr_ksapxx dr
+            LEFT JOIN dr_jzgjcsjxx jkr on jkr.JZGH = dr.JKRGH
+            LEFT JOIN dr_zzjgjbsjxx zzjg ON zzjg.DWH=jkr.DWH
+            LEFT JOIN dr_pksjxx pk ON pk.KCH=dr.KCH
+            WHERE 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_ksapxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_ksapxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_ksapxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note','JSSSXY']
+
+    @staticmethod
+    def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_ksapxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_ksapxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
+            {'table': 'dr_ksapxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
+
+            {'table': 'dr_ksapxx', 'field': 'KSRQ', 'title': '考试日期', 'editable': 'False', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'KSSC', 'title': '考试时长', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'KSFSLXM', 'title': '考试方式类型码', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'KCH', 'title': '课程号', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'JKRGH', 'title': '监考人工号', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_ksapxx', 'field': 'KSJSH', 'title': '考试教室号', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'JKRXM', 'title': '监考人姓名', 'editable': 'True', 'type': 'table', 'create': 'True', 'value': 'dr_jzgjcsjxx:JZGH AS BDS,XM AS BDSXM', 'where': "DWH IN %(departments)s AND JZGH!='admin'", },
+            {'table': 'dr_ksapxx', 'field': 'KSRS', 'title': '考试人数', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'SSXY', 'title': '本次考试所属学院', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'JSSSXY', 'title': '教师所属学院', 'editable': 'False', 'type': 'text','create': 'False', },
+        ]
+    @staticmethod
+    def get_search_columns() -> List[str]:
+        return ['KCH','SSXY','JKRGH','JKRXM']
+
+
+
+class VIEW_JKXSS(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_jkxss'
+    __tablename__CH__ = '监考学时数'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    KCH = Column('KCH', String(16), default='')  # 课程号
+    KSRQ = Column('KSRQ', DateTime, default=now())  # 考试日期
+    KSSC = Column('KSSC', String(16), default='')  # 考试时长
+    KSFSLXM = Column('KSFSLXM', String(16), default='')  # 考试方式类型码
+    KCH = Column('KCH', String(16), default='')  # 课程号
+    JKRGH = Column('JKRGH', String(16), default='')  # 监考人工号
+    KSJSH = Column('KSJSH', String(16), default='')  # 考试教室号
+    JKRXM = Column('JKRXM', String(16), default='')  # 监考人姓名
+    KSRS = Column('KSRS', String(16), default='')  # 考试人数
+    SSXY = Column('SSXY', String(16), default='')  # 本次考试所属学院
+    JSSSXY = Column('JSSSXY', String(16), default='')  # 教师所属学院
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+            CREATE VIEW view_jkxss AS
+            SELECT 
+                dr.id AS id,            
+                dr.KSRQ AS KSRQ,            
+                dr.KSSC AS KSSC,            
+                dr.KSFSLXM AS KSFSLXM,            
+                dr.KCH AS KCH,             
+                dr.JKRGH AS JKRGH,            
+                dr.KSJSH AS KSJSH,            
+                dr.JKRXM AS JKRXM,            
+                dr.KSRS AS KSRS,  
+                dr.SSXY AS SSXY,
+                jkr.DWH AS JSSSXY,                  
+                dr.stamp AS stamp,            
+                dr.note AS note            
+            FROM dr_ksapxx dr
+            LEFT JOIN dr_jzgjcsjxx jkr on jkr.JZGH = dr.JKRGH
+            LEFT JOIN dr_zzjgjbsjxx zzjg ON zzjg.DWH=jkr.DWH
+            LEFT JOIN dr_pksjxx pk ON pk.KCH=dr.KCH
+            WHERE 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_ksapxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_ksapxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_ksapxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note']
+
+    @staticmethod
+    def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_ksapxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text','create': 'False', },
+            {'table': 'dr_ksapxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date','create': 'False', },
+            {'table': 'dr_ksapxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text','create': 'False', },
+
+            {'table': 'dr_ksapxx', 'field': 'KSRQ', 'title': '考试日期', 'editable': 'True', 'type': 'date','create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'KSSC', 'title': '考试时长', 'editable': 'True', 'type': 'text','create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'KSFSLXM', 'title': '考试方式类型码', 'editable': 'True', 'type': 'text','create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'KCH', 'title': '课程号', 'editable': 'True', 'type': 'text','create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'JKRGH', 'title': '监考人工号', 'editable': 'False', 'type': 'text','create': 'False', },
+            {'table': 'dr_ksapxx', 'field': 'KSJSH', 'title': '考试教室号', 'editable': 'True', 'type': 'text','create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'JKRXM', 'title': '监考人姓名', 'editable': 'True', 'type': 'table','create': 'True', 'value': 'dr_jzgjcsjxx:JZGH AS BDS,XM AS BDSXM','where': "DWH IN %(departments)s AND JZGH!='admin'", },
+            {'table': 'dr_ksapxx', 'field': 'KSRS', 'title': '考试人数', 'editable': 'True', 'type': 'text','create': 'True', },
+            {'table': 'dr_ksapxx', 'field': 'SSXY', 'title': '本次考试所属学院', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'JSSSXY', 'title': '教师所属学院', 'editable': 'False', 'type': 'text','create': 'False', },
+        ]
+
+    @staticmethod
+    def get_search_columns() -> List[str]:
+        return ['KCH','SSXY','JKRGH','JKRXM']
+
 class VIEW_JZGJCSJXX(Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_jzgjcsjxx'
