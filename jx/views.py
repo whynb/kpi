@@ -77,6 +77,9 @@ def get_menu_name(req):
 def get_with_users(req):
     payroll = req.COOKIES.get('payroll')
     user = SysUser.objects.get(payroll__exact=payroll)
+    menu = req.get_full_path().split('/')[3]
+    if menu in ['zzjgjbsjxx', '']:
+        return False
     return True if user.role_id in (1, 2) else False
 
 
@@ -284,7 +287,7 @@ def role_assign(req):
     def get_roles():
         res = []
         roles = Role.objects.all()
-        for role in roles:
+        for role in roles[1:]:
             res.append([str(role.id), str(role.role_name)])
         return res
 
