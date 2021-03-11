@@ -28,3 +28,4 @@ templates/html/fixedheadertable.html
 templates/html/left-right.html
 templates/.DS_Store
 static/.DS_Store
+upload/.DS_Store

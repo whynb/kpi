@@ -2,7 +2,10 @@
 # 规则引擎使用，不需要移植到数据库；view模型改变后，需重新手工执行rule.py
 # NOTE: view performance. possible to move view to table and sync between tables
 
-from jx.sqlalchemy_env import *
+from jx.sqlalchemy_env import Base, cursor, conn, db
+from sqlalchemy import *
+from jx.util import now, sys_info, logger
+from typing import List
 
 
 # Document and example
@@ -144,7 +147,7 @@ class VIEW_ZZJGJBSJXX(Base):
     DWLBM = Column('DWLBM', String(128), default='')  # 单位类别码
     DWBBM = Column('DWBBM', String(128), default='')  # 单位办别码
     DWYXBS = Column('DWYXBS', String(128), default='')  # 单位有效标识
-    SXRQ = Column('SXRQ', DateTime, default=now())  # 失效日期
+    SXRQ = Column('SXRQ', DateTime, default=now)  # 失效日期
     SFST = Column('SFST', String(128), default='')  # 是否实体
     JLNY = Column('JLNY', DateTime, default=now())  # 建立年月
     DWFZRH = Column('DWFZRH', String(128), default='')  # 单位负责人号
@@ -751,6 +754,7 @@ def generate_class_view(name='module', create_view=True):
         module = __import__('jx.' + name, fromlist=([name]))
     except ImportError:
         module = __import__(name)
+    from pymysql.err import Error
 
     for k, v in module.class_dict.items():
         if k.find('VIEW_') == -1 and k.find('KH_') == -1:

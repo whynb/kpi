@@ -34,11 +34,11 @@ class KH_JXKHGZ(Base, KpiObjectBase):
 
     __tablename__ = "kh_jxkhgz"
     __tablename__CH__ = "绩效考核规则"
-    __table_args__ = {'extend_existing': True}
-
-    # TODO: unique: 单位号-考核类型-考核子类-详细考核子类
-    # TODO: unique: 单位号-规则号
-    # TODO: DWH should be user's one while upload except supper admin if data defined DWH
+    __table_args__ = (
+        UniqueConstraint('DWH', 'GZH', name='_kh_jxkhgz_dwh_gzh_uc'),
+        UniqueConstraint('DWH', 'KHLX', 'KHZL', 'XXKLZL', name='_kh_jxkhgz_dwh_khlx_khzl_xxkhzl_uc'),
+        {'extend_existing': True},
+    )
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
 
@@ -119,8 +119,11 @@ class KH_JXKHGZ(Base, KpiObjectBase):
         }
 
     @staticmethod
-    def get_unique_condition() -> List[str]:
-        return ['GZH']
+    def get_unique_condition() -> list:
+        return [
+            ['DWH', 'KHLX', 'KHZL', 'XXKLZL', ],  # NOTE: additional unique to verify data consistency
+            ['DWH', 'GZH', ],  # NOTE: last one used to crud
+        ]
 
     @staticmethod
     def get_search_columns() -> List[str]:
