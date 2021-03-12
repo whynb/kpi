@@ -8,17 +8,9 @@ kpi/settings.py
 .idea/misc.xml
 .idea/workspace.xml
 .idea/codestream.xml
-.idea/codestream.xml
 .gitignore
-.idea/codestream.xml
-.idea/workspace.xml
-.idea/codestream.xml
-.idea/workspace.xml
-.idea/codestream.xml
-.idea/codestream.xml
 .idea/workspace.xml
 kpi/settings.py
-
 .vscode/settings.json
 static/.DS_Store
 templates/.DS_Store
@@ -29,3 +21,4 @@ templates/html/left-right.html
 templates/.DS_Store
 static/.DS_Store
 upload/.DS_Store
+.vscode/launch.json

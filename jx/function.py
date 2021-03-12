@@ -1,4 +1,5 @@
 # coding=utf-8
+# TODO: data status should be done by work flow
 
 import json
 import os
@@ -158,7 +159,12 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
                     logger.error(sys_info())
                     pass
 
-                db.commit()
+                try:
+                    db.commit()
+                except:
+                    db.rollback()
+                    logger.error(sys_info())
+
         except:
             logger.error(sys_info())
             pass
@@ -202,7 +208,11 @@ def summarize_kpi(departments, year, db):
         save(data.DWH, data.KHNF, '', data.GZH, True)  # 按规则汇总部门绩点
         save(data.DWH, data.KHNF, '', '', True)  # 按部门汇总绩点
 
-        db.commit()
+        try:
+            db.commit()
+        except:
+            db.rollback()
+            logger.error(sys_info())
     return
 
 
@@ -1151,12 +1161,12 @@ def create_data(req):
         model_dr_class = get_model_dr_class(d_table)
         columns = model_dr_class.get_column_label()
         uniques = model_dr_class.get_unique_condition()
+        msg_tablename = model_dr_class.__tablename__CH__ if hasattr(model_dr_class, '__tablename__CH__') \
+            else model_dr_class.__tablename__
+
         if len(uniques) == 0:
             msg += msg_tablename + ': 创建失败, 数据主键未定义!<br>'
             continue
-
-        msg_tablename = model_dr_class.__tablename__CH__ if hasattr(model_dr_class, '__tablename__CH__') \
-            else model_dr_class.__tablename__
 
         tv = __format_create_value(_v, columns)
 
