@@ -55,6 +55,7 @@
 
     {% include 'html/sbuild.html' %}
     {% include 'html/sorgtree.html' %}
+    {% include 'html/sprogress.html' %}
 
     {% if editable[4] %}
         {% include 'html/supload.html' %}
@@ -121,8 +122,14 @@
 
     $(function() {})
 
+    function progress_finish() {
+        endProgressBar();
+        window.open("{{ url('khjghz') }}");
+    }
+
     function button_run() {
-        // TODO: add modal to show running progress
+        $('#progress_check').show();
+        startProgressBar('计算开始，请耐心等待...');
         $.ajax({
             type: "post",
             url: "{{ url('run_kpi') }}",
@@ -130,14 +137,20 @@
             data: {},
             dataType: 'JSON',
             success: function (data, status) {
+                pauseProgressBar(data.msg, data.success); 
                 if (data.success == true) {
-                    $.hulla.send(data.msg, "warning");
+                    // $.hulla.send(data.msg, "warning");
                     refreshTable();
                 }
-                else { $.hulla.send(data.msg, "danger"); }
+                // else { $.hulla.send(data.msg, "danger"); }
             },
-            error: function () { $.hulla.send('考核运算异常，请联系管理员！', "danger"); },
-            complete: function () { refreshTable();}
+            error: function () { 
+                pauseProgressBar("计算失败，请联系管理员！", false);
+                // $.hulla.send('考核运算异常，请联系管理员！', "danger"); 
+            },
+            complete: function () { 
+                refreshTable();
+            }
         });
     }
 

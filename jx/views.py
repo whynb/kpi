@@ -13,6 +13,7 @@ from jx.exception import *
 
 
 time_out = settings.COOKIE_TIME_OUT
+org_tree_without_users = ['zzjgjbsjxx', ]
 
 
 def get_menu(payroll):
@@ -75,10 +76,17 @@ def get_menu_name(req):
     return menu.menu_name
 
 
+def get_menu_last_path(req):
+    path = req.get_full_path().split('/')
+    menu_addr = str('/' + path[1] + '/' + path[2] + '/')
+    return path[3] if path[2] == 'base' else path[2]
+
+
 def get_with_users(req):
     payroll = req.COOKIES.get('payroll')
     user = SysUser.objects.get(payroll__exact=payroll)
-    return True if user.role_id in (1, 2) else False
+    ret = True if user.role_id in (1, 2) else False
+    return False if get_menu_last_path(req) in org_tree_without_users else ret
 
 
 def get_role_menu_permission__(req):
@@ -473,7 +481,6 @@ def khgzdz(req):
 
 @check_login
 def khjghz(req):
-    # TODO: add showing radio condition: '单位'（default），'教职工'，'考核名称'
     from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]

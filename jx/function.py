@@ -769,6 +769,13 @@ def get_user_information(payroll):
     return select_out[0] if select_out else {}
 
 
+def get_sysuser_information(payroll):
+    cursor = connection.cursor()
+    cursor.execute(""" SELECT * FROM view_sysuser WHERE payroll='%(payroll)s' """ % {'payroll': payroll})
+    select_out = dictfetchall(cursor)
+    return select_out[0] if select_out else {}
+
+
 def get_top_departments():
     cursor = connection.cursor()
     cursor.execute(""" SELECT * FROM dr_zzjgjbsjxx WHERE LSDWH='' OR LSDWH IS NULL """)
@@ -844,7 +851,8 @@ def get_allhrdpmt(req):
             if method in method_in:
                 uus = get_department_users(d['DWH'])
                 for uu in get_department_users(d['DWH']):
-                    insert_user(uu, t[len(t)-1]["nodes"])
+                    if uu['JZGH'] not in ['admin', ]:
+                        insert_user(uu, t[len(t)-1]["nodes"])
 
             # clear empty
             if not len(t[len(t)-1]["nodes"]):
@@ -854,7 +862,8 @@ def get_allhrdpmt(req):
 
     # append first level users
     if method in method_in and user:
-            for du in get_department_users(str(user['DWH'])):
+        for du in get_department_users(str(user['DWH'])):
+            if du['JZGH'] not in ['admin', ]:
                 insert_user(du, data)
 
     # response as bootstrap-treeview
@@ -1014,6 +1023,18 @@ def get_data(req):
             AND DATE_FORMAT(stamp, '%%Y-%%m-%%d')>='%(m_start)s' 
             AND DATE_FORMAT(stamp, '%%Y-%%m-%%d')<='%(m_end)s'    
         """
+        
+    if v['menu'] == 'khjghz':
+        items = eval(str(v['item']))
+        if isinstance(items, str):
+            sql_where += " AND 1=0 "
+        else:
+            if '1' in v['item']:
+                sql_where += " AND XM IS NULL AND KHMC IS NULL"
+            if '2' in v['item']:
+                sql_where += " AND XM IS NOT NULL AND KHMC IS NULL"
+            if '3' in v['item']:
+                sql_where += " AND XM IS NULL AND KHMC IS NOT NULL"
 
     if v['type'] == 'u':
         sql_where += " AND JZGH='%(payroll)s'"
@@ -1027,6 +1048,10 @@ def get_data(req):
     else:
         sql_where += " AND 1=0"
     sql_where %= v
+    
+    # NOTE: filter out admin
+    if sql_where.find('JZGH') != -1 or v['menu'] in ('jzgjcsjxx', ):
+        sql_where += ' AND JZGH NOT IN ("admin", "")'
 
     sql_search = ""
     if 'search' in v and v['search'] not in ('', None):

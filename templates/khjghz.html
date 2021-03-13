@@ -32,16 +32,33 @@
         <div class="form-group form-inline" id="toolbar">
             {% include 'html/sdate.html' %}
 
-            <div class="col-sm-5 itemtype" id="checkItemTypes">
+            <div class="input-group" id="checkItemTypes">
                 <script>
-                    $.getJSON("{% url 'sal_get_table' %}?table=sal_itemtype", function(ret){
-                        for(var i=0; i < ret.length-1; i++){
-                            $('<div class="col-sm-4 input-group"><span class="input-group-addon">' +
-                                '<input onclick="getItemData()" type="checkbox" checked="" data-code="' + ret[i].id +
-                                '"></span><input type="text" class="form-control" placeholder="' + ret[i].name +
-                                '" readonly></div>').appendTo($('#checkItemTypes'));
+                    function getItemData() {
+                        itemCode = [];
+                        $.each($("#checkItemTypes div span input[type='radio']"),function () {
+                            if($(this).is(":checked")) itemCode.push($(this).val());
+                        });
+                        refreshTable();
+                    }
+
+                    $(function() {
+                        let ret = [
+                            {'id': 1, 'name': '单位'}, 
+                            {'id': 2, 'name': '教职工'}, 
+                            {'id': 3, 'name': '考核名称'}, 
+                        ];
+
+                        for(var i=0; i < ret.length; i++){
+                            if (i==0) {
+                            $('<div class="input-group"><span class="input-group-addon"><label class="radio-inline"><input onclick="getItemData()" name="itemRadio" type="radio" checked value="'
+                            + ret[i].id + '">' + ret[i].name + '</label></div>').appendTo($('#checkItemTypes'));
+                            } else {
+                            $('<div class="input-group"><span class="input-group-addon"><label class="radio-inline"><input onclick="getItemData()" name="itemRadio" type="radio" value="'
+                            + ret[i].id + '">' + ret[i].name + '</label></div>').appendTo($('#checkItemTypes'));
+                            }
                         }
-                        // getItemData();
+                        itemCode = [1];
                     });
                 </script>
             </div>
@@ -107,6 +124,39 @@
         for (var i=0; i<select.length; i++)
             res.push(select[i]);
         return res;
+    }
+
+    function post_build() {
+        $.each($("#checkItemTypes div span input[type='radio']"),function () {
+            if($(this).is(":checked")){
+                let value = $(this).val();
+                if (value == 1) {
+                    $('#table').bootstrapTable('hideColumn', 'JZGH');
+                    $('#table').bootstrapTable('hideColumn', 'XM');
+                    $('#table').bootstrapTable('hideColumn', 'GZH');
+                    $('#table').bootstrapTable('hideColumn', 'KHMC');
+                    $('#table').bootstrapTable('hideColumn', 'KHLX');
+                    $('#table').bootstrapTable('hideColumn', 'KHZL');
+                    $('#table').bootstrapTable('hideColumn', 'XXKHZL');
+                } else if (value == 2) {
+                    $('#table').bootstrapTable('showColumn', 'JZGH');
+                    $('#table').bootstrapTable('showColumn', 'XM');
+                    $('#table').bootstrapTable('hideColumn', 'GZH');
+                    $('#table').bootstrapTable('hideColumn', 'KHMC');
+                    $('#table').bootstrapTable('hideColumn', 'KHLX');
+                    $('#table').bootstrapTable('hideColumn', 'KHZL');
+                    $('#table').bootstrapTable('hideColumn', 'XXKHZL');
+                } else if (value == 3) {
+                    $('#table').bootstrapTable('hideColumn', 'JZGH');
+                    $('#table').bootstrapTable('hideColumn', 'XM');
+                    $('#table').bootstrapTable('showColumn', 'GZH');
+                    $('#table').bootstrapTable('showColumn', 'KHMC');
+                    $('#table').bootstrapTable('showColumn', 'KHLX');
+                    $('#table').bootstrapTable('showColumn', 'KHZL');
+                    $('#table').bootstrapTable('showColumn', 'XXKHZL');
+                } else {}
+            }
+        });
     }
 
     $(function() {

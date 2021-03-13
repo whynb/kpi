@@ -6,6 +6,7 @@
     var columns = [];
     var items = [];
     var table_titles = [];
+    var itemCode = [];
 
     function align(columns) {
         for (var i=0; i < columns.length; i++) {
@@ -194,6 +195,9 @@
                     search: params.search,
                     code:  $selected_node.code,
                     type:  $selected_node.type,
+
+                    item: array_to_string(itemCode),
+
                     start: $('#selectStartDate').val(),
                     end: $('#selectEndDate').val(),
                     menu: "{{ menu }}"
@@ -278,6 +282,9 @@
             search: "",
             code:  $selected_node.code,
             type:  $selected_node.type,
+
+            item: array_to_string(itemCode),
+
             start: $('#selectStartDate').val(),
             end: $('#selectEndDate').val(),
             menu: "{{ menu }}"
@@ -293,6 +300,7 @@
                 build_title(data);
                 console.log(columns);
                 build_table();
+                post_build();
             },
             error: function(r, s, e) {
                 $.hulla.send("获得{{ tips }}出错，请重试！", "danger");
@@ -300,8 +308,15 @@
         });
     }
 
-    function refreshTable() { setTimeout(function () { $('#table').bootstrapTable('refresh'); }, 100); }
+    function refreshTable() { 
+        setTimeout(function () { 
+            $('#table').bootstrapTable('refresh');
+            post_build();
+        }, 100); 
+    }
 
     $(function() { setTimeout(function () { initTable(); }, 200); })
+
+    function post_build() {}
 
 </script>
