@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 12/03/2021 02:25:12
+ Date: 13/03/2021 22:17:29
 */
 
 SET NAMES utf8mb4;
@@ -1122,7 +1122,7 @@ CREATE TABLE `kh_jxkhgz` (
   `DWH` varchar(16) DEFAULT NULL,
   `KHLX` varchar(32) DEFAULT NULL,
   `KHZL` varchar(32) DEFAULT NULL,
-  `XXKLZL` varchar(32) DEFAULT NULL,
+  `XXKHZL` varchar(32) DEFAULT NULL,
   `KHMC` varchar(256) DEFAULT NULL,
   `KHSJDX` varchar(64) DEFAULT NULL,
   `GZTJ` varchar(2056) DEFAULT NULL,
@@ -1132,7 +1132,7 @@ CREATE TABLE `kh_jxkhgz` (
   `note` varchar(2056) DEFAULT NULL,
   `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `kh_jxkhgz_UN` (`KHLX`,`KHZL`,`XXKLZL`,`GZH`),
+  UNIQUE KEY `kh_jxkhgz_UN` (`KHLX`,`KHZL`,`XXKHZL`,`GZH`),
   UNIQUE KEY `kh_jxkhgz_gzh_dwh_uc` (`GZH`,`DWH`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
@@ -1193,21 +1193,21 @@ CREATE TABLE `kh_khjghz` (
   `note` varchar(2056) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `_kh_khjghz_dwh_khnf_gzh_jzgh_uc` (`DWH`,`KHNF`,`GZH`,`JZGH`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of kh_khjghz
 -- ----------------------------
 BEGIN;
-INSERT INTO `kh_khjghz` VALUES (115, '2021-01-01 00:00:00', '00000C', '00000A', '00001B', '', 192023, '2021-03-07 11:10:49', '');
-INSERT INTO `kh_khjghz` VALUES (116, '2021-01-01 00:00:00', '00000C', '00000A', '', 'ZJ-1', 20, '2021-03-07 11:10:49', '');
-INSERT INTO `kh_khjghz` VALUES (117, '2021-01-01 00:00:00', '00000A', '', '', 'ZJ-1', 20, '2021-03-07 11:10:49', '');
-INSERT INTO `kh_khjghz` VALUES (118, '2021-01-01 00:00:00', '00000C', '00000A', '', '', 192023, '2021-03-07 11:10:49', '');
-INSERT INTO `kh_khjghz` VALUES (119, '2021-01-01 00:00:00', '00000A', '', '', '', 192023, '2021-03-07 11:10:49', '');
-INSERT INTO `kh_khjghz` VALUES (120, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A1', 3, '2021-03-07 11:10:49', '');
-INSERT INTO `kh_khjghz` VALUES (121, '2021-01-01 00:00:00', '00000A', '', '', 'A1', 3, '2021-03-07 11:10:49', '');
-INSERT INTO `kh_khjghz` VALUES (122, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A2', 192000, '2021-03-07 11:10:49', '');
-INSERT INTO `kh_khjghz` VALUES (123, '2021-01-01 00:00:00', '00000A', '', '', 'A2', 192000, '2021-03-07 11:10:49', '');
+INSERT INTO `kh_khjghz` VALUES (160, '2021-01-01 00:00:00', '00000C', '00000A', '00001B', '', 72023, '2021-03-13 17:08:55', '');
+INSERT INTO `kh_khjghz` VALUES (161, '2021-01-01 00:00:00', '00000C', '00000A', '', 'ZJ-1', 20, '2021-03-13 17:08:55', '');
+INSERT INTO `kh_khjghz` VALUES (162, '2021-01-01 00:00:00', '00000A', '', '', 'ZJ-1', 20, '2021-03-13 17:08:55', '');
+INSERT INTO `kh_khjghz` VALUES (163, '2021-01-01 00:00:00', '00000C', '00000A', '', '', 72023, '2021-03-13 17:08:55', '');
+INSERT INTO `kh_khjghz` VALUES (164, '2021-01-01 00:00:00', '00000A', '', '', '', 72023, '2021-03-13 17:08:55', '');
+INSERT INTO `kh_khjghz` VALUES (165, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A1', 3, '2021-03-13 17:08:55', '');
+INSERT INTO `kh_khjghz` VALUES (166, '2021-01-01 00:00:00', '00000A', '', '', 'A1', 3, '2021-03-13 17:08:55', '');
+INSERT INTO `kh_khjghz` VALUES (167, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A2', 72000, '2021-03-13 17:08:55', '');
+INSERT INTO `kh_khjghz` VALUES (168, '2021-01-01 00:00:00', '00000A', '', '', 'A2', 72000, '2021-03-13 17:08:55', '');
 COMMIT;
 
 -- ----------------------------
@@ -1225,17 +1225,17 @@ CREATE TABLE `kh_khjgmx` (
   `note` varchar(2056) DEFAULT NULL,
   `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of kh_khjgmx
 -- ----------------------------
 BEGIN;
 INSERT INTO `kh_khjgmx` VALUES (143, '00001B', '00000C', 'ZJ-1', '2021-01-01 00:00:00', 20, 'da', '', '2021-03-06 23:38:57.000000');
-INSERT INTO `kh_khjgmx` VALUES (148, '00001B', '00000C', 'A1', '2021-01-01 00:00:00', 1.5, 'hello world', '', '2021-03-07 11:10:49.000000');
-INSERT INTO `kh_khjgmx` VALUES (149, '00001B', '00000C', 'A1', '2021-01-01 00:00:00', 1.5, 'hello world', '', '2021-03-07 11:10:49.000000');
-INSERT INTO `kh_khjgmx` VALUES (150, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 156000, '教职工：00001B BH8887元', '', '2021-03-07 11:10:49.000000');
-INSERT INTO `kh_khjgmx` VALUES (151, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36000, '教职工：00001B BH8888元', '', '2021-03-07 11:10:49.000000');
+INSERT INTO `kh_khjgmx` VALUES (168, '00001B', '00000C', 'A1', '2021-01-01 00:00:00', 1.5, 'hello world', '', '2021-03-13 17:08:55.000000');
+INSERT INTO `kh_khjgmx` VALUES (169, '00001B', '00000C', 'A1', '2021-01-01 00:00:00', 1.5, 'hello world', '', '2021-03-13 17:08:55.000000');
+INSERT INTO `kh_khjgmx` VALUES (170, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36000, '教职工：00001B BH8877元', '', '2021-03-13 17:08:55.000000');
+INSERT INTO `kh_khjgmx` VALUES (171, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36000, '教职工：00001B BH8888元', '', '2021-03-13 17:08:55.000000');
 COMMIT;
 
 -- ----------------------------
@@ -1327,7 +1327,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_hjcgjbsjxx` AS sele
 -- View structure for view_jxkhgz
 -- ----------------------------
 DROP VIEW IF EXISTS `view_jxkhgz`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_jxkhgz` AS select `kh`.`id` AS `id`,`kh`.`GZH` AS `GZH`,`kh`.`DWH` AS `DWH`,`dw`.`DWMC` AS `DWMC`,`kh`.`KHLX` AS `KHLX`,`kh`.`KHZL` AS `KHZL`,`kh`.`XXKLZL` AS `XXKLZL`,`kh`.`KHMC` AS `KHMC`,`kh`.`KHSJDX` AS `KHSJDX`,`kh`.`GZTJ` AS `GZTJ`,`kh`.`JXFSJS` AS `JXFSJS`,`kh`.`KHMXMB` AS `KHMXMB`,`kh`.`KHJGDX` AS `KHJGDX`,`kh`.`stamp` AS `stamp`,`kh`.`note` AS `note` from (`kh_jxkhgz` `kh` left join `dr_zzjgjbsjxx` `dw` on((`dw`.`DWH` = `kh`.`DWH`))) where (1 = 1);
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_jxkhgz` AS select `kh`.`id` AS `id`,`kh`.`GZH` AS `GZH`,`kh`.`DWH` AS `DWH`,`dw`.`DWMC` AS `DWMC`,`kh`.`KHLX` AS `KHLX`,`kh`.`KHZL` AS `KHZL`,`kh`.`XXKHZL` AS `XXKHZL`,`kh`.`KHMC` AS `KHMC`,`kh`.`KHSJDX` AS `KHSJDX`,`kh`.`GZTJ` AS `GZTJ`,`kh`.`JXFSJS` AS `JXFSJS`,`kh`.`KHMXMB` AS `KHMXMB`,`kh`.`KHJGDX` AS `KHJGDX`,`kh`.`stamp` AS `stamp`,`kh`.`note` AS `note` from (`kh_jxkhgz` `kh` left join `dr_zzjgjbsjxx` `dw` on((`dw`.`DWH` = `kh`.`DWH`))) where (1 = 1);
 
 -- ----------------------------
 -- View structure for view_jzgjcsjxx
@@ -1345,7 +1345,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_khgzdz` AS select `
 -- View structure for view_khjghz
 -- ----------------------------
 DROP VIEW IF EXISTS `view_khjghz`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_khjghz` AS select `kh`.`id` AS `id`,`kh`.`JZGH` AS `JZGH`,`zg`.`XM` AS `XM`,`kh`.`DWH` AS `DWH`,`dr`.`DWMC` AS `DWMC`,`kh`.`LSDWH` AS `LSDWH`,`ls`.`DWMC` AS `LSDWMC`,`kh`.`KHNF` AS `KHNF`,`kh`.`GZH` AS `GZH`,`gz`.`KHMC` AS `KHMC`,`gz`.`KHLX` AS `KHLX`,`gz`.`KHZL` AS `KHZL`,`gz`.`XXKLZL` AS `XXKLZL`,`kh`.`KHJDHJ` AS `KHJDHJ`,`kh`.`stamp` AS `stamp`,`kh`.`note` AS `note` from ((((`kh_khjghz` `kh` left join `dr_zzjgjbsjxx` `dr` on((`dr`.`DWH` = `kh`.`DWH`))) left join `dr_zzjgjbsjxx` `ls` on((`ls`.`DWH` = `kh`.`LSDWH`))) left join `dr_jzgjcsjxx` `zg` on((`zg`.`JZGH` = `kh`.`JZGH`))) left join `kh_jxkhgz` `gz` on((`gz`.`GZH` = `kh`.`GZH`))) where (1 = 1);
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_khjghz` AS select `kh`.`id` AS `id`,`kh`.`JZGH` AS `JZGH`,`zg`.`XM` AS `XM`,`kh`.`DWH` AS `DWH`,`dr`.`DWMC` AS `DWMC`,`kh`.`LSDWH` AS `LSDWH`,`ls`.`DWMC` AS `LSDWMC`,`kh`.`KHNF` AS `KHNF`,`kh`.`GZH` AS `GZH`,`gz`.`KHMC` AS `KHMC`,`gz`.`KHLX` AS `KHLX`,`gz`.`KHZL` AS `KHZL`,`gz`.`XXKHZL` AS `XXKHZL`,`kh`.`KHJDHJ` AS `KHJDHJ`,`kh`.`stamp` AS `stamp`,`kh`.`note` AS `note` from ((((`kh_khjghz` `kh` left join `dr_zzjgjbsjxx` `dr` on((`dr`.`DWH` = `kh`.`DWH`))) left join `dr_zzjgjbsjxx` `ls` on((`ls`.`DWH` = `kh`.`LSDWH`))) left join `dr_jzgjcsjxx` `zg` on((`zg`.`JZGH` = `kh`.`JZGH`))) left join `kh_jxkhgz` `gz` on((`gz`.`GZH` = `kh`.`GZH`))) where (1 = 1);
 
 -- ----------------------------
 -- View structure for view_khjgmx
