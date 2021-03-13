@@ -496,7 +496,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
                 dr_jzg.DWH AS DWH,            
                 pk.stamp AS stamp,            
                 pk.note AS note            
-            FROM dr_pksjxx pk
+            FROM dr_sspksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
             LEFT JOIN dr_xnxqxx xn ON xn.XNDM=pk.KKXND
             left join dr_jzgjcsjxx dr_jzg on dr_jzg.JZGH = pk.JSGH
@@ -506,15 +506,15 @@ class VIEW_SXXSS(Base):  # 实习学时数
 
     @staticmethod
     def get_upload_tables() -> List[str]:
-        return ['dr_pksjxx']
+        return ['dr_sspksjxx']
 
     @staticmethod
     def get_delete_tables() -> List[str]:
-        return ['dr_pksjxx']
+        return ['dr_sspksjxx']
 
     @staticmethod
     def get_create_tables() -> List[str]:
-        return ['dr_pksjxx']
+        return ['dr_sspksjxx']
 
     @staticmethod
     def get_hide_columns() -> List[str]:
@@ -526,18 +526,18 @@ class VIEW_SXXSS(Base):  # 实习学时数
         # NOTE: static data from db: 'type': 'static', 'value': 'jx_usertype:id:usertype_name', 'where': ''
         # NOTE: SQL data from db: 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'
         return [
-            {'table': 'dr_pksjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_pksjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'inline', 'value': "dr_jzgjcsjxx:JZGH AS JSGH,XM", 'where': "DWH IN %(departments)s AND JSGH!='admin'", 'create': 'True', },
+            {'table': 'dr_sspksjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_sspksjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'inline', 'value': "dr_jzgjcsjxx:JZGH AS JSGH,XM", 'where': "DWH IN %(departments)s AND JSGH!='admin'", 'create': 'True', },
             {'table': 'dr_kcsjxx', 'field': 'KCH', 'title': '课程号', 'editable': 'False', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_pksjxx', 'field': 'KKXQM', 'title': '学期', 'editable': 'False', 'type': 'date', 'create': 'True', },
-            {'table': 'dr_pksjxx', 'field': 'KKXND', 'title': '学年', 'editable': 'False', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_pksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_pksjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_xnxqxx', 'field': 'QSSKZ', 'title': '起始上课周', 'editable': 'True', 'type': 'float', 'create': 'True', },
+            {'table': 'dr_sspksjxx', 'field': 'KKXQM', 'title': '学期', 'editable': 'False', 'type': 'month', 'create': 'True', },
+            {'table': 'dr_sspksjxx', 'field': 'KKXND', 'title': '学年', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_sspksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_sspksjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_xnxqxx', 'field': 'QSSKZ', 'title': '起始上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
             {'table': 'dr_xnxqxx', 'field': 'ZZSKZ', 'title': '终止上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
             {'table': 'dr_jzg', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'false', },
-            {'table': 'dr_pksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
-            {'table': 'dr_pksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_sspksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
+            {'table': 'dr_sspksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
         ]
 
     @staticmethod
@@ -554,7 +554,6 @@ class VIEW_ZDSYXSS(Base):
     JSGH = Column('JSGH', String(16), default='')  # 教师工号
     KCH = Column('KCH', String(16), default='')  # 课程号
     KKXND = Column('KKXND', String(16), default='')  # 开课学年度
-    SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
     KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
     SYXS = Column('SYXS', DateTime, default=now())  # 实验学时
     SYZS = Column('SYZS', String(16), default='')  # 实验组数
@@ -572,14 +571,14 @@ class VIEW_ZDSYXSS(Base):
                 pk.KKXND AS XNDM,            
                 pk.KKXQM AS XQDM,            
                 kc.SYXS AS SYXS,    
-                pk.SKBJH AS SKBJH,   
+                
                 pk.SYZS AS SYZS,                   
                 kc.KCH AS KCH,         
                 jp.KCJBM AS KCJBM,    
                 dr_jzg.DWH AS DWH,        
                 pk.stamp AS stamp,            
                 pk.note AS note            
-            FROM dr_pksjxx pk
+            FROM dr_sypksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
             LEFT JOIN dr_xnxqxx xn ON xn.XNDM=pk.KKXND
             LEFT JOIN dr_bks_jpkc jp ON jp.KCH=pk.KCH
@@ -590,15 +589,15 @@ class VIEW_ZDSYXSS(Base):
 
     @staticmethod
     def get_upload_tables() -> List[str]:
-        return ['dr_pksjxx']
+        return ['dr_sypksjxx']
 
     @staticmethod
     def get_delete_tables() -> List[str]:
-        return ['dr_pksjxx']
+        return ['dr_sypksjxx']
 
     @staticmethod
     def get_create_tables() -> List[str]:
-        return ['dr_pksjxx']
+        return ['dr_sypksjxx']
 
     @staticmethod
     def get_hide_columns() -> List[str]:
@@ -607,18 +606,17 @@ class VIEW_ZDSYXSS(Base):
     @staticmethod
     def get_title_columns() -> List[dict]:
         return [
-            {'table': 'dr_pksjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_pksjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'inline', 'value': "dr_jzgjcsjxx:JZGH AS JSGH,XM", 'where': "DWH IN %(departments)s AND JSGH!='admin'", 'create': 'True', },
+            {'table': 'dr_sypksjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_sypksjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'inline', 'value': "dr_jzgjcsjxx:JZGH AS JSGH,XM", 'where': "DWH IN %(departments)s AND JSGH!='admin'", 'create': 'True', },
             {'table': 'dr_kcsjxx', 'field': 'KCH', 'title': '课程号', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_kcsjxx', 'field': 'SYXS', 'title': '实验学时', 'editable': 'True', 'type': 'float', 'create': 'True', },
             {'table': 'dr_kcsjxx', 'field': 'SYZS', 'title': '实验组数', 'editable': 'True', 'type': 'float','create': 'True', },
             {'table': 'dr_bks_jpkc', 'field': 'KCJBM', 'title': '课程级别码', 'editable': 'True', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_pksjxx', 'field': 'KKXQM', 'title': '学期', 'editable': 'False', 'type': 'month', 'create': 'True', },
-            {'table': 'dr_pksjxx', 'field': 'KKXND', 'title': '学年', 'editable': 'False', 'type': 'year', 'create': 'True', },
-            {'table': 'dr_pksjxx', 'field': 'SKBJH', 'title': '上课班级号', 'editable': 'T', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_sypksjxx', 'field': 'KKXQM', 'title': '学期', 'editable': 'False', 'type': 'month', 'create': 'True', },
+            {'table': 'dr_sypksjxx', 'field': 'KKXND', 'title': '学年', 'editable': 'False', 'type': 'year', 'create': 'True', },
             {'table': 'dr_jzg', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'false', },
-            {'table': 'dr_pksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
-            {'table': 'dr_pksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_sypksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
+            {'table': 'dr_sypksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
         ]
 
     @staticmethod
