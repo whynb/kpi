@@ -7,35 +7,61 @@
 </head>
 <body>
 <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
-    <div class="container">
+    <div class="container" style="width: inherit">
         {% include 'html/sheader.html' %}
         {% include 'html/smenu.html' %}
     </div>
 </nav>
 
-<div class="clearfix"></div>
-
 <!-- Start Content -->
-<div class="column">
-    <div class="column-left">
-        <div class="resize-bar"></div>
-        <div class="resize-line"></div>
-        <div class="resize-save">
-            <div class="row sal_margin">
-                <h6 id="current_menu">组织结构</h6>
-                <div id="treeview-selectable" class=""></div>
-                <div id="selectable-output" hidden></div>
-            </div>
-        </div>
+<div class="why_container">
+    <div class="why_left">
+        <h6 id="current_menu">组织结构</h6>
+        <div id="treeview-selectable" class=""></div>
+        <div id="selectable-output" hidden></div>
     </div>
-    <div class="column-right" style="height: 1000px">
-        <div class="form-group form-inline" id="toolbar">
-            {% include 'html/sdate.html' %}
-            {% if editable[5] %}
-                <button id="download" class="btn btn-success" onclick="button_download('{{ tips }}-'+getDateString(0)+'-'+getHourMinute(), 'excel')"><i class="fa fa-download"></i> 下载</button>
-            {% endif %}
+    <div class="why_right">
+        <div class="why_content">
+            <div class="form-group form-inline" id="toolbar">
+                {% include 'html/sdate.html' %}
+
+                <div class="input-group" id="checkItemTypes">
+                    <script>
+                        function getItemData() {
+                            itemCode = [];
+                            $.each($("#checkItemTypes div span input[type='radio']"),function () {
+                                if($(this).is(":checked")) itemCode.push($(this).val());
+                            });
+                            refreshTable();
+                        }
+
+                        $(function() {
+                            let ret = [
+                                {'id': 1, 'name': '单位'},
+                                {'id': 2, 'name': '教职工'},
+                                {'id': 3, 'name': '考核名称'},
+                            ];
+
+                            for(var i=0; i < ret.length; i++){
+                                if (i==0) {
+                                    $('<div class="input-group"><span class="input-group-addon"><label class="radio-inline"><input onclick="getItemData()" name="itemRadio" type="radio" checked value="'
+                                        + ret[i].id + '">' + ret[i].name + '</label></div>').appendTo($('#checkItemTypes'));
+                                } else {
+                                    $('<div class="input-group"><span class="input-group-addon"><label class="radio-inline"><input onclick="getItemData()" name="itemRadio" type="radio" value="'
+                                        + ret[i].id + '">' + ret[i].name + '</label></div>').appendTo($('#checkItemTypes'));
+                                }
+                            }
+                            itemCode = [1];
+                        });
+                    </script>
+                </div>
+
+                {% if editable[5] %}
+                    <button id="download" class="btn btn-success" onclick="button_download('{{ tips }}-'+getDateString(0)+'-'+getHourMinute(), 'excel')"><i class="fa fa-download"></i> 下载</button>
+                {% endif %}
+            </div>
+            <table id="table" class="table table-bordered table-striped"></table>
         </div>
-        <table id="table" class="table table-bordered table-striped"></table>
     </div>
 </div>
 <!-- End Content -->
@@ -92,6 +118,39 @@
         for (var i=0; i<select.length; i++)
             res.push(select[i]);
         return res;
+    }
+
+    function post_build() {
+        $.each($("#checkItemTypes div span input[type='radio']"),function () {
+            if($(this).is(":checked")){
+                let value = $(this).val();
+                if (value == 1) {
+                    $('#table').bootstrapTable('hideColumn', 'JZGH');
+                    $('#table').bootstrapTable('hideColumn', 'XM');
+                    $('#table').bootstrapTable('hideColumn', 'GZH');
+                    $('#table').bootstrapTable('hideColumn', 'KHMC');
+                    $('#table').bootstrapTable('hideColumn', 'KHLX');
+                    $('#table').bootstrapTable('hideColumn', 'KHZL');
+                    $('#table').bootstrapTable('hideColumn', 'XXKHZL');
+                } else if (value == 2) {
+                    $('#table').bootstrapTable('showColumn', 'JZGH');
+                    $('#table').bootstrapTable('showColumn', 'XM');
+                    $('#table').bootstrapTable('hideColumn', 'GZH');
+                    $('#table').bootstrapTable('hideColumn', 'KHMC');
+                    $('#table').bootstrapTable('hideColumn', 'KHLX');
+                    $('#table').bootstrapTable('hideColumn', 'KHZL');
+                    $('#table').bootstrapTable('hideColumn', 'XXKHZL');
+                } else if (value == 3) {
+                    $('#table').bootstrapTable('hideColumn', 'JZGH');
+                    $('#table').bootstrapTable('hideColumn', 'XM');
+                    $('#table').bootstrapTable('showColumn', 'GZH');
+                    $('#table').bootstrapTable('showColumn', 'KHMC');
+                    $('#table').bootstrapTable('showColumn', 'KHLX');
+                    $('#table').bootstrapTable('showColumn', 'KHZL');
+                    $('#table').bootstrapTable('showColumn', 'XXKHZL');
+                } else {}
+            }
+        });
     }
 
     $(function() {

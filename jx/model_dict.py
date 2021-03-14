@@ -19,6 +19,10 @@ class KpiObjectBase:
         return []
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return []
+
+    @staticmethod
     def get_column_label() -> dict:
         return {
             'ID': ['id'],

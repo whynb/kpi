@@ -25,7 +25,6 @@ urlpatterns = [
 
     url(r'^jx_upload_file', function.jx_upload_file, name='jx_upload_file'),  # duplicate
     url(r'^staffinfo', function.staffinfo, name='staffinfo'),  # duplicate
-    url(r'^get_department', function.get_department, name='get_department'),
     url(r'^get_allhrdpmt', function.get_allhrdpmt, name='get_allhrdpmt'),
     url(r'^get_title', function.get_title, name='get_title'),
     url(r'^get_col_def', function.get_col_def, name='get_col_def'),

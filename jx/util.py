@@ -79,8 +79,8 @@ def row_replace_key(row, key):
         if k in key:
             res[key[k]] = v
             c_str += str(key[k]) + ', '
-            v_str += "'" + str(v).replace("'", "char(39)") + "', "
-            u_str += str(key[k]) + "='" + str(v).replace("'", "char(39)") + "', "
+            v_str += "'" + str(v).replace("'", "\\'") + "', "
+            u_str += str(key[k]) + "='" + str(v).replace("'", "\\'") + "', "
         else:
             res[k] = v
     return res, c_str[:-2], v_str[:-2], u_str[:-2]

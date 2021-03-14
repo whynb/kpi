@@ -27,3 +27,15 @@
 <script type="text/javascript">
     $('.modal').on("hidden.bs.modal", function() { $(document.body).addClass("modal-open"); });
 </script>
+
+<script type="text/javascript">
+    $(function() {
+        let windows_wh = getViewportOffset();
+        $(".why_container").height(windows_wh.h - 52).width(windows_wh.w);
+        $(window).resize(function(){
+            let windows_wh = getViewportOffset();
+            $(".why_container").height(windows_wh.h - 52).width(windows_wh.w);
+            // $('#table').bootstrapTable('resetView', {height: windows_wh.h - 82, });
+        });
+    });
+</script>

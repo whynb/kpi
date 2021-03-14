@@ -1,10 +1,10 @@
 <!-- Collect the nav links, forms, and other content for toggling -->
 <div class="collapse navbar-collapse" id="navbar-menu">
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav" style="height: 50px;">
         {% for menu in menus %}
             {% if menu['items'] | length > 1 %}
                 <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ menu['name'] }}</a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding: 15px;">{{ menu['name'] }}</a>
                 <ul class="dropdown-menu">
                     {% for item in menu['items'] %}
                         <li><a href="{{ item['url'] }}">{{ item['name'] }}</a></li>
