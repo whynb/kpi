@@ -4,8 +4,6 @@
 
 <script type="text/javascript">
     var columns = [];
-    var items = [];
-    var table_titles = [];
     var itemCode = [];
 
     function align(columns) {
@@ -34,7 +32,7 @@
         return value.substring(0, 10);
     }
 
-    function build_title(items) {
+    function build_title() {
         {% if sum_footer %}
         columns = [{ checkbox: true, footerFormatter: '合计', }];
         {% else %}
@@ -170,7 +168,9 @@
     }
 
     function build_table() {
+        let windows_wh = getViewportOffset();
         $('#table').bootstrapTable('destroy').bootstrapTable({
+            // height: windows_wh.h - 82,
             url: '/jx/get_data',               //请求后台的URL（*）
             method: 'get',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -195,9 +195,7 @@
                     search: params.search,
                     code:  $selected_node.code,
                     type:  $selected_node.type,
-
                     item: array_to_string(itemCode),
-
                     start: $('#selectStartDate').val(),
                     end: $('#selectEndDate').val(),
                     menu: "{{ menu }}"
@@ -224,9 +222,7 @@
                 $('.search .search-input').attr('placeholder', '搜索带颜色列内容');
             },
             onLoadSuccess: function (data) {
-                let h = $(".column-right").height(); if (h < 500) h = 500; $(".column-left").height(h);
                 $('.fixed-table-loading.table.table-bordered.table-hover').hide();
-
                 let x = document.getElementsByTagName("th");
                 for (let i = 0; i < x.length; i++) {
                 {% for column in search_columns %}
@@ -274,38 +270,10 @@
     }
 
     function initTable() {
-        var queryParams = {
-            limit: "1000",
-            offset: "0",
-            sort: "",
-            order: "asc",
-            search: "",
-            code:  $selected_node.code,
-            type:  $selected_node.type,
-
-            item: array_to_string(itemCode),
-
-            start: $('#selectStartDate').val(),
-            end: $('#selectEndDate').val(),
-            menu: "{{ menu }}"
-        };
-
-        $.ajax({
-            type: "GET",
-            url: "{{ url('get_title') }}",
-            data: queryParams,
-            dataType: 'json',
-            success: function(data){
-                table_titles = data;
-                build_title(data);
-                console.log(columns);
-                build_table();
-                post_build();
-            },
-            error: function(r, s, e) {
-                $.hulla.send("获得{{ tips }}出错，请重试！", "danger");
-            }
-        });
+        build_title();
+        build_table();
+        post_build();
+        return;
     }
 
     function refreshTable() { 

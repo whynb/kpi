@@ -361,6 +361,10 @@ class KH_KHPC(Base, KpiObjectBase):
         return ['kh_khpc']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['kh_khpc']
+
+    @staticmethod
     def get_column_label() -> dict:
         return {
             'ID': ['id'],

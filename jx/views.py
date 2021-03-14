@@ -67,18 +67,20 @@ def get_module_static_method(class_name, method, module_name='module', view_pref
     return []
 
 
-def get_menu_name(req):
+def get_menu_content(req):
     path = req.get_full_path().split('/')
     menu_addr = str('/' + path[1] + '/' + path[2] + '/')
     if path[2] == 'base':
         menu_addr += path[3] + '/'
-    menu = Menu.objects.get(menu_addr=menu_addr)
-    return menu.menu_name
+    return Menu.objects.get(menu_addr=menu_addr)
+
+
+def get_menu_name(req):
+    return get_menu_content(req).menu_name
 
 
 def get_menu_last_path(req):
     path = req.get_full_path().split('/')
-    menu_addr = str('/' + path[1] + '/' + path[2] + '/')
     return path[3] if path[2] == 'base' else path[2]
 
 
@@ -89,47 +91,9 @@ def get_with_users(req):
     return False if get_menu_last_path(req) in org_tree_without_users else ret
 
 
-def get_role_menu_permission__(req):
-    user = SysUser.objects.get(payroll=req.COOKIES.get('payroll'))
-    path = req.get_full_path().split('/')
-    menu_addr = str('/' + path[1] + '/' + path[2] + '/')
-    if path[2] == 'base':
-        menu_addr += path[3] + '/'
-    menu = Menu.objects.get(menu_addr=menu_addr)
-
-    cursor = connection.cursor()
-    sql = '''
-        SELECT b.permission
-        FROM jx_role_menu b 
-        WHERE b.role_id = %(role_id)s AND b.menu_id = %(menu_id)s
-    ''' % {
-        'role_id': user.role_id,
-        'menu_id': menu.id,
-    }
-
-    cursor.execute(sql)
-    _dict = dictfetchall(cursor)
-
-    # INFO 2021-03-09 14:30:26,491 views.py views get_role_menu_permission 105: [{'permission': 'y,y,y,y,y,y'}]
-    logger.info(_dict)
-    for a in _dict:
-        c = []
-        b = a['permission'].split(',')
-        for num in range(0, 6):
-            c.append(True if b[num] == 'y' else False)
-
-        return c
-
-    return []
-
-
 def get_role_menu_permission(req):
     user = SysUser.objects.get(payroll=req.COOKIES.get('payroll'))
-    path = req.get_full_path().split('/')
-    menu_addr = str('/' + path[1] + '/' + path[2] + '/')
-    if path[2] == 'base':
-        menu_addr += path[3] + '/'
-    menu = Menu.objects.get(menu_addr=menu_addr)
+    menu = get_menu_content(req)
 
     from jx.sqlalchemy_env import db, text
     sql = '''
@@ -138,8 +102,7 @@ def get_role_menu_permission(req):
         WHERE b.role_id = :role_id AND b.menu_id = :menu_id
     '''
 
-    _dict = db.execute(text(sql), {'role_id': user.role_id, 'menu_id': menu.id,}).fetchall()
-    db.commit()  # db.rollback() while execute->except to keep out db deadlock
+    _dict = db.execute(text(sql), {'role_id': user.role_id, 'menu_id': menu.id, }).fetchall()
     logger.info(_dict)
     for a in _dict:
         c = []
