@@ -6,7 +6,5 @@
 .vscode/*
 jx/sqlalchemy_env.py
 kpi/settings.py
-templates/html/fixedheader.html
-templates/html/fixedheadertable.html
-templates/html/left-right.html
 venv/*
+templates/html/fixedtableheader.html

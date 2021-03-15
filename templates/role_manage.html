@@ -113,7 +113,7 @@
                 <div class="modal-body">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-tag"></i>&nbsp;角色名称</span>
-                        {{roleform.role_name}}
+                        {{ roleform.role_name }}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -140,20 +140,20 @@
 
     function rolesave_onclick() {
         let isreturn = true;
-        let lis = document.getElementById('ul_roles').getElementsByTagName('li');
+        let lis = document.getElementById('ul_roles').getElementsByTagName('div');
         for (let i = 0; i < lis.length; i++){
-            if (lis[i].innerText.replace(/(^\s*)|(\s*$)/g, "") == document.getElementById('txt_department_name').value){
+            if (lis[i].innerText.replace(/(^\s*)|(\s*$)/g, "") == document.getElementById('new_role_id').value){
                 alert('角色名重复，请更改后重试');
                 isreturn = false;
                 break;
             }
         }
         if (isreturn){
-            alert('添加成功！');
-            $('#roleform').submit();
+            $('#roleform')[0].submit();
             $('#roleform')[0].reset();
+            alert('添加成功！');
             $('#myModal').modal('hide');
-            window.location.replace("{{ url('role_manage') }}");
+            // window.location.replace("{{ url('role_manage') }}");
         }
     }
 
