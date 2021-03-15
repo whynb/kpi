@@ -710,7 +710,7 @@ KSRS     考试人数 N  教务处、研究生院
             {'table': 'dr_ksapxx', 'field': 'KCH', 'title': '课程号', 'editable': 'True', 'type': 'text', 'create': 'True', },
             {'table': 'dr_ksapxx', 'field': 'JKRGH', 'title': '监考人工号', 'editable': 'False', 'type': 'text', 'create': 'False', },
             {'table': 'dr_ksapxx', 'field': 'KSJSH', 'title': '考试教室号', 'editable': 'True', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_ksapxx', 'field': 'JKRXM', 'title': '监考人姓名', 'editable': 'True', 'type': 'table', 'create': 'True', 'value': 'dr_jzgjcsjxx:JZGH AS BDS,XM AS BDSXM', 'where': "DWH IN %(departments)s AND JZGH!='admin'", },
+            {'table': 'dr_ksapxx', 'field': 'JKRXM', 'title': '监考人姓名', 'editable': 'True', 'type': 'table', 'create': 'True', 'value': 'dr_jzgjcsjxx:JZGH AS JKRGH,XM AS JKRXM', 'where': "DWH IN %(departments)s AND JKRGH!='admin'", },
             {'table': 'dr_ksapxx', 'field': 'KSRS', 'title': '考试人数', 'editable': 'True', 'type': 'text', 'create': 'True', },
             {'table': 'dr_ksapxx', 'field': 'SSXY', 'title': '本次考试所属学院', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'JSSSXY', 'title': '教师所属学院', 'editable': 'False', 'type': 'text','create': 'False', },
@@ -739,6 +739,7 @@ class VIEW_JKXSS(Base):
     KSRS = Column('KSRS', String(16), default='')  # 考试人数
     SSXY = Column('SSXY', String(16), default='')  # 本次考试所属学院
     JSSSXY = Column('JSSSXY', String(16), default='')  # 教师所属学院
+    DWH = Column('DWH', String(16), default='')  # 单位号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -757,7 +758,8 @@ class VIEW_JKXSS(Base):
                 dr.JKRXM AS JKRXM,            
                 dr.KSRS AS KSRS,  
                 dr.SSXY AS SSXY,
-                jkr.DWH AS JSSSXY,                  
+                jkr.DWH AS JSSSXY,            
+                jkr.DWH AS DWH,      
                 dr.stamp AS stamp,            
                 dr.note AS note            
             FROM dr_ksapxx dr
@@ -782,7 +784,7 @@ class VIEW_JKXSS(Base):
 
     @staticmethod
     def get_hide_columns() -> List[str]:
-        return ['id', 'stamp', 'note']
+        return ['id', 'stamp', 'note','DWH']
 
     @staticmethod
     def get_title_columns() -> List[dict]:
@@ -797,10 +799,11 @@ class VIEW_JKXSS(Base):
             {'table': 'dr_ksapxx', 'field': 'KCH', 'title': '课程号', 'editable': 'True', 'type': 'text','create': 'True', },
             {'table': 'dr_ksapxx', 'field': 'JKRGH', 'title': '监考人工号', 'editable': 'False', 'type': 'text','create': 'False', },
             {'table': 'dr_ksapxx', 'field': 'KSJSH', 'title': '考试教室号', 'editable': 'True', 'type': 'text','create': 'True', },
-            {'table': 'dr_ksapxx', 'field': 'JKRXM', 'title': '监考人姓名', 'editable': 'True', 'type': 'table','create': 'True', 'value': 'dr_jzgjcsjxx:JZGH AS BDS,XM AS BDSXM','where': "DWH IN %(departments)s AND JZGH!='admin'", },
+            {'table': 'dr_ksapxx', 'field': 'JKRXM', 'title': '监考人姓名', 'editable': 'True', 'type': 'table', 'create': 'True', 'value': 'dr_jzgjcsjxx:JZGH AS JKRGH,XM AS JKRXM', 'where': "DWH IN %(departments)s AND JZGH!='admin'", },
             {'table': 'dr_ksapxx', 'field': 'KSRS', 'title': '考试人数', 'editable': 'True', 'type': 'text','create': 'True', },
             {'table': 'dr_ksapxx', 'field': 'SSXY', 'title': '本次考试所属学院', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'JSSSXY', 'title': '教师所属学院', 'editable': 'False', 'type': 'text','create': 'False', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'False', },
         ]
 
     @staticmethod
