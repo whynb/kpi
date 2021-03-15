@@ -13,6 +13,7 @@ from django.conf import settings
 import pandas as pd
 from jx.exception import *
 from pymysql.err import Error
+from jx.password import AES3
 
 
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
@@ -1152,6 +1153,34 @@ def staffinfo(req):
 
     return JsonResponse({'total': count, 'rows': select_out})
 
+
+# # @change_password
+# def change_password(req):
+#     pc = AES3('boomboomboomboom')
+#     dict={}
+#     newpwd = req.GET.get("new_pwd", "")
+#     oldpwd = req.GET.get("old_pwd", "")
+#     usr_code = req.COOKIES.get('userid')
+#     try:
+#         curr_timestamp = time.time()
+#         time_pwd = datetime.datetime.fromtimestamp(curr_timestamp)
+#         user1 = SysUser.objects.get(payroll_number=usr_code)
+#         db_old_pwd = user1.password
+#         req_old_pwd = pc.encrypt(oldpwd)
+#         if req_old_pwd == db_old_pwd:
+#             if newpwd == oldpwd:
+#                 dict['message'] = '新密码不能与原密码相同'
+#                 return HttpResponse(json.dumps(dict))
+#             user1.password = pc.encrypt(newpwd)
+#             user1.time_pwd = time_pwd
+#             user1.save()
+#             dict['message'] = '密码修改成功！'
+#         else:
+#             dict['message'] = '原密码错误！'
+#         return HttpResponse(json.dumps(dict))
+#     except Error:
+#         dict['message'] = '数据库错误！'
+#         return HttpResponse(json.dumps(dict))
 
 @check_login
 @sys_error

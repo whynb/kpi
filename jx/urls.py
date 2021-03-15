@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^edit', function.edit, name='edit'),
     url(r'^run_kpi', function.run_kpi, name='run_kpi'),
     url(r'^custermize_kpi', function.custermize_kpi, name='custermize_kpi'),
+    # url(r'^change_password', function.change_password, name='change_password'),
 
     url(r'^base/*/', views.base, name='base'),  # 基本数据信息
 

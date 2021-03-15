@@ -156,7 +156,7 @@ WSGI_APPLICATION = 'kpi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kpi',
+        'NAME': 'kpi_test',
         'USER': 'root',
 
 # run
@@ -164,12 +164,16 @@ DATABASES = {
 #        'HOST': '47.93.196.31',
 
 # test
-#       'PASSWORD': 'P1ssW0rd',
-#       'HOST': '47.94.148.26',
+      'PASSWORD': 'P1ssW0rd',
+      'HOST': '47.94.148.26',
+
+# # test NEU
+#       'PASSWORD': '123456',
+#       'HOST': '47.94.86.214',
 
 # local
-         'PASSWORD': 'password',
-         'HOST': '127.0.0.1',
+#          'PASSWORD': 'password',
+#          'HOST': '127.0.0.1',
 
 # port
         'PORT': '3306',
