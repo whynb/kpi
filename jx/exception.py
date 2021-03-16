@@ -5,7 +5,12 @@ class FileSaveException(Exception):
         self._str = _str
         
     def __str__(self):
-        return self._str;
+        return self._str
 
 
-# TODO: more exception in this project internally
+class UserAuthException(Exception):
+    def __init__(self, _str):
+        self._str = _str
+
+    def __str__(self):
+        return self._str

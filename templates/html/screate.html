@@ -98,11 +98,11 @@
                                 <div class="form-group has-warning">
                                     <label class="col-sm-4 control-label">{{ title['title'] }}: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}"
                                         {% if title['type'] in ['float'] %}
-                                            value='0'
+                                            <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}" value="0"/>
+                                        {% else %}
+                                            <input type="text" name="{{ title['field'] }}" id="{{ title['field'] }}" class="form-control" placeholder="{{ title['title'] }}"/>
                                         {% endif %}
-                                        >
                                     </div>
                                 </div>
                             {% endif %}
@@ -256,22 +256,20 @@
 	                    return false;
                     }
                 {% endif %}
-                {% if title['type'] in ['text', 'testarea'] %}
+                {% if title['type'] in ['text', 'textarea'] %}
                     if ($('#{{ title['field'] }}').val() == '') {
                         alert('{{ title['title'] }} 不能为空，请重新输入！');
 	                    return false;
                     }
                 {% endif %}
                 {% if title['type'] in ['float'] %}
-                    let val = $('#{{ title['field'] }}').val();
-                    if (val == '' || notFloat(val)) {
+                    if ($('#{{ title['field'] }}').val() == '' || notFloat($('#{{ title['field'] }}').val())) {
                         alert('{{ title['title'] }} 格式错误，请重新输入！');
 	                    return false;
                     }
                 {% endif %}
                 {% if title['type'] in ['number'] %}
-                    let val = $('#{{ title['field'] }}').val();
-                    if (val == '' || notNumber(val)) {
+                    if ($('#{{ title['field'] }}').val() == '' || notNumber($('#{{ title['field'] }}').val())) {
                         alert('{{ title['title'] }} 格式错误，请重新输入！');
 	                    return false;
                     }
@@ -293,6 +291,7 @@
 
         var formData = new FormData(document.getElementById("modal_create_form"));
         formData.append('create_data_item', '{{ menu }}');
+        formData.append('menu', '{{ menu }}');
         $.ajax({
             type: 'POST',
             url: "{{ url('create_data') }}",
@@ -303,7 +302,7 @@
             contentType:false,   // 告诉jquery不要设置content-Type请求头
             success: function (data) {
                 if (data.success == true) {
-                    $.hulla.send('成功新建数据！', "success");
+                    $.hulla.send('成功新建数据！<br>' + data.msg, "success");
                     $('#modal_create').modal('hide');
                     // refreshTable();
                     refresh();

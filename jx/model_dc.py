@@ -434,7 +434,7 @@ class DC_KJQKLWJBSJXX(Base):  # 科技期刊论文基本数据信息
         }
 
     @staticmethod
-    def get_unique_condition() -> []:
+    def get_unique_condition() -> List:
         return ['LWBH']
 
 class DC_KJLWFBXX(Base):  # 科技论文发表信息
@@ -463,7 +463,7 @@ class DC_KJLWFBXX(Base):  # 科技论文发表信息
         }
 
     @staticmethod
-    def get_unique_condition() -> []:
+    def get_unique_condition() -> List:
         return ['LWBH']
 
 
