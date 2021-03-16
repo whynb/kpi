@@ -737,6 +737,100 @@ class VIEW_HJCGJBSJXX(Base):
             {'table': 'dr_hjcgjbsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
         ]
 
+class VIEW_JCJBSJXX(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_jcjbsjxx'
+    __tablename__CH__ = '教材基本数据信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    CBH = Column('CBH', String(16), default='')  # 出版号
+    JCMC = Column('JCMC', String(16), default='')  # 教材名称
+    BC = Column('BC', String(16), default='')  # 版次
+    CBS = Column('CBS', String(16), default='')  # 出版社
+    CBRQ = Column('CBRQ', DateTime, default=now())  # 出版日期
+    JCBH = Column('JCBH', String(16), default='')  # 教材编号
+    JCLB = Column('JCLB', String(16), default='')  # 教材类别
+    JCZS = Column('JCZS', String(16), default='')  # 教材字数
+    BZZH = Column('BZZH', String(16), default='')  # 编著者号
+    BZZXM = Column('BZZXM', String(16), default='')  # 编著者姓名
+    JCBH = Column('JCBH', String(16), default='')  # 教材编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+                CREATE VIEW view_jcjbsjxx AS
+                SELECT
+                   dr_jcxx.id AS id,
+                   dr_jcxx.CBH AS CBH,
+                   dr_jcxx.JCMC AS JCMC,
+                   dr_jcxx.BC AS BC,
+                   dr_jcxx.CBS AS CBS,
+                   dr_jcxx.CBRQ AS CBRQ,
+                   dr_jcxx.JCBH AS JCBH,
+                   dr_jcxx.JCLB AS JCLB,
+                   dr_jcxx.JCZS AS JCZS,
+                   dr_bzxx.BZZH AS BZZH,
+                   dr_bzxx.BZZXM AS BZZXM,
+                   dr_jcxx.CBRQ AS stamp,
+                   dr_bzxx.note AS note
+                FROM dr_jcjbsjxx dr_jcxx
+                LEFT JOIN dc_jcjbsjxx dc_jcxx ON dr_jcxx.JCBH = dr_jcxx.JCBH
+                LEFT JOIN dr_bzxx ON dr_jcxx.JCBH = dr_bzxx.JCBH
+                WHERE 1=1
+            """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_jcjbsjxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_jcjbsjxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_jcjbsjxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note']
+
+    @staticmethod
+    def get_title_columns() -> List[str]:
+        return [
+            {'table': 'dr_jcjbsjxx', 'field': 'id', 'title': 'ID', 'editable': 'T', 'type': 'text',
+             'create': 'T', },
+            {'table': 'dr_jcjbsjxRTRTTx', 'field': 'CBH', 'title': '出版号', 'editable': 'T', 'type': 'text',
+             'create': 'True', },
+            {'table': 'dr_jcjbsjxx', 'field': 'JCMC', 'title': '教材名称', 'editable': 'T', 'type': 'text',
+             'create': 'True', },
+            {'table': 'dr_jcjbsjxx', 'field': 'BC', 'title': '版次', 'editable': 'T', 'type': 'text',
+             'create': 'T', },
+            {'table': 'dr_jcjbsjxx', 'field': 'CBS', 'title': '出版社', 'editable': 'T', 'type': 'text',
+             'create': 'T', },
+            {'table': 'dr_jcjbsjxx', 'field': 'JCBH', 'title': '教材编号', 'editable': 'T', 'type': 'text',
+             'create': 'True', },
+            {'table': 'dr_jcjbsjxx', 'field': 'JCLB', 'title': '教材类别', 'editable': 'T', 'type': 'text',
+             'create': 'True', },
+            {'table': 'dr_jcjbsjxx', 'field': 'JCZS', 'title': '教材字数', 'editable': 'T', 'type': 'text',
+             'create': 'T', },
+            {'table': 'dr_bzxx', 'field': 'BZZH', 'title': '编著者号', 'editable': 'T', 'type': 'text',
+             'create': 'True',},
+            {'table': 'dr_bzxx', 'field': 'BZZXM', 'title': '编著者姓名', 'editable': 'T', 'type': 'text',
+             'create': 'T', },
+            {'table': 'dr_bzxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date',
+             'create': 'F', },
+            {'table': 'dr_bzxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text',
+             'create': 'False', },
+        ]
+
+    @staticmethod
+    def get_search_columns() -> []:
+        return ['JCBH']
+
 
 class_dict = {key: var for key, var in locals().items() if isinstance(var, type)}
 
