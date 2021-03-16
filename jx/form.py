@@ -23,8 +23,8 @@ class RoleForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'placeholder': "角色名称",
-                'name': "txt_department_name",
-                'id': "txt_department_name"
+                'name': "role_name",
+                'id': "new_role_id"
             }
         )
     )

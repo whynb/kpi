@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.conf import settings
-from django.db import connection
 from urllib import parse
 from jx.util import *
 from jx.form import *
@@ -137,12 +136,9 @@ def check_login(fn):
     :return:
     """
     def log(_req):
-        """
-        TODO: log each request such as who, when, what...
-        :param _req:
-        :return:
-        """
-
+        e = _req.environ
+        logger.info(e['REMOTE_ADDR'] + ' ' + e['REQUEST_METHOD'] + ' ' + e['PATH_INFO'] + ' ' + e['QUERY_STRING'])
+        logger.info(e['HTTP_COOKIE'])
         return _req
 
     def wrapper(req, *args, **kwargs):
@@ -161,17 +157,16 @@ def check_login(fn):
     return wrapper
 
 
-# decorator to catch general exception
 def sys_error(fn):
+    """
+    Decorator to catch general exception
+    @param fn:
+    @return:
+    """
     def wrapper(req, *args, **kwargs):
         try:
-            # TODO: verify SQL injection. sqlalchemy->text() DOESN'T work due to compose SQL
-            v = eval(str(req.POST.dict()))
-            for k, val in v.items():
-                if len(k.split(' ')) > 1 or len(val.split(' ')) > 1:
-                    return JsonResponse({'success': False, 'tag': '参数错误：所有参数不能含有空格'})
-
-            v = eval(str(req.GET.dict()))
+            v = dict(eval(str(req.POST.dict())), **eval(str(req.GET.dict())))
+            logger.info(v)
             for k, val in v.items():
                 if len(k.split(' ')) > 1 or len(val.split(' ')) > 1:
                     return JsonResponse({'success': False, 'tag': '参数错误：所有参数不能含有空格'})
@@ -199,7 +194,7 @@ def login(req):
         form = LoginForm(req.POST)
         if form.is_valid():
             payroll = form.cleaned_data['payroll']
-            password = '111111'
+            password = '111111'  # TODO: add password verification
 
             users = SysUser.objects.filter(payroll__exact=payroll, password__exact=password)
 
@@ -394,8 +389,6 @@ def khjgmx(req):
 
 @check_login
 def khpc(req):
-    # BUG: 系统bug:考核批次页面，点击超级管理员后，再点击东北大学，考核批次数据不再显示，需要刷新页面; 其他页面也有此类问题
-    # 在某种特定情况重现，但是没有保存log，与SQLAlchemy的事务处理有关；检查 insert/update execute/commit match
     from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]
