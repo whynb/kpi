@@ -302,7 +302,7 @@
             contentType:false,   // 告诉jquery不要设置content-Type请求头
             success: function (data) {
                 if (data.success == true) {
-                    $.hulla.send('成功新建数据！', "success");
+                    $.hulla.send('成功新建数据！<br>' + data.msg, "success");
                     $('#modal_create').modal('hide');
                     // refreshTable();
                     refresh();
