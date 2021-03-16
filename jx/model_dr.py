@@ -246,6 +246,114 @@ class DR_JZGJCSJXX(Base):
         return ['JZGH']
 
 
+
+# fanming
+class DR_KJXMJBSJXX(Base):
+    __tablename__ = 'dr_kjxmjbsjxx'
+    __tablename__CH__ = '科技项目基本数据信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    XMBH = Column('XMBH', String(16), default='')  # 项目编号
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    XMMC = Column('XMMC', String(16), default='')  # 项目名称
+    ZXBH = Column('ZXBH', String(16), default='')  # 专项编号
+    KSRQ = Column('KSRQ', DateTime, default=now())  # 开始日期
+    JXRQ = Column('JXRQ', DateTime, default=now())  # 结项日期
+    XMFZRH = Column('XMFZRH', String(16), default='')  # 项目负责人号
+    XMWTDW = Column('XMWTDW', String(16), default='')  # 项目委托单位
+    XMLYM = Column('XMLYM', String(16), default='')  # 项目来源码
+    MJM = Column('MJM', String(16), default='')  # 密级码
+    SHJJXYM = Column('SHJJXYM', String(16), default='')  # 社会经济效益码
+    XKLYM = Column('XKLYM', String(16), default='')  # 学科领域
+    HZGJDQM = Column('HZGJDQM', String(16), default='')  # 合作国家/地区码
+    JHWCQKM = Column('JHWCQKM', String(16), default='')  # 计划完成情况码
+    HZXSM = Column('HZXSM', String(16), default='')  # 合作形式码
+    SSJSLY = Column('SSJSLY', String(16), default='')  # 所属技术领域
+    XMPZH = Column('XMPZH', String(16), default='')  # 项目批准号
+    XMLBM = Column('XMLBM', String(16), default='')  # 项目类别码
+    XMJBM = Column('XMJBM', String(16), default='')  # 项目级别码
+    HDLXM = Column('HDLXM', String(16), default='')  # 活动类型码
+    XMZXZTM = Column('XMZXZTM', String(16), default='')  # 项目执行状态码
+    XMJTXS = Column('XMJTXS', String(16), default='')  # 项目结题形式
+    SBRQ = Column('SBRQ', DateTime, default=now())  # 申报日期
+    LXRQ = Column('LXRQ', DateTime, default=now())  # 立项日期
+    ZGBM = Column('ZGBM', String(16), default='')  # 主管部门
+    XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
+    SSHYM = Column('SSHYM', String(16), default='')  # 所属行业码
+    DWJSM = Column('DWJSM', String(16), default='')  # 单位角色
+    SBXMH = Column('SBXMH', String(16), default='')  # 申报项目号
+    YQYJCGJXS = Column('YQYJCGJXS', String(16), default='')  # 预期研究成果及形式
+    XMZY = Column('XMZY', String(64), default='')  # 项目摘要
+    XDWH = Column('XDWH', String(16), default='')  # 下达文号
+    KTRQ = Column('KTRQ', DateTime, default=now())  # 开题日期
+    SHJJMB = Column('SHJJMB', String(16), default='')  # 社会经济目标
+    ZTC = Column('ZTC', String(16), default='')  # 主题词
+    SSZKT = Column('SSZKT', String(16), default='')  # 所属主题课
+    XMLYDW = Column('XMLYDW', String(16), default='')  # 项目来源单位
+    JHWCRQ = Column('JHWCRQ', DateTime, default=now())  # 计划完成日期
+    PZJF = Column('PZJF', Float, default=0.0)  # 批准经费
+    XMXZ = Column('XMXZ', String(16), default='')  # 项目性质
+    YJXKM = Column('YJXKM', String(16), default='')  # 一级学科编码
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '项目编号': ['XMBH'],
+            '单位号': ['DWH'],
+            '项目名称': ['XMMC'],
+            '专项编号': ['ZXBH'],
+            '开始日期': ['KSRQ', 'DateTime'],
+            '结项日期': ['JXRQ', 'DateTime'],
+            '项目负责人号': ['XMFZRH'],
+            '项目委托单位': ['XMWTDW'],
+            '项目来源码': ['XMLYM'],
+            '密级码': ['MJM'],
+            '社会经济效益码': ['SHJJXYM'],
+            '学科领域': ['XKLY'],
+            '合作国家/地区码': ['HZGJDQM'],
+            '计划完成情况码': ['JHWCQKM'],
+            '合作形式码': ['HZXSM'],
+            '所属技术领域': ['SSJSLY'],
+            '项目批准号': ['XMPZH'],
+            '项目类别码': ['XMLBM'],
+            '项目级别码': ['XMJBM'],
+            '活动类型码': ['HDLXM'],
+            '项目执行状态码': ['XMZXZTM'],
+            '项目结题形式': ['XMJTXS'],
+            '申报日期': ['SBRQ', 'DateTime'],
+            '立项日期': ['LXRQ', 'DateTime'],
+            '主管部门': ['ZGBM'],
+            '学科门类(科技)码': ['XKMLKJM'],
+            '所属行业码': ['SSHYM'],
+            '单位角色': ['DWJS'],
+            '申报项目号': ['SBXMH'],
+            '预期研究成果及形式': ['YQYJCGJXS'],
+            '项目摘要': ['XMZY'],
+            '下达文号': ['XDWH'],
+            '开题日期': ['KTRQ', 'DateTime'],
+            '社会经济目标': ['SHJJMB'],
+            '主题词': ['ZTC'],
+            '所属主题课': ['SSZTK'],
+            '项目来源单位': ['XMLYDW'],
+            '计划完成日期': ['JHWCRQ', 'DateTime'],
+            '批准经费': ['PZJF', 'Float'],
+            '项目性质': ['XMXZ'],
+            '一级学科编码': ['YJXKBM'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+
+
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['XMBH']
+# fanmingdieoff
+
+
 class DR_XMJFXX(Base):
     __tablename__ = 'dr_xmjfxx'
     __tablename__CH__ = '项目经费信息'
