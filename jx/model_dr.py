@@ -458,7 +458,7 @@ class DR_KJZZXX(Base):
     SSXMBH = Column('SSXMBH', String(16), default='')  # 所属项目编号
     ISBNH = Column('ISBNH', String(1024), default='')  # ISBN 号
     XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
-    DYZZ = Column(' DYZZ', String(16), default='')  # 第一作者
+    DYZZ = Column('DYZZ', String(16), default='')  # 第一作者
     DYZZBH = Column('DYZZBH', String(16), default='')  # 第一作者编号
     DWMC = Column('DWMC', String(16), default='')  # 单位名称
     YJXKM = Column('YJXKM', String(16), default='')  # 一级学科
@@ -500,6 +500,7 @@ class DR_KJZZXX(Base):
 class DR_KJCGRYXX_ZZ(Base):
     __tablename__ = 'dr_kjcgryxx_zz'
     __tablename__CH__ = '科技成果(著作)人员信息'
+
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     RYH = Column('RYH', String(16), default='')  # 人员号
     JSM = Column('JSM', String(16), default='')  # 角色码
@@ -514,6 +515,7 @@ class DR_KJCGRYXX_ZZ(Base):
     SMSX = Column('SMSX', String(16), default='')  # 署名顺序
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
+
     @staticmethod
     def get_column_label() -> dict:
         return {

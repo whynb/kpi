@@ -817,7 +817,8 @@ class VIEW_KJCGRYXX_JL(Base):
             {'table': 'dr_hjcgjbsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
         ]
 
-class VIEW_KJCGRYXX_JL(Base):
+
+class VIEW_KJCGRYXX_ZZ(Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_kjcgryxx_zz'
     __tablename__CH__ = '科技成果(著作)人员信息'
@@ -832,7 +833,7 @@ class VIEW_KJCGRYXX_JL(Base):
     SZDW = Column('SZDW', String(16), default='')  # 所在单位
     RYLX = Column('RYLX', String(128), default='')  # 人员类型
     ZZBH = Column('ZZBH', String(128), default='')  # 著作编号
-    KJCGRYBH = Column('WDWZZPX', String(16), default='')  # 科技成果人员编号
+    KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
     SMSX = Column('SMSX', String(16), default='')  # 署名顺序
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
