@@ -10,37 +10,35 @@
 
     <!-- Start Navigation -->
     <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
-        <div class="container">
+        <div class="container" style="width: inherit">
             {% include 'html/sheader.html' %}
             {% include 'html/smenu.html' %}
         </div>
     </nav>
     <!-- End Navigation -->
 
-    <div class="clearfix"></div>
-
     <!-- Start Content -->
-    <div class="column">
-        <div class="column-right" style="height: 1000px">
-            <ul class="nav navbar-nav">
-            <table><tbody>
-            {% for menu in menus %}
-                <tr>
-                    {% for item in menu['items'] %}
-                        <td style="padding: 10px;"><a href="{{ item['url'] }}">{{ item['name'] }}</a></td>
+    <div class="why_container">
+        <div class="why_right">
+            <div class="why_content">
+                <ul class="nav navbar-nav">
+                    <table><tbody>
+                    {% for menu in menus %}
+                        <tr>
+                            {% for item in menu['items'] %}
+                                <td style="padding: 10px;"><a href="{{ item['url'] }}">{{ item['name'] }}</a></td>
+                            {% endfor %}
+                        </tr>
                     {% endfor %}
-                </tr>
-            {% endfor %}
-            </tbody>
-            </table>
-            </ul>
+                    </tbody>
+                    </table>
+                </ul>
+            </div>
         </div>
     </div>
     <!-- End Content -->
-
 <script>
     console.log(getCookie('payroll'));
-
 </script>
 
 </body>

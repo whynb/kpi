@@ -101,7 +101,7 @@ function uuid() {
     return uuid;
 }
 
-function getDateString(AddDayCount) {
+function getDateString(AddDayCount = 0) {
     var dd = new Date();
     dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期
     var y = dd.getFullYear();

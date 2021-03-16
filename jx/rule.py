@@ -34,11 +34,11 @@ class KH_JXKHGZ(Base, KpiObjectBase):
 
     __tablename__ = "kh_jxkhgz"
     __tablename__CH__ = "绩效考核规则"
-    __table_args__ = {'extend_existing': True}
-
-    # TODO: unique: 单位号-考核类型-考核子类-详细考核子类
-    # TODO: unique: 单位号-规则号
-    # TODO: DWH should be user's one while upload except supper admin if data defined DWH
+    __table_args__ = (
+        UniqueConstraint('DWH', 'GZH', name='_kh_jxkhgz_dwh_gzh_uc'),
+        UniqueConstraint('DWH', 'KHLX', 'KHZL', 'XXKHZL', name='_kh_jxkhgz_dwh_khlx_khzl_xxkhzl_uc'),
+        {'extend_existing': True},
+    )
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
 
@@ -46,7 +46,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):
     DWH = Column('DWH', String(16), default='')  # 单位号
     KHLX = Column('KHLX', String(32), default='')  # 考核类型
     KHZL = Column('KHZL', String(32), default='')  # 考核子类
-    XXKLZL = Column('XXKLZL', String(32), default='')  # 详细考核子类
+    XXKHZL = Column('XXKHZL', String(32), default='')  # 详细考核子类
     KHMC = Column('KHMC', String(256), default='')  # 考核名称
     KHSJDX = Column('KHSJDX', String(64), default='')  # 考核数据对象
     GZTJ = Column('GZTJ', String(2056), default='')  # 规则条件
@@ -68,7 +68,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):
                 dw.DWMC AS DWMC,
                 kh.KHLX AS KHLX,
                 kh.KHZL AS KHZL,
-                kh.XXKLZL AS XXKLZL,
+                kh.XXKHZL AS XXKHZL,
                 kh.KHMC AS KHMC,
                 kh.KHSJDX AS KHSJDX,
                 kh.GZTJ AS GZTJ,
@@ -107,7 +107,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):
             '单位号': ['DWH'],
             '考核类型': ['KHLX'],
             '考核子类': ['KHZL'],
-            '详细考核子类': ['XXKLZL'],
+            '详细考核子类': ['XXKHZL'],
             '考核名称': ['KHMC'],
             '考核数据对象': ['KHSJDX'],
             '规则条件': ['GZTJ'],
@@ -119,12 +119,15 @@ class KH_JXKHGZ(Base, KpiObjectBase):
         }
 
     @staticmethod
-    def get_unique_condition() -> List[str]:
-        return ['GZH']
+    def get_unique_condition() -> list:
+        return [
+            ['DWH', 'KHLX', 'KHZL', 'XXKHZL', ],  # NOTE: additional unique to verify data consistency
+            ['DWH', 'GZH', ],  # NOTE: last one used to crud
+        ]
 
     @staticmethod
     def get_search_columns() -> List[str]:
-        return ['GZH', 'DWH', 'DWMC', 'KHLX', 'KHZL', 'XXKLZL', 'KHMC', 'KHSJDX']
+        return ['GZH', 'DWH', 'DWMC', 'KHLX', 'KHZL', 'XXKHZL', 'KHMC', 'KHSJDX']
 
     @staticmethod
     def get_title_columns() -> List[dict]:
@@ -135,7 +138,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):
             {'table': 'kh_jxkhgz', 'field': 'GZH', 'title': '规则号', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHLX', 'title': '考核类型', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHZL', 'title': '考核子类', 'editable': 'True', 'type': 'text', 'create': 'T', },
-            {'table': 'kh_jxkhgz', 'field': 'XXKLZL', 'title': '详细考核子类', 'editable': 'True', 'type': 'text', 'create': 'T', },
+            {'table': 'kh_jxkhgz', 'field': 'XXKHZL', 'title': '详细考核子类', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHSJDX', 'title': '考核数据对象', 'editable': 'True', 'type': 'class', 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'GZTJ', 'title': '规则条件', 'editable': 'True', 'type': 'textarea', 'create': 'T', },
@@ -146,7 +149,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):
             {'table': 'kh_jxkhgz', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'T', },
         ]
 
-    def __init__(self, GZH, DWH, KHLX, KHZL, XXKLZL, KHMC, KHSJDX, GZTJ, JXFSJS, KHMXMB, KHJGDX, stamp=now(), note=''):
+    def __init__(self, GZH, DWH, KHLX, KHZL, XXKHZL, KHMC, KHSJDX, GZTJ, JXFSJS, KHMXMB, KHJGDX, stamp=now(), note=''):
         """
         :param GZTJ:  # str format rule engine for condition check
         :param JXFSJS:  # str format rule engine for value calculation
@@ -156,7 +159,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):
         self.DWH = DWH
         self.KHLX = KHLX
         self.KHZL = KHZL
-        self.XXKLZL = XXKLZL
+        self.XXKHZL = XXKHZL
         self.KHMC = KHMC
         self.KHSJDX = KHSJDX
         self.GZTJ = GZTJ
@@ -358,6 +361,10 @@ class KH_KHPC(Base, KpiObjectBase):
         return ['kh_khpc']
 
     @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['kh_khpc']
+
+    @staticmethod
     def get_column_label() -> dict:
         return {
             'ID': ['id'],
@@ -532,7 +539,7 @@ class KH_KHJGHZ(Base, KpiObjectBase):
                 gz.KHMC AS KHMC,
                 gz.KHLX AS KHLX,
                 gz.KHZL AS KHZL,
-                gz.XXKLZL AS XXKLZL,
+                gz.XXKHZL AS XXKHZL,
                 kh.KHJDHJ AS KHJDHJ,
                 kh.stamp AS stamp,
                 kh.note AS note           
@@ -580,7 +587,7 @@ class KH_KHJGHZ(Base, KpiObjectBase):
 
     @staticmethod
     def get_search_columns() -> List[str]:
-        return ['DWMC', 'DWH', "DATE_FORMAT(KHNF,'%Y')", 'XM', 'GZH', 'KHMC', 'KHLX', 'KHZL', 'XXKLZL']
+        return ['DWMC', 'DWH', "DATE_FORMAT(KHNF,'%Y')", 'XM', 'GZH', 'KHMC', 'KHLX', 'KHZL', 'XXKHZL']
 
     @staticmethod
     def get_title_columns() -> List[dict]:
@@ -597,7 +604,7 @@ class KH_KHJGHZ(Base, KpiObjectBase):
             {'table': 'kh_jxkhgz', 'field': 'KHMC', 'title': '考核名称', 'editable': 'F', 'type': 'table', 'value': 'kh_jxkhgz:GZH,KHMC', 'where': "DWH IN %(departments)s", 'create': 'T', },
             {'table': 'kh_jxkhgz', 'field': 'KHLX', 'title': '考核类型', 'editable': 'F', 'type': 'text', 'create': 'F', },
             {'table': 'kh_jxkhgz', 'field': 'KHZL', 'title': '考核子类', 'editable': 'F', 'type': 'text', 'create': 'F', },
-            {'table': 'kh_jxkhgz', 'field': 'XXKLZL', 'title': '详细考核子类', 'editable': 'F', 'type': 'text', 'create': 'F', },
+            {'table': 'kh_jxkhgz', 'field': 'XXKHZL', 'title': '详细考核子类', 'editable': 'F', 'type': 'text', 'create': 'F', },
             {'table': 'kh_khjghz', 'field': 'KHJDHJ', 'title': '考核绩点合计', 'editable': 'F', 'type': 'float', 'create': 'T', },
             {'table': 'kh_khjghz', 'field': 'stamp', 'title': '时间戳', 'editable': 'F', 'type': 'date', 'create': 'F', },
             {'table': 'kh_khjghz', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'T', },

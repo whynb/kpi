@@ -4,16 +4,15 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.conf import settings
-from django.db import connection
 from urllib import parse
 from jx.util import *
 from jx.form import *
 from jx.models import *
 from jx.exception import *
-from jx.password import AES3
 
 
 time_out = settings.COOKIE_TIME_OUT
+org_tree_without_users = ['zzjgjbsjxx', ]
 
 
 def get_menu(payroll):
@@ -67,65 +66,33 @@ def get_module_static_method(class_name, method, module_name='module', view_pref
     return []
 
 
-def get_menu_name(req):
+def get_menu_content(req):
     path = req.get_full_path().split('/')
     menu_addr = str('/' + path[1] + '/' + path[2] + '/')
     if path[2] == 'base':
         menu_addr += path[3] + '/'
-    menu = Menu.objects.get(menu_addr=menu_addr)
-    return menu.menu_name
+    return Menu.objects.get(menu_addr=menu_addr)
+
+
+def get_menu_name(req):
+    return get_menu_content(req).menu_name
+
+
+def get_menu_last_path(req):
+    path = req.get_full_path().split('/')
+    return path[3] if path[2] == 'base' else path[2]
 
 
 def get_with_users(req):
     payroll = req.COOKIES.get('payroll')
     user = SysUser.objects.get(payroll__exact=payroll)
-    menu = req.get_full_path().split('/')[3]
-    if menu in ['zzjgjbsjxx', '']:
-        return False
-    return True if user.role_id in (1, 2) else False
-
-
-def get_role_menu_permission__(req):
-    user = SysUser.objects.get(payroll=req.COOKIES.get('payroll'))
-    path = req.get_full_path().split('/')
-    menu_addr = str('/' + path[1] + '/' + path[2] + '/')
-    if path[2] == 'base':
-        menu_addr += path[3] + '/'
-    menu = Menu.objects.get(menu_addr=menu_addr)
-
-    cursor = connection.cursor()
-    sql = '''
-        SELECT b.permission
-        FROM jx_role_menu b 
-        WHERE b.role_id = %(role_id)s AND b.menu_id = %(menu_id)s
-    ''' % {
-        'role_id': user.role_id,
-        'menu_id': menu.id,
-    }
-
-    cursor.execute(sql)
-    _dict = dictfetchall(cursor)
-
-    # INFO 2021-03-09 14:30:26,491 views.py views get_role_menu_permission 105: [{'permission': 'y,y,y,y,y,y'}]
-    logger.info(_dict)
-    for a in _dict:
-        c = []
-        b = a['permission'].split(',')
-        for num in range(0, 6):
-            c.append(True if b[num] == 'y' else False)
-
-        return c
-
-    return []
+    ret = True if user.role_id in (1, 2) else False
+    return False if get_menu_last_path(req) in org_tree_without_users else ret
 
 
 def get_role_menu_permission(req):
     user = SysUser.objects.get(payroll=req.COOKIES.get('payroll'))
-    path = req.get_full_path().split('/')
-    menu_addr = str('/' + path[1] + '/' + path[2] + '/')
-    if path[2] == 'base':
-        menu_addr += path[3] + '/'
-    menu = Menu.objects.get(menu_addr=menu_addr)
+    menu = get_menu_content(req)
 
     from jx.sqlalchemy_env import db, text
     sql = '''
@@ -134,8 +101,7 @@ def get_role_menu_permission(req):
         WHERE b.role_id = :role_id AND b.menu_id = :menu_id
     '''
 
-    _dict = db.execute(text(sql), {'role_id': user.role_id, 'menu_id': menu.id,}).fetchall()
-    db.commit()  # db.rollback() while execute->except to keep out db deadlock
+    _dict = db.execute(text(sql), {'role_id': user.role_id, 'menu_id': menu.id, }).fetchall()
     logger.info(_dict)
     for a in _dict:
         c = []
@@ -170,12 +136,9 @@ def check_login(fn):
     :return:
     """
     def log(_req):
-        """
-        TODO: log each request such as who, when, what...
-        :param _req:
-        :return:
-        """
-
+        e = _req.environ
+        logger.info(e['REMOTE_ADDR'] + ' ' + e['REQUEST_METHOD'] + ' ' + e['PATH_INFO'] + ' ' + e['QUERY_STRING'])
+        logger.info(e['HTTP_COOKIE'])
         return _req
 
     def wrapper(req, *args, **kwargs):
@@ -194,17 +157,16 @@ def check_login(fn):
     return wrapper
 
 
-# decorator to catch general exception
 def sys_error(fn):
+    """
+    Decorator to catch general exception
+    @param fn:
+    @return:
+    """
     def wrapper(req, *args, **kwargs):
         try:
-            # TODO: verify SQL injection. sqlalchemy->text() DOESN'T work due to compose SQL
-            v = eval(str(req.POST.dict()))
-            for k, val in v.items():
-                if len(k.split(' ')) > 1 or len(val.split(' ')) > 1:
-                    return JsonResponse({'success': False, 'tag': '参数错误：所有参数不能含有空格'})
-
-            v = eval(str(req.GET.dict()))
+            v = dict(eval(str(req.POST.dict())), **eval(str(req.GET.dict())))
+            logger.info(v)
             for k, val in v.items():
                 if len(k.split(' ')) > 1 or len(val.split(' ')) > 1:
                     return JsonResponse({'success': False, 'tag': '参数错误：所有参数不能含有空格'})
@@ -226,15 +188,15 @@ def sys_error(fn):
 def error(req):
     return HttpResponseRedirect('/jx/') if req.method == 'POST' else render(req, 'error.html')
 
-pc = AES3('boomboomboomboom')
+
 def login(req):
     if req.method == 'POST':
         form = LoginForm(req.POST)
         if form.is_valid():
             payroll = form.cleaned_data['payroll']
-            # password = '111111'
-            k = pc.encrypt(form.cleaned_data['password'])
-            users = SysUser.objects.filter(payroll__exact=payroll, password__exact=k)
+            password = '111111'  # TODO: add password verification
+
+            users = SysUser.objects.filter(payroll__exact=payroll, password__exact=password)
 
             if users:
                 from jx.function import get_user_information
@@ -332,7 +294,7 @@ def role_assign(req):
     def get_roles():
         res = []
         roles = Role.objects.all()
-        for role in roles[1:]:
+        for role in roles:
             res.append([str(role.id), str(role.role_name)])
         return res
 
@@ -427,8 +389,6 @@ def khjgmx(req):
 
 @check_login
 def khpc(req):
-    # BUG: 系统bug:考核批次页面，点击超级管理员后，再点击东北大学，考核批次数据不再显示，需要刷新页面; 其他页面也有此类问题
-    # 在某种特定情况重现，但是没有保存log，与SQLAlchemy的事务处理有关；检查 insert/update execute/commit match
     from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]
@@ -477,7 +437,6 @@ def khgzdz(req):
 
 @check_login
 def khjghz(req):
-    # TODO: add showing radio condition: '单位'（default），'教职工'，'考核名称'
     from jx.function import get_static_data, get_field_name
     payroll = req.COOKIES.get('payroll')
     menu = req.get_full_path().split('/')[2]
