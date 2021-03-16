@@ -40,6 +40,26 @@
                                                     function {{ title['field'] }}_change(){
                                                         $('#{{ fields[0] }}').val($('#select_{{ title['field'] }}').val());
                                                         $('#{{ title['field'] }}').val($('#select_{{ title['field'] }}').find("option:selected")[0].textContent);
+
+                                                        {% for action in title['action'] %}  // TODO: rewrite to Jinja2 macro-function
+                                                            {% if action['type'] == 'onclick' %}
+                                                                {% with tos = static_fields(action['content']['to']) %}
+                                                                    document.getElementById("select_{{ tos|last }}").innerHTML = '';
+                                                                    $('#select_{{ tos|last }}').selectpicker('refresh');
+
+                                                                    let url = "{{ url('get_json') }}?path={{menu}}|{{title.field}}|{{action.type}}";
+                                                                    if ("{{ action['content']['where'] }}".indexOf(":this") != -1)
+                                                                        url += "&this=" + $('#select_{{ title['field'] }}').val();
+                                                                    $.getJSON(url, function(ret){
+                                                                        for(let i=0; i < ret.length; i++){
+                                                                            $("<option value="+ret[i]['{{ tos[0] }}']+">  "+ret[i]['{{ tos[1] }}']+" </option>").appendTo($('#select_{{ tos|last }}'));
+                                                                        }
+                                                                        $('#select_{{ tos|last }}').selectpicker('refresh');
+                                                                    });
+                                                                {% endwith %}
+                                                            {% endif %}
+                                                        {% endfor %}
+
                                                     }
                                                 </script>
                                             {% endwith %}

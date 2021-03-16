@@ -25,6 +25,16 @@ def sys_info():
     return info
 
 
+def fetchall_sqlalchemy_in_dict(proxy):
+    try:
+        _keys = proxy.keys()
+        return [dict(zip(_keys, row)) for row in proxy.fetchall()]
+
+    except:
+        logger.error(sys_info())
+        return []
+
+
 def dictfetchall(cursor):
     # return all rows from db cursor as dict
     try:

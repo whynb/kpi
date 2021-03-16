@@ -48,6 +48,7 @@ def get_field_name(s):
                 res.append(trim(a[a.find('as')+2:]))
             else:
                 res.append(a)
+        res.append(trim(s[:s.find(':')]))
         return res
     except:
         logger.error(sys_info())
@@ -1103,6 +1104,51 @@ def get_data(req):
     select_out = dictfetchall(cursor)
 
     return JsonResponse({'total': count, 'rows': select_out})
+
+
+@check_login
+@sys_error
+def get_json(req):
+    v = eval(str(req.GET.dict()))
+    try:
+        from jx.views import get_module_static_method
+        arr = v['path'].split('|')
+        content, title_columns = {}, get_module_static_method(arr[0], 'get_title_columns')
+        for tc in title_columns:
+            if tc['field'] == arr[1]:
+                for act in tc['action']:
+                    if act['type'] == arr[2]:
+                        content = act['content']
+
+        # {'type': 'table', 'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH=:this', 'to': 'JZGH:JZGH,XM'}}]}
+        # {'type': 'table', 'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'JZGH:JZGH,XM'}}]}
+        if content:
+            t_f = content['value'].split(":")
+            sql = "SELECT " + t_f[1] + " FROM " + t_f[0]
+            if trim(content['where']) != "":
+                if content['where'].find('DWH IN :this') != -1:
+                    from jx.module import VIEW_ZZJGJBSJXX
+                    ds = VIEW_ZZJGJBSJXX.get_managed_departments(trim(v['this']))
+                    sql += " WHERE " + content['where'].replace(':this', str(ds).replace('[', '(').replace(']', ')'))
+                else:
+                    sql += " WHERE " + content['where']
+
+            if sql.find('JZGH') != -1 or trim(t_f[0]) in ['dr_jzgjcsjxx', 'view_jzgjcsjxx', ]:
+                sql += ' AND JZGH NOT IN ("admin")'
+
+            from jx.sqlalchemy_env import db, text
+            try:
+                logger.info(sql)
+                pro = db.execute(text(sql), v)
+                db.commit()
+                return JsonResponse(fetchall_sqlalchemy_in_dict(pro), safe=False)
+            except:
+                db.rollback()
+                logger.error(sys_info())
+    except:
+        logger.error(sys_info())
+
+    return JsonResponse([], safe=False)
 
 
 @check_login
