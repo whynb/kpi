@@ -887,12 +887,12 @@ class VIEW_KJCGRYXX_JL(Base):
     @staticmethod
     def get_title_columns() -> List[str]:
         return [
-            {'table': 'dr_kjcgryxx_zz', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_kjcgryxx_zz', 'field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_kjcgryxx_zz', 'field': 'JSM', 'title': '角色码', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_kjcgryxx_zz', 'field': 'ZXZS', 'title': '撰写字数', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_kjcgryxx_zz', 'field': 'PMZRS', 'title': '排名/总人数', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_kjcgryxx_zz', 'field': 'GXL', 'title': '贡献率', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_kjcgryxx_zz', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_zz', 'field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_zz', 'field': 'JSM', 'title': '角色码', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_zz', 'field': 'ZXZS', 'title': '撰写字数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_zz', 'field': 'PMZRS', 'title': '排名/总人数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_zz', 'field': 'GXL', 'title': '贡献率', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_kjcgryxx_zz', 'field': 'XM', 'title': '姓名', 'editable': 'False', 'type': 'text', 'create': 'False', },
             {'table': 'dr_kjcgryxx_zz', 'field': 'SZDW', 'title': '所在单位', 'editable': 'False', 'type': 'text', 'create': 'False', },
             {'table': 'dr_kjcgryxx_zz', 'field': 'RYLX', 'title': '人员类型', 'editable': 'False', 'type': 'text', 'create': 'False', },
