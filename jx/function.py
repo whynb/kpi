@@ -332,6 +332,10 @@ def add_power(req):
     try:
         role = Role.objects.get(role_name=role_name)
         for menu_id in menus:
+            if str(role.id) != '1':  # not admin
+                if str(menu_id) == '1':
+                    continue
+
             db.execute(
                 text("INSERT INTO jx_role_menu (role_id, menu_id, permission) VALUES (:role_id, :menu_id, :p)"),
                 {'role_id': role.id, 'menu_id': menu_id, 'p': "n,n,n,n,n,n"}
@@ -410,6 +414,9 @@ def del_role(req):
     role = Role.objects.filter(role_name=role_name)
     if not role:
         return HttpResponse('角色不存在')
+
+    if str(role[0].id) in ['1', '2', '3', '4']:
+        return HttpResponse('禁止删除该角色')
 
     try:
         # cursor = connection.cursor()
@@ -903,8 +910,16 @@ def edit(req):
     """
     :param req: id=30&DWJC=00000C&field=DWJC&menu=zzjgjbsjxx
     :return:
+
+        def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'T', 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'True', },
+
     """
     from jx.sqlalchemy_env import db, text
+
+    payroll = str(req.COOKIES.get('payroll'))
     try:
         v = eval(str(req.POST.dict()))
         set_to = trim(str(v[v['field']]))
@@ -917,6 +932,15 @@ def edit(req):
             v['class_name'] = 'kh_' + v['menu']
 
         column = get_column_info(v['class_name'], v['field'])
+        if column['type'] == 'table':
+            fields = get_field_name(column['value'])
+            data_set = get_static_data(payroll, column['value'], column['where'])
+            for data in data_set:
+                if str(data[fields[1]]) == str(set_to):
+                    v['set_to'] = str(data[fields[0]])
+                    v['field'] = fields[0]
+            column = get_column_info(v['class_name'], fields[0])
+
         if len(column) == 0:
             return JsonResponse({'success': False, 'msg': '更新失败：未找到所编辑字段'})
 
@@ -1331,10 +1355,10 @@ def staffinfo(req):
     sql_where = " WHERE 1=1 "
     if user.role_id == 1:
         pass
-    elif user.role_id == 2:
+    elif user.role_id in (2, 3):
         from jx.module import VIEW_JZGJCSJXX 
         ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
-        sql_where += " AND DWH IN '%(departments)s'" % {'departments': str(ds).replace('[', '(').replace(']', ')')}
+        sql_where += " AND DWH IN %(departments)s" % {'departments': str(ds).replace('[', '(').replace(']', ')')}
     else:
         sql_where += ' AND 1=0'
         

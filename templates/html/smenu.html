@@ -14,7 +14,7 @@
             {% endif %}
             {% if menu['items'] | length == 1 %}
                 {% for item in menu['items'] %}
-                    <li><a href="{{ item['url'] }}">{{ item['name'] }}</a></li>
+                    <li><a href="{{ item['url'] }}" style="padding: 15px;">{{ item['name'] }}</a></li>
                 {% endfor %}
             {% endif %}
         {% endfor %}
