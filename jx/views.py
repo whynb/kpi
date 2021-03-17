@@ -9,7 +9,7 @@ from jx.util import *
 from jx.form import *
 from jx.models import *
 from jx.exception import *
-
+from jx.password import *
 
 time_out = settings.COOKIE_TIME_OUT
 org_tree_without_users = ['zzjgjbsjxx', ]
@@ -188,15 +188,16 @@ def sys_error(fn):
 def error(req):
     return HttpResponseRedirect('/jx/') if req.method == 'POST' else render(req, 'error.html')
 
+pc = AES3('boomboomboomboom')
 
 def login(req):
     if req.method == 'POST':
         form = LoginForm(req.POST)
         if form.is_valid():
             payroll = form.cleaned_data['payroll']
-            password = '111111'  # TODO: add password verification
+            k = pc.encrypt(form.cleaned_data['password'])
 
-            users = SysUser.objects.filter(payroll__exact=payroll, password__exact=password)
+            users = SysUser.objects.filter(payroll__exact=payroll, password__exact=k)
 
             if users:
                 from jx.function import get_user_information

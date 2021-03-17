@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^get_data', function.get_data, name='get_data'),
     url(r'^get_class_view', function.get_class_view, name='get_class_view'),
     url(r'^delete_data', function.delete_data, name='delete_data'),
+    url(r'^change_password', function.change_password, name='change_password'),
     url(r'^create_data', function.create_data, name='create_data'),
     url(r'^edit', function.edit, name='edit'),
     url(r'^run_kpi', function.run_kpi, name='run_kpi'),

@@ -156,7 +156,7 @@ WSGI_APPLICATION = 'kpi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kpi_test',
+        'NAME': 'kpi',
         'USER': 'root',
 
 # run

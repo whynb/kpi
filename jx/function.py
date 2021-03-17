@@ -31,6 +31,7 @@ import pandas as pd
 from jx.exception import *
 from pymysql.err import Error
 from jx.password import AES3
+import time
 
 
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
@@ -1112,6 +1113,30 @@ def get_class_view(req):
     from jx.module import generate_class_view
     return JsonResponse(generate_class_view('module', False), safe=False)
 
+#孙毅豪 2021.3.17
+def change_password(req):
+    pc = AES3('boomboomboomboom')
+    newpwd = req.POST.get('newpwd')
+    usr_code = req.COOKIES.get('payroll')
+
+    try:
+        npwd = pc.encrypt(newpwd)
+        sql_change = "UPDATE jx_sysuser"  + " SET password = '" + npwd + "' WHERE payroll = '" + usr_code + "'"
+        sql_change1 = "UPDATE jx_sysuser"  + " SET time_pwd = now() WHERE payroll = '" + usr_code + "'"
+        msg = ''
+        from jx.sqlalchemy_env import db, text
+        logger.info(sql_change)
+        db.execute(sql_change)
+        db.commit()
+        logger.info(sql_change1)
+        db.execute(sql_change1)
+        db.commit()
+        msg += ': 修改密码成功<br>'
+        return JsonResponse({'success': True, 'msg': msg})
+    except:
+        msg += ': 数据库错误<br>'
+        return JsonResponse({'success': False, 'msg': msg})
+
 
 @check_login
 def delete_data(req):
@@ -1324,33 +1349,7 @@ def staffinfo(req):
     return JsonResponse({'total': count, 'rows': select_out})
 
 
-# # @change_password
-# def change_password(req):
-#     pc = AES3('boomboomboomboom')
-#     dict={}
-#     newpwd = req.GET.get("new_pwd", "")
-#     oldpwd = req.GET.get("old_pwd", "")
-#     usr_code = req.COOKIES.get('userid')
-#     try:
-#         curr_timestamp = time.time()
-#         time_pwd = datetime.datetime.fromtimestamp(curr_timestamp)
-#         user1 = SysUser.objects.get(payroll_number=usr_code)
-#         db_old_pwd = user1.password
-#         req_old_pwd = pc.encrypt(oldpwd)
-#         if req_old_pwd == db_old_pwd:
-#             if newpwd == oldpwd:
-#                 dict['message'] = '新密码不能与原密码相同'
-#                 return HttpResponse(json.dumps(dict))
-#             user1.password = pc.encrypt(newpwd)
-#             user1.time_pwd = time_pwd
-#             user1.save()
-#             dict['message'] = '密码修改成功！'
-#         else:
-#             dict['message'] = '原密码错误！'
-#         return HttpResponse(json.dumps(dict))
-#     except Error:
-#         dict['message'] = '数据库错误！'
-#         return HttpResponse(json.dumps(dict))
+
 
 @check_login
 @sys_error
