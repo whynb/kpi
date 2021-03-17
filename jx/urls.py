@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^get_title', function.get_title, name='get_title'),
     url(r'^get_col_def', function.get_col_def, name='get_col_def'),
     url(r'^get_data', function.get_data, name='get_data'),
+    url(r'^get_json', function.get_json, name='get_json'),
     url(r'^get_class_view', function.get_class_view, name='get_class_view'),
     url(r'^delete_data', function.delete_data, name='delete_data'),
     url(r'^change_password', function.change_password, name='change_password'),

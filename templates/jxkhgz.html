@@ -61,8 +61,8 @@
                             <label class="col-sm-4 control-label">考核批次年份: </label>
                             <div class=" col-sm-8">
                                 <select class="selectpicker" title="选择批次年份" id="select_custermize_kpi_year">
-                                    {% for val in static_func(payroll, "kh_khpc:DWH,DATE_FORMAT(KHNF,'%Y') AS KHNF", 'DWH IN %(departments)s') %}
-                                        <option value="{{ val['KHNF'] }}">{{ val['KHNF'] }}</option>
+                                    {% for val in static_func(payroll, "view_khpc:DWH,DWMC,DATE_FORMAT(KHNF,'%Y') AS KHNF", 'DWH IN %(departments)s') %}
+                                        <option value="{{ val['KHNF'] }}">{{ val['KHNF'] }}-{{ val['DWMC'] }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
