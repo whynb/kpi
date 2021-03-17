@@ -159,17 +159,13 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
                     if not rule.match(x):  # match rule condition
                         continue
 
-                    logger.debug(rule.calculate(x))
-                    logger.debug(rule.get_output_template() % x.__dict__ % rule.__dict__)
-
-                    # Save
                     obj = KH_KHJGMX(
                         JZGH=x.JZGH,
                         DWH=rule.DWH,
                         GZH=rule.GZH,
                         KHNF=year,
                         KHJD=rule.calculate(x),
-                        KHMX=rule.get_output_template() % x.__dict__ % rule.__dict__
+                        KHMX=rule.get_output_template() % {**x.__dict__, **rule.__dict__}
                     )
                     db.add(obj)
                 except:
