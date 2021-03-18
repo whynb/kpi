@@ -193,7 +193,7 @@
                     sort: sort,
                     order: params.order,
                     search: params.search,
-                    code:  $selected_node.code,
+                    code:  $selected_node.code == undefined ? '' : $selected_node.code,
                     type:  $selected_node.type,
                     item: array_to_string(itemCode),
                     start: $('#selectStartDate').val(),

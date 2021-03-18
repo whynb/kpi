@@ -16,8 +16,12 @@
                 <i class="fa fa-user"></i>
                 <span id="login"></span>
                 <script>
-                    var rollname = getCookie('rollname');
-                    $('#login').html(getCookie('payroll')+"（"+rollname+"）");
+                    $.getJSON(
+                        "{{ url('staffinfo') }}?limit=25&offset=0&order=asc&search=&payroll="+getCookie('payroll'),
+                        function(ret){
+                            $('#login').html(getCookie('payroll')+"（"+ret.rows[0].role_name+"）");
+                        }
+                    );
                 </script>
             </a>
             <ul class="dropdown-menu cart-list sal_menu_right">

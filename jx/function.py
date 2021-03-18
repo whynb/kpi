@@ -1352,18 +1352,22 @@ def staffinfo(req):
     sql_count = """ SELECT COUNT(*) AS count FROM view_sysuser """
     sql_content = """ SELECT * FROM view_sysuser """
 
-    sql_where = " WHERE 1=1 "
+    sql_query_set = []
+    sql_where = " WHERE role_id!=1 AND usertype_id!=1" if payroll != 'admin' else " WHERE 1=1"
     if user.role_id == 1:
         pass
     elif user.role_id in (2, 3):
         from jx.module import VIEW_JZGJCSJXX 
         ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
-        sql_where += " AND DWH IN %(departments)s" % {'departments': str(ds).replace('[', '(').replace(']', ')')}
+        sql_where += (" AND DWH IN " + trim(str(ds)).replace('[', '(').replace(']', ')')) if ds else " AND DWH=%s"
     else:
         sql_where += ' AND 1=0'
-        
+
+    if 'payroll' in v:
+        sql_where += ' AND payroll=%s'
+        sql_query_set.append(trim(str(v['payroll'])))
+
     sql_search = ""
-    sql_query_set = []
     if 'search' in v and v['search'] not in ('', None):
         search_columns = ['payroll', 'XM', 'DWMC']
         if search_columns:
@@ -1385,6 +1389,9 @@ def staffinfo(req):
     logger.info(sql_content + sql_where + sql_search + sql_olo)
     cursor.execute(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     select_out = dictfetchall(cursor)
+
+    for s in select_out:
+        s['password'] = ''
 
     return JsonResponse({'total': count, 'rows': select_out})
 

@@ -205,8 +205,8 @@ def login(req):
                 response = HttpResponseRedirect('/jx/index/')
                 response.cookies.clear()
                 response.set_cookie('payroll', payroll, time_out)
-                response.set_cookie('DWH', user['DWH'] if user else '', time_out)
-                response.set_cookie('rollname', parse.quote(users[0].role.role_name), time_out)
+                # response.set_cookie('DWH', user['DWH'] if user else '', time_out)
+                # response.set_cookie('rollname', parse.quote(users[0].role.role_name), time_out)
                 return response
             else:
                 response = HttpResponseRedirect('/jx/error/')
