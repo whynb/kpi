@@ -2,6 +2,8 @@
  * Created by why on 10/18/17.
  */
 
+function tap(x){ console.log(x); return x; }
+
 function getLastDayOfMonth(m) {
     var lastDay= new Date(m.substring(0, 4), m.substring(5,7), 0);
     var year = lastDay.getFullYear();
@@ -99,7 +101,7 @@ function uuid() {
     return uuid;
 }
 
-function getDateString(AddDayCount) {
+function getDateString(AddDayCount = 0) {
     var dd = new Date();
     dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期
     var y = dd.getFullYear();

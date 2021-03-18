@@ -12,55 +12,49 @@
 
     <!-- Start Navigation -->
     <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
-        <div class="container">
+        <div class="container" style="width: inherit">
             {% include 'html/sheader.html' %}
             {% include 'html/smenu.html' %}
         </div>
     </nav>
     <!-- End Navigation -->
 
-    <div class="clearfix"></div>
-
-    <div class="column">
-        <div class="column-right" style="height: 2000px;">
-    <div class="col-md-3">
-        <div class="box-inner">
-            <div class="box-header well" data-original-title="">
-                <h5>角色名称</h5>
-            </div>
+    <!-- Start Content -->
+    <div class="why_container">
+        <div class="why_left">
+            <div><h5>角色名称</h5></div>
             <div class="box-content">
                 <div class="breadcrumb">
                     <button class="btn btn-inverse btn-default" id="btn_add"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加角色</button>
                 </div>
                 <ul id="ul_roles">
                     {% for role in roles %}
-                    <li>
-                        <a href="#" id="role_{{loop.index}}" onclick="role_onclick('{{role.role_name}}')">
-                            <h5><i class="fa fa-tag"></i>{{role.role_name}}</h5>
-                        </a>
-                    </li>
+                        <div>
+                            <a href="#" id="role_{{loop.index}}" onclick="role_onclick('{{role.role_name}}')">
+                                <h6><i class="fa fa-user-circle"></i>  {{role.role_name}}</h6>
+                            </a>
+                        </div>
                     {% endfor %}
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="col-md-7" hidden="hidden" id="rolediv">
-        <div class="box-inner">
-            <div class="box-header well" data-original-title="" id="menu_name">
-                <h5>菜单权限</h5>
-            </div>
-            <div class="box-content">
-                <div class="breadcrumb">
-                    <button class="btn btn-inverse btn-default" onclick="delrole_onclick(menu_name.innerText)"><i class="fa fa-remove"></i>&nbsp;&nbsp;删除角色</button>
-                    <button class="btn btn-inverse btn-default" onclick="addpow_onclick(menu_name.innerText)"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加菜单</button>
+        <div class="why_right">
+            <div class="why_content" id="rolediv">
+                <div id="menu_name">
+                    <h5>菜单权限</h5>
                 </div>
-                <table id="roletable" class="table table-condensed bootstrap-datatable datatable responsive">
-                </table>
+                <div class="box-content">
+                    <div class="breadcrumb">
+                        <button class="btn btn-inverse btn-default" onclick="delrole_onclick(menu_name.innerText)"><i class="fa fa-remove"></i>&nbsp;&nbsp;删除角色</button>
+                        <button class="btn btn-inverse btn-default" onclick="addpow_onclick(menu_name.innerText)"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加菜单</button>
+                    </div>
+                    <table id="roletable" class="table table-condensed bootstrap-datatable datatable responsive">
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-        </div>
-    </div>
+    <!-- End Content -->
 
     <div class="modal fade" id="addModal1" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel"
          aria-hidden="true">
@@ -117,7 +111,7 @@
                 <div class="modal-body">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-tag"></i>&nbsp;角色名称</span>
-                        {{roleform.role_name}}
+                        {{ roleform.role_name }}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -144,20 +138,20 @@
 
     function rolesave_onclick() {
         let isreturn = true;
-        let lis = document.getElementById('ul_roles').getElementsByTagName('li');
+        let lis = document.getElementById('ul_roles').getElementsByTagName('div');
         for (let i = 0; i < lis.length; i++){
-            if (lis[i].innerText.replace(/(^\s*)|(\s*$)/g, "") == document.getElementById('txt_department_name').value){
+            if (lis[i].innerText.replace(/(^\s*)|(\s*$)/g, "") == document.getElementById('new_role_id').value){
                 alert('角色名重复，请更改后重试');
                 isreturn = false;
                 break;
             }
         }
         if (isreturn){
-            alert('添加成功！');
-            $('#roleform').submit();
+            $('#roleform')[0].submit();
             $('#roleform')[0].reset();
+            alert('添加成功！');
             $('#myModal').modal('hide');
-            window.location.replace("{{ url('role_manage') }}");
+            // window.location.replace("{{ url('role_manage') }}");
         }
     }
 
@@ -174,7 +168,7 @@
                 sortable: true,           // 是否启用排序
                 sortOrder: "asc",         // 排序方式
                 classes: 'table-no-bordered',
-                height: windows_wh.h - 300,
+                height: windows_wh.h - 200,
                 columns:[
                     {
                         title: "菜单名称",
@@ -211,8 +205,9 @@
                         width : '150px',
                         valign: "middle",
                         editable: {
-                            'type': 'checklist',
-                            'title': '权限',
+                            type: 'checklist',
+                            title: '权限',
+                            mode: "inline",
                             source: [
                                 {value: 1, text: '增'},
                                 {value: 2, text: '删'},
@@ -338,9 +333,7 @@
     $(function() {
         $(window).resize(function(){
             let windows_wh = getViewportOffset();
-            $('#roletable').bootstrapTable('resetView', {
-                height: windows_wh.h - 300,
-            });
+            $('#roletable').bootstrapTable('resetView', {height: windows_wh.h - 200, });
         });
     });
 

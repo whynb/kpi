@@ -18,7 +18,7 @@ engine = create_engine('mysql+pymysql://%(user)s:%(pass)s@%(host)s:%(port)s/%(na
     'pass': settings.DATABASES['default']['PASSWORD'],
     'host': settings.DATABASES['default']['HOST'],
     'port': settings.DATABASES['default']['PORT'],
-}, echo=True)
+}, echo=True, pool_pre_ping=True)
 
 Database = sessionmaker(bind=engine)
 db = Database()

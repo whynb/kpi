@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "python": "/Users/why/Projects/GitHub/kpi/venv/bin/python",
             "name": "Python: Django",
             "type": "python",
             "request": "launch",

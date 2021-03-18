@@ -4,14 +4,15 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.conf import settings
-from django.db import connection
 from urllib import parse
 from jx.util import *
 from jx.form import *
 from jx.models import *
+from jx.exception import *
 
 
 time_out = settings.COOKIE_TIME_OUT
+org_tree_without_users = ['zzjgjbsjxx', ]
 
 
 def get_menu(payroll):
@@ -65,52 +66,50 @@ def get_module_static_method(class_name, method, module_name='module', view_pref
     return []
 
 
-def get_menu_name(req):
+def get_menu_content(req):
     path = req.get_full_path().split('/')
     menu_addr = str('/' + path[1] + '/' + path[2] + '/')
     if path[2] == 'base':
         menu_addr += path[3] + '/'
-    menu = Menu.objects.get(menu_addr=menu_addr)
-    return menu.menu_name
+    return Menu.objects.get(menu_addr=menu_addr)
+
+
+def get_menu_name(req):
+    return get_menu_content(req).menu_name
+
+
+def get_menu_last_path(req):
+    path = req.get_full_path().split('/')
+    return path[3] if path[2] == 'base' else path[2]
 
 
 def get_with_users(req):
     payroll = req.COOKIES.get('payroll')
     user = SysUser.objects.get(payroll__exact=payroll)
-    menu = req.get_full_path().split('/')[3]
-    if menu in ['zzjgjbsjxx', '']:
-        return False
-    return True if user.role_id in (1, 2) else False
+    ret = True if user.role_id in (1, 2) else False
+    return False if get_menu_last_path(req) in org_tree_without_users else ret
 
 
 def get_role_menu_permission(req):
     user = SysUser.objects.get(payroll=req.COOKIES.get('payroll'))
-    path = req.get_full_path().split('/')
-    menu_addr = str('/' + path[1] + '/' + path[2] + '/')
-    if path[2] == 'base':
-        menu_addr += path[3] + '/'
-    menu = Menu.objects.get(menu_addr=menu_addr)
+    menu = get_menu_content(req)
 
-    cursor = connection.cursor()
+    from jx.sqlalchemy_env import db, text
     sql = '''
         SELECT b.permission
         FROM jx_role_menu b 
-        WHERE b.role_id = %(role_id)s AND b.menu_id = %(menu_id)s
-    ''' % {
-        'role_id': user.role_id,
-        'menu_id': menu.id,
-    }
+        WHERE b.role_id = :role_id AND b.menu_id = :menu_id
+    '''
 
-    cursor.execute(sql)
-    _dict = dictfetchall(cursor)
+    _dict = db.execute(text(sql), {'role_id': user.role_id, 'menu_id': menu.id, }).fetchall()
+    logger.info(_dict)
     for a in _dict:
         c = []
-        b = a['permission'].split(',')
+        b = a[0].split(',')
         for num in range(0, 6):
             c.append(True if b[num] == 'y' else False)
 
         return c
-
     return []
 
 
@@ -120,20 +119,11 @@ def can_login(req):
     :return: True - can login, False - can not
     """
 
-    def log(_req):
-        """
-        TODO: log each request such as who, when, what...
-        :param _req:
-        :return:
-        """
-
-        return _req
-
-    log(req)
-
     payroll = req.COOKIES.get('payroll', '')
     if payroll and len(payroll):
         users = SysUser.objects.filter(payroll__exact=payroll)
+        
+        # TODO: password authentication or cas verification
         return True if users else False
 
     return False
@@ -145,7 +135,20 @@ def check_login(fn):
     :param fn: request
     :return:
     """
+    def log(_req):
+        e = _req.environ
+        logger.info(e['REMOTE_ADDR'] + ' ' + e['REQUEST_METHOD'] + ' ' + e['PATH_INFO'] + ' ' + e['QUERY_STRING'])
+        logger.info(e['HTTP_COOKIE'])
+        return _req
+
     def wrapper(req, *args, **kwargs):
+        try:
+            from jx.function import __check_user_auth
+            __check_user_auth(log(req))
+        except UserAuthException:
+            logger.error(sys_info())
+            return JsonResponse({'success': False, 'msg': '登录用户没有授权该项操作'})
+
         try:
             return fn(req, *args, **kwargs) if can_login(req) else HttpResponseRedirect('/jx/')
         except:
@@ -154,17 +157,16 @@ def check_login(fn):
     return wrapper
 
 
-# decorator to catch general exception
 def sys_error(fn):
+    """
+    Decorator to catch general exception
+    @param fn:
+    @return:
+    """
     def wrapper(req, *args, **kwargs):
         try:
-            # verify req/para to avoid sql injection by check if there are ' ' chars
-            v = eval(str(req.POST.dict()))
-            for k, val in v.items():
-                if len(k.split(' ')) > 1 or len(val.split(' ')) > 1:
-                    return JsonResponse({'success': False, 'tag': '参数错误：所有参数不能含有空格'})
-
-            v = eval(str(req.GET.dict()))
+            v = dict(eval(str(req.POST.dict())), **eval(str(req.GET.dict())))
+            logger.info(v)
             for k, val in v.items():
                 if len(k.split(' ')) > 1 or len(val.split(' ')) > 1:
                     return JsonResponse({'success': False, 'tag': '参数错误：所有参数不能含有空格'})
@@ -192,7 +194,7 @@ def login(req):
         form = LoginForm(req.POST)
         if form.is_valid():
             payroll = form.cleaned_data['payroll']
-            password = '111111'
+            password = '111111'  # TODO: add password verification
 
             users = SysUser.objects.filter(payroll__exact=payroll, password__exact=password)
 
@@ -265,13 +267,18 @@ def role_manage(req):
     else:
         roleform = RoleForm()
 
-    usercode = req.COOKIES.get('payroll')
-    roles = Role.objects.all()  # TODO: filter out by login payroll, such as sysuser type and role
+    payroll = req.COOKIES.get('payroll')
+    user = SysUser.objects.get(payroll__exact=payroll)
+    roles = Role.objects.all()
+    if user.role_id != 1:
+        from django.db.models import Q
+        roles = roles.filter(~Q(id=1))
+        
     return render(
         req,
         'role_manage.html',
         {
-            'menus': get_menu(usercode),
+            'menus': get_menu(payroll),
             'roles': roles,
             'roleform': roleform,
             'tips': get_menu_name(req),
@@ -287,8 +294,9 @@ def role_assign(req):
     def get_roles():
         res = []
         roles = Role.objects.all()
-        for role in roles[1:]:
-            res.append([str(role.id), str(role.role_name)])
+        for role in roles:
+            if str(role.id) != '1':
+                res.append([str(role.id), str(role.role_name)])
         return res
 
     logger.info(get_roles())
@@ -448,6 +456,7 @@ def khjghz(req):
             'search_columns': get_module_static_method(menu, 'get_search_columns', module_name='rule', view_prefix='kh'),
             'static_func': get_static_data,
             'static_fields': get_field_name,
+            'sum_footer': True,
         }
     )
 

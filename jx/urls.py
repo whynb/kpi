@@ -25,11 +25,11 @@ urlpatterns = [
 
     url(r'^jx_upload_file', function.jx_upload_file, name='jx_upload_file'),  # duplicate
     url(r'^staffinfo', function.staffinfo, name='staffinfo'),  # duplicate
-    url(r'^get_department', function.get_department, name='get_department'),
     url(r'^get_allhrdpmt', function.get_allhrdpmt, name='get_allhrdpmt'),
     url(r'^get_title', function.get_title, name='get_title'),
     url(r'^get_col_def', function.get_col_def, name='get_col_def'),
     url(r'^get_data', function.get_data, name='get_data'),
+    url(r'^get_json', function.get_json, name='get_json'),
     url(r'^get_class_view', function.get_class_view, name='get_class_view'),
     url(r'^delete_data', function.delete_data, name='delete_data'),
     url(r'^create_data', function.create_data, name='create_data'),

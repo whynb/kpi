@@ -25,6 +25,16 @@ def sys_info():
     return info
 
 
+def fetchall_sqlalchemy_in_dict(proxy):
+    try:
+        _keys = proxy.keys()
+        return [dict(zip(_keys, row)) for row in proxy.fetchall()]
+
+    except:
+        logger.error(sys_info())
+        return []
+
+
 def dictfetchall(cursor):
     # return all rows from db cursor as dict
     try:
@@ -79,8 +89,8 @@ def row_replace_key(row, key):
         if k in key:
             res[key[k]] = v
             c_str += str(key[k]) + ', '
-            v_str += "'" + str(v).replace("'", "char(39)") + "', "
-            u_str += str(key[k]) + "='" + str(v).replace("'", "char(39)") + "', "
+            v_str += "'" + str(v).replace("'", "\\'") + "', "
+            u_str += str(key[k]) + "='" + str(v).replace("'", "\\'") + "', "
         else:
             res[k] = v
     return res, c_str[:-2], v_str[:-2], u_str[:-2]
