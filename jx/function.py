@@ -48,6 +48,7 @@ def get_field_name(s):
                 res.append(trim(a[a.find('as')+2:]))
             else:
                 res.append(a)
+        res.append(trim(s[:s.find(':')]))
         return res
     except:
         logger.error(sys_info())
@@ -158,17 +159,13 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
                     if not rule.match(x):  # match rule condition
                         continue
 
-                    logger.debug(rule.calculate(x))
-                    logger.debug(rule.get_output_template() % x.__dict__ % rule.__dict__)
-
-                    # Save
                     obj = KH_KHJGMX(
                         JZGH=x.JZGH,
                         DWH=rule.DWH,
                         GZH=rule.GZH,
                         KHNF=year,
                         KHJD=rule.calculate(x),
-                        KHMX=rule.get_output_template() % x.__dict__ % rule.__dict__
+                        KHMX=rule.get_output_template() % {**x.__dict__, **rule.__dict__}
                     )
                     db.add(obj)
                 except:
@@ -335,6 +332,10 @@ def add_power(req):
     try:
         role = Role.objects.get(role_name=role_name)
         for menu_id in menus:
+            if str(role.id) != '1':  # not admin
+                if str(menu_id) == '1':
+                    continue
+
             db.execute(
                 text("INSERT INTO jx_role_menu (role_id, menu_id, permission) VALUES (:role_id, :menu_id, :p)"),
                 {'role_id': role.id, 'menu_id': menu_id, 'p': "n,n,n,n,n,n"}
@@ -413,6 +414,9 @@ def del_role(req):
     role = Role.objects.filter(role_name=role_name)
     if not role:
         return HttpResponse('角色不存在')
+
+    if str(role[0].id) in ['1', '2', '3', '4']:
+        return HttpResponse('禁止删除该角色')
 
     try:
         # cursor = connection.cursor()
@@ -906,8 +910,16 @@ def edit(req):
     """
     :param req: id=30&DWJC=00000C&field=DWJC&menu=zzjgjbsjxx
     :return:
+
+        def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'T', 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'True', },
+
     """
     from jx.sqlalchemy_env import db, text
+
+    payroll = str(req.COOKIES.get('payroll'))
     try:
         v = eval(str(req.POST.dict()))
         set_to = trim(str(v[v['field']]))
@@ -920,6 +932,15 @@ def edit(req):
             v['class_name'] = 'kh_' + v['menu']
 
         column = get_column_info(v['class_name'], v['field'])
+        if column['type'] == 'table':
+            fields = get_field_name(column['value'])
+            data_set = get_static_data(payroll, column['value'], column['where'])
+            for data in data_set:
+                if str(data[fields[1]]) == str(set_to):
+                    v['set_to'] = str(data[fields[0]])
+                    v['field'] = fields[0]
+            column = get_column_info(v['class_name'], fields[0])
+
         if len(column) == 0:
             return JsonResponse({'success': False, 'msg': '更新失败：未找到所编辑字段'})
 
@@ -1107,6 +1128,51 @@ def get_data(req):
 
 @check_login
 @sys_error
+def get_json(req):
+    v = eval(str(req.GET.dict()))
+    try:
+        from jx.views import get_module_static_method
+        arr = v['path'].split('|')
+        content, title_columns = {}, get_module_static_method(arr[0], 'get_title_columns')
+        for tc in title_columns:
+            if tc['field'] == arr[1]:
+                for act in tc['action']:
+                    if act['type'] == arr[2]:
+                        content = act['content']
+
+        # {'type': 'table', 'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH=:this', 'to': 'JZGH:JZGH,XM'}}]}
+        # {'type': 'table', 'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'JZGH:JZGH,XM'}}]}
+        if content:
+            t_f = content['value'].split(":")
+            sql = "SELECT " + t_f[1] + " FROM " + t_f[0]
+            if trim(content['where']) != "":
+                if content['where'].find('DWH IN :this') != -1:
+                    from jx.module import VIEW_ZZJGJBSJXX
+                    ds = VIEW_ZZJGJBSJXX.get_managed_departments(trim(v['this']))
+                    sql += " WHERE " + content['where'].replace(':this', str(ds).replace('[', '(').replace(']', ')'))
+                else:
+                    sql += " WHERE " + content['where']
+
+            if sql.find('JZGH') != -1 or trim(t_f[0]) in ['dr_jzgjcsjxx', 'view_jzgjcsjxx', ]:
+                sql += ' AND JZGH NOT IN ("admin")'
+
+            from jx.sqlalchemy_env import db, text
+            try:
+                logger.info(sql)
+                pro = db.execute(text(sql), v)
+                db.commit()
+                return JsonResponse(fetchall_sqlalchemy_in_dict(pro), safe=False)
+            except:
+                db.rollback()
+                logger.error(sys_info())
+    except:
+        logger.error(sys_info())
+
+    return JsonResponse([], safe=False)
+
+
+@check_login
+@sys_error
 def get_class_view(req):
     from jx.module import generate_class_view
     return JsonResponse(generate_class_view('module', False), safe=False)
@@ -1289,10 +1355,10 @@ def staffinfo(req):
     sql_where = " WHERE 1=1 "
     if user.role_id == 1:
         pass
-    elif user.role_id == 2:
+    elif user.role_id in (2, 3):
         from jx.module import VIEW_JZGJCSJXX 
         ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
-        sql_where += " AND DWH IN '%(departments)s'" % {'departments': str(ds).replace('[', '(').replace(']', ')')}
+        sql_where += " AND DWH IN %(departments)s" % {'departments': str(ds).replace('[', '(').replace(']', ')')}
     else:
         sql_where += ' AND 1=0'
         

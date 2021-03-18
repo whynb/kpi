@@ -295,7 +295,8 @@ def role_assign(req):
         res = []
         roles = Role.objects.all()
         for role in roles:
-            res.append([str(role.id), str(role.role_name)])
+            if str(role.id) != '1':
+                res.append([str(role.id), str(role.role_name)])
         return res
 
     logger.info(get_roles())

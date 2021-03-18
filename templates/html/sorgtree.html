@@ -1,5 +1,28 @@
 <script>
+    var tree_url = "{{ url('get_allhrdpmt') }}";
+    var tree_data_method = "{{ with_users }}";
+    var $orgid = "";
+    var $selected_node = {};
+    var $selectableTree;
+
+    function resetSelectedNode() {
+        $orgid = ""
+        $selected_node = {
+            'type': 'd',
+            'href': '',
+            'code': getCookie('DWH'),
+            'text': ''
+        };
+    }
+
+    function unselectNode(node) { resetSelectedNode(); refreshTable(); }
+
+    function selectNode(node) { $selected_node = node; $orgid = $selected_node.href; refreshTable(); }
+
     var initSelectableTree = function() {
+        document.getElementById("treeview-selectable").innerHTML = '';
+        resetSelectedNode();
+
         $.ajax({
             type: 'get',
             url: tree_url,
@@ -13,6 +36,11 @@
             success: function (ret) {
                 if (ret.success == false) $.hulla.send(ret.tag, "danger");
                 else {
+                    if (ret.data.length == 0 ) {
+                        $('#why_left_panel').hide();
+                        return undefined;
+                    }
+                    $('#why_left_panel').show();
                     var tw = $('#treeview-selectable').treeview({
                         data: ret.data,
                 		highlightSearchResults: false,
@@ -30,10 +58,13 @@
         });
     };
 
-    var $selectableTree;
-    setTimeout(function () { $selectableTree = initSelectableTree(); }, 100);
-
     var findSelectableNodes = function(name) {
         return $('#treeview-selectable').treeview('search', [ name, { ignoreCase: false, exactMatch: false} ]);
     };
+
+    $(function() {
+        resetSelectedNode();
+        setTimeout(function () { $selectableTree = initSelectableTree(); }, 100);
+    });
+
 </script>
