@@ -441,6 +441,7 @@ class DR_KJQKLWJBSJXX(Base):
 class DR_KJZZXX(Base):
     __tablename__ = 'dr_kjzzxx'
     __tablename__CH__ = '科技著作信息'
+
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     ZZBH = Column('ZZBH', String(16), default='')  # 著作编号
     ZZMC = Column('ZZMC', String(16), default='')  # 著作名称
@@ -452,7 +453,7 @@ class DR_KJZZXX(Base):
     YZM = Column('YZM', String(16), default='')  # 语种码
     CBS = Column('CBS', String(16), default='')  # 出版社
     CBSJBM = Column('CBSJBM', String(1024), default='')  # 出版社级别码
-    CBRQ = Column('CBRQ', String(16), default='')  # 出版日期
+    CBRQ = Column('CBRQ', DateTime, default=now())  # 出版日期
     CBH = Column('CBH', String(1024), default='')  # 出版号
     ZZZS = Column('ZZZS', Integer)  # 著作字数
     SSXMBH = Column('SSXMBH', String(16), default='')  # 所属项目编号
@@ -467,7 +468,6 @@ class DR_KJZZXX(Base):
     @staticmethod
     def get_column_label() -> dict:
         return {
-
             'ID': ['id'],
             '著作编号': ['ZZBH'],
             '著作名称': ['ZZMC'],
@@ -522,14 +522,15 @@ class DR_KJCGRYXX_ZZ(Base):
             'ID': ['id'],
             '人员号': ['RYH'],
             '角色码': ['JSM'],
-            '撰写字数': ['PMZRS'],
-            '排名/总人数': ['LWLXM'],
+            '撰写字数': ['ZXZS'],
+            '排名/总人数': ['PMZRS'],
             '贡献率': ['GXL'],
             '姓名': ['XM'],
             '所在单位': ['SZDW'],
             '人员类型': ['RYLX'],
             '著作编号': ['ZZBH'],
             '科技成果人员编号': ['KJCGRYBH'],
+            '署名顺序': ['SMSX'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
         }
