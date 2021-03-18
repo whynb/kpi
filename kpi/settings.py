@@ -168,7 +168,7 @@ DATABASES = {
        'HOST': '47.94.148.26',
 
 # local
-#         'PASSWORD': 'password',
+#         'PASSWORD': '1',
 #         'HOST': '',
 
 # port

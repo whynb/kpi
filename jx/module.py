@@ -399,9 +399,9 @@ class VIEW_BKSJXZXS(Base):
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JSGH = Column('JSGH', String(16), default='')  # 教师工号
     KCH = Column('KCH', String(16), default='')  # 课程号
-    KKXND = Column('KKXND', String(16), default='')  # 开课学年度
+    KKXND = Column('KKXND', DateTime, default=now())  # 开课学年度
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
-    KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZKJHXS = Column('ZKJHXS', String(16), default='')  # 助课计划学时
     JHXSS = Column('JHXSS', String(16), default='')  # 计划学时数
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
@@ -410,6 +410,7 @@ class VIEW_BKSJXZXS(Base):
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
     # BH = Column('BH', String(16), default='')  # 班号
     HBS = Column('HBS', String(16), default='')  # 合班数
+    DWH = Column('DWH', String(16), default='')  # 质量系数
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -432,7 +433,7 @@ class VIEW_BKSJXZXS(Base):
                 kc.KCH AS KCH,         
                 jp.KCJBM AS KCJBM,    
                 dr_jzg.DWH AS DWH,        
-                pk.stamp AS stamp,            
+                pk.KKXQM AS stamp,            
                 pk.note AS note            
             FROM dr_pksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
@@ -446,7 +447,7 @@ class VIEW_BKSJXZXS(Base):
 
     @staticmethod
     def get_upload_tables() -> List[str]:
-        return ['dr_pksjxx']
+        return ['dr_pksjxx','dr_kcsjxx','dr_xnxqxx','dr_bks_jpkc','dr_jzgjcsjxx']
 
     @staticmethod
     def get_delete_tables() -> List[str]:
@@ -499,8 +500,8 @@ class VIEW_SXXSS(Base):  # 实习学时数
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JSGH = Column('JSGH', String(16), unique=True, default='')  # 教师工号
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
-    KKXQM = Column('KKXQM', String(16), default='')  # 学期
-    KKXND = Column('KKXND', DateTime, default='')  # 学年
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 学期
+    KKXND = Column('KKXND', DateTime, default=now())  # 学年
     HBS = Column('HBS', String(16), default='')  # 合班数
 
     QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
@@ -509,6 +510,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
 
     # NOTE1: NOT from dr and dc, FROM other tables or views
     # NOTE2: used to filter out data
+    DWH = Column('DWH', String(16), default='')  # 单位号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -528,7 +530,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
                 pk.ZLXS AS ZLXS,            
                 kc.KCH AS KCH,         
                 dr_jzg.DWH AS DWH,            
-                pk.stamp AS stamp,            
+                pk.KKXQM AS stamp,            
                 pk.note AS note            
             FROM dr_sspksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
@@ -540,7 +542,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
 
     @staticmethod
     def get_upload_tables() -> List[str]:
-        return ['dr_sspksjxx']
+        return ['dr_sspksjxx','dr_kcsjxx','dr_xnxqxx','dr_jzgjcsjxx']
 
     @staticmethod
     def get_delete_tables() -> List[str]:
@@ -587,11 +589,12 @@ class VIEW_ZDSYXSS(Base):
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JSGH = Column('JSGH', String(16), default='')  # 教师工号
     KCH = Column('KCH', String(16), default='')  # 课程号
-    KKXND = Column('KKXND', String(16), default='')  # 开课学年度
-    KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
+    KKXND = Column('KKXND', DateTime, default=now())  # 开课学年度
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     SYXS = Column('SYXS', DateTime, default=now())  # 实验学时
     SYZS = Column('SYZS', String(16), default='')  # 实验组数
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
+    DWH = Column('DWH', String(16), default='')  # 课程级别码
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -610,7 +613,7 @@ class VIEW_ZDSYXSS(Base):
                 kc.KCH AS KCH,         
                 jp.KCJBM AS KCJBM,    
                 dr_jzg.DWH AS DWH,        
-                pk.stamp AS stamp,            
+                pk.KKXQM AS stamp,            
                 pk.note AS note            
             FROM dr_sypksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
@@ -623,7 +626,7 @@ class VIEW_ZDSYXSS(Base):
 
     @staticmethod
     def get_upload_tables() -> List[str]:
-        return ['dr_sypksjxx']
+        return ['dr_sypksjxx','dr_kcsjxx','dr_xnxqxx','dr_bks_jpkc','dr_jzgjcsjxx']
 
     @staticmethod
     def get_delete_tables() -> List[str]:
@@ -631,7 +634,7 @@ class VIEW_ZDSYXSS(Base):
 
     @staticmethod
     def get_create_tables() -> List[str]:
-        return ['dr_sypksjxx']
+        return ['dr_sypksjxx','dr_kcsjxx','dr_xnxqxx','dr_bks_jpkc','dr_jzgjcsjxx']
 
     @staticmethod
     def get_hide_columns() -> List[str]:
@@ -696,7 +699,7 @@ KSRS     考试人数 N  教务处、研究生院
             CREATE VIEW view_ksapxx AS
             SELECT 
                 dr.id AS id,         
-                dr.stamp AS stamp,            
+                dr.KSRQ AS stamp,            
                 dr.note AS note,        
                 dr.KSRQ AS KSRQ,            
                 dr.KSSC AS KSSC,            
@@ -795,7 +798,7 @@ class VIEW_JKXSS(Base):
                 dr.SSXY AS SSXY,
                 jkr.DWH AS JSSSXY,            
                 jkr.DWH AS DWH,      
-                dr.stamp AS stamp,            
+                dr.KSRQ AS stamp,            
                 dr.note AS note            
             FROM dr_ksapxx dr
             LEFT JOIN dr_jzgjcsjxx jkr on jkr.JZGH = dr.JKRGH
@@ -807,7 +810,7 @@ class VIEW_JKXSS(Base):
 
     @staticmethod
     def get_upload_tables() -> List[str]:
-        return ['dr_ksapxx']
+        return ['dr_ksapxx','dr_jzgjcsjxx','dr_zzjgjbsjxx','dr_pksjxx']
 
     @staticmethod
     def get_delete_tables() -> List[str]:
@@ -819,7 +822,7 @@ class VIEW_JKXSS(Base):
 
     @staticmethod
     def get_hide_columns() -> List[str]:
-        return ['id', 'stamp', 'note','DWH']
+        return ['id', 'stamp', 'note','DWH','JSSSXY','KSJSH','KSFSLXM']
 
     @staticmethod
     def get_title_columns() -> List[dict]:
