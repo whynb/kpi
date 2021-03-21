@@ -4,11 +4,15 @@
     <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="2021.3.15">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/function.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/function.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/password.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/password.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kpi/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kpi/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/util.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/util.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/html/spassword.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/html/spassword.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/html/sheader.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/html/sheader.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/jxkhgz.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/jxkhgz.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/khjghz.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/khjghz.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/khjgmx.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/khjgmx.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,9 +96,9 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.templateLanguages.PyTemplateLanguageModulesConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Django server.kpi">
+  <component name="RunManager" selected="Django Server.kpi">
     <configuration name="https server" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -102,7 +106,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../test2/venv/bin/python" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -124,7 +128,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../test2/venv/bin/python" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/jx" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -168,7 +172,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../test2/venv/bin/python" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/jx" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -190,7 +194,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../test2/venv/bin/python" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/jx" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -213,16 +217,16 @@
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="kpi.settings" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../test2/venv/bin/python" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
+      <option name="port" value="8001" />
       <option name="host" value="" />
       <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
+      <option name="browserUrl" value="http://127.0.0.1:8001/jx/" />
       <option name="runTestServer" value="false" />
       <option name="runNoReload" value="false" />
       <option name="useCustomRunCommand" value="false" />
@@ -230,7 +234,7 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django server.kpi" />
+      <item itemvalue="Django Server.kpi" />
       <item itemvalue="Python.https server" />
       <item itemvalue="Python.models" />
       <item itemvalue="Python.module" />
@@ -239,9 +243,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.password" />
         <item itemvalue="Python.module" />
         <item itemvalue="Python.views" />
-        <item itemvalue="Python.password" />
         <item itemvalue="Python.models" />
         <item itemvalue="Python.https server" />
       </list>
@@ -274,7 +278,7 @@
       </list>
     </option>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -357,150 +361,24 @@
                   <option name="MATCH_CASE" value="true" />
                 </TextFilterSettings>
               </option>
-              <option name="COLUMN_ORDER" />
             </State>
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test comments again" />
     <MESSAGE value="2021.3.15" />
     <option name="LAST_COMMIT_MESSAGE" value="2021.3.15" />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="196" y="118" width="1080" height="773" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1615812858009">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="196" y="118" width="1080" height="773" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615812858009" />
-    <state x="662" y="128" width="658" height="857" key="#https_server" timestamp="1614246840368">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="662" y="128" width="658" height="857" key="#https_server/72.27.1848.1053@72.27.1848.1053" timestamp="1614246840368" />
-    <state x="662" y="119" width="658" height="876" key="#kpi" timestamp="1615101297187">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="662" y="119" width="658" height="876" key="#kpi/72.27.1848.1053@72.27.1848.1053" timestamp="1615101297187" />
-    <state x="662" y="128" width="658" height="857" key="#models" timestamp="1615106469679">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="662" y="128" width="658" height="857" key="#models/72.27.1848.1053@72.27.1848.1053" timestamp="1615106469679" />
-    <state x="662" y="128" width="658" height="857" key="#module" timestamp="1615106561738">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="662" y="128" width="658" height="857" key="#module/72.27.1848.1053@72.27.1848.1053" timestamp="1615106561738" />
-    <state x="662" y="128" width="658" height="857" key="#password" timestamp="1615362943884">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="662" y="128" width="658" height="857" key="#password/72.27.1848.1053@72.27.1848.1053" timestamp="1615362943884" />
-    <state x="662" y="128" width="658" height="857" key="#views" timestamp="1615627312997">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="662" y="128" width="658" height="857" key="#views/72.27.1848.1053@72.27.1848.1053" timestamp="1615627312997" />
-    <state x="413" y="33" width="1087" height="972" key="CommitChangelistDialog2" timestamp="1615948765537">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="413" y="33" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1615948765537" />
-    <state x="778" y="298" width="498" height="525" key="FileChooserDialogImpl" timestamp="1615812940174">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="778" y="298" width="498" height="525" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1615812940174" />
-    <state width="1794" height="254" key="GridCell.Tab.0.bottom" timestamp="1615948765662">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="1794" height="254" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1615948765662" />
-    <state width="1794" height="254" key="GridCell.Tab.0.center" timestamp="1615948765661">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="1794" height="254" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1615948765661" />
-    <state width="1794" height="254" key="GridCell.Tab.0.left" timestamp="1615948765660">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="1794" height="254" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1615948765660" />
-    <state width="1794" height="254" key="GridCell.Tab.0.right" timestamp="1615948765662">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="1794" height="254" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1615948765662" />
-    <state width="1794" height="245" key="GridCell.Tab.1.bottom" timestamp="1615895965746">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="1794" height="245" key="GridCell.Tab.1.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1615895965746" />
-    <state width="1794" height="245" key="GridCell.Tab.1.center" timestamp="1615895965745">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="1794" height="245" key="GridCell.Tab.1.center/72.27.1848.1053@72.27.1848.1053" timestamp="1615895965745" />
-    <state width="1794" height="245" key="GridCell.Tab.1.left" timestamp="1615895965745">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="1794" height="245" key="GridCell.Tab.1.left/72.27.1848.1053@72.27.1848.1053" timestamp="1615895965745" />
-    <state width="1794" height="245" key="GridCell.Tab.1.right" timestamp="1615895965745">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="1794" height="245" key="GridCell.Tab.1.right/72.27.1848.1053@72.27.1848.1053" timestamp="1615895965745" />
-    <state width="273" height="606" key="HiddenNamespacesPopup" timestamp="1615854761009">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state width="273" height="606" key="HiddenNamespacesPopup/72.27.1848.1053@72.27.1848.1053" timestamp="1615854761009" />
-    <state x="700" y="266" width="582" height="581" key="MultipleFileMergeDialog" timestamp="1615856128065">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="700" y="266" width="582" height="581" key="MultipleFileMergeDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615856128065" />
-    <state x="477" y="188" width="1037" height="737" key="SettingsEditor" timestamp="1615854409597">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="477" y="188" width="1037" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1615854409597" />
-    <state x="725" y="284" width="540" height="524" key="StructurePopup" timestamp="1615896382641">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="725" y="284" width="540" height="524" key="StructurePopup/72.27.1848.1053@72.27.1848.1053" timestamp="1615896382641" />
-    <state x="591" y="288" width="800" height="538" key="Vcs.Push.Dialog.v2" timestamp="1615948732135">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="591" y="288" width="800" height="538" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1615948732135" />
-    <state x="715" y="149" width="552" height="816" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1615891031543">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="715" y="149" width="552" height="816" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615891031543" />
-    <state x="842" y="292" width="298" height="529" key="com.intellij.database.view.ui.DbObjectDialog" timestamp="1615358243488">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="842" y="292" width="298" height="529" key="com.intellij.database.view.ui.DbObjectDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615358243488" />
-    <state x="650" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1615946574214">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="650" y="381" key="com.intellij.ide.util.TipDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615946574214" />
-    <state x="762" y="469" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1615857305550">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="762" y="469" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1848.1053@72.27.1848.1053" timestamp="1615857305550" />
-    <state x="648" y="81" width="696" height="945" key="find.popup" timestamp="1615886595911">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="648" y="81" width="696" height="945" key="find.popup/72.27.1848.1053@72.27.1848.1053" timestamp="1615886595911" />
-    <state x="722" y="191" width="537" height="731" key="git4idea.branch.GitSmartOperationDialog" timestamp="1615857072620">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="722" y="191" width="537" height="731" key="git4idea.branch.GitSmartOperationDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615857072620" />
-    <state x="691" y="334" width="599" height="446" key="git4idea.merge.GitPullDialog" timestamp="1615101794592">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="691" y="334" width="599" height="446" key="git4idea.merge.GitPullDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615101794592" />
-    <state x="659" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1615812112074">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="659" y="259" width="672" height="678" key="search.everywhere.popup/72.27.1848.1053@72.27.1848.1053" timestamp="1615812112074" />
-    <state x="721" y="463" width="540" height="188" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1614257551386">
-      <screen x="72" y="27" width="1848" height="1053" />
-    </state>
-    <state x="721" y="463" width="540" height="188" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1614257551386" />
-  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/jx/function.py</url>
-          <line>848</line>
+          <line>847</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
@@ -514,11 +392,21 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/kpi225$models.coverage" NAME="models Coverage Results" MODIFIED="1615106469697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi225$views.coverage" NAME="views Coverage Results" MODIFIED="1615641615703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi$manage.coverage" NAME="https server Coverage Results" MODIFIED="1613813474271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1615385026132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$password.coverage" NAME="password Coverage Results" MODIFIED="1616338545556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/kpi225$password.coverage" NAME="password Coverage Results" MODIFIED="1615367341866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
-    <SUITE FILE_PATH="coverage/kpi225$https_server.coverage" NAME="https server Coverage Results" MODIFIED="1614255111614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/kpi225$module.coverage" NAME="module Coverage Results" MODIFIED="1615862699846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi225$https_server.coverage" NAME="https server Coverage Results" MODIFIED="1614255111614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/kpi$tests.coverage" NAME="tests Coverage Results" MODIFIED="1615895881064" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$rule.coverage" NAME="rule Coverage Results" MODIFIED="1615639814037" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614511439873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1614779182644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi225$views.coverage" NAME="views Coverage Results" MODIFIED="1615641615703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614780287091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$https_server.coverage" NAME="https server Coverage Results" MODIFIED="1614392324196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1614510869797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1614511451514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$manage.coverage" NAME="manage Coverage Results" MODIFIED="1615645900531" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/kpi225$models.coverage" NAME="models Coverage Results" MODIFIED="1615106469697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
   </component>
 </project>

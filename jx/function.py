@@ -30,8 +30,7 @@ from django.conf import settings
 import pandas as pd
 from jx.exception import *
 from pymysql.err import Error
-from jx.password import AES3
-import time
+from jx.password import pc
 
 
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
@@ -989,15 +988,6 @@ def edit(req):
 
 
 @check_login
-def get_col_def(req):
-    return JsonResponse([], safe=False)
-
-    # payroll = str(req.COOKIES.get('payroll'))
-    # v = eval(str(req.GET.dict()))
-    # return JsonResponse(get_static_data(payroll, v['value'], v['where']), safe=False)
-
-
-@check_login
 @sys_error
 def get_title(req):
     v = eval(str(req.GET.dict()))
@@ -1179,28 +1169,28 @@ def get_class_view(req):
     from jx.module import generate_class_view
     return JsonResponse(generate_class_view('module', False), safe=False)
 
-#孙毅豪 2021.3.17
-def change_password(req):
-    pc = AES3('boomboomboomboom')
-    newpwd = req.POST.get('newpwd')
-    usr_code = req.COOKIES.get('payroll')
 
+def change_password(req):
+    msg = ''
     try:
-        npwd = pc.encrypt(newpwd)
-        sql_change = "UPDATE jx_sysuser"  + " SET password = '" + npwd + "' WHERE payroll = '" + usr_code + "'"
-        sql_change1 = "UPDATE jx_sysuser"  + " SET time_pwd = now() WHERE payroll = '" + usr_code + "'"
-        msg = ''
         from jx.sqlalchemy_env import db, text
+
+        npwd = pc.encrypt(req.POST.get('newpwd'))
+        sql_change = "UPDATE jx_sysuser" + " SET password=:pwd, time_pwd=NOW() WHERE payroll=:payroll"
         logger.info(sql_change)
-        db.execute(sql_change)
-        db.commit()
-        logger.info(sql_change1)
-        db.execute(sql_change1)
-        db.commit()
-        msg += ': 修改密码成功<br>'
-        return JsonResponse({'success': True, 'msg': msg})
+        try:
+            db.execute(text(sql_change), {'pwd': npwd, 'payroll': req.COOKIES.get('payroll')})
+            db.commit()
+            msg += ': 修改密码成功<br>'
+            return JsonResponse({'success': True, 'msg': msg})
+        except:
+            db.rollback()
+            msg += ': 数据库错误<br>'
+            logger.error(sys_info())
+            return JsonResponse({'success': False, 'msg': msg})
     except:
-        msg += ': 数据库错误<br>'
+        msg += ': 系统异常<br>'
+        logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': msg})
 
 
@@ -1420,8 +1410,6 @@ def staffinfo(req):
         s['password'] = ''
 
     return JsonResponse({'total': count, 'rows': select_out})
-
-
 
 
 @check_login
