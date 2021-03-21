@@ -24,9 +24,9 @@
         todayBtn: "linked",
         autoclose: true
     }).on('changeDate',function(e){
-        //refreshTable();
+        refreshTable();
     });
-    $('#selectStartDate').val(moment(new Date().getTime()).format('YYYY-MM'));
+    $('#selectStartDate').val(getDateString().substring(0, 4) + '-01');
 
     $('#selectEndDate').datepicker({
         language: "zh-CN",
@@ -41,7 +41,7 @@
         todayBtn: "linked",
         autoclose: true
     }).on('changeDate',function(e){
-        //refreshTable();
+        refreshTable();
     });
     $('#selectEndDate').val(moment(new Date().getTime()).format('YYYY-MM'));
 </script>

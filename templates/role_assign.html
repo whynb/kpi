@@ -13,81 +13,35 @@
 
     <!-- Start Navigation -->
     <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
-        <div class="container">
+        <div class="container" style="width: inherit">
             {% include 'html/sheader.html' %}
             {% include 'html/smenu.html' %}
         </div>
     </nav>
     <!-- End Navigation -->
 
-    <div class="clearfix"></div>
-
-    <div class="column">
-        <div class="column-right" style="height: 1000px;">
-            <div id="content" class="col-lg-12 col-sm-12">
-                <div class="box-inner">
-                    <div class="box-content">
-                        <div class="form-group form-inline" id="tabletoolbar">
-                            <table border="0">
-                                <tr>
-                                    <td>
-                                        <label class="control-label">  工资号: </label>
-                                        <input type="text" name="teacherid" id="paynum" class="form-control"  placeholder="请输入工资号">
-                                    </td>
-                                    <td>
-                                        <span>&nbsp;    </span>
-                                        <label class="control-label">  姓名: </label>
-                                        <input type="text" name="teacherid" id="staffname" class="form-control" placeholder="请输入姓名">
-                                    </td>
-                                    <!--
-                                    <td>
-                                        <span>&nbsp;    </span>
-                                        <label class="control-label">  部门: </label>
-                                        <select class="selectpicker" data-width="200" title="--------空--------" id="cur_department"></select>
-                                    </td>
-                                    -->
-                                    <td>
-                                        <span>&nbsp;    </span>
-                                        <button id="btn_search" onclick="refresh()" type="button" class="btn btn-danger">
-                                            <span class="fa fa-search" aria-hidden="true"></span> 查询
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <span>&nbsp;    </span>
-                                        <button id="btn_dselete" type="button" onclick="allrefresh()" class="btn btn-info">
-                                            <span class="fa fa-refresh" aria-hidden="true"></span> 全部
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <table id="tb_info"></table>
-                    </div>
-                </div><!--/#content.col-md-0-->
+    <!-- Start Content -->
+    <div class="why_container">
+        <div class="why_right">
+            <div class="why_content">
+                <div class="form-group form-inline" id="toolbar">
+                </div>
+                <table id="table" class="table table-bordered table-striped"></table>
             </div>
         </div>
     </div>
-<!-- external javascript -->
-
+    <!-- End Content -->
 
 <script>
 
     $(function () {
-        $.getJSON("{{ url('get_department') }}", function (ret) {
-            $("<option  value=\"-1\">--------空--------</option>").appendTo($('#cur_department'));
-            for (var i = 0; i < ret.length; i++) {
-                $("<option value=" + ret[i]['curr_department_id'] + ">  " + ret[i]['curr_department_name'] + " </option>").appendTo($('#cur_department'));
-            }
-            $('#cur_department').selectpicker('refresh');
-        });
-
         var oTable = new TableInit();
         oTable.Init();
     });
 
     function refresh() {
-        // $("#tb_info").bootstrapTable('destroy');
-        setTimeout(function () { $('#tb_info').bootstrapTable('refresh'); }, 100);
+        // $("#table").bootstrapTable('destroy');
+        setTimeout(function () { $('#table').bootstrapTable('refresh'); }, 100);
     }
 
     function allrefresh() {
@@ -101,10 +55,10 @@
     var TableInit = function () {
         var oTableInit = new Object();
         oTableInit.Init = function () {
-            $('#tb_info').bootstrapTable('destroy').bootstrapTable({
+            $('#table').bootstrapTable('destroy').bootstrapTable({
                 url: '/jx/staffinfo',               //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
-                toolbar: '#tabletoolbar',                //工具按钮用哪个容器
+                toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
                 singleSelect: true,
                 locale: 'zh-CN',
@@ -149,20 +103,24 @@
             onEditableSave: function (field, row, oldValue, $el) {
                 var data = row;
                 data.field = field;
-                data.menu = '{{ menu }}';
+                data.menu = 'role_assign';
                 $.ajax({
                     type: "post",
                     url: "{{ url('role_inline_edit') }}",
                     headers: {"X-CSRFToken": getCookie('csrftoken')},
                     data: data,
                     dataType: 'JSON',
-                    success: function (data, status) { if (status == "success") { $.hulla.send(data.msg, "warning"); } },
+                    success: function (data, status) { 
+                        if (data.success == true) { 
+                            $.hulla.send(data.msg, "warning");
+                        }
+                        else $.hulla.send(data.msg, "danger");
+                    },
                     error: function () { $.hulla.send('在线编辑异常，请重试！', "danger"); },
-                    complete: function () { refreshTable();}
+                    complete: function () { refresh();}
                 });
             }
                     {% endif %}
-
             });
         };
 
@@ -172,6 +130,7 @@
                 offset: params.offset, //页码
                 sort: params.sort,
                 order: params.order,
+                search: params.search,
                 paynum: $('#paynum').val(),
                 staffname: $('#staffname').val(),
                 cur_department: $('#cur_department').val(),

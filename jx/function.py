@@ -1,4 +1,21 @@
 # coding=utf-8
+# TODO: data status should be done by work flow
+
+"""
+NOTE: SQL injection
+REFER: https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/
+
+错误用法：
+sql = "select id, name from user_table where id=%s and name=%s" % (id, name)
+cur.execute(sql)
+
+正确用法：
+execute() 函数本身有接受sql语句参数位的，可以通过python自身的函数处理sql注入问题。
+1.Django: cur.execute('select id, name from user_table where id=%s and name =%s', [id, name])
+2.SQLAlchemy: db.execute(text("select * from log where username=:usr"), {"usr": "jetz"})
+3.SQLAlchemy: db.execute("select * from log where username=:1 ", ["jetz"])
+"""
+
 
 import json
 import os
@@ -11,6 +28,8 @@ from django.forms.models import model_to_dict
 from django.db.utils import *
 from django.conf import settings
 import pandas as pd
+from jx.exception import *
+from pymysql.err import Error
 
 
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
@@ -18,9 +37,7 @@ rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
 
 
 def get_field_name(s):
-    """
-        Refer to below get_static_data to get [col1,col2,...] used by FE Jinja2
-    """
+    # NOTE: Refer to below get_static_data to get [col1,col2,...] used by FE Jinja2
     try:
         res = []
         arr = s[s.find(':') + 1:].split(',')
@@ -31,6 +48,7 @@ def get_field_name(s):
                 res.append(trim(a[a.find('as')+2:]))
             else:
                 res.append(a)
+        res.append(trim(s[:s.find(':')]))
         return res
     except:
         logger.error(sys_info())
@@ -57,7 +75,7 @@ def get_static_data(payroll, s, where=''):
 
         cursor = connection.cursor()
         logger.info(sql)
-        cursor.execute(sql)
+        cursor.execute(sql)  # NOTE: NO SQL injection
         sql_result = dictfetchall(cursor)
 
         return sql_result
@@ -141,24 +159,25 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
                     if not rule.match(x):  # match rule condition
                         continue
 
-                    logger.debug(rule.calculate(x))
-                    logger.debug(rule.get_output_template() % x.__dict__ % rule.__dict__)
-
-                    # Save
                     obj = KH_KHJGMX(
                         JZGH=x.JZGH,
                         DWH=rule.DWH,
                         GZH=rule.GZH,
                         KHNF=year,
                         KHJD=rule.calculate(x),
-                        KHMX=rule.get_output_template() % x.__dict__ % rule.__dict__
+                        KHMX=rule.get_output_template() % {**x.__dict__, **rule.__dict__}
                     )
                     db.add(obj)
                 except:
                     logger.error(sys_info())
                     pass
 
-                db.commit()
+                try:
+                    db.commit()
+                except:
+                    db.rollback()
+                    logger.error(sys_info())
+
         except:
             logger.error(sys_info())
             pass
@@ -202,51 +221,59 @@ def summarize_kpi(departments, year, db):
         save(data.DWH, data.KHNF, '', data.GZH, True)  # 按规则汇总部门绩点
         save(data.DWH, data.KHNF, '', '', True)  # 按部门汇总绩点
 
-        db.commit()
+        try:
+            db.commit()
+        except:
+            db.rollback()
+            logger.error(sys_info())
     return
 
 
+@check_login
+@sys_error
 def role_inline_edit(req):
     try:
         if req.method != 'POST':
             return JsonResponse({'success': False, 'msg': '消息类型错误！'})
 
-        usercode = req.COOKIES.get('payroll')
-        if usercode is None:
-            return JsonResponse({'success': False, 'msg': '请重新登录！'})
-
-        user = SysUser.objects.get(payroll__exact=usercode)
+        payroll = req.COOKIES.get('payroll')
+        user = SysUser.objects.get(payroll__exact=payroll)
         if user.role_id not in (1, 2):
             return JsonResponse({'success': False, 'msg': '登录用户没有权限！'})
 
         payroll_number = req.POST.get('payroll', '')
         if payroll_number == '':
-            return JsonResponse({'success': False, 'msg': '参数错误！'})
+            return JsonResponse({'success': False, 'msg': '参数错误, 用户不存在！'})
 
         payroll_user = SysUser.objects.get(payroll__exact=payroll_number)
-        payroll_user.role_id = int(req.POST.get('role_id', '4'))
+        role_id = int(req.POST.get('role_id', '4'))
+        if role_id == 1:  # 禁止FE修改成为超级管理员
+            return JsonResponse({'success': False, 'msg': '参数错误, 请联系管理员！'})
+        
+        payroll_user.role_id = role_id
         payroll_user.save()
         return JsonResponse({'success': True, 'msg': '修改成功！'})
 
     except SysUser.DoesNotExist:
+        logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '用户不存在，请重新登录！'})
 
     except:
+        logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '系统异常，请联系管理员！'})
 
 
-def getpower(req):
-    role_name = req.GET.get("role_name", "")
+def __get_power(role_name):
     cursor = connection.cursor()
     sql = """
-        SELECT a.id, a.menu_name, a.menu_classify, b.permission
+        SELECT a.id, a.menu_name, a.menu_classify, b.permission, a.menu_addr
         FROM jx_menu a 
         LEFT JOIN jx_role_menu b ON b.menu_id = a.id
         LEFT JOIN jx_role c ON c.id = b.role_id
-        WHERE c.role_name=
-    """ + "'" + role_name + "'"
+        WHERE c.role_name=%s
+    """
 
-    cursor.execute(sql)
+    cursor.execute(sql, [role_name])
     sql_result = dictfetchall(cursor)
     for a in sql_result:
         c = []
@@ -257,10 +284,17 @@ def getpower(req):
 
         str1 = ','.join(c)
         a['permission'] = str1
+    return sql_result
 
-    return HttpResponse(json.dumps(sql_result))
+
+@check_login
+@sys_error
+def getpower(req):
+    return HttpResponse(json.dumps(__get_power(req.GET.get("role_name", ""))))
 
 
+@check_login
+@sys_error
 def get_other_power(req):
     role_name = req.GET.get("role_name", "")
     role = Role.objects.filter(role_name=role_name)
@@ -273,9 +307,9 @@ def get_other_power(req):
         SELECT a.menu_id
         FROM jx_role_menu a 
         LEFT JOIN jx_role b ON b.id = a.role_id
-        WHERE b.role_name =
-    ''' + "'" + role_name + "'"
-    cursor.execute(sql)
+        WHERE b.role_name=%s
+    '''
+    cursor.execute(sql, [role_name])
 
     id_list = []
     for a in dictfetchall(cursor):
@@ -288,33 +322,39 @@ def get_other_power(req):
     return HttpResponse(json.dumps(res))
 
 
+@check_login
+@sys_error
 def add_power(req):
+    from jx.sqlalchemy_env import db, text
     role_name = req.GET.get("role", "")
     menus = req.GET.get("menu", "").split('_')
 
     try:
         role = Role.objects.get(role_name=role_name)
-        if not role:
-            HttpResponse('菜单或角色不存在')
-
-        cursor = connection.cursor()
         for menu_id in menus:
-            cursor.execute(
-                """
-                    INSERT INTO jx_role_menu (role_id, menu_id, permission)
-                    VALUES (%(role_id)s, %(menu_id)s, '%(permission)s')
-                """ % {
-                    'role_id': role.id,
-                    'menu_id': menu_id,
-                    'permission': "n,n,n,n,n,n",
-                }
+            if str(role.id) != '1':  # not admin
+                if str(menu_id) == '1':
+                    continue
+
+            db.execute(
+                text("INSERT INTO jx_role_menu (role_id, menu_id, permission) VALUES (:role_id, :menu_id, :p)"),
+                {'role_id': role.id, 'menu_id': menu_id, 'p': "n,n,n,n,n,n"}
             )
+            db.commit()
         return HttpResponse('添加成功')
 
+    except Role.DoesNotExist:
+        logger.error(sys_info())
+        return HttpResponse('菜单或角色不存在')
+
     except:
+        db.rollback()
+        logger.error(sys_info())
         return HttpResponse('数据库错误')
 
 
+@check_login
+@sys_error
 def del_power(req):
     try:
         role = Role.objects.get(role_name=req.GET.get("role", ""))
@@ -325,9 +365,16 @@ def del_power(req):
         return HttpResponse('数据库错误')
 
 
+@check_login
+@sys_error
 def edit_permission(req):
+    if req.method != 'POST':
+        return HttpResponse(json.dumps(''))
+
+    from jx.sqlalchemy_env import db, text
     role_name = ''
-    if req.method == 'POST':
+
+    try:
         menu_id = req.POST.get('menu_id')
         role_name = req.POST.get('role_name')
         permission = req.POST.get('permission')
@@ -343,60 +390,53 @@ def edit_permission(req):
             permission = ','.join(b)
 
         role = Role.objects.get(role_name=role_name)
-        cursor = connection.cursor()
-        cursor.execute(
-            """
-                UPDATE jx_role_menu SET permission = '%(permission)s' 
-                WHERE role_id = %(role_id)s AND menu_id = %(menu_id)s
-            """ % {
-                'role_id': role.id,
-                'menu_id': menu_id,
-                'permission': permission,
-            }
-        )
+        try:
+            db.execute(
+                text("UPDATE jx_role_menu SET permission=:permission WHERE role_id=:role_id AND menu_id=:menu_id"),
+                {'role_id': role.id, 'menu_id': menu_id, 'permission': permission}
+            )
+            db.commit()
+        except:
+            logger.error(sys_info())
+            db.rollback()
+
+    except Exception:
+        logger.error(sys_info())
 
     return HttpResponse(json.dumps(role_name))
 
 
+@check_login
+@sys_error
 def del_role(req):
+    from jx.sqlalchemy_env import db, text
     role_name = req.GET.get("role", "")
     role = Role.objects.filter(role_name=role_name)
     if not role:
         return HttpResponse('角色不存在')
 
+    if str(role[0].id) in ['1', '2', '3', '4']:
+        return HttpResponse('禁止删除该角色')
+
     try:
-        cursor = connection.cursor()
-        sql = "UPDATE jx_sysuser SET role_id = NULL WHERE role_id=" + str(role[0].id)
-        cursor.execute(sql)
+        # cursor = connection.cursor()
+        sql = "UPDATE jx_sysuser SET role_id = NULL WHERE role_id=:role_id"
+        db.execute(text(sql), {'role_id': str(role[0].id)})
+        db.commit()
         role[0].delete()
         return HttpResponse('删除成功')
 
     except:
+        db.rollback()
         return HttpResponse('数据库错误')
 
 
-def get_department(req):
-    logger.info(req.COOKIES.get('payroll'))
-    return JsonResponse({}, safe=False)
-
-    cur_college = req.GET.get("cur_college", '')
-    try:
-
-        cursor = connection.cursor()
-        sql = """select * from app_curr_department WHERE 1"""
-        if cur_college != '' and cur_college != '-1':
-            sql = sql + """ AND college_id="""+str(cur_college)
-        cursor.execute(sql)
-        dbresult = dictfetchall(cursor)
-        return JsonResponse(dbresult, safe=False)
-    except:
-        return '数据库错误'
-
-
 def get_dwh(req):
-    # TODO: get DWH while compose upload files
-    logger.info(req.COOKIES.get('payroll'))
-    return '.'
+    try:
+        return str(get_user_information(str(req.COOKIES.get('payroll')))['DWH'])
+    except:
+        logger.error(sys_info())
+        return '.'
 
 
 def save_file(req):
@@ -410,17 +450,22 @@ def save_file(req):
 
     function = trim(req.POST.get('Function'))
     f = req.FILES.get("FileName", None)  # 获取上传的文件，如果没有文件，则默认为None
+    if not f:
+        raise FileSaveException('上传文件名为空')
 
-    d = settings.UPLOAD_DIR + '/jx/' + get_dwh(req) + '/' + function + '/' + today().replace('-', '/')
-    if not os.path.exists(d):
-        os.makedirs(d)
+    try:
+        d = settings.UPLOAD_DIR + '/jx/' + get_dwh(req) + '/' + function + '/' + today().replace('-', '/')
+        if not os.path.exists(d):
+            os.makedirs(d)
 
-    ff = os.path.join(d, get_file_prefix(d) + f.name)
-    df = open(ff, 'wb+')  # 打开特定的文件进行二进制的写操作
-    for chunk in f.chunks():  # 分块写入文件
-        df.write(chunk)
-    df.close()
-    return function, ff
+        ff = os.path.join(d, get_file_prefix(d) + f.name)
+        df = open(ff, 'wb+')  # 打开特定的文件进行二进制的写操作
+        for chunk in f.chunks():  # 分块写入文件
+            df.write(chunk)
+        df.close()
+        return function, ff
+    except:
+        raise FileSaveException('保存文件失败: ' + f.name)
 
 
 def get_objects_between(name, start, end):
@@ -486,11 +531,12 @@ def __get_column_definition(columns, column):
 
 def __format_value(vv, fm, enum_values=None):
     """
-    TODO: format vv per key[k][1] if defined
     :param vv:
     :param fm: 'Enum'｜"DateTime"
+    :enum_values: value set for Enum type data
     :return:
     """
+    
     if enum_values is None:
         enum_values = []
 
@@ -532,7 +578,7 @@ def __row_replace_key(__row, __key, uniq=None):
         uniq = []
 
     res = {}
-    cc_str, vv_str, uu_str = '', '', ''
+    cc_str, vv_str, uu_str, not_processed = '', '', '', []
     for kk, vv in __row.items():
         k = trim(str(kk))
         v = trim(str(vv))
@@ -541,25 +587,84 @@ def __row_replace_key(__row, __key, uniq=None):
                 v = __format_value(v, __key[k][1], __key[k][2])
             elif len(__key[k]) > 1:
                 v = __format_value(v, __key[k][1])
-            res[__key[k][0]] = v
-            cc_str += str(__key[k][0]) + ', '
-            vv_str += "'" + str(v).replace("'", "char(39)") + "', "
-            if str(__key[k][0]) not in uniq:
-                uu_str += str(__key[k][0]) + "='" + str(v).replace("'", "char(39)") + "', "
+
+            rk = str(__key[k][0])
+            res[rk] = v
+            cc_str += rk + ', '
+            vv_str += ":" + rk + ", "
+            if rk not in uniq:
+                uu_str += rk + "=:" + rk + ", "
         else:
             # res[k] = v  # ignore useless fields
+            not_processed.append(k)
             pass
 
-    return res, cc_str[:-2], vv_str[:-2], uu_str[:-2]
+    return res, cc_str[:-2], vv_str[:-2], uu_str[:-2], not_processed
+
+
+def __translate_column_to_chinese(columns, col):
+    for k, v in columns.items():
+        if v[0] == col:
+            return k
+    return ''
+
+
+def __transform_key_to_chinese(vv, columns):
+    res = {}
+    for k, v in vv.items():
+        nk = __translate_column_to_chinese(columns, k)
+        res[nk] = v
+    return res
+
+
+def __check_user_auth(req):
+    method = req.method
+    menu = req.POST.get('menu', '') if method == 'POST' else req.GET.get('menu', '')
+
+    _auth = 0
+    req_menus = req.get_full_path().split('/')
+    req_menu = req_menus[2] if req_menus[2] not in ['base'] else req_menus[3]
+    if req_menu in ['create_data', ]:
+        _auth = 1
+    elif req_menu in ['delete_data', ]:
+        _auth = 2
+    elif req_menu in ['edit', 'role_inline_edit']:
+        _auth = 3
+    elif req_menu in ['get_data', ]:
+        _auth = 4
+    elif req_menu in ['jx_upload_file', ]:
+        menu = trim(req.POST.get('Function'))
+        _auth = 5
+    elif req_menu in ['___download', ]:  # NOTE: coding while support BE download
+        _auth = 6
+    else:
+        _auth = 0
+
+    payroll = req.COOKIES.get('payroll')
+    user = SysUser.objects.get(payroll__exact=payroll)
+    pws = __get_power(user.role.role_name)
+    for pw in pws:
+        _pws = pw['menu_addr'].split('/')
+        _pw = _pws[len(_pws)-2]
+
+        if menu != _pw:
+            continue
+
+        if _auth in eval('[' + pw['permission'] + ']'):
+            return
+
+    if _auth == 0:
+        return
+
+    raise UserAuthException("No Auth: %s to %s @%s" % (payroll, req_menu, menu, ))
 
 
 @check_login
 @sys_error
 def jx_upload_file(req):
-    # TODO: summarize notes and errors in line <br> and tip, such as adds, updates, columns ignored, cell error
-    # TODO: verify if unique columns existence
-    from jx.sqlalchemy_env import cursor, conn
+    from jx.sqlalchemy_env import db, text
 
+    msg, status, status_count, update_or_insert, update_lines, insert_lines, false_lines = '', False, 0, '', 0, 0, 0
     try:
         function, file_name = save_file(req)
         module_class = get_module_class(function)
@@ -568,64 +673,140 @@ def jx_upload_file(req):
         df = pd.read_excel(file_name, na_values='')  # 这个会直接默认读取到这个Excel的第一个表单
         df = df.where(df.notnull(), '')
 
+        if len(df.to_dict('records')) == 0:
+            return JsonResponse({'success': False, 'msg': '上传文件为空，请重新选择！'})
+
+        line = 1
         for upload_table in upload_tables:
             model_dr_class = get_model_dr_class(upload_table)
             table = model_dr_class.__tablename__
+            msg_tablename = model_dr_class.__tablename__CH__ if hasattr(model_dr_class, '__tablename__CH__') \
+                else model_dr_class.__tablename__
             columns = model_dr_class.get_column_label()
-            unique = model_dr_class.get_unique_condition()
+            uniques = model_dr_class.get_unique_condition()
+            if len(uniques) == 0:
+                msg += msg_tablename + ': 数据唯一性条件未定义，未处理！<br>'
+                continue
 
-            sql_where = " WHERE 1=1 "
-            for u in unique:
-                sql_where += " AND " + u + "='%(" + u + ")s'"
+            if len(uniques[0]) and isinstance(uniques[0], str):
+                uniques = [uniques, ]
+            unique = uniques[len(uniques)-1]
 
-            sql_count = "SELECT COUNT(*) AS count FROM %(table)s" % {'table': table} + sql_where
+            all_unique = []
+            for unique in uniques:
+                all_unique += unique
+            all_unique = list(set(all_unique))
 
             for record in df.to_dict('records'):
-                rec, c_str, v_str, u_str = __row_replace_key(record, columns, unique)
-                cursor.execute(sql_count % rec)
-                result = cursor.fetchall()
-                if result[0][0]:  # update
-                    sql = "UPDATE %(table)s SET " % {'table': table} + u_str + sql_where % rec
-                else:  # insert
-                    sql = """ 
-                        INSERT INTO %(table)s (%(columns)s) VALUES (%(values)s) 
-                    """ % {'table': table, 'columns': c_str, 'values': v_str, }
+                line += 1
+                rec, c_str, v_str, u_str, not_processed = __row_replace_key(record, columns, unique)
+
+                if line == 2 and not_processed:
+                    msg += msg_tablename + ': 列 ' + str(not_processed) + ' 未处理<br>'
+
+                if 'DWH' in all_unique:
+                    from jx.module import VIEW_JZGJCSJXX
+                    managed_departments = VIEW_JZGJCSJXX.get_managed_departments(req.COOKIES.get('payroll'))
+                    if rec['DWH'] not in managed_departments:
+                        msg += '行' + str(line) + ': 未处理，单位错误<br>'
+                        false_lines += 1
+                        continue
+
+                zero_count, one_count, sql_where = 0, 0, ''
+                for unique in uniques:
+                    counts = __get_data_counters(table, unique, rec)
+                    if counts['count'] == 0:
+                        zero_count += 1
+                    elif counts['count'] == 1:
+                        one_count += 1
+                    else:
+                        pass
+                    sql_where = ' WHERE ' + counts['where']
+
+                if one_count == len(uniques):  # update
+                    sql = "UPDATE " + table + " SET " + u_str + sql_where
+                    update_or_insert = 'U'
+                elif zero_count == len(uniques):  # insert
+                    sql = "INSERT INTO " + table + " (" + c_str + ") VALUES (" + v_str + ")"
+                    update_or_insert = 'I'
+                else:
+                    msg += '行' + str(line) + ': 未处理，请检查' + str(all_unique) + '<br>'
+                    false_lines += 1
+                    continue
 
                 logger.info(sql)
-                cursor.execute(sql)
-                conn.commit()  # NOTE: 必须commit; 否则独占数据库链接；可以考虑使用django connection自动commit
+                try:
+                    db.execute(text(sql), rec)
+                    db.commit()  # NOTE: 必须commit; 否则独占数据库链接；可以考虑使用django connection自动commit
+                    if update_or_insert == 'U':
+                        update_lines += 1
+                    elif update_or_insert == 'I':
+                        insert_lines += 1
+                    else:
+                        logger.error('update_or_insert->' + str(update_or_insert))
+                except:
+                    db.rollback()
+                    logger.error(sys_info())
+                    false_lines += 1
+                    msg += '行' + str(line) + ': 数据处理异常，请修正后重试<br>'
 
-        return JsonResponse({'success': True, 'msg': '文件处理成功，请检验数据!'})
+            msg += msg_tablename + ': 更新%(u)s行, 插入%(i)s行, 失败%(f)s行<br>' % {
+                'u': update_lines, 'i': insert_lines, 'f': false_lines,
+            }
+
+            if (line - 1) == (update_lines + insert_lines):
+                status_count += 1
+            line, update_lines, insert_lines, false_lines = 1, 0, 0, 0
+
+        if status_count == len(upload_tables):
+            status = True
+            msg = '文件处理成功, 请检验数据！<br>' + msg
+        else:
+            msg = '文件处理失败, 请检验数据！<br>' + msg
+
+        return JsonResponse({'success': status, 'msg': msg})
+
+    except FileSaveException as e:
+        logger.error(e)
+        return JsonResponse({'success': False, 'msg': str(e)})
 
     except:
         logger.error(sys_info())
-        return JsonResponse({'success': False, 'msg': '文件处理失败，请修正后重试！'})
+        msg = '文件处理异常, 请检验数据！<br>' + msg
+        return JsonResponse({'success': status, 'msg': msg})
 
 
 def get_user_information(payroll):
     cursor = connection.cursor()
-    cursor.execute(""" SELECT * FROM view_jzgjcsjxx WHERE JZGH='%(payroll)s' """ % {'payroll': payroll})
+    cursor.execute("SELECT * FROM view_jzgjcsjxx WHERE JZGH=%s", [payroll])
     select_out = dictfetchall(cursor)
-    return select_out[0] if select_out else []
+    return select_out[0] if select_out else {}
+
+
+def get_sysuser_information(payroll):
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM view_sysuser WHERE payroll=%s", [payroll])
+    select_out = dictfetchall(cursor)
+    return select_out[0] if select_out else {}
 
 
 def get_top_departments():
     cursor = connection.cursor()
-    cursor.execute(""" SELECT * FROM dr_zzjgjbsjxx WHERE LSDWH='' OR LSDWH IS NULL """)
+    cursor.execute("SELECT * FROM dr_zzjgjbsjxx WHERE LSDWH='' OR LSDWH IS NULL")
     select_out = dictfetchall(cursor)
     return select_out if select_out else []
 
 
 def get_sub_departments(parent):
     cursor = connection.cursor()
-    cursor.execute(""" SELECT * FROM view_zzjgjbsjxx WHERE LSDWH='%(parent)s' ORDER BY DWH """ % {'parent': parent})
+    cursor.execute("SELECT * FROM view_zzjgjbsjxx WHERE LSDWH=%s ORDER BY DWH", [parent])
     select_out = dictfetchall(cursor)
     return select_out if select_out else []
 
 
 def get_department_users(dept):
     cursor = connection.cursor()
-    cursor.execute(""" SELECT * FROM view_jzgjcsjxx WHERE DWH='%(dept)s' ORDER BY JZGH """ % {'dept': dept})
+    cursor.execute("SELECT * FROM view_jzgjcsjxx WHERE DWH=%s ORDER BY JZGH", [dept])
     select_out = dictfetchall(cursor)
     return select_out if select_out else []
 
@@ -635,7 +816,7 @@ def get_department_users(dept):
 def get_allhrdpmt(req):
     method = req.GET.get('method')
     # method_in = ('True', 'False')  # NOTE: control if add users
-    method_in = ('True')
+    method_in = ('True', )
 
     payroll = req.COOKIES.get('payroll')
     user = get_user_information(payroll)
@@ -682,8 +863,10 @@ def get_allhrdpmt(req):
 
             # children users
             if method in method_in:
+                uus = get_department_users(d['DWH'])
                 for uu in get_department_users(d['DWH']):
-                    insert_user(uu, t[len(t)-1]["nodes"])
+                    if uu['JZGH'] not in ['admin', ]:
+                        insert_user(uu, t[len(t)-1]["nodes"])
 
             # clear empty
             if not len(t[len(t)-1]["nodes"]):
@@ -692,13 +875,34 @@ def get_allhrdpmt(req):
     search_department(departments, data)
 
     # append first level users
-    if method in method_in:
+    if method in method_in and user:
         for du in get_department_users(str(user['DWH'])):
-            # continue
-            insert_user(du, data)
+            if du['JZGH'] not in ['admin', ]:
+                insert_user(du, data)
 
     # response as bootstrap-treeview
     return JsonResponse({'success': True, 'tag': u'刷新成功', 'data': data})
+
+
+def __get_data_counters(table_name, unique=None, value_set=None):
+    if unique is None or value_set is None or len(unique) == 0 or len(value_set) == 0:
+        return {'count': -1, 'message': '主键或数据集未定义'}
+
+    msg_unique = ''
+    for u in unique:
+        if u in value_set and not len(trim(value_set[u])):
+            msg_unique += ' ' + u
+    if msg_unique != '':
+        return {'count': -1, 'message': '主键数据未定义' + msg_unique}
+
+    where = '1=1'
+    for u in unique:
+        where += ' AND ' + u + "=:" + u
+    sql_count = "SELECT COUNT(*) AS count FROM " + table_name + " WHERE " + where
+
+    from jx.sqlalchemy_env import db, text
+    count = db.execute(text(sql_count), value_set).fetchall()
+    return {'count': count[0][0], 'message': '获得数据数量 ' + str(count[0][0]), 'where': where}
 
 
 @check_login
@@ -706,65 +910,95 @@ def edit(req):
     """
     :param req: id=30&DWJC=00000C&field=DWJC&menu=zzjgjbsjxx
     :return:
+
+        def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'T', 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'True', },
+
     """
+    from jx.sqlalchemy_env import db, text
+
+    payroll = str(req.COOKIES.get('payroll'))
     try:
         v = eval(str(req.POST.dict()))
         set_to = trim(str(v[v['field']]))
         if set_to.find('null') != -1:
             return JsonResponse({'success': False, 'msg': '更新失败：值中含有 null'})
+        v['set_to'] = set_to
 
         v['class_name'] = 'view_' + v['menu']
         if v['menu'] in rule_tables:
             v['class_name'] = 'kh_' + v['menu']
 
         column = get_column_info(v['class_name'], v['field'])
+        if column['type'] == 'table':
+            fields = get_field_name(column['value'])
+            data_set = get_static_data(payroll, column['value'], column['where'])
+            for data in data_set:
+                if str(data[fields[1]]) == str(set_to):
+                    v['set_to'] = str(data[fields[0]])
+                    v['field'] = fields[0]
+            column = get_column_info(v['class_name'], fields[0])
+
+        if len(column) == 0:
+            return JsonResponse({'success': False, 'msg': '更新失败：未找到所编辑字段'})
+
         model_dr_class = get_model_dr_class(column['table'])
-        unique = model_dr_class.get_unique_condition()
-
-        where = '1=1'
-        for u in unique:
-            if u not in v:
-                return JsonResponse({'success': False, 'msg': '更新失败：数据唯一性条件不满足'})
-            where += ' AND ' + u + "='%(" + u + ")s'"
-        if where == '1=1':
-            return JsonResponse({'success': False, 'msg': '更新失败：数据更新条件未定义'})
-
-        # NOTE: update by id
-        if unique == [v['field']] and column['table'] == v['class_name']:
-            where = "id='%(id)s'"
-
-        v['set_to'] = set_to
-        v['where'] = where % v
+        uniques = model_dr_class.get_unique_condition()
         v['table'] = column['table']
-        sql_update = "UPDATE %(table)s SET %(field)s=\"%(set_to)s\" WHERE %(where)s" % v
 
-        cursor = connection.cursor()
+        if len(uniques) == 0:
+            if column['table'] != v['class_name']:
+                return JsonResponse({'success': False, 'msg': '更新失败：数据唯一性条件未定义'})
+            v['where'] = "id=:id"
+        else:
+            if len(uniques[0]) and isinstance(uniques[0], str):
+                uniques = [uniques, ]
+
+            for unique in uniques:
+                counts = __get_data_counters(column['table'], unique, v)
+
+                update_unique = True if v['field'] in unique else False
+                if update_unique:
+                    if counts['count'] != 0 or column['table'] != v['class_name']:
+                        return JsonResponse({'success': False, 'msg': '更新失败：数据唯一性条件未定义!'})
+                    v['where'] = "id=:id"
+                else:
+                    if counts['count'] != 1:
+                        return JsonResponse({'success': False, 'msg': counts['message']})
+                    v['where'] = counts['where']
+
+        sql_update = "UPDATE " + column['table'] + " SET " + v['field'] + "=:set_to WHERE " + v['where']
         logger.info(sql_update)
-        cursor.execute(sql_update)
-
-        # TODO: add meaningful words and translate to Chinese
+        db.execute(text(sql_update), v)
+        db.commit()
         return JsonResponse({'success': True, 'msg': '成功更新为：' + set_to})
 
-    except Error:  # django.db.utils.Error
+    except Error:
+        db.rollback()
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '更新失败：数据库错误'})
+
+    except:
+        db.rollback()
+        logger.error(sys_info())
+        return JsonResponse({'success': False, 'msg': '更新失败：数据库错误!!!'})
 
 
 @check_login
 def get_col_def(req):
-    payroll = str(req.COOKIES.get('payroll'))
-    v = eval(str(req.GET.dict()))
-    print(v)
-    return JsonResponse(get_static_data(payroll, v['value'], v['where']), safe=False)
+    return JsonResponse([], safe=False)
+
+    # payroll = str(req.COOKIES.get('payroll'))
+    # v = eval(str(req.GET.dict()))
+    # return JsonResponse(get_static_data(payroll, v['value'], v['where']), safe=False)
 
 
 @check_login
 @sys_error
 def get_title(req):
     v = eval(str(req.GET.dict()))
-    # code  # DWH if type=='d', JZGH if type=='u'
-    # type  # d - department, u - user
-    # start|end  # start/end date from FE
     module_name = 'module'
     view_prefix = 'view'
     if v['menu'] in rule_tables:
@@ -778,8 +1012,8 @@ def get_title(req):
 @check_login
 @sys_error
 def get_data(req):
+    cursor = connection.cursor()
     payroll = str(req.COOKIES.get('payroll'))
-
     v = eval(str(req.GET.dict()))
 
     module_name = 'module'
@@ -788,17 +1022,26 @@ def get_data(req):
         module_name = 'rule'
         view_prefix = 'kh'
 
-    # v['table'] = (view_prefix + "_" + v['menu']).upper().lower()
-    v['table'] = ("view_" + v['menu']).upper().lower()  # change to lower due to un-support upper SQL on Linux
+    v['table'] = ("view_" + v['menu']).upper().lower()
+    sql_table_count = """SELECT COUNT(information_schema.VIEWS.TABLE_SCHEMA) AS count
+        FROM information_schema.VIEWS WHERE TABLE_SCHEMA='kpi' AND TABLE_NAME=%s"""
+    logger.info(sql_table_count)
+    cursor.execute(sql_table_count, [v['table']])
+    count = dictfetchall(cursor)[0]["count"]
+    if int(count) == 0:
+        logger.info(v['table'] + '->' + str(count))
+        return JsonResponse({'total': 0, 'rows': []})
+
     v['start'] += "-01 00:00:00"
     v['end'] = month_end(v['end'])
     if 'sort' not in v or v['sort'] in ('', None):
         v['sort'] = 'id'
         v['order'] = 'DESC'
+    if v['order'].lower() not in ('asc', 'desc'):
+        v['order'] = 'DESC'
 
     # code  # DWH if type=='d', JZGH if type=='u'
     # type  # d - department, u - user
-    # TODO: use department and payroll to get data
     if 'type' in v:
         if v['type'] == 'd':
             v['department'] = v['code']
@@ -814,20 +1057,48 @@ def get_data(req):
     l_user = SysUser.objects.get(payroll=payroll)
     v['role'] = l_user.role_id
 
-    sql_count = """ SELECT COUNT(*) AS count FROM %(table)s """ % v
-    sql_content = """ SELECT * FROM %(table)s """ % v
+    sql_count = "SELECT COUNT(*) AS count FROM " + v['table']
+    sql_content = "SELECT * FROM " + v['table']
+    sql_query_set = []
 
+    # NOTE: add stamp as filter condition
     sql_where = " WHERE 1=1 "
+    if v['menu'] not in ('zzjgjbsjxx', 'jzgjcsjxx', ):
+        sql_where += """
+            AND DATE_FORMAT(stamp, '%%Y-%%m-%%d')>=%s
+            AND DATE_FORMAT(stamp, '%%Y-%%m-%%d')<=%s    
+        """
+        sql_query_set.append(v['start'][:10])
+        sql_query_set.append(v['end'][:10])
+
+    if v['menu'] == 'khjghz':
+        items = eval(str(v['item']))
+        if isinstance(items, str):
+            sql_where += " AND 1=0 "
+        else:
+            if '1' in v['item']:
+                sql_where += " AND XM IS NULL AND KHMC IS NULL"
+            if '2' in v['item']:
+                sql_where += " AND XM IS NOT NULL AND KHMC IS NULL"
+            if '3' in v['item']:
+                sql_where += " AND XM IS NULL AND KHMC IS NOT NULL"
+
     if v['type'] == 'u':
-        sql_where += " AND JZGH='%(payroll)s'"
+        sql_where += " AND JZGH=%s"
+        sql_query_set.append(v['payroll'])
     elif v['type'] == 'd':
         if v['menu'] == 'zzjgjbsjxx':  # 组织机构基本数据信息
-            sql_where += " AND (DWH='%(department)s' OR LSDWH='%(department)s')"
+            sql_where += " AND (DWH='%(department)s' OR LSDWH='%(department)s')" % v
         else:
-            sql_where += " AND DWH='%(department)s'"  # TODO: DWH IN ('', '') -> VIEW_ZZJGJBSJXX.get_managed_departments
+            from jx.module import VIEW_ZZJGJBSJXX
+            __dpts = VIEW_ZZJGJBSJXX.get_managed_departments(v['department'])
+            sql_where += " AND DWH IN " + str(__dpts).replace('[', '(').replace(']', ')')
     else:
         sql_where += " AND 1=0"
-    sql_where %= v
+
+    # NOTE: filter out admin
+    if sql_where.find('JZGH') != -1 or v['menu'] in ('jzgjcsjxx', ):
+        sql_where += ' AND JZGH NOT IN ("admin", "")'
 
     sql_search = ""
     if 'search' in v and v['search'] not in ('', None):
@@ -836,18 +1107,20 @@ def get_data(req):
         if search_columns:
             sql_search = " AND (1=0 "
             for col in search_columns:
-                sql_search += " OR %(col)s LIKE \'%%%(search)s%%\' " % {'col': col, 'search': v['search']}
-            sql_search += ")"
+                sql_search += " OR " + col + " LIKE %s"
+                sql_query_set.append('%' + trim(str(v['search'])) + '%')
+        sql_search += ")"
 
-    sql_olo = ' ORDER BY %(sort)s %(order)s LIMIT %(limit)s OFFSET %(offset)s' % v
-
-    cursor = connection.cursor()
     logger.info(sql_count + sql_where + sql_search)
-    cursor.execute(sql_count + sql_where + sql_search)
+    cursor.execute(sql_count + sql_where + sql_search, sql_query_set)
     count = dictfetchall(cursor)[0]["count"]
 
+    sql_olo = ' ORDER BY %s %s LIMIT ' + str(int(v['limit'])) + ' OFFSET ' + str(int(v['offset']))
+    sql_query_set.append(v['sort'])
+    sql_query_set.append(v['order'])
+
     logger.info(sql_content + sql_where + sql_search + sql_olo)
-    cursor.execute(sql_content + sql_where + sql_search + sql_olo)
+    cursor.execute(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     select_out = dictfetchall(cursor)
 
     return JsonResponse({'total': count, 'rows': select_out})
@@ -855,50 +1128,117 @@ def get_data(req):
 
 @check_login
 @sys_error
+def get_json(req):
+    v = eval(str(req.GET.dict()))
+    try:
+        from jx.views import get_module_static_method
+        arr = v['path'].split('|')
+        content, title_columns = {}, get_module_static_method(arr[0], 'get_title_columns')
+        for tc in title_columns:
+            if tc['field'] == arr[1]:
+                for act in tc['action']:
+                    if act['type'] == arr[2]:
+                        content = act['content']
+
+        # {'type': 'table', 'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH=:this', 'to': 'JZGH:JZGH,XM'}}]}
+        # {'type': 'table', 'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'JZGH:JZGH,XM'}}]}
+        if content:
+            t_f = content['value'].split(":")
+            sql = "SELECT " + t_f[1] + " FROM " + t_f[0]
+            if trim(content['where']) != "":
+                if content['where'].find('DWH IN :this') != -1:
+                    from jx.module import VIEW_ZZJGJBSJXX
+                    ds = VIEW_ZZJGJBSJXX.get_managed_departments(trim(v['this']))
+                    sql += " WHERE " + content['where'].replace(':this', str(ds).replace('[', '(').replace(']', ')'))
+                else:
+                    sql += " WHERE " + content['where']
+
+            if sql.find('JZGH') != -1 or trim(t_f[0]) in ['dr_jzgjcsjxx', 'view_jzgjcsjxx', ]:
+                sql += ' AND JZGH NOT IN ("admin")'
+
+            from jx.sqlalchemy_env import db, text
+            try:
+                logger.info(sql)
+                pro = db.execute(text(sql), v)
+                db.commit()
+                return JsonResponse(fetchall_sqlalchemy_in_dict(pro), safe=False)
+            except:
+                db.rollback()
+                logger.error(sys_info())
+    except:
+        logger.error(sys_info())
+
+    return JsonResponse([], safe=False)
+
+
+@check_login
+@sys_error
 def get_class_view(req):
     from jx.module import generate_class_view
-    return JsonResponse(generate_class_view((''.join([settings.BASE_DIR, '/jx/module.py'])), False), safe=False)
+    return JsonResponse(generate_class_view('module', False), safe=False)
 
 
 @check_login
 def delete_data(req):
     payroll = str(req.COOKIES.get('payroll'))
-    # TODO: check delete auth ???
-
     v = eval(str(req.POST.dict()))
     data = json.loads(v['data'])
     function = v['menu']
     count = v['count']
 
     module_class = get_module_class(function)
-    upload_tables = module_class.get_delete_tables()
+    delete_tables = module_class.get_delete_tables()
 
-    from jx.sqlalchemy_env import cursor, conn
-    for d_table in upload_tables:
+    msg = ''
+    from jx.sqlalchemy_env import db, text
+    for d_table in delete_tables:
         model_dr_class = get_model_dr_class(d_table)
-        unique = model_dr_class.get_unique_condition()
+        uniques = model_dr_class.get_unique_condition()
+        msg_tablename = model_dr_class.__tablename__CH__ if hasattr(model_dr_class, '__tablename__CH__') \
+            else model_dr_class.__tablename__
+
+        if len(uniques) == 0:
+            return JsonResponse({'success': False, 'msg': '删除失败：数据唯一性条件未定义'})
+
+        if len(uniques[0]) and isinstance(uniques[0], str):
+            uniques = [uniques, ]
+        unique = uniques[len(uniques)-1]
 
         where = '1=1'
         for u in unique:
-            where += ' AND ' + u + "='%(" + u + ")s'"
+            where += ' AND ' + u + "=:" + u
         if where == '1=1':
+            msg += msg_tablename + ': 删除失败, 未定义数据唯一性条件<br>'
             continue
 
+        if function == 'zzjgjbsjxx':  # can't delete parent and current
+            from jx.module import VIEW_ZZJGJBSJXX
+            user = get_user_information(payroll)
+            __dpts = VIEW_ZZJGJBSJXX.get_managed_departments(str(user['DWH'])).remove(str(user['DWH']))
+            where += " AND DWH IN " + str(__dpts).replace('[', '(').replace(']', ')')
+
+        if function == 'jzgjcsjxx':  # can't delete self and admin
+            where += " AND JZGH NOT IN ('admin', '" + payroll + "')"
+
+        # TODO: add more WHERE conditions to keep system safe
         for c in range(0, int(count)):
+            sql_delete = "DELETE FROM " + d_table + " WHERE " + where
+            try:
+                logger.info(sql_delete)
+                db.execute(text(sql_delete), data[c])
+                db.commit()
+                msg += msg_tablename + ': 删除数据成功<br>'
+            except Error as e:
+                db.rollback()
+                logger.error(sys_info())
+                msg += msg_tablename + ': 删除失败, ' + str(e) + '<br>'
+    try:
+        db.commit()
+    except Error:
+        logger.error(sys_info())
+        db.rollback()
 
-            sql_delete = """ DELETE FROM %(table)s WHERE %(where)s """ % {'table': d_table, 'where': where % data[c]}
-
-            # TODO: add more WHERE conditions to keep system safe
-            # 1. zzjgjbsjxx can't delete parent and current
-            # 2. jzgjcsjxx can't delete self and admin
-            # 3. other conditions ???
-
-            # cursor = connection.cursor()  # change to SQLAlchemy cursor to keep delete transaction
-            logger.info(sql_delete)
-            cursor.execute(sql_delete)
-
-    conn.commit()
-    return JsonResponse({'success': True, 'msg': '删除数据成功'})
+    return JsonResponse({'success': True, 'msg': msg})
 
 
 def __format_create_value(v, columns):
@@ -916,12 +1256,10 @@ def __format_create_value(v, columns):
         if k_ not in ('id', 'stamp', 'note'):
             val[k_] = _v
 
-    # NOTE: 增减业绩点
-    # TODO: 增减业绩点子类??? by 'ZZZ' as rule prefix???
+    # NOTE: 考核结果明细有 note and stamp
     if 'create_data_item' in v:
         if v['create_data_item'] == 'khjgmx':
             val['note'] = v['note']
-            val['GZH'] = 'ZZZ'
             val['stamp'] = now()
 
     return val
@@ -929,71 +1267,69 @@ def __format_create_value(v, columns):
 
 @check_login
 def create_data(req):
-    payroll = str(req.COOKIES.get('payroll'))
-    # TODO: create auth verification
-    # TODO: additional check and default value set
-
-    def __translate_column_to_chinese(columns, col):
-        for k, v in columns.items():
-            if v[0] == col:
-                return k
-        return ''
-
-    def __transform_key_to_chinese(vv, columns):
-        res = {}
-        for k, v in vv.items():
-            nk = __translate_column_to_chinese(columns, k)
-            res[nk] = v
-        return res
+    from jx.sqlalchemy_env import db, text
 
     _v = eval(str(req.POST.dict()))
     function = _v['create_data_item']
 
     module_class = get_module_class(function)
-    upload_tables = module_class.get_delete_tables()
+    create_tables = module_class.get_create_tables()
 
-    from jx.sqlalchemy_env import cursor, conn
-    for d_table in upload_tables:
+    msg, status = '', False
+    for d_table in create_tables:
         model_dr_class = get_model_dr_class(d_table)
         columns = model_dr_class.get_column_label()
-        unique = model_dr_class.get_unique_condition()
+        uniques = model_dr_class.get_unique_condition()
+        msg_tablename = model_dr_class.__tablename__CH__ if hasattr(model_dr_class, '__tablename__CH__') \
+            else model_dr_class.__tablename__
+
+        if len(uniques) == 0:
+            msg += msg_tablename + ': 创建失败, 数据主键未定义!<br>'
+            continue
 
         tv = __format_create_value(_v, columns)
 
-        where = '1=1'
-        for u in unique:
-            if u in tv and not len(trim(tv[u])):
-                return JsonResponse({'success': False, 'msg': '创建失败：' + str(u) + '为空'})  # TODO: to Chinese readable
-            where += ' AND ' + u + "='%(" + u + ")s'"
-        if where == '1=1':
+        if len(uniques[0]) and isinstance(uniques[0], str):
+            uniques = [uniques, ]
+
+        msg_unique = ''
+        for unique in uniques:
+            counts = __get_data_counters(d_table, unique, tv)
+            if counts['count'] != 0:
+                msg_unique += msg_tablename + ': 创建失败, 数据主键重复('
+                for u in unique:
+                    msg_unique += __translate_column_to_chinese(columns, u) + '->' + str(tv[u]) + ', '
+                msg_unique = msg_unique[:-2]
+                msg_unique += ')<br>'
+
+        if msg_unique != '':
+            msg += msg_unique
             continue
 
-        sql_count = """ SELECT COUNT(*) AS count FROM %(table)s WHERE %(where)s 
-        """ % {'table': d_table, 'where': where % tv}
-        logger.info(sql_count)
-        cursor.execute(sql_count)
-        count = cursor.fetchall()
-        if count[0][0] > 0:
-            return JsonResponse({'success': False, 'msg': '创建失败：数据主键重复'})
-
+        unique = uniques[len(uniques)-1]
         c_key = __transform_key_to_chinese(tv, columns)
-        rec, c_str, v_str, u_str = __row_replace_key(c_key, columns, unique)
+        rec, c_str, v_str, u_str, not_processed = __row_replace_key(c_key, columns, unique)
 
-        sql_insert = """ INSERT INTO %(table)s (%(columns)s) VALUES (%(values)s) 
-        """ % {'table': d_table, 'columns': c_str, 'values': v_str, }
+        sql_insert = "INSERT INTO " + d_table + "(" + c_str + ") VALUES (" + v_str + ")"
 
         logger.info(sql_insert)
-        from pymysql.err import Error
         try:
-            cursor.execute(sql_insert)
-            cursor.fetchall()
-            pass
+            db.execute(text(sql_insert), rec)
+            msg += msg_tablename + ': 新建数据成功<br>'
+            status = True
         except Error as e:
             logger.error(sys_info())
-            return JsonResponse({'success': False, 'msg': '创建失败: ' + str(e)})  # TODO: translate exception
+            msg += msg_tablename + ': 创建失败, ' + str(e) + '<br>'
+            status = False
 
-    conn.commit()
-    return JsonResponse({'success': True, 'msg': '新建数据成功'})  # TODO: add meaningful words and translate to Chinese
+    try:
+        db.commit() if status else db.rollback()
+    except Error as e:
+        logger.error(sys_info())
+        msg += '数据提交错误, ' + str(e) + '<br>'
+        status = False
+
+    return JsonResponse({'success': status, 'msg': msg})
 
 
 @check_login
@@ -1007,20 +1343,29 @@ def staffinfo(req):
         v['sort'] = 'id'
         v['order'] = 'DESC'
 
+    if v['order'].lower() not in ('asc', 'desc'):
+        v['order'] = 'DESC'
+
     l_user = SysUser.objects.get(payroll=payroll)
     v['role'] = l_user.role_id
 
     sql_count = """ SELECT COUNT(*) AS count FROM view_sysuser """
     sql_content = """ SELECT * FROM view_sysuser """
 
-    sql_where = " WHERE 1=1 "
+    sql_query_set = []
+    sql_where = " WHERE role_id!=1 AND usertype_id!=1" if payroll != 'admin' else " WHERE 1=1"
     if user.role_id == 1:
         pass
-    elif user.role_id == 2:
-        user_info = get_user_information(payroll)
-        sql_where += " AND DWH='%(department)s'" % {'department': str(user_info['DWH'])}
+    elif user.role_id in (2, 3):
+        from jx.module import VIEW_JZGJCSJXX 
+        ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
+        sql_where += (" AND DWH IN " + trim(str(ds)).replace('[', '(').replace(']', ')')) if ds else " AND DWH=%s"
     else:
         sql_where += ' AND 1=0'
+
+    if 'payroll' in v:
+        sql_where += ' AND payroll=%s'
+        sql_query_set.append(trim(str(v['payroll'])))
 
     sql_search = ""
     if 'search' in v and v['search'] not in ('', None):
@@ -1028,19 +1373,25 @@ def staffinfo(req):
         if search_columns:
             sql_search = " AND (1=0 "
             for col in search_columns:
-                sql_search += " OR %(col)s LIKE \'%%%(search)s%%\' " % {'col': col, 'search': v['search']}
+                sql_search += " OR " + col + " LIKE %s"
+                sql_query_set.append('%' + trim(str(v['search'])) + '%')
             sql_search += ")"
-
-    sql_olo = ' ORDER BY %(sort)s %(order)s LIMIT %(limit)s OFFSET %(offset)s' % v
 
     cursor = connection.cursor()
     logger.info(sql_count + sql_where + sql_search)
-    cursor.execute(sql_count + sql_where + sql_search)
+    cursor.execute(sql_count + sql_where + sql_search, sql_query_set)
     count = dictfetchall(cursor)[0]["count"]
 
+    sql_olo = ' ORDER BY %s %s LIMIT ' + str(int(v['limit'])) + ' OFFSET ' + str(int(v['offset']))
+    sql_query_set.append(v['sort'])
+    sql_query_set.append(v['order'])
+
     logger.info(sql_content + sql_where + sql_search + sql_olo)
-    cursor.execute(sql_content + sql_where + sql_search + sql_olo)
+    cursor.execute(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     select_out = dictfetchall(cursor)
+
+    for s in select_out:
+        s['password'] = ''
 
     return JsonResponse({'total': count, 'rows': select_out})
 
@@ -1048,11 +1399,11 @@ def staffinfo(req):
 @check_login
 @sys_error
 def run_kpi(req):
-    try:
-        from jx.rule import KH_KHJGMX, KH_KHJGHZ, KH_KHPC
-        from jx.sqlalchemy_env import db
-        from jx.module import VIEW_JZGJCSJXX
+    from jx.rule import KH_KHJGMX, KH_KHJGHZ, KH_KHPC
+    from jx.module import VIEW_JZGJCSJXX
+    from jx.sqlalchemy_env import db
 
+    try:
         payroll = req.COOKIES.get('payroll')
         departments = VIEW_JZGJCSJXX.get_managed_departments(str(payroll))
 
@@ -1070,7 +1421,7 @@ def run_kpi(req):
 
         # clear first
         query = db.query(KH_KHJGMX)
-        query = query.filter(KH_KHJGMX.DWH.in_(departments), KH_KHJGMX.KHNF == year, KH_KHJGMX.GZH.notin_(['ZZZ']))
+        query = query.filter(KH_KHJGMX.DWH.in_(departments), KH_KHJGMX.KHNF == year, KH_KHJGMX.GZH.notlike('ZJ%'))
         query_out = query.all()
         for out in query_out:
             db.delete(out)
@@ -1090,14 +1441,17 @@ def run_kpi(req):
 
         return JsonResponse({'success': True, 'msg': '绩效考核运行成功，请核查数据！'})
 
-    except:
+    except Error:
+        db.rollback()
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '绩效考核运行失败：数据库错误'})
 
 
 @check_login
 def custermize_kpi(req):
-    # TODO: 不考核教职工可在教职工页面采用相同方法
+    from jx.rule import KH_KHGZDZ
+    from jx.sqlalchemy_env import db
+
     try:
         payroll = str(req.COOKIES.get('payroll'))
 
@@ -1105,9 +1459,6 @@ def custermize_kpi(req):
         data = json.loads(v['data'])
         year = __format_value(v['year'], "DateTime")
         user = get_user_information(payroll)
-
-        from jx.sqlalchemy_env import db
-        from jx.rule import KH_KHGZDZ
 
         for index in data:
             query = db.query(KH_KHGZDZ)
@@ -1123,6 +1474,7 @@ def custermize_kpi(req):
 
         return JsonResponse({'success': True, 'msg': '绩效考核定制成功，请核查数据！'})
 
-    except:
+    except Error:
+        db.rollback()  # NOTE: OR open SQLAlchemy autocommit
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '绩效考核定制失败：数据库错误'})

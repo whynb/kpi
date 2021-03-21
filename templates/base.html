@@ -7,28 +7,21 @@
 </head>
 <body>
     <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
-        <div class="container">
+        <div class="container" style="width: inherit">
             {% include 'html/sheader.html' %}
             {% include 'html/smenu.html' %}
         </div>
     </nav>
 
-    <div class="clearfix"></div>
-
     <!-- Start Content -->
-    <div class="column">
-        <div class="column-left">
-            <div class="resize-bar"></div>
-            <div class="resize-line"></div>
-            <div class="resize-save">
-                <div class="row sal_margin">
-                    <h6 id="current_menu">组织结构</h6>
-                    <div id="treeview-selectable" class=""></div>
-                    <div id="selectable-output" hidden></div>
-                </div>
-            </div>
+    <div class="why_container">
+        <div class="why_left" id="why_left_panel" hidden>
+            <h6 id="current_menu">组织结构</h6>
+            <div id="treeview-selectable" class=""></div>
+            <div id="selectable-output" hidden></div>
         </div>
-        <div class="column-right" style="height: 1000px">
+        <div class="why_right">
+            <div class="why_content">
             <div class="form-group form-inline" id="toolbar">
                 {% include 'html/sdate.html' %}
                 {% if editable[0] %}
@@ -48,6 +41,7 @@
                 {% endif %}
             </div>
             <table id="table" class="table table-bordered table-striped"></table>
+        </div>
         </div>
     </div>
     <!-- End Content -->
@@ -71,33 +65,7 @@
         {% include 'html/screate.html' %}
     {% endif %}
 
-
-
 <script>
-    var tree_url = "{{ url('get_allhrdpmt') }}";
-    var tree_data_method = "{{ with_users }}";
-    var $orgid = "";
-
-    var $selected_node = {
-        'type': 'd',
-        'href': '',
-        'code': getCookie('DWH'),
-        'text': ''
-    };
-
-    function resetSelectedNode() {
-        $selected_node = {
-            'type': 'd',
-            'href': '',
-            'code': getCookie('DWH'),
-            'text': ''
-        };
-    }
-
-    function unselectNode(node) { $orgid = ''; resetSelectedNode(); refreshTable(); }
-
-    function selectNode(node) { $selected_node = node; $orgid = $selected_node.href; refreshTable(); }
-
     function refresh() {
         if ($('#selectStartDate').val() > $('#selectEndDate').val()) {
             $.hulla.send('起始时间应小于等于终止时间，请重新选择！', "danger");
@@ -120,9 +88,7 @@
         return res;
     }
 
-    $(function() {
-
-    });
+    $(function() { });
 
 </script>
 

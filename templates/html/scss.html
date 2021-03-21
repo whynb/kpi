@@ -5,7 +5,6 @@
 <link href="{{ static('bootsnav/css/animate.css') }}" rel='stylesheet'>
 <link href="{{ static('bootsnav/css/bootsnav.css') }}" rel='stylesheet'>
 <link href="{{ static('bootsnav/css/style.css') }}" rel='stylesheet'>
-<link href="{{ static('css/resize.css') }}" rel='stylesheet'>
 <link href="{{ static('x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css') }}" rel='stylesheet'>
 <link href="{{ static('bootstrap-table/dist/bootstrap-table.min.css') }}" rel='stylesheet'>
 <link href="{{ static('bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css') }}" rel='stylesheet'>
@@ -13,3 +12,18 @@
 <link href="{{ static('bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel='stylesheet'>
 <link href="{{ static('bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel='stylesheet'>
 <link href="{{ static('bootstrap-fileinput/css/fileinput.min.css') }}" rel='stylesheet'>
+
+<style>
+    body { margin: 0; padding: 0;}
+    .why_container { height: 95vh; width: 100vw; margin: 0; padding: 0; display: flex; }
+    .why_left {
+        height: inherit; width: 25%; min-width: 80px; overflow: auto;
+        resize: horizontal; border-right: 2px solid #c9c9c9; padding: 15px;
+    }
+    .why_right { height: inherit; min-width: 180px; flex: auto; padding: 15px;}
+    .why_content { width: 100%; height: 100%; overflow-y: auto; }
+    .header_nav {
+        height: 50px; line-height: 50px; text-align: center; border-bottom: 2px solid #c9c9c9;
+        position: fixed; width: 100%; top: 0; left: 0; z-index: 999;
+    }
+</style>

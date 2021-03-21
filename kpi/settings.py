@@ -169,7 +169,7 @@ DATABASES = {
 
 # local
          'PASSWORD': 'password',
-         'HOST': '',
+         'HOST': '127.0.0.1',
 
 # port
         'PORT': '3306',

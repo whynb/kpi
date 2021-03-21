@@ -4,20 +4,13 @@
 
 <script type="text/javascript">
     var columns = [];
-    var items = [];
-    var table_titles = [];
+    var itemCode = [];
 
     function align(columns) {
         for (var i=0; i < columns.length; i++) {
             columns[i].align = 'center';
             columns[i].halign= 'center';
             columns[i].valign = "middle";
-
-            // if (columns[i].field.substr(0, 4) == 'item') {
-            //     var v = "function(rows) { var sum = 0; for (var j=0; j<rows.length; j++) { sum += parseFloat(rows[j]."
-            //         + columns[i].field + "); } return sum.toFixed(2); };";
-            //     columns[i].footerFormatter = new Function("return " + v)();
-            // }
 
             if (columns[i].field == 'note') columns[i].width = '100px';
         }
@@ -39,36 +32,23 @@
         return value.substring(0, 10);
     }
 
-    function build_title___(items) {
-        columns = [{ checkbox: true }];
-        for (var i=0; i < items.length; i++){
-            var col = {title: items[i].title, field: items[i].field, sortable : true,};
-            if (items[i].editable == 'True' || items[i].editable == 'T') {
-                col = {
-                    title: items[i].title, field: items[i].field, sortable : true,
-                    editable: {
-                        type: "text",
-                        emptytext: "请输入",
-                        validate: function (v) { if($.trim(v) == '') return '请重新输入！'; },
-                    },
-                };
-            }
-            if (items[i].type == 'date') col.formatter = DateFormatter;
-            if (items[i].type == 'year') col.formatter = YearFormatter;
-            if (items[i].type == 'month') col.formatter = MonthFormatter;
-            columns.push(col);
-        }
-        console.log(columns);
-        columns = align(columns);
-    }
-
-    function build_title(items) {
-        columns = [{ checkbox: true }];
+    function build_title() {
+        {% if sum_footer %}
+        columns = [{ checkbox: true, footerFormatter: '合计', }];
+        {% else %}
+        columns = [{ checkbox: true, }];
+        {% endif %}
         var col = {};
         var source = [];
 
         {% for title in title_columns %}
-            col = {title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,};
+            col = {
+                title: "{{ title['title'] }}",
+                field: "{{ title['field'] }}",
+                type: "{{ title['type'] }}",
+                sortable : true,
+            };
+            {% if editable[2] %}
             {% if title['editable'] in ['True', 'true', 't', 'T'] %}
                 {% if title['type'] in ['static', 'table'] %}
                     source = [];
@@ -79,6 +59,7 @@
                     {% endwith %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             emptytext: '--',
                             type: "select",
@@ -96,6 +77,7 @@
                     {% endwith %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             emptytext: '--',
                             type: "select",
@@ -104,9 +86,10 @@
                         },
                     };
                 {% endif %}
-                {% if title['type'] in ['text', 'float', 'year', 'month', 'date'] %}
+                {% if title['type'] in ['text', 'textarea', 'float', 'year', 'month', 'date'] %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             type: "text",
                             emptytext: "请输入",
@@ -121,6 +104,7 @@
                     {% endfor %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
                             emptytext: '--',
                             type: "select",
@@ -137,8 +121,9 @@
                     {% endfor %}
                     col = {
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
+                        type: "{{ title['type'] }}",
                         editable: {
-                            emptytext: '',
+                            emptytext: '请选择',
                             type: "select",
                             source: source,
                             validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
@@ -146,8 +131,9 @@
                     };
                     {% endif %}
                 {% endif %}
-
             {% endif %}
+            {% endif %}
+
             {% if title['type'] in ['date'] %}
                 col.formatter = DateFormatter;
             {% endif %}
@@ -157,6 +143,23 @@
             {% if title['type'] in ['month'] %}
                 col.formatter = MonthFormatter;
             {% endif %}
+
+            {% if sum_footer %}
+            col.footerFormatter = '';
+            if (col.type == 'float') {
+                col.footerFormatter = new Function(
+                    "return function(rows) { var sum=0; for (var j=0; j<rows.length; j++) { sum += parseFloat(rows[j]."
+                    + col.field + "); } return sum.toFixed(2); };"
+                )();
+            }
+            if (col.type == 'number') {
+                col.footerFormatter = new Function(
+                    "return function(rows) { var sum=0; for (var j=0; j<rows.length; j++) { sum += parseFloat(rows[j]."
+                    + col.field + "); } return sum.toFixed(0); };"
+                )();
+            }
+            {% endif %}
+
             columns.push(col);
         {% endfor %}
 
@@ -165,7 +168,9 @@
     }
 
     function build_table() {
+        let windows_wh = getViewportOffset();
         $('#table').bootstrapTable('destroy').bootstrapTable({
+            // height: windows_wh.h - 82,
             url: '/jx/get_data',               //请求后台的URL（*）
             method: 'get',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -174,6 +179,11 @@
             locale: 'zh-CN',
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,                   //是否显示分页（*）
+
+            {% if sum_footer %}
+            showFooter: true,
+            {% endif %}
+
             queryParams: function (params) {
                 var sort = params['sort'];
                 if (sort == undefined) sort = "";
@@ -183,8 +193,9 @@
                     sort: sort,
                     order: params.order,
                     search: params.search,
-                    code:  $selected_node.code,
+                    code:  $selected_node.code == undefined ? '' : $selected_node.code,
                     type:  $selected_node.type,
+                    item: array_to_string(itemCode),
                     start: $('#selectStartDate').val(),
                     end: $('#selectEndDate').val(),
                     menu: "{{ menu }}"
@@ -199,8 +210,6 @@
             buttonsAlign: "right",              //按钮位置
             exportTypes: ['csv', 'excel'],             //导出文件类型
             exportOptions: { ignoreColumn: [0], fileName: '{{ tips }}'},  //文件名称设置 NOT work at x-editable
-
-            // TODO: use title color or placeholder to show search columns scope
             search: true,                       //是否显示表格搜索，根据表格类型进行客户端搜索或者服务端搜索
             searchOnEnterKey: true,
             showRefresh: true,                  //是否显示刷新按钮
@@ -209,9 +218,19 @@
             uniqueId: "id",                     //每一行的唯一标识，一般为主键列
             idField: "id",                      //used by x-editable
             undefinedText: '',
+            onPostBody: function() {
+                $('.search .search-input').attr('placeholder', '搜索带颜色列内容');
+            },
             onLoadSuccess: function (data) {
-                var h = $(".column-right").height(); if (h < 500) h = 500; $(".column-left").height(h);
                 $('.fixed-table-loading.table.table-bordered.table-hover').hide();
+                let x = document.getElementsByTagName("th");
+                for (let i = 0; i < x.length; i++) {
+                {% for column in search_columns %}
+                    if (x[i].getAttribute("data-field") == '{{ column }}') {
+                        x[i].firstChild.style.background = '#E0FFFF';
+                    }
+                {% endfor %}
+                }
             },
             columns: columns,
 
@@ -251,38 +270,21 @@
     }
 
     function initTable() {
-        var queryParams = {
-            limit: "1000",
-            offset: "0",
-            sort: "",
-            order: "asc",
-            search: "",
-            code:  $selected_node.code,
-            type:  $selected_node.type,
-            start: $('#selectStartDate').val(),
-            end: $('#selectEndDate').val(),
-            menu: "{{ menu }}"
-        };
-
-        $.ajax({
-            type: "GET",
-            url: "{{ url('get_title') }}",
-            data: queryParams,
-            dataType: 'json',
-            success: function(data){
-                table_titles = data;
-                build_title(data);
-                console.log(columns);
-                build_table();
-            },
-            error: function(r, s, e) {
-                $.hulla.send("获得{{ tips }}出错，请重试！", "danger");
-            }
-        });
+        build_title();
+        build_table();
+        post_build();
+        return;
     }
 
-    function refreshTable() { setTimeout(function () { $('#table').bootstrapTable('refresh'); }, 100); }
+    function refreshTable() { 
+        setTimeout(function () { 
+            $('#table').bootstrapTable('refresh');
+            post_build();
+        }, 100); 
+    }
 
     $(function() { setTimeout(function () { initTable(); }, 200); })
+
+    function post_build() {}
 
 </script>
