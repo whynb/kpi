@@ -137,26 +137,6 @@ function changepwd_onclick() { $('#passwordModal').modal(); }
 
 function chineseSort(a, b) { return a.localeCompare(b); }
 
-function pwd_onclick() {
-    if (checkPwd()) {
-        $.get("../changepwd?oldpwd="+oldpwd.value+"&newpwd="+newpwd.value, function(ret){
-            $.hulla.send(ret['tag'], "info");
-            if (ret['success']){
-                $('#passwordModal').modal('hide');
-                $('#passwordModal').removeData("bs.modal");
-            }
-        });
-    }
-}
-
-function checkPwd() {
-    if ($('#oldpwd').val() == "") { $.hulla.send("原密码不能为空", "danger"); return false; }
-    if ($('#newpwd').val() == "") { $.hulla.send("新密码不能为空", "danger"); return false; }
-    if ($('#conpwd').val() == "") { $.hulla.send("确认密码不能为空", "danger"); return false; }
-    if ($('#newpwd').val() != $('#conpwd').val()) { $.hulla.send("两次新密码不一致，请重新输入", "danger"); return false; }
-    if ($('#newpwd').val() == $('#oldpwd').val()) { $.hulla.send("新旧密码相同，请重新输入", "danger"); return false; }
-    return true;
-}
 
 function selectpickerByTable(table, col_name, select, include_all) {
     include_all = include_all||false;
