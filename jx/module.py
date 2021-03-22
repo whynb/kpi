@@ -7,7 +7,6 @@ from sqlalchemy import *
 from jx.util import now, sys_info, logger
 from typing import List
 
-
 # Document and example
 '''
 class ExampleModule(Base):
@@ -733,6 +732,11 @@ class VIEW_HJCGJBSJXX(Base):
         ]
 
 
+    @staticmethod
+    def get_search_columns() -> []:
+        return ['HJCGMC', 'FZRXM']
+
+
 class VIEW_KJCGRYXX_JL(Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_kjcgryxx_jl'
@@ -757,8 +761,6 @@ class VIEW_KJCGRYXX_JL(Base):
     HJJBM = Column('HJJBM', String(16), default='')  # 获奖级别码
     CGHJLBM = Column('CGHJLBM', String(16), default='')  # 成果获奖类别码
     FZRXM = Column('FZRXM', String(16), default='')  # 负责人姓名
-
-
 
     @staticmethod
     def sql() -> str:
@@ -826,6 +828,134 @@ class VIEW_KJCGRYXX_JL(Base):
         ]
 
 
+    @staticmethod
+    def get_search_columns() -> []:
+        return ['XM']
+
+
+
+#yangchen
+class VIEW_ZLCGJBSJXX(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_zlcgjbsjxx'
+    __tablename__CH__ = '专利成果基本数据信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    ZLCGBH = Column('ZLCGBH', String(16), default='')  # 专利成果编号
+    ZLCGMC = Column('ZLCGMC', String(128),default='')  # 专利成果名称
+    DWH = Column('DWH', String(128),default='')  # 单位号
+    SQBH= Column('SQBH', String(16), default='')  # 申请编号
+    XKLYM= Column('XKLYM', String(16), default='')  # 学科领域
+    ZLLXM = Column('ZLLXM', String(16), default='')  # 专利类型码
+    PZRQ= Column('PZRQ', DateTime, default=now())  # 批准日期
+    PZXSM = Column('PZXSM', String(16),  default='')  # 批准形式码
+    ZLZSBH = Column('ZLZSBH', String(16),  default='')  # 专利证书编号
+    FLZTM = Column('FLZTM', String(16), default='')  # 法律状态码
+    JNZLNFRQ = Column('JNZLNFRQ', DateTime, default=now())  # 交纳专利年费日期
+    JNJE = Column('JNJE', String(16), default='')  # 交纳金额
+    SSXMBH = Column('SSXMBH', String(16), default='')  # 所属项目编号
+    GJDQM = Column('GJDQM', String(16), default='')  # 国籍/地区码
+    GJZLZFLH = Column('GJZLZFLH', String(16), default='')  # 国际专利主分类号
+    PCTHZLGJDQM = Column('PCTHZLGJDQM', String(16), default='')  # PCT 或专利国家/地区码
+    SQGGH = Column('SQGGH', String(16), default='')  # 授权公告号
+    SQGGRQ = Column('SQGGRQ', DateTime, default=now())  # 授权公告日期
+    SQMC = Column('SQMC', String(16), default='')  # 申请名称
+    ZLDLJG = Column('ZLDLJG', String(30), default='')  # 专利代理机构
+    ZLDLR = Column('ZLDLR', String(16), default='')  # 专利代理人
+    ZLQR = Column('ZLQR', String(16), default='')  # 专利权人
+    ZLZZRQ = Column('ZLZZRQ', DateTime, default=now())  # 专利终止日期
+    XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
+    ZLSQRQ = Column('ZLSQRQ', DateTime, default=now())  # 专利申请日期
+    ZZM = Column('ZZM', String(16), default='')  # 作者名
+    ZZBH = Column('ZZBH', String(16), default='')  # 作者编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+        CREATE VIEW view_zlcgjbsjxx AS
+        select
+           dr_zl.id as id,
+           dr_zl.ZLCGBH as ZLCGBH,
+           dr_zl.ZLCGMC as ZLCGMC,
+           dr_zl.DWH as DWH,
+           dr_zl.SQBH as SQBH,
+           dr_zl.XKLYM as XKLYM,
+           dr_zl.ZLLXM as ZLLXM,
+           dr_zl.PZRQ as PZRQ,
+           dr_zl.PZXSM as PZXSM,
+           dr_zl.ZLZSBH as ZLZSBH,
+           dr_zl.FLZTM as FLZTM,
+           dr_zl.JNZLNFRQ as JNZLNFRQ,
+           dr_zl.JNJE as JNJE,
+           dr_zl.SSXMBH as SSXMBH,
+           dr_zl.GJDQM as GJDQM,
+           dr_zl.GJZLZFLH as GJZLZFLH,
+           dr_zl.PCTHZLGJDQM as PCTHZLGJDQM,
+           dr_zl.SQGGH as SQGGH,
+           dr_zl.SQGGRQ as SQGGRQ,
+           dr_zl.SQMC as SQMC,
+           dr_zl.ZLDLJG as ZLDLJG,
+           dr_zl.ZLDLR as ZLDLR,
+           dr_zl.ZLQR as ZLQR,
+           dr_zl.ZLZZRQ as ZLZZRQ,
+           dr_zl.XKMLKJM as XKMLKJM,
+           dr_zl.ZLSQRQ as ZLSQRQ,
+           dr_zl.ZZM as ZZM,
+           dr_zl.ZZBH as ZZBH,
+           dr_zl.PZRQ as stamp,
+           dr_zl.note as note
+        from dr_zlcgjbsjxx dr_zl
+        left join dc_zlcgjbsjxx dc_zl on dr_zl.ZLCGBH = dc_zl.ZLCGBH
+        where 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_zlcgjbsjxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_zlcgjbsjxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_zlcgjbsjxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note']
+
+    @staticmethod
+    def get_title_columns() -> List[str]:
+        return[
+            {'table': 'dr_zlcgjbsjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text','create': 'False', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZLCGBH', 'title': '专利成果编号', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZLCGMC', 'title': '专利成果名称', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'T', 'type': 'inline','create': 'T', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'},
+            {'table': 'dr_zlcgjbsjxx', 'field': 'SQBH', 'title': '申请编号', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZLLXM', 'title': '专利类型码', 'editable': 'T', 'type': 'inline','create': 'T', },#need value
+            {'table': 'dr_zlcgjbsjxx', 'field': 'PZRQ', 'title': '批准日期', 'editable': 'T', 'type': 'date','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'PZXSM', 'title': '批准形式码', 'editable': 'T', 'type': 'inline','create': 'T', }, #need value
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZLZSBH', 'title': '专利证书编号', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'FLZTM', 'title': '法律状态码', 'editable': 'T', 'type': 'inline','create': 'T', }, #need value
+            {'table': 'dr_zlcgjbsjxx', 'field': 'SQGGH', 'title': '授权公告号', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'SQGGRQ', 'title': '授权公告日期', 'editable': 'T', 'type': 'data','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'SQMC', 'title': '申请名称', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZLDLJG', 'title': '专利代理机构', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZLDLR', 'title': '专利代理人', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZLQR', 'title': '专利权人', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'XKMLKJM', 'title': '学科门类(科技)码', 'editable': 'T', 'type': 'text','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZLSQRQ', 'title': '专利申请日期', 'editable': 'T', 'type': 'data','create': 'T', },
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZZM', 'title': '作者名', 'editable': 'T', 'type': 'table','create': 'T', 'value': 'dr_jzgjcsjxx:JZGH AS ZZBH,XM AS ZZM', 'where': "DWH IN %(departments)s AND JZGH!='admin'"},
+            {'table': 'dr_zlcgjbsjxx', 'field': 'ZZBH', 'title': '作者编号', 'editable': 'T', 'type': 'text','create': 'F',},
+        ]
+
+    @staticmethod
+    def get_search_columns() -> []:
+        return ['ZLCGMC']
 
 
 class_dict = {key: var for key, var in locals().items() if isinstance(var, type)}
@@ -867,7 +997,7 @@ def generate_class_view(name='module', create_view=True):
 
         else:  # generate view structure for FE
             cdf.append({
-                'class': k[k.find('VIEW_')+5:],
+                'class': k[k.find('VIEW_') + 5:],
                 'name': v_class.__tablename__CH__,
                 'columns': v_class.get_title_columns()
             })
