@@ -160,12 +160,16 @@ DATABASES = {
         'USER': 'root',
 
 # run
-#        'PASSWORD': 'QAzx1324',
-#        'HOST': '47.93.196.31',
+#        'PASSWORD': 'P1ssW0rd',
+#        'HOST': '47.94.148.26',
 
 # test
-#       'PASSWORD': 'P1ssW0rd',
-#       'HOST': '47.94.148.26',
+#        'PASSWORD': 'P1ssW0rd',
+#        'HOST': '47.94.148.26',
+
+# test NEU
+#       'PASSWORD': '123456',
+#       'HOST': '47.94.86.214',
 
 # local
         'PASSWORD': 'password',

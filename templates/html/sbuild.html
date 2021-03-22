@@ -123,7 +123,7 @@
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
                         type: "{{ title['type'] }}",
                         editable: {
-                            emptytext: '',
+                            emptytext: '请选择',
                             type: "select",
                             source: source,
                             validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
@@ -193,7 +193,7 @@
                     sort: sort,
                     order: params.order,
                     search: params.search,
-                    code:  $selected_node.code,
+                    code:  $selected_node.code == undefined ? '' : $selected_node.code,
                     type:  $selected_node.type,
                     item: array_to_string(itemCode),
                     start: $('#selectStartDate').val(),
