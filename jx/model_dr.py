@@ -455,7 +455,7 @@ class DR_KJZZXX(Base):
     CBSJBM = Column('CBSJBM', String(1024), default='')  # 出版社级别码
     CBRQ = Column('CBRQ', DateTime, default=now())  # 出版日期
     CBH = Column('CBH', String(1024), default='')  # 出版号
-    ZZZS = Column('ZZZS', Integer)  # 著作字数
+    ZZZS = Column('ZZZS', String(16), default='')  # 著作字数
     SSXMBH = Column('SSXMBH', String(16), default='')  # 所属项目编号
     ISBNH = Column('ISBNH', String(1024), default='')  # ISBN 号
     XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
@@ -509,6 +509,7 @@ class DR_KJCGRYXX_ZZ(Base):
     GXL = Column('GXL', String(16), default='')  # 贡献率
     XM = Column('XM', String(128), default='')  # 姓名
     SZDW = Column('SZDW', String(16), default='')  # 所在单位
+    DWH = Column('DWH', String(16), default='')  # 单位号
     RYLX = Column('RYLX', String(128), default='')  # 人员类型
     ZZBH = Column('ZZBH', String(128), default='')  # 著作编号
     KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
@@ -527,6 +528,7 @@ class DR_KJCGRYXX_ZZ(Base):
             '贡献率': ['GXL'],
             '姓名': ['XM'],
             '所在单位': ['SZDW'],
+            '单位号': ['DWH'],
             '人员类型': ['RYLX'],
             '著作编号': ['ZZBH'],
             '科技成果人员编号': ['KJCGRYBH'],
