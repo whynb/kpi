@@ -410,6 +410,87 @@ KSRS     考试人数 N  教务处、研究生院
     def get_unique_condition() -> List[str]:
         return ['KCH','KSRQ','KSJSH','SSXY']
 
+class DR_XWLWXX(Base):
+    '''
+
+LWTM 论文题目 C  教务处、研究生院
+LWQSRQ 论文起始日期 C  教务处、研究生院
+LWZZRQ 论文终止日期 C  教务处、研究生院
+XH 学号 C(8)  教务处、研究生院
+    '''
+
+    __tablename__ = 'dr_xwlwxx'
+    __tablename__CN__ = '学位论文信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    LWTM = Column('LWTM', String(16), default='')  # 论文题目
+    LWQSRQ = Column('LWQSRQ', DateTime, default=now())  # 论文起始日期
+    LWZZRQ = Column('LWZZRQ', DateTime, default=now())  # 论文终止日期
+    XH = Column('XH', String(16), default='')  # 学号
+    XSXM = Column('XSXM', String(16), default='')  # 学生姓名
+    XSSSXY = Column('XSSSXY', String(16), default='')  # 所属学院
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+            '论文题目': ['LWTM'],
+            '论文起始日期': ['LWQSRQ', 'DateTime'],
+            '论文终止日期': ['LWZZRQ', 'DateTime'],
+            '学号': ['XH'],
+            '学生姓名': ['XSXM'],
+            '所属学院': ['XSSSXY'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['LWTM','XH']
+
+class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
+
+    __tablename__ = 'dr_zdbylwsjxx'  # 指导毕业论文数据信息
+    __tablename__CN__ = '指导毕业论文数据信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    ZDSYZS = Column('ZDSYZS', DateTime, default=now())  # 指导实验周数
+    KSFSLXM = Column('KSFSLXM', String(16), default='')  # 考试方式类型码
+    JKRGH = Column('JKRGH', String(16), default='')  # 监考人工号
+    KSJSH = Column('KSJSH', String(16), default='')  # 考试教室号
+    JKRXM = Column('JKRXM', String(16), default='')  # 监考人姓名
+    KSRS = Column('KSRS', String(16), default='')  # 考试人数
+    SSXY = Column('SSXY', String(16), default='')  # 本次考试所属学院
+    JSSSXY = Column('JSSSXY', String(16), default='')  # 教师所属学院
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+            '考试日期': ['KSRQ', 'DateTime'],
+            '考试时长': ['KSSC'],
+            '考试方式类型码': ['KSFSLXM'],
+            '课程号': ['KCH'],
+            '监考人工号': ['JKRGH'],
+            '考试教室号': ['KSJSH'],
+            '监考人姓名': ['JKRXM'],
+            '考试人数': ['KSRS'],
+            '本次考试所属学院': ['SSXY'],
+            '教师所属学院': ['JSSSXY'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['KCH', 'KSRQ', 'KSJSH', 'SSXY']
+
 class DR_JZGJCSJXX(Base):
     __tablename__ = 'dr_jzgjcsjxx'
     __tablename__CH__ = '教职工基础数据信息'
@@ -688,6 +769,9 @@ if __name__ == '__main__':
     ALTER TABLE DR_KCSJXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_XNXQXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_BKS_JPKC ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_SYPKSJXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_SSPKSJXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_KSAPXX ADD stamp TIMESTAMP(6);
     """
 
     try:
