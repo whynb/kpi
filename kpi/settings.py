@@ -158,24 +158,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kpi',
         'USER': 'root',
-
-# run
-#        'PASSWORD': 'P1ssW0rd',
-#        'HOST': '47.94.148.26',
-
-# test
-#        'PASSWORD': 'P1ssW0rd',
-#        'HOST': '47.94.148.26',
-
-# test NEU
-#       'PASSWORD': '123456',
-#       'HOST': '47.94.86.214',
-
-# local
         'PASSWORD': 'password',
         'HOST': '127.0.0.1',
-
-# port
         'PORT': '3306',
     }
 }
