@@ -459,15 +459,14 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    JSXM = Column('JSXM', String(16), default='')  # 教师姓名
+    ZDZS = Column('ZDZS', String(16), default='')  # 指导周数
+    XQ = Column('XQ', DateTime, default=now())  # 指导学期
+    ZDPTXSS = Column('ZDPTXSS', String(16), default='')  # 指导普通学生数
+    ZDSYXSS = Column('ZDSYXSS', String(16), default='')  # 指导双语学生数
+    JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
 
-    ZDSYZS = Column('ZDSYZS', DateTime, default=now())  # 指导实验周数
-    KSFSLXM = Column('KSFSLXM', String(16), default='')  # 考试方式类型码
-    JKRGH = Column('JKRGH', String(16), default='')  # 监考人工号
-    KSJSH = Column('KSJSH', String(16), default='')  # 考试教室号
-    JKRXM = Column('JKRXM', String(16), default='')  # 监考人姓名
-    KSRS = Column('KSRS', String(16), default='')  # 考试人数
-    SSXY = Column('SSXY', String(16), default='')  # 本次考试所属学院
-    JSSSXY = Column('JSSSXY', String(16), default='')  # 教师所属学院
 
     @staticmethod
     def get_column_label() -> dict:
@@ -475,21 +474,18 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
             'ID': ['id'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
-            '考试日期': ['KSRQ', 'DateTime'],
-            '考试时长': ['KSSC'],
-            '考试方式类型码': ['KSFSLXM'],
-            '课程号': ['KCH'],
-            '监考人工号': ['JKRGH'],
-            '考试教室号': ['KSJSH'],
-            '监考人姓名': ['JKRXM'],
-            '考试人数': ['KSRS'],
-            '本次考试所属学院': ['SSXY'],
-            '教师所属学院': ['JSSSXY'],
+            '教师工号': ['JSGH'],
+            '教师姓名': ['JSXM'],
+            '指导周数': ['ZDZS'],
+            '指导普通学生数': ['ZDPTXSS'],
+            '指导双语学生数': ['ZDSYXSS'],
+            '教学名师级别码': ['JXMSJBM'],
+            '指导学期': ['XQ', 'DateTime'],
         }
 
     @staticmethod
     def get_unique_condition() -> List[str]:
-        return ['KCH', 'KSRQ', 'KSJSH', 'SSXY']
+        return ['JSGH']
 
 class DR_JZGJCSJXX(Base):
     __tablename__ = 'dr_jzgjcsjxx'
@@ -772,6 +768,7 @@ if __name__ == '__main__':
     ALTER TABLE DR_SYPKSJXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_SSPKSJXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_KSAPXX ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_ZDBYLWSJXX ADD stamp TIMESTAMP(6);
     """
 
     try:
