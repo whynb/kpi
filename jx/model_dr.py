@@ -478,6 +478,8 @@ class DR_JCJBSJXX(Base):
     CBH = Column('CBH', String(16), default='')  # 出版号
     JCMC = Column('JCMC', String(16), default='')  # 教材名称
     BC = Column('BC', String(16), default='')  # 版次
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    DWMC = Column('DWMC', String(16), default='')  # 单位名称
     CBS = Column('CBS', String(16), default='')  # 出版社
     BZZZS = Column('BZZZS', String(16), default='')  # 编著者总数
     CBRQ = Column('CBRQ', DateTime, default=now())  # 出版日期
@@ -487,6 +489,7 @@ class DR_JCJBSJXX(Base):
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
+
     @staticmethod
     def get_column_label() -> dict:
         return {
@@ -494,6 +497,8 @@ class DR_JCJBSJXX(Base):
             '出版号': ['CBH'],
             '教材名称': ['JCMC'],
             '版次': ['BC'],
+            '单位号': ['DWH'],
+            '单位名称': ['DWMC'],
             '出版社': ['CBS'],
             '编著者总数': ['BZZZS'],
             '出版日期': ['CBRQ', 'DateTime'],

@@ -746,6 +746,8 @@ class VIEW_JCJBSJXX(Base):
     CBH = Column('CBH', String(16), default='')  # 出版号
     JCMC = Column('JCMC', String(16), default='')  # 教材名称
     BC = Column('BC', String(16), default='')  # 版次
+    DWH = Column('BC', String(16), default='')  # 单位号
+    # DWMC = Column('BC', String(16), default='')  # 单位名称
     CBS = Column('CBS', String(16), default='')  # 出版社
     CBRQ = Column('CBRQ', DateTime, default=now())  # 出版日期
     JCBH = Column('JCBH', String(16), default='')  # 教材编号
@@ -766,6 +768,8 @@ class VIEW_JCJBSJXX(Base):
                    dr_jcxx.CBH AS CBH,
                    dr_jcxx.JCMC AS JCMC,
                    dr_jcxx.BC AS BC,
+                   dr_jcxx.DWH AS DWH,
+                   dr_jcxx.DWMC AS DWMC,
                    dr_jcxx.CBS AS CBS,
                    dr_jcxx.CBRQ AS CBRQ,
                    dr_jcxx.JCBH AS JCBH,
@@ -809,6 +813,10 @@ class VIEW_JCJBSJXX(Base):
              'create': 'True', },
             {'table': 'dr_jcjbsjxx', 'field': 'BC', 'title': '版次', 'editable': 'T', 'type': 'text',
              'create': 'T', },
+            {'table': 'dr_jcjbsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'F', 'type': 'text',
+             'create': 'F', },
+            {'table': 'dr_jcjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'F', 'type': 'table',
+             'create': 'T', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'},
             {'table': 'dr_jcjbsjxx', 'field': 'CBS', 'title': '出版社', 'editable': 'T', 'type': 'text',
              'create': 'T', },
             {'table': 'dr_jcjbsjxx', 'field': 'JCBH', 'title': '教材编号', 'editable': 'T', 'type': 'text',
@@ -821,8 +829,10 @@ class VIEW_JCJBSJXX(Base):
              'create': 'True',},
             {'table': 'dr_bzxx', 'field': 'BZZXM', 'title': '编著者姓名', 'editable': 'T', 'type': 'text',
              'create': 'T', },
-            {'table': 'dr_bzxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date',
+            {'table': 'dr_bzxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'T', 'type': 'date',
              'create': 'F', },
+            {'table': 'dr_bzxx', 'field': 'CBRQ', 'title': '出版日期', 'editable': 'T', 'type': 'date',
+             'create': 'T', },
             {'table': 'dr_bzxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text',
              'create': 'False', },
         ]
