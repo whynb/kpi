@@ -358,9 +358,10 @@ class DR_HJCGJBSJXX(Base):
 class DR_KJCGRYXX_JL(Base):
     __tablename__ = 'dr_kjcgryxx_jl'
     __tablename__CH__ = '科技成果(获奖成果)人员信息'
+    __table_args__ = (UniqueConstraint('RYH', 'HJCGBH', name='_kh_khpc_dwh_khnf_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
+    RYH = Column('RYH', String(16), default='')  # 人员号
     JSM = Column('JSM', String(16), default='')  # 角色码
     ZXZS = Column('ZXZS', String(16), default='')  # 撰写字数
     PMZRS = Column('PMZRS', String(16), default='')  # 排名/总人数
@@ -393,12 +394,12 @@ class DR_KJCGRYXX_JL(Base):
 
     @staticmethod
     def get_unique_condition() -> List[str]:
-        return ['RYH']
+        return ['RYH', 'HJCGBH']
 
 
 class DR_KJQKLWJBSJXX(Base):
     __tablename__ = 'dr_kjqklwjbsjxx'
-    __tablename__CH__ = '科技期刊论文基本数据信息息'
+    __tablename__CH__ = '科技期刊论文基本数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     LWBH= Column('LWBH', String(16), default='')  # 论文编号
