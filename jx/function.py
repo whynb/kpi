@@ -30,6 +30,7 @@ from django.conf import settings
 import pandas as pd
 from jx.exception import *
 from pymysql.err import Error
+from jx.password import pc
 
 
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
@@ -987,15 +988,6 @@ def edit(req):
 
 
 @check_login
-def get_col_def(req):
-    return JsonResponse([], safe=False)
-
-    # payroll = str(req.COOKIES.get('payroll'))
-    # v = eval(str(req.GET.dict()))
-    # return JsonResponse(get_static_data(payroll, v['value'], v['where']), safe=False)
-
-
-@check_login
 @sys_error
 def get_title(req):
     v = eval(str(req.GET.dict()))
@@ -1178,6 +1170,30 @@ def get_class_view(req):
     return JsonResponse(generate_class_view('module', False), safe=False)
 
 
+def change_password(req):
+    msg = ''
+    try:
+        from jx.sqlalchemy_env import db, text
+
+        npwd = pc.encrypt(req.POST.get('newpwd'))
+        sql_change = "UPDATE jx_sysuser" + " SET password=:pwd, time_pwd=NOW() WHERE payroll=:payroll"
+        logger.info(sql_change)
+        try:
+            db.execute(text(sql_change), {'pwd': npwd, 'payroll': req.COOKIES.get('payroll')})
+            db.commit()
+            msg += ': 修改密码成功<br>'
+            return JsonResponse({'success': True, 'msg': msg})
+        except:
+            db.rollback()
+            msg += ': 数据库错误<br>'
+            logger.error(sys_info())
+            return JsonResponse({'success': False, 'msg': msg})
+    except:
+        msg += ': 系统异常<br>'
+        logger.error(sys_info())
+        return JsonResponse({'success': False, 'msg': msg})
+
+
 @check_login
 def delete_data(req):
     payroll = str(req.COOKIES.get('payroll'))
@@ -1352,18 +1368,22 @@ def staffinfo(req):
     sql_count = """ SELECT COUNT(*) AS count FROM view_sysuser """
     sql_content = """ SELECT * FROM view_sysuser """
 
-    sql_where = " WHERE 1=1 "
+    sql_query_set = []
+    sql_where = " WHERE role_id!=1 AND usertype_id!=1" if payroll != 'admin' else " WHERE 1=1"
     if user.role_id == 1:
         pass
     elif user.role_id in (2, 3):
         from jx.module import VIEW_JZGJCSJXX 
         ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
-        sql_where += " AND DWH IN %(departments)s" % {'departments': str(ds).replace('[', '(').replace(']', ')')}
+        sql_where += (" AND DWH IN " + trim(str(ds)).replace('[', '(').replace(']', ')')) if ds else " AND DWH=%s"
     else:
         sql_where += ' AND 1=0'
-        
+
+    if 'payroll' in v:
+        sql_where += ' AND payroll=%s'
+        sql_query_set.append(trim(str(v['payroll'])))
+
     sql_search = ""
-    sql_query_set = []
     if 'search' in v and v['search'] not in ('', None):
         search_columns = ['payroll', 'XM', 'DWMC']
         if search_columns:
@@ -1385,6 +1405,9 @@ def staffinfo(req):
     logger.info(sql_content + sql_where + sql_search + sql_olo)
     cursor.execute(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     select_out = dictfetchall(cursor)
+
+    for s in select_out:
+        s['password'] = ''
 
     return JsonResponse({'total': count, 'rows': select_out})
 

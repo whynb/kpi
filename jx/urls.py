@@ -27,7 +27,6 @@ urlpatterns = [
     url(r'^staffinfo', function.staffinfo, name='staffinfo'),  # duplicate
     url(r'^get_allhrdpmt', function.get_allhrdpmt, name='get_allhrdpmt'),
     url(r'^get_title', function.get_title, name='get_title'),
-    url(r'^get_col_def', function.get_col_def, name='get_col_def'),
     url(r'^get_data', function.get_data, name='get_data'),
     url(r'^get_json', function.get_json, name='get_json'),
     url(r'^get_class_view', function.get_class_view, name='get_class_view'),
@@ -36,6 +35,7 @@ urlpatterns = [
     url(r'^edit', function.edit, name='edit'),
     url(r'^run_kpi', function.run_kpi, name='run_kpi'),
     url(r'^custermize_kpi', function.custermize_kpi, name='custermize_kpi'),
+    url(r'^change_password', function.change_password, name='change_password'),
 
     url(r'^base/*/', views.base, name='base'),  # 基本数据信息
 

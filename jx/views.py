@@ -9,6 +9,7 @@ from jx.util import *
 from jx.form import *
 from jx.models import *
 from jx.exception import *
+from jx.password import pc
 
 
 time_out = settings.COOKIE_TIME_OUT
@@ -194,19 +195,12 @@ def login(req):
         form = LoginForm(req.POST)
         if form.is_valid():
             payroll = form.cleaned_data['payroll']
-            password = '111111'  # TODO: add password verification
-
-            users = SysUser.objects.filter(payroll__exact=payroll, password__exact=password)
-
+            k = pc.encrypt(form.cleaned_data['password'])
+            users = SysUser.objects.filter(payroll__exact=payroll, password__exact=k)
             if users:
-                from jx.function import get_user_information
-                user = get_user_information(payroll)
-
                 response = HttpResponseRedirect('/jx/index/')
                 response.cookies.clear()
                 response.set_cookie('payroll', payroll, time_out)
-                response.set_cookie('DWH', user['DWH'] if user else '', time_out)
-                response.set_cookie('rollname', parse.quote(users[0].role.role_name), time_out)
                 return response
             else:
                 response = HttpResponseRedirect('/jx/error/')
@@ -236,7 +230,8 @@ def index(req):
     if settings.CAS:
         users = SysUser.objects.filter(payroll__exact=req.user)
         if not users:
-            SysUser(payroll=user, role_id=4, usertype_id=4).save()
+            SysUser(payroll=user, password='OWIwNWZiOGZjZTM4NjRhMGVkNjVlOTQ3MmRlNTQ2N2Q=',
+                    role_id=4, usertype_id=4).save()
     else:
         user = req.COOKIES.get('payroll')
 

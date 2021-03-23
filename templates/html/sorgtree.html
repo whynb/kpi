@@ -1,23 +1,23 @@
 <script>
     var tree_url = "{{ url('get_allhrdpmt') }}";
     var tree_data_method = "{{ with_users }}";
-    var $orgid = "";
-    var $selected_node = {};
     var $selectableTree;
+    var $selected_node = {'type': 'd', 'href': '', 'code': '', 'text': ''};
 
-    function resetSelectedNode() {
-        $orgid = ""
-        $selected_node = {
-            'type': 'd',
-            'href': '',
-            'code': getCookie('DWH'),
-            'text': ''
-        };
+    function resetSelectedNode(init=false) {
+        $.getJSON(
+            "{{ url('staffinfo') }}?limit=25&offset=0&order=asc&search=&payroll="+getCookie('payroll'),
+            function(ret){
+                $selected_node.code = ret.rows[0].DWH;
+                if (init == true) $selectableTree = initSelectableTree();
+                refreshTable();
+            }
+        );
     }
 
-    function unselectNode(node) { resetSelectedNode(); refreshTable(); }
+    function unselectNode() { resetSelectedNode(); }
 
-    function selectNode(node) { $selected_node = node; $orgid = $selected_node.href; refreshTable(); }
+    function selectNode(node) { $selected_node = node; refreshTable(); }
 
     var initSelectableTree = function() {
         document.getElementById("treeview-selectable").innerHTML = '';
@@ -30,7 +30,7 @@
                 method: tree_data_method,
                 month: $('#selectStartDate').val(),
                 monthe: $('#selectEndDate').val(),
-                orgid: $orgid,
+                orgid: $selected_node.href,
             },
             dataType: 'json',
             success: function (ret) {
@@ -63,8 +63,8 @@
     };
 
     $(function() {
-        resetSelectedNode();
-        setTimeout(function () { $selectableTree = initSelectableTree(); }, 100);
+        resetSelectedNode(true);
+        // setTimeout(function () { $selectableTree = initSelectableTree(); }, 100);
     });
 
 </script>
