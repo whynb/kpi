@@ -461,7 +461,7 @@ class DC_KJQKLWJBSJXX(Base):
         }
 
     @staticmethod
-    def get_unique_condition() -> []:
+    def get_unique_condition() -> List:
         return ['LWBH']
 
 #zouyang
@@ -494,7 +494,7 @@ class DC_KJLWFBXX(Base):
         }
 
     @staticmethod
-    def get_unique_condition() -> []:
+    def get_unique_condition() -> List:
         return ['LWBH']
 
 #zouyang

@@ -12,20 +12,17 @@
 
     <!-- Start Navigation -->
     <nav class="navbar navbar-default bootsnav" style="background-color: #e3f2fd;">
-        <div class="container">
+        <div class="container" style="width: inherit">
             {% include 'html/sheader.html' %}
             {% include 'html/smenu.html' %}
         </div>
     </nav>
     <!-- End Navigation -->
 
-    <div class="clearfix"></div>
-
-    <div class="column">
-        <div class="column-right" style="height: 2000px;">
-    <div class="col-md-3">
-        <div class="box-inner">
-            <div class="box-header well" data-original-title="">
+    <!-- Start Content -->
+    <div class="why_container">
+        <div class="why_left">
+            <div>
                 <h5>角色名称</h5>
             </div>
             <div class="box-content">
@@ -34,33 +31,32 @@
                 </div>
                 <ul id="ul_roles">
                     {% for role in roles %}
-                    <li>
-                        <a href="#" id="role_{{loop.index}}" onclick="role_onclick('{{role.role_name}}')">
-                            <h5><i class="fa fa-tag"></i>{{role.role_name}}</h5>
-                        </a>
-                    </li>
+                        <div>
+                            <a href="#" id="role_{{loop.index}}" onclick="role_onclick('{{role.role_name}}')">
+                                <h6><i class="fa fa-user-circle"></i>  {{role.role_name}}</h6>
+                            </a>
+                        </div>
                     {% endfor %}
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="col-md-7" hidden="hidden" id="rolediv">
-        <div class="box-inner">
-            <div class="box-header well" data-original-title="" id="menu_name">
-                <h5>菜单权限</h5>
-            </div>
-            <div class="box-content">
-                <div class="breadcrumb">
-                    <button class="btn btn-inverse btn-default" onclick="delrole_onclick(menu_name.innerText)"><i class="fa fa-remove"></i>&nbsp;&nbsp;删除角色</button>
-                    <button class="btn btn-inverse btn-default" onclick="addpow_onclick(menu_name.innerText)"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加菜单</button>
+        <div class="why_right">
+            <div class="why_content" id="rolediv">
+                <div id="menu_name">
+                    <h5>菜单权限</h5>
                 </div>
-                <table id="roletable" class="table table-condensed bootstrap-datatable datatable responsive">
-                </table>
+                <div class="box-content">
+                    <div class="breadcrumb">
+                        <button class="btn btn-inverse btn-default" onclick="delrole_onclick(menu_name.innerText)"><i class="fa fa-remove"></i>&nbsp;&nbsp;删除角色</button>
+                        <button class="btn btn-inverse btn-default" onclick="addpow_onclick(menu_name.innerText)"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加菜单</button>
+                    </div>
+                    <table id="roletable" class="table table-condensed bootstrap-datatable datatable responsive">
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-        </div>
-    </div>
+    <!-- End Content -->
 
     <div class="modal fade" id="addModal1" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel"
          aria-hidden="true">
@@ -174,7 +170,7 @@
                 sortable: true,           // 是否启用排序
                 sortOrder: "asc",         // 排序方式
                 classes: 'table-no-bordered',
-                height: windows_wh.h - 300,
+                height: windows_wh.h - 200,
                 columns:[
                     {
                         title: "菜单名称",
@@ -338,9 +334,7 @@
     $(function() {
         $(window).resize(function(){
             let windows_wh = getViewportOffset();
-            $('#roletable').bootstrapTable('resetView', {
-                height: windows_wh.h - 300,
-            });
+            $('#roletable').bootstrapTable('resetView', {height: windows_wh.h - 200, });
         });
     });
 
