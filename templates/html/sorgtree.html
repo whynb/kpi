@@ -17,7 +17,12 @@
 
     function unselectNode() { resetSelectedNode(); }
 
-    function selectNode(node) { $selected_node = node; refreshTable(); }
+    function selectNode(node) {
+        setTimeout(function () {
+            $selected_node = node;
+            refreshTable();
+        }, 100);
+    }
 
     var initSelectableTree = function() {
         document.getElementById("treeview-selectable").innerHTML = '';

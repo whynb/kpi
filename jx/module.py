@@ -253,6 +253,9 @@ class VIEW_ZZJGJBSJXX(Base):
 
     @staticmethod
     def get_managed_departments(_department_id) -> list:
+        from sqlalchemy.exc import PendingRollbackError
+        from jx.sqlalchemy_env import db
+
         departments = [_department_id]
         try:
             dpmts_query = db.query(VIEW_ZZJGJBSJXX)
@@ -262,14 +265,21 @@ class VIEW_ZZJGJBSJXX(Base):
             for dpmt in dpmts:
                 if dpmt:
                     departments.extend(VIEW_ZZJGJBSJXX.get_managed_departments(str(dpmt.DWH)))
+
+        except PendingRollbackError:
+            db.rollback()
+            logger.error(sys_info())
+
         except:
             logger.error(sys_info())
-            pass
 
         return list(set(departments))
 
     @staticmethod
     def get_parent_department(_department_id) -> str:
+        from sqlalchemy.exc import PendingRollbackError
+        from jx.sqlalchemy_env import db
+
         try:
             dpmts_query = db.query(VIEW_ZZJGJBSJXX)
             dpmts_query = dpmts_query.filter(VIEW_ZZJGJBSJXX.DWH == str(_department_id))
@@ -277,6 +287,11 @@ class VIEW_ZZJGJBSJXX(Base):
 
             for dpmt in dpmts:
                 return str(dpmt.LSDWH)
+
+        except PendingRollbackError:
+            db.rollback()
+            logger.error(sys_info())
+
         except:
             logger.error(sys_info())
 

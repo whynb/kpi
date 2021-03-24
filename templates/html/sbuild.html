@@ -271,16 +271,18 @@
 
     function initTable() {
         build_title();
-        build_table();
-        post_build();
-        return;
+        // setTimeout(function () {
+            build_table();
+            post_build();
+            return;
+        // }, 100);
     }
 
     function refreshTable() { 
-        setTimeout(function () { 
+        // setTimeout(function () {
             $('#table').bootstrapTable('refresh');
             post_build();
-        }, 100); 
+        // }, 100);
     }
 
     $(function() { setTimeout(function () { initTable(); }, 200); })

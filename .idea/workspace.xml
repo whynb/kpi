@@ -2,17 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="2021.3.15">
+      <change afterPath="$PROJECT_DIR$/jx/nacos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/function.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/function.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/password.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/password.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/jinja2_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/jinja2_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kpi/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kpi/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/html/sheader.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/html/sheader.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/jxkhgz.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/jxkhgz.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/khjghz.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/khjghz.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/khjgmx.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/khjgmx.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/html/sbuild.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/html/sbuild.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/html/sorgtree.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/html/sorgtree.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +97,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Django Server.kpi">
+  <component name="RunManager" selected="Python.module">
     <configuration name="https server" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -243,8 +242,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.password" />
         <item itemvalue="Python.module" />
+        <item itemvalue="Python.password" />
         <item itemvalue="Python.views" />
         <item itemvalue="Python.models" />
         <item itemvalue="Python.https server" />
@@ -278,7 +277,7 @@
       </list>
     </option>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -314,6 +313,8 @@
       <workItem from="1615895349499" duration="1457000" />
       <workItem from="1615945636305" duration="859000" />
       <workItem from="1615946574278" duration="1566000" />
+      <workItem from="1616340872109" duration="9427000" />
+      <workItem from="1616515109899" duration="15643000" />
     </task>
     <task id="LOCAL-00001" summary="test comments again">
       <created>1613798792460</created>
@@ -347,7 +348,7 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -355,6 +356,17 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/dev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="TEXT_FILTER_SETTINGS">
                 <TextFilterSettings>
                   <option name="REGEX" value="true" />
@@ -362,6 +374,21 @@
                 </TextFilterSettings>
               </option>
             </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/dev" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>
@@ -378,7 +405,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/jx/function.py</url>
-          <line>847</line>
+          <line>850</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
@@ -392,7 +419,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1615385026132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1616585014524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/kpi$password.coverage" NAME="password Coverage Results" MODIFIED="1616338545556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/kpi225$password.coverage" NAME="password Coverage Results" MODIFIED="1615367341866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/kpi225$module.coverage" NAME="module Coverage Results" MODIFIED="1615862699846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />

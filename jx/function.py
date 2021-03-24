@@ -145,6 +145,9 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
         try:
             # 根据规则定义的参与考核的类名获得参与考核对象
             class_to_check = rule.get_input_class()  # get class to check
+            if class_to_check == 'VIEW_':  # NOTE: no KHSJDX for 增减业绩点 or no class defined in module.py
+                continue
+
             data_query = db.query(class_to_check)  # query out by class defined in rule
             data_query = data_query.filter(class_to_check.DWH.in_(departments))
             data_query = data_query.filter(class_to_check.JZGH.notin_(bcykh))  # filter out not included JZGH
@@ -1166,10 +1169,14 @@ def get_json(req):
 @check_login
 @sys_error
 def get_class_view(req):
+    return JsonResponse([], safe=False)
+
     from jx.module import generate_class_view
     return JsonResponse(generate_class_view('module', False), safe=False)
 
 
+@check_login
+@sys_error
 def change_password(req):
     msg = ''
     try:

@@ -9,3 +9,4 @@ kpi/settings.py
 venv/*
 templates/html/fixedtableheader.html
 jx/tests.py
+.idea/workspace.xml

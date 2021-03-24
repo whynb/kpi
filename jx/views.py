@@ -13,7 +13,7 @@ from jx.password import pc
 
 
 time_out = settings.COOKIE_TIME_OUT
-org_tree_without_users = ['zzjgjbsjxx', ]
+org_tree_without_users = ['zzjgjbsjxx', 'khpc', 'jxkhgz', 'khgzdz']
 
 
 def get_menu(payroll):
@@ -150,11 +150,28 @@ def check_login(fn):
             logger.error(sys_info())
             return JsonResponse({'success': False, 'msg': '登录用户没有授权该项操作'})
 
+        from sqlalchemy.exc import PendingRollbackError
+        from jx.sqlalchemy_env import db
         try:
             return fn(req, *args, **kwargs) if can_login(req) else HttpResponseRedirect('/jx/')
+
+        except ConnectionResetError:
+            logger.error(sys_info())
+            pass
+
+        except PendingRollbackError:
+            db.rollback()
+            logger.error(sys_info())
+
+            try:
+                return fn(req, *args, **kwargs) if can_login(req) else HttpResponseRedirect('/jx/')
+            except:
+                logger.error(sys_info())
+                return HttpResponseRedirect('/jx/error/')
         except:
             logger.error(sys_info())
             return HttpResponseRedirect('/jx/error/')
+
     return wrapper
 
 
@@ -165,6 +182,9 @@ def sys_error(fn):
     @return:
     """
     def wrapper(req, *args, **kwargs):
+        from sqlalchemy.exc import PendingRollbackError
+        from jx.sqlalchemy_env import db
+
         try:
             v = dict(eval(str(req.POST.dict())), **eval(str(req.GET.dict())))
             logger.info(v)
@@ -173,6 +193,28 @@ def sys_error(fn):
                     return JsonResponse({'success': False, 'tag': '参数错误：所有参数不能含有空格'})
 
             return fn(req, *args, **kwargs)
+
+        except ConnectionResetError:
+            logger.error(sys_info())
+            pass
+
+        except PendingRollbackError:
+            db.rollback()
+            logger.error(sys_info())
+
+            try:
+                return fn(req, *args, **kwargs)
+            except:
+                logger.error(sys_info())
+                return JsonResponse({
+                    'success': False,
+                    'data': [],
+                    'rows': [],
+                    'message': u'系统异常，请重试',
+                    'msg': u'系统异常，请重试',
+                    'tag': u'系统异常，请重试'
+                })
+
         except:
             logger.error(sys_info())
             return JsonResponse({
@@ -183,6 +225,7 @@ def sys_error(fn):
                 'msg': u'系统异常，请重试',
                 'tag': u'系统异常，请重试'
             })
+
     return wrapper
 
 
