@@ -296,7 +296,7 @@ class DR_HJCGJBSJXX(Base):
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     HJCGBH = Column('HJCGBH', String(16), unique=True, default='')  # 获奖成果编号
-    HJCGMC = Column('HJCGMC', String(16), unique=True, default='')  # 获奖成果名称
+    HJCGMC = Column('HJCGMC', String(16), default='')  # 获奖成果名称
     XMLYM = Column('XMLYM', String(16), default='')  # 项目来源码
     DWH = Column('DWH', String(16), default='')  # 单位号
     HJRQ = Column('HJRQ', DateTime, default=now())  # 获奖日期
