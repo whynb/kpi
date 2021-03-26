@@ -485,7 +485,7 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
 
     @staticmethod
     def get_unique_condition() -> List[str]:
-        return ['JSGH']
+        return ['JSGH','JXMSJBM']
 
 class DR_JZGJCSJXX(Base):
     __tablename__ = 'dr_jzgjcsjxx'

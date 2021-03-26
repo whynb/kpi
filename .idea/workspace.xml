@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/model_dr.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/rule.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/rule.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +83,28 @@
     <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RunManager" selected="Django server.kpi">
+    <configuration name="function" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="kpi" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/jx" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/jx/function.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="https server" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -168,6 +193,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="rule" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="kpi" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/jx" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/jx/rule.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="kpi" type="Python.DjangoServer" factoryName="Django server">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -198,9 +245,13 @@
       <item itemvalue="Python.https server" />
       <item itemvalue="Python.model_dr" />
       <item itemvalue="Python.model_dc" />
+      <item itemvalue="Python.rule" />
+      <item itemvalue="Python.function" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.function" />
+        <item itemvalue="Python.rule" />
         <item itemvalue="Python.model_dr" />
         <item itemvalue="Python.model_dc" />
         <item itemvalue="Python.https server" />
@@ -284,7 +335,7 @@
       <workItem from="1615101389994" duration="32880000" />
       <workItem from="1615856615245" duration="21371000" />
       <workItem from="1616393814864" duration="18769000" />
-      <workItem from="1616552765379" duration="374000" />
+      <workItem from="1616552765379" duration="9663000" />
     </task>
     <task id="LOCAL-00001" summary="test comments again">
       <created>1613798792460</created>
@@ -468,7 +519,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616505749845</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="3.23.9.22">
+      <created>1616553380893</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1616553380893</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -532,13 +590,13 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="662" y="128" width="658" height="857" key="#model_dr/72.27.1848.1053@72.27.1848.1053" timestamp="1614906735670" />
-    <state x="577" y="27" width="1044" height="935" key="CommitChangelistDialog2" timestamp="1616553153202">
+    <state x="577" y="27" width="1044" height="935" key="CommitChangelistDialog2" timestamp="1616553380550">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="504" y="27" width="1044" height="935" key="CommitChangelistDialog2/72.27.1580.935@72.27.1580.935" timestamp="1616393435586" />
     <state x="505" y="27" key="CommitChangelistDialog2/72.27.1584.939@72.27.1584.939" timestamp="1616505749383" />
     <state x="522" y="27" width="867" height="899" key="CommitChangelistDialog2/72.27.1646.899@72.27.1646.899" timestamp="1616076220265" />
-    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1616553153202" />
+    <state x="577" y="27" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1616553380550" />
     <state x="172" y="127" width="1648" height="853" key="DiffContextDialog" timestamp="1615097552607">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -548,34 +606,38 @@
     </state>
     <state x="622" y="212" width="380" height="469" key="FileChooserDialogImpl/72.27.1584.939@72.27.1584.939" timestamp="1616489019082" />
     <state x="714" y="234" width="424" height="525" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1615097087396" />
-    <state width="1530" height="239" key="GridCell.Tab.0.bottom" timestamp="1616505658183">
-      <screen x="72" y="27" width="1584" height="939" />
+    <state width="238" height="554" key="Git.Branch.Popup" timestamp="1616729046264">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="238" height="554" key="Git.Branch.Popup/72.27.1848.1053@72.27.1848.1053" timestamp="1616729046264" />
+    <state width="1794" height="332" key="GridCell.Tab.0.bottom" timestamp="1616728984268">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1526" height="154" key="GridCell.Tab.0.bottom/72.27.1580.935@72.27.1580.935" timestamp="1616414760336" />
     <state width="1530" height="239" key="GridCell.Tab.0.bottom/72.27.1584.939@72.27.1584.939" timestamp="1616505658183" />
     <state width="1592" height="148" key="GridCell.Tab.0.bottom/72.27.1646.899@72.27.1646.899" timestamp="1616076082432" />
-    <state width="1794" height="148" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1616379345078" />
-    <state width="1530" height="239" key="GridCell.Tab.0.center" timestamp="1616505658183">
-      <screen x="72" y="27" width="1584" height="939" />
+    <state width="1794" height="332" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1616728984268" />
+    <state width="1794" height="332" key="GridCell.Tab.0.center" timestamp="1616728984268">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1526" height="154" key="GridCell.Tab.0.center/72.27.1580.935@72.27.1580.935" timestamp="1616414760335" />
     <state width="1530" height="239" key="GridCell.Tab.0.center/72.27.1584.939@72.27.1584.939" timestamp="1616505658183" />
     <state width="1592" height="148" key="GridCell.Tab.0.center/72.27.1646.899@72.27.1646.899" timestamp="1616076082431" />
-    <state width="1794" height="148" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1616379345077" />
-    <state width="1530" height="239" key="GridCell.Tab.0.left" timestamp="1616505658182">
-      <screen x="72" y="27" width="1584" height="939" />
+    <state width="1794" height="332" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1616728984268" />
+    <state width="1794" height="332" key="GridCell.Tab.0.left" timestamp="1616728984267">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1526" height="154" key="GridCell.Tab.0.left/72.27.1580.935@72.27.1580.935" timestamp="1616414760334" />
     <state width="1530" height="239" key="GridCell.Tab.0.left/72.27.1584.939@72.27.1584.939" timestamp="1616505658182" />
     <state width="1592" height="148" key="GridCell.Tab.0.left/72.27.1646.899@72.27.1646.899" timestamp="1616076082431" />
-    <state width="1794" height="148" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1616379345077" />
-    <state width="1530" height="239" key="GridCell.Tab.0.right" timestamp="1616505658183">
-      <screen x="72" y="27" width="1584" height="939" />
+    <state width="1794" height="332" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1616728984267" />
+    <state width="1794" height="332" key="GridCell.Tab.0.right" timestamp="1616728984268">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1526" height="154" key="GridCell.Tab.0.right/72.27.1580.935@72.27.1580.935" timestamp="1616414760335" />
     <state width="1530" height="239" key="GridCell.Tab.0.right/72.27.1584.939@72.27.1584.939" timestamp="1616505658183" />
     <state width="1592" height="148" key="GridCell.Tab.0.right/72.27.1646.899@72.27.1646.899" timestamp="1616076082431" />
-    <state width="1794" height="148" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1616379345077" />
+    <state width="1794" height="332" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1616728984268" />
     <state width="1526" height="286" key="GridCell.Tab.1.bottom" timestamp="1616413634570">
       <screen x="72" y="27" width="1580" height="935" />
     </state>
@@ -664,26 +726,29 @@
     <state x="470" y="93" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1580.935@72.27.1580.935" timestamp="1616380936122" />
     <state x="487" y="90" width="806" height="779" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1646.899@72.27.1646.899" timestamp="1614751137511" />
     <state x="538" y="101" width="806" height="779" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1848.1053@72.27.1848.1053" timestamp="1615344293036" />
-    <state x="639" y="408" width="457" height="183" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1616488686363">
-      <screen x="72" y="27" width="1584" height="939" />
+    <state x="733" y="455" width="457" height="183" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1616726094094">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="639" y="408" width="457" height="183" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1584.939@72.27.1584.939" timestamp="1616488686363" />
     <state x="661" y="392" width="457" height="182" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1646.899@72.27.1646.899" timestamp="1616069999688" />
-    <state x="733" y="455" width="457" height="175" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1848.1053@72.27.1848.1053" timestamp="1615101695910" />
+    <state x="733" y="455" width="457" height="175" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1848.1053@72.27.1848.1053" timestamp="1616726094094" />
     <state x="648" y="78" width="1064" height="1002" key="find.popup" timestamp="1615095403669">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="648" y="78" width="1064" height="1002" key="find.popup/72.27.1848.1053@72.27.1848.1053" timestamp="1615095403669" />
-    <state x="621" y="114" width="537" height="731" key="git4idea.branch.GitSmartOperationDialog" timestamp="1614254582437">
-      <screen x="72" y="27" width="1646" height="899" />
+    <state x="688" y="129" width="516" height="731" key="git4idea.branch.GitSmartOperationDialog" timestamp="1616726091464">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="621" y="114" width="537" height="731" key="git4idea.branch.GitSmartOperationDialog/72.27.1646.899@72.27.1646.899" timestamp="1614254582437" />
+    <state x="688" y="129" width="516" height="731" key="git4idea.branch.GitSmartOperationDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1616726091464" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dc.coverage" NAME="model_dc Coverage Results" MODIFIED="1616070573295" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/dev_sjq_kpi$https_server.coverage" NAME="https server Coverage Results" MODIFIED="1614392324196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1616505635431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$model_dr.coverage" NAME="model_dr Coverage Results" MODIFIED="1616556082060" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$function.coverage" NAME="function Coverage Results" MODIFIED="1616728927611" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
     <SUITE FILE_PATH="coverage/kpi$manage.coverage" NAME="https server Coverage Results" MODIFIED="1613813474271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dev_sjq_kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1616504822909" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$rule.coverage" NAME="rule Coverage Results" MODIFIED="1616576836778" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
+    <SUITE FILE_PATH="coverage/dev_sjq_kpi$module.coverage" NAME="module Coverage Results" MODIFIED="1616727982488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/jx" />
   </component>
 </project>

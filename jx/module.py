@@ -604,8 +604,8 @@ class VIEW_ZDSYXSS(Base):
             SELECT 
                 pk.id AS id,            
                 pk.JSGH AS JSGH,            
-                pk.KKXND AS XNDM,            
-                pk.KKXQM AS XQDM,            
+                pk.KKXND AS KKXND,            
+                pk.KKXQM AS KKXQM,            
                 kc.SYXS AS SYXS,    
                 
                 pk.SYZS AS SYZS,                   
@@ -625,7 +625,7 @@ class VIEW_ZDSYXSS(Base):
 
     @staticmethod
     def get_upload_tables() -> List[str]:
-        return ['dr_sypksjxx','dr_kcsjxx','dr_xnxqxx','dr_bks_jpkc','dr_jzgjcsjxx']
+        return ['dr_sypksjxx']
 
     @staticmethod
     def get_delete_tables() -> List[str]:
@@ -633,7 +633,7 @@ class VIEW_ZDSYXSS(Base):
 
     @staticmethod
     def get_create_tables() -> List[str]:
-        return ['dr_sypksjxx','dr_kcsjxx','dr_xnxqxx','dr_bks_jpkc','dr_jzgjcsjxx']
+        return ['dr_sypksjxx']
 
     @staticmethod
     def get_hide_columns() -> List[str]:
