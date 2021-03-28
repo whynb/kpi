@@ -149,6 +149,9 @@ def check_login(fn):
         except UserAuthException:
             logger.error(sys_info())
             return JsonResponse({'success': False, 'msg': '登录用户没有授权该项操作'})
+        except SysUser.DoesNotExist:
+            logger.error(sys_info())
+            HttpResponseRedirect('/jx/')
 
         from sqlalchemy.exc import PendingRollbackError
         from jx.sqlalchemy_env import db
@@ -248,6 +251,7 @@ def login(req):
             else:
                 response = HttpResponseRedirect('/jx/error/')
                 response.cookies.clear()
+                response.set_cookie('payroll', None, 0)
                 return response
     else:
         form = LoginForm()
@@ -261,6 +265,7 @@ def login(req):
 def logout(req):
     res = HttpResponseRedirect('/jx/')
     res.cookies.clear()
+    res.set_cookie('payroll', None, 0)
     return res
 
 

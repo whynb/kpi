@@ -593,6 +593,12 @@ def __row_replace_key(__row, __key, uniq=None):
                 v = __format_value(v, __key[k][1])
 
             rk = str(__key[k][0])
+
+            if rk in ['JZGH', ]:  # NOTE: 教职工号补助8位字符串
+                v = trim(str(v))
+                if len(v) < 8:
+                    v = '0'*(8-len(v)) + v
+
             res[rk] = v
             cc_str += rk + ', '
             vv_str += ":" + rk + ", "
@@ -936,7 +942,7 @@ def edit(req):
             v['class_name'] = 'kh_' + v['menu']
 
         column = get_column_info(v['class_name'], v['field'])
-        if column['type'] == 'table':
+        if column['type'] in ['table', 'static', 'inline']:
             fields = get_field_name(column['value'])
             data_set = get_static_data(payroll, column['value'], column['where'])
             for data in data_set:
@@ -944,6 +950,12 @@ def edit(req):
                     v['set_to'] = str(data[fields[0]])
                     v['field'] = fields[0]
             column = get_column_info(v['class_name'], fields[0])
+
+        if column['type'] == 'year':
+            v['set_to'] = set_to + '-01-01 00:00:00'
+
+        if column['type'] == 'month':
+            v['set_to'] = set_to + '-01 00:00:00'
 
         if len(column) == 0:
             return JsonResponse({'success': False, 'msg': '更新失败：未找到所编辑字段'})
@@ -1102,8 +1114,12 @@ def get_data(req):
         if search_columns:
             sql_search = " AND (1=0 "
             for col in search_columns:
-                sql_search += " OR " + col + " LIKE %s"
+                if type(col) is list:
+                    sql_search += " OR " + col[1] + " LIKE %s"
+                else:
+                    sql_search += " OR " + col + " LIKE %s"
                 sql_query_set.append('%' + trim(str(v['search'])) + '%')
+
         sql_search += ")"
 
     logger.info(sql_count + sql_where + sql_search)
@@ -1401,7 +1417,7 @@ def staffinfo(req):
             sql_search += ")"
 
     cursor = connection.cursor()
-    logger.info(sql_count + sql_where + sql_search)
+    logger.info(sql_count + sql_where + sql_search, sql_query_set)
     cursor.execute(sql_count + sql_where + sql_search, sql_query_set)
     count = dictfetchall(cursor)[0]["count"]
 
@@ -1409,7 +1425,7 @@ def staffinfo(req):
     sql_query_set.append(v['sort'])
     sql_query_set.append(v['order'])
 
-    logger.info(sql_content + sql_where + sql_search + sql_olo)
+    logger.info(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     cursor.execute(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     select_out = dictfetchall(cursor)
 

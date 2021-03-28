@@ -229,6 +229,11 @@
                     if (x[i].getAttribute("data-field") == '{{ column }}') {
                         x[i].firstChild.style.background = '#E0FFFF';
                     }
+                    if ('{{ column[0] }}'.length != 1) {
+                        if (x[i].getAttribute("data-field") == '{{ column[0] }}') {
+                            x[i].firstChild.style.background = '#E0FFFF';
+                        }
+                    }
                 {% endfor %}
                 }
             },

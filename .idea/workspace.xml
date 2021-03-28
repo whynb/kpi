@@ -2,16 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="2021.3.15">
-      <change afterPath="$PROJECT_DIR$/jx/nacos.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/function.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/function.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/jinja2_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/jinja2_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/rule.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/rule.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kpi/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kpi/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/error.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/error.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/html/sbuild.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/html/sbuild.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/html/sorgtree.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/html/sorgtree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/html/screate.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/html/screate.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,8 +96,8 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.module">
-    <configuration name="https server" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Django Server.kpi">
+    <configuration name="https server" type="PythonConfigurationType" factoryName="Python">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -120,7 +119,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="models" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="models" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -142,7 +141,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="module" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="module" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -164,7 +163,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="password" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="password" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -186,7 +185,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="views" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="views" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="kpi" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -240,15 +239,6 @@
       <item itemvalue="Python.password" />
       <item itemvalue="Python.views" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.module" />
-        <item itemvalue="Python.password" />
-        <item itemvalue="Python.views" />
-        <item itemvalue="Python.models" />
-        <item itemvalue="Python.https server" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -405,7 +395,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/jx/function.py</url>
-          <line>850</line>
+          <line>856</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

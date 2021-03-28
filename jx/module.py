@@ -231,7 +231,7 @@ class VIEW_ZZJGJBSJXX(Base):
     def get_title_columns() -> List[dict]:
         return [
             {'table': 'dr_zzjgjbsjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'F', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'True', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWYWMC', 'title': '单位英文名称', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWJC', 'title': '单位简称', 'editable': 'True', 'type': 'text', 'create': 'T', },
@@ -239,7 +239,9 @@ class VIEW_ZZJGJBSJXX(Base):
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWJP', 'title': '单位简拼', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWDZ', 'title': '单位地址', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'SZXQ', 'title': '所在校区', 'editable': 'T', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'LSDWH', 'title': '隶属单位号', 'editable': 'T', 'type': 'text', 'create': 'T', },
+
+            # TODO: 'type': 'inline', 'exclude' by WHERE: DWH!=%(department)s AND 显示上级单位但是不可更改/在submit时二次判断
+            {'table': 'dr_zzjgjbsjxx', 'field': 'LSDWH', 'title': '隶属单位', 'editable': 'T', 'type': 'text', 'create': 'T', 'value': 'dr_zzjgjbsjxx:DWH AS LSDWH,DWMC AS LSDWMC', 'where': 'DWH IN %(departments)s'},
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWLBM', 'title': '单位类别码', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWBBM', 'title': '单位办别码', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWYXBS', 'title': '单位有效标识', 'editable': 'T', 'type': 'text', 'create': 'T', },
@@ -253,6 +255,9 @@ class VIEW_ZZJGJBSJXX(Base):
 
     @staticmethod
     def get_managed_departments(_department_id) -> list:
+        if not _department_id or str(_department_id) in ('', 'None'):
+            return []
+
         from sqlalchemy.exc import PendingRollbackError
         from jx.sqlalchemy_env import db
 
@@ -277,6 +282,9 @@ class VIEW_ZZJGJBSJXX(Base):
 
     @staticmethod
     def get_parent_department(_department_id) -> str:
+        if not _department_id or str(_department_id) in ('', 'None'):
+            return ''
+
         from sqlalchemy.exc import PendingRollbackError
         from jx.sqlalchemy_env import db
 
@@ -476,11 +484,14 @@ class VIEW_JZGJCSJXX(Base):
 
     @staticmethod
     def get_managed_departments(_payroll) -> List[str]:
+        if not _payroll or str(_payroll) in ('', 'None'):
+            return []
+
         try:
             users_query = db.query(VIEW_JZGJCSJXX)
             users_query = users_query.filter(VIEW_JZGJCSJXX.JZGH == str(_payroll))
             users = users_query.all()
-            return VIEW_ZZJGJBSJXX.get_managed_departments(users[0].DWH)
+            return VIEW_ZZJGJBSJXX.get_managed_departments(users[0].DWH) if users else []
         except:
             return []
 
