@@ -101,6 +101,17 @@ class ExampleModule(Base):
         where: 当 type 为 static｜table|inline 时使用, 全部数据时为 ''，目前可用一下条件（如有新条件需要定制开发）:
             'where': 'DWH IN %(departments)s'},
             'where': "DWH IN %(departments)s AND JZGH!='admin'",
+        action: 定义页面元素的动作(目前实现 onclick), 创建时选择项的 click->onChange() 的级联操作，例如：选择单位->选择该单位的员工    
+            'action': [{
+                'type': 'onclick',
+                'content': {'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'JZGH:JZGH,XM', },
+            }],
+            content说明:
+                value: 定义数据从哪里来
+                where: 定义获得数据时的附加条件, 为防止SQL注入, 变量使用':'开始，变量名会作为GET参数传递到BE;
+                    目前支持变量: ':this' - 本选择框的选取值
+                to: 将BE返回值设置到哪个选择框
+                    
         下面为实际例子，其中：
             负责人员号（BE）/负责人姓名（FE）联动，单位号（BE）/单位名称（FE）联动
             成果获奖类别码/奖励等级码 与静态表关联，前端仅显示中文，模型和后端仅用标识字段
@@ -117,6 +128,18 @@ class ExampleModule(Base):
             {'table': 'dr_hjcgjbsjxx', 'field': 'JLDJM', 'title': '奖励等级码', 'editable': 'true', 'type': 'inline', 'create': 'T', 'value': 'st_jldj:JLDJM,JLDJMC', 'where': ''},
             {'table': 'dr_hjcgjbsjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
             {'table': 'dr_hjcgjbsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
+            
+            # NOTE: fields cascade example for type->table
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {
+                'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False',
+                'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'T',
+                'action': [{
+                    'type': 'onclick',
+                    'content': {'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'JZGH:JZGH,XM', },
+                }],
+            },
+            {'table': 'dr_xmjfxx', 'field': 'JZGH', 'title': '教职工号', 'editable': 'F', 'type': 'inline', 'create': 'T', },
         ]
 
     @staticmethod
@@ -198,7 +221,7 @@ class VIEW_ZZJGJBSJXX(Base):
 
     @staticmethod
     def get_hide_columns() -> List[str]:
-        return ['id', 'stamp', 'note']
+        return ['id', 'stamp', 'note', 'DWBBM', 'SFST', 'SZXQ', 'DWFZRH']
 
     @staticmethod
     def get_search_columns() -> List[str]:
@@ -208,28 +231,36 @@ class VIEW_ZZJGJBSJXX(Base):
     def get_title_columns() -> List[dict]:
         return [
             {'table': 'dr_zzjgjbsjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'F', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'True', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWYWMC', 'title': '单位英文名称', 'editable': 'False', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWYWMC', 'title': '单位英文名称', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWJC', 'title': '单位简称', 'editable': 'True', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWYWJC', 'title': '单位英文简称', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWJP', 'title': '单位简拼', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWDZ', 'title': '单位地址', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'SZXQ', 'title': '所在校区', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'LSDWH', 'title': '隶属单位号', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWLBM', 'title': '单位类别码', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWBBM', 'title': '单位办别码', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWYXBS', 'title': '单位有效标识', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'SXRQ', 'title': '失效日期', 'editable': 'False', 'type': 'date', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'SFST', 'title': '是否实体', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'JLNY', 'title': '建立年月', 'editable': 'False', 'type': 'month', 'create': 'T', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWFZRH', 'title': '单位负责人号', 'editable': 'False', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWYWJC', 'title': '单位英文简称', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWJP', 'title': '单位简拼', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWDZ', 'title': '单位地址', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'SZXQ', 'title': '所在校区', 'editable': 'T', 'type': 'text', 'create': 'T', },
+
+            # TODO: 'type': 'inline', 'exclude' by WHERE: DWH!=%(department)s AND 显示上级单位但是不可更改/在submit时二次判断
+            {'table': 'dr_zzjgjbsjxx', 'field': 'LSDWH', 'title': '隶属单位', 'editable': 'T', 'type': 'text', 'create': 'T', 'value': 'dr_zzjgjbsjxx:DWH AS LSDWH,DWMC AS LSDWMC', 'where': 'DWH IN %(departments)s'},
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWLBM', 'title': '单位类别码', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWBBM', 'title': '单位办别码', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWYXBS', 'title': '单位有效标识', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'SXRQ', 'title': '失效日期', 'editable': 'T', 'type': 'date', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'SFST', 'title': '是否实体', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'JLNY', 'title': '建立年月', 'editable': 'T', 'type': 'month', 'create': 'T', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWFZRH', 'title': '单位负责人号', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'F', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'F', },
         ]
 
     @staticmethod
     def get_managed_departments(_department_id) -> list:
+        if not _department_id or str(_department_id) in ('', 'None'):
+            return []
+
+        from sqlalchemy.exc import PendingRollbackError
+        from jx.sqlalchemy_env import db
+
         departments = [_department_id]
         try:
             dpmts_query = db.query(VIEW_ZZJGJBSJXX)
@@ -239,14 +270,24 @@ class VIEW_ZZJGJBSJXX(Base):
             for dpmt in dpmts:
                 if dpmt:
                     departments.extend(VIEW_ZZJGJBSJXX.get_managed_departments(str(dpmt.DWH)))
+
+        except PendingRollbackError:
+            db.rollback()
+            logger.error(sys_info())
+
         except:
             logger.error(sys_info())
-            pass
 
         return list(set(departments))
 
     @staticmethod
     def get_parent_department(_department_id) -> str:
+        if not _department_id or str(_department_id) in ('', 'None'):
+            return ''
+
+        from sqlalchemy.exc import PendingRollbackError
+        from jx.sqlalchemy_env import db
+
         try:
             dpmts_query = db.query(VIEW_ZZJGJBSJXX)
             dpmts_query = dpmts_query.filter(VIEW_ZZJGJBSJXX.DWH == str(_department_id))
@@ -254,6 +295,11 @@ class VIEW_ZZJGJBSJXX(Base):
 
             for dpmt in dpmts:
                 return str(dpmt.LSDWH)
+
+        except PendingRollbackError:
+            db.rollback()
+            logger.error(sys_info())
+
         except:
             logger.error(sys_info())
 
@@ -409,7 +455,7 @@ class VIEW_JZGJCSJXX(Base):
 
     @staticmethod
     def get_hide_columns() -> List[str]:
-        return ['id', 'DWH', 'stamp', 'note']
+        return ['id', 'DWH', 'stamp', 'note', 'CSDM', 'BZLBM', 'JZGLBM', 'DQZTM']
 
     @staticmethod
     def get_title_columns() -> List[dict]:
@@ -418,16 +464,16 @@ class VIEW_JZGJCSJXX(Base):
             {'table': 'dr_jzgjcsjxx', 'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', 'create': 'T', },
             {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
             {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'T', 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'True', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'XM', 'title': '姓名', 'editable': 'False', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'XM', 'title': '姓名', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_jzgjcsjxx', 'field': 'YWXM', 'title': '英文姓名', 'editable': 'True', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'XMPY', 'title': '姓名拼音', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'CYM', 'title': '曾用名', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'XBM', 'title': '性别码', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'CSRQ', 'title': '出生日期', 'editable': 'False', 'type': 'date', 'create': 'T', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'CSDM', 'title': '出生地码', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'BZLBM', 'title': '编制类别码', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'JZGLBM', 'title': '教职工类别码', 'editable': 'False', 'type': 'text', 'create': 'T', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'DQZTM', 'title': '当前状态码', 'editable': 'False', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'XMPY', 'title': '姓名拼音', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'CYM', 'title': '曾用名', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'XBM', 'title': '性别码', 'editable': 'T', 'type': 'enum', 'value': ['男', '女'], 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'CSRQ', 'title': '出生日期', 'editable': 'T', 'type': 'date', 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'CSDM', 'title': '出生地码', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'BZLBM', 'title': '编制类别码', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'JZGLBM', 'title': '教职工类别码', 'editable': 'T', 'type': 'text', 'create': 'T', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'DQZTM', 'title': '当前状态码', 'editable': 'T', 'type': 'text', 'create': 'T', },
             {'table': 'dr_jzgjcsjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'F', },
             {'table': 'dr_jzgjcsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'F', },
         ]
@@ -438,11 +484,14 @@ class VIEW_JZGJCSJXX(Base):
 
     @staticmethod
     def get_managed_departments(_payroll) -> List[str]:
+        if not _payroll or str(_payroll) in ('', 'None'):
+            return []
+
         try:
             users_query = db.query(VIEW_JZGJCSJXX)
             users_query = users_query.filter(VIEW_JZGJCSJXX.JZGH == str(_payroll))
             users = users_query.all()
-            return VIEW_ZZJGJBSJXX.get_managed_departments(users[0].DWH)
+            return VIEW_ZZJGJBSJXX.get_managed_departments(users[0].DWH) if users else []
         except:
             return []
 
@@ -518,9 +567,18 @@ class VIEW_XMJFXX(Base):
     def get_title_columns() -> List[str]:
         return [
             {'table': 'dr_xmjfxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'False', },
-            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'True', },
-            {'table': 'dr_xmjfxx', 'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {
+                'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False',
+                'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'True',
+                'action': [{
+                    'type': 'onclick',
+                    'content': {'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'JZGH:JZGH,XM', },
+                }],
+            },
+            {'table': 'dr_xmjfxx', 'field': 'JZGH', 'title': '教职工号', 'editable': 'False', 'type': 'inline', 'create': 'True', },
+
             {'table': 'dr_xmjfxx', 'field': 'JHJFZE', 'title': '计划经费总额', 'editable': 'True', 'type': 'float', 'create': 'True', },
             {'table': 'dr_xmjfxx', 'field': 'XMJFLYM', 'title': '项目经费来源码', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_xmjfxx', 'field': 'BRRQ', 'title': '拨入日期', 'editable': 'False', 'type': 'date', 'create': 'True', },

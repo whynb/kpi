@@ -2,8 +2,10 @@
 
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
-
 from jinja2 import Environment, FileSystemLoader
+
+# Start Nacos client with heartbeat
+import jx.nacos
 
 
 def environment(**options):

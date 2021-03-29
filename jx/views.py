@@ -9,10 +9,11 @@ from jx.util import *
 from jx.form import *
 from jx.models import *
 from jx.exception import *
+from jx.password import pc
 
 
 time_out = settings.COOKIE_TIME_OUT
-org_tree_without_users = ['zzjgjbsjxx', ]
+org_tree_without_users = ['zzjgjbsjxx', 'khpc', 'jxkhgz', 'khgzdz']
 
 
 def get_menu(payroll):
@@ -148,12 +149,32 @@ def check_login(fn):
         except UserAuthException:
             logger.error(sys_info())
             return JsonResponse({'success': False, 'msg': '登录用户没有授权该项操作'})
+        except SysUser.DoesNotExist:
+            logger.error(sys_info())
+            HttpResponseRedirect('/jx/')
 
+        from sqlalchemy.exc import PendingRollbackError
+        from jx.sqlalchemy_env import db
         try:
             return fn(req, *args, **kwargs) if can_login(req) else HttpResponseRedirect('/jx/')
+
+        except ConnectionResetError:
+            logger.error(sys_info())
+            pass
+
+        except PendingRollbackError:
+            db.rollback()
+            logger.error(sys_info())
+
+            try:
+                return fn(req, *args, **kwargs) if can_login(req) else HttpResponseRedirect('/jx/')
+            except:
+                logger.error(sys_info())
+                return HttpResponseRedirect('/jx/error/')
         except:
             logger.error(sys_info())
             return HttpResponseRedirect('/jx/error/')
+
     return wrapper
 
 
@@ -164,6 +185,9 @@ def sys_error(fn):
     @return:
     """
     def wrapper(req, *args, **kwargs):
+        from sqlalchemy.exc import PendingRollbackError
+        from jx.sqlalchemy_env import db
+
         try:
             v = dict(eval(str(req.POST.dict())), **eval(str(req.GET.dict())))
             logger.info(v)
@@ -172,6 +196,28 @@ def sys_error(fn):
                     return JsonResponse({'success': False, 'tag': '参数错误：所有参数不能含有空格'})
 
             return fn(req, *args, **kwargs)
+
+        except ConnectionResetError:
+            logger.error(sys_info())
+            pass
+
+        except PendingRollbackError:
+            db.rollback()
+            logger.error(sys_info())
+
+            try:
+                return fn(req, *args, **kwargs)
+            except:
+                logger.error(sys_info())
+                return JsonResponse({
+                    'success': False,
+                    'data': [],
+                    'rows': [],
+                    'message': u'系统异常，请重试',
+                    'msg': u'系统异常，请重试',
+                    'tag': u'系统异常，请重试'
+                })
+
         except:
             logger.error(sys_info())
             return JsonResponse({
@@ -182,6 +228,7 @@ def sys_error(fn):
                 'msg': u'系统异常，请重试',
                 'tag': u'系统异常，请重试'
             })
+
     return wrapper
 
 
@@ -194,23 +241,17 @@ def login(req):
         form = LoginForm(req.POST)
         if form.is_valid():
             payroll = form.cleaned_data['payroll']
-            password = '111111'  # TODO: add password verification
-
-            users = SysUser.objects.filter(payroll__exact=payroll, password__exact=password)
-
+            k = pc.encrypt(form.cleaned_data['password'])
+            users = SysUser.objects.filter(payroll__exact=payroll, password__exact=k)
             if users:
-                from jx.function import get_user_information
-                user = get_user_information(payroll)
-
                 response = HttpResponseRedirect('/jx/index/')
                 response.cookies.clear()
                 response.set_cookie('payroll', payroll, time_out)
-                response.set_cookie('DWH', user['DWH'] if user else '', time_out)
-                response.set_cookie('rollname', parse.quote(users[0].role.role_name), time_out)
                 return response
             else:
                 response = HttpResponseRedirect('/jx/error/')
                 response.cookies.clear()
+                response.set_cookie('payroll', None, 0)
                 return response
     else:
         form = LoginForm()
@@ -224,6 +265,7 @@ def login(req):
 def logout(req):
     res = HttpResponseRedirect('/jx/')
     res.cookies.clear()
+    res.set_cookie('payroll', None, 0)
     return res
 
 
@@ -236,7 +278,8 @@ def index(req):
     if settings.CAS:
         users = SysUser.objects.filter(payroll__exact=req.user)
         if not users:
-            SysUser(payroll=user, role_id=4, usertype_id=4).save()
+            SysUser(payroll=user, password='OWIwNWZiOGZjZTM4NjRhMGVkNjVlOTQ3MmRlNTQ2N2Q=',
+                    role_id=4, usertype_id=4).save()
     else:
         user = req.COOKIES.get('payroll')
 
@@ -295,7 +338,8 @@ def role_assign(req):
         res = []
         roles = Role.objects.all()
         for role in roles:
-            res.append([str(role.id), str(role.role_name)])
+            if str(role.id) != '1':
+                res.append([str(role.id), str(role.role_name)])
         return res
 
     logger.info(get_roles())

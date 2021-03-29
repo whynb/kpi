@@ -123,7 +123,7 @@
                         title: "{{ title['title'] }}", field: "{{ title['field'] }}", sortable : true,
                         type: "{{ title['type'] }}",
                         editable: {
-                            emptytext: '',
+                            emptytext: '请选择',
                             type: "select",
                             source: source,
                             validate: function (v) { if($.trim(v) == '') return '请重新选择！'; },
@@ -193,7 +193,7 @@
                     sort: sort,
                     order: params.order,
                     search: params.search,
-                    code:  $selected_node.code,
+                    code:  $selected_node.code == undefined ? '' : $selected_node.code,
                     type:  $selected_node.type,
                     item: array_to_string(itemCode),
                     start: $('#selectStartDate').val(),
@@ -228,6 +228,11 @@
                 {% for column in search_columns %}
                     if (x[i].getAttribute("data-field") == '{{ column }}') {
                         x[i].firstChild.style.background = '#E0FFFF';
+                    }
+                    if ('{{ column[0] }}'.length != 1) {
+                        if (x[i].getAttribute("data-field") == '{{ column[0] }}') {
+                            x[i].firstChild.style.background = '#E0FFFF';
+                        }
                     }
                 {% endfor %}
                 }
@@ -271,16 +276,18 @@
 
     function initTable() {
         build_title();
-        build_table();
-        post_build();
-        return;
+        // setTimeout(function () {
+            build_table();
+            post_build();
+            return;
+        // }, 100);
     }
 
     function refreshTable() { 
-        setTimeout(function () { 
+        // setTimeout(function () {
             $('#table').bootstrapTable('refresh');
             post_build();
-        }, 100); 
+        // }, 100);
     }
 
     $(function() { setTimeout(function () { initTable(); }, 200); })

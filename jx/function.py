@@ -30,6 +30,7 @@ from django.conf import settings
 import pandas as pd
 from jx.exception import *
 from pymysql.err import Error
+from jx.password import pc
 
 
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
@@ -48,6 +49,7 @@ def get_field_name(s):
                 res.append(trim(a[a.find('as')+2:]))
             else:
                 res.append(a)
+        res.append(trim(s[:s.find(':')]))
         return res
     except:
         logger.error(sys_info())
@@ -143,6 +145,9 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
         try:
             # 根据规则定义的参与考核的类名获得参与考核对象
             class_to_check = rule.get_input_class()  # get class to check
+            if class_to_check == 'VIEW_':  # NOTE: no KHSJDX for 增减业绩点 or no class defined in module.py
+                continue
+
             data_query = db.query(class_to_check)  # query out by class defined in rule
             data_query = data_query.filter(class_to_check.DWH.in_(departments))
             data_query = data_query.filter(class_to_check.JZGH.notin_(bcykh))  # filter out not included JZGH
@@ -158,17 +163,13 @@ def calculate_kpi(departments, year, start, end, _payroll, db):
                     if not rule.match(x):  # match rule condition
                         continue
 
-                    logger.debug(rule.calculate(x))
-                    logger.debug(rule.get_output_template() % x.__dict__ % rule.__dict__)
-
-                    # Save
                     obj = KH_KHJGMX(
                         JZGH=x.JZGH,
                         DWH=rule.DWH,
                         GZH=rule.GZH,
                         KHNF=year,
                         KHJD=rule.calculate(x),
-                        KHMX=rule.get_output_template() % x.__dict__ % rule.__dict__
+                        KHMX=rule.get_output_template() % {**x.__dict__, **rule.__dict__}
                     )
                     db.add(obj)
                 except:
@@ -335,6 +336,10 @@ def add_power(req):
     try:
         role = Role.objects.get(role_name=role_name)
         for menu_id in menus:
+            if str(role.id) != '1':  # not admin
+                if str(menu_id) == '1':
+                    continue
+
             db.execute(
                 text("INSERT INTO jx_role_menu (role_id, menu_id, permission) VALUES (:role_id, :menu_id, :p)"),
                 {'role_id': role.id, 'menu_id': menu_id, 'p': "n,n,n,n,n,n"}
@@ -413,6 +418,9 @@ def del_role(req):
     role = Role.objects.filter(role_name=role_name)
     if not role:
         return HttpResponse('角色不存在')
+
+    if str(role[0].id) in ['1', '2', '3', '4']:
+        return HttpResponse('禁止删除该角色')
 
     try:
         # cursor = connection.cursor()
@@ -585,6 +593,12 @@ def __row_replace_key(__row, __key, uniq=None):
                 v = __format_value(v, __key[k][1])
 
             rk = str(__key[k][0])
+
+            if rk in ['JZGH', ]:  # NOTE: 教职工号补助8位字符串
+                v = trim(str(v))
+                if len(v) < 8:
+                    v = '0'*(8-len(v)) + v
+
             res[rk] = v
             cc_str += rk + ', '
             vv_str += ":" + rk + ", "
@@ -906,8 +920,16 @@ def edit(req):
     """
     :param req: id=30&DWJC=00000C&field=DWJC&menu=zzjgjbsjxx
     :return:
+
+        def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {'table': 'dr_zzjgjbsjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'T', 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'True', },
+
     """
     from jx.sqlalchemy_env import db, text
+
+    payroll = str(req.COOKIES.get('payroll'))
     try:
         v = eval(str(req.POST.dict()))
         set_to = trim(str(v[v['field']]))
@@ -920,6 +942,21 @@ def edit(req):
             v['class_name'] = 'kh_' + v['menu']
 
         column = get_column_info(v['class_name'], v['field'])
+        if column['type'] in ['table', 'static', 'inline']:
+            fields = get_field_name(column['value'])
+            data_set = get_static_data(payroll, column['value'], column['where'])
+            for data in data_set:
+                if str(data[fields[1]]) == str(set_to):
+                    v['set_to'] = str(data[fields[0]])
+                    v['field'] = fields[0]
+            column = get_column_info(v['class_name'], fields[0])
+
+        if column['type'] == 'year':
+            v['set_to'] = set_to + '-01-01 00:00:00'
+
+        if column['type'] == 'month':
+            v['set_to'] = set_to + '-01 00:00:00'
+
         if len(column) == 0:
             return JsonResponse({'success': False, 'msg': '更新失败：未找到所编辑字段'})
 
@@ -963,15 +1000,6 @@ def edit(req):
         db.rollback()
         logger.error(sys_info())
         return JsonResponse({'success': False, 'msg': '更新失败：数据库错误!!!'})
-
-
-@check_login
-def get_col_def(req):
-    return JsonResponse([], safe=False)
-
-    # payroll = str(req.COOKIES.get('payroll'))
-    # v = eval(str(req.GET.dict()))
-    # return JsonResponse(get_static_data(payroll, v['value'], v['where']), safe=False)
 
 
 @check_login
@@ -1086,8 +1114,12 @@ def get_data(req):
         if search_columns:
             sql_search = " AND (1=0 "
             for col in search_columns:
-                sql_search += " OR " + col + " LIKE %s"
+                if type(col) is list:
+                    sql_search += " OR " + col[1] + " LIKE %s"
+                else:
+                    sql_search += " OR " + col + " LIKE %s"
                 sql_query_set.append('%' + trim(str(v['search'])) + '%')
+
         sql_search += ")"
 
     logger.info(sql_count + sql_where + sql_search)
@@ -1107,9 +1139,82 @@ def get_data(req):
 
 @check_login
 @sys_error
+def get_json(req):
+    v = eval(str(req.GET.dict()))
+    try:
+        from jx.views import get_module_static_method
+        arr = v['path'].split('|')
+        content, title_columns = {}, get_module_static_method(arr[0], 'get_title_columns')
+        for tc in title_columns:
+            if tc['field'] == arr[1]:
+                for act in tc['action']:
+                    if act['type'] == arr[2]:
+                        content = act['content']
+
+        # {'type': 'table', 'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH=:this', 'to': 'JZGH:JZGH,XM'}}]}
+        # {'type': 'table', 'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'JZGH:JZGH,XM'}}]}
+        if content:
+            t_f = content['value'].split(":")
+            sql = "SELECT " + t_f[1] + " FROM " + t_f[0]
+            if trim(content['where']) != "":
+                if content['where'].find('DWH IN :this') != -1:
+                    from jx.module import VIEW_ZZJGJBSJXX
+                    ds = VIEW_ZZJGJBSJXX.get_managed_departments(trim(v['this']))
+                    sql += " WHERE " + content['where'].replace(':this', str(ds).replace('[', '(').replace(']', ')'))
+                else:
+                    sql += " WHERE " + content['where']
+
+            if sql.find('JZGH') != -1 or trim(t_f[0]) in ['dr_jzgjcsjxx', 'view_jzgjcsjxx', ]:
+                sql += ' AND JZGH NOT IN ("admin")'
+
+            from jx.sqlalchemy_env import db, text
+            try:
+                logger.info(sql)
+                pro = db.execute(text(sql), v)
+                db.commit()
+                return JsonResponse(fetchall_sqlalchemy_in_dict(pro), safe=False)
+            except:
+                db.rollback()
+                logger.error(sys_info())
+    except:
+        logger.error(sys_info())
+
+    return JsonResponse([], safe=False)
+
+
+@check_login
+@sys_error
 def get_class_view(req):
+    return JsonResponse([], safe=False)
+
     from jx.module import generate_class_view
     return JsonResponse(generate_class_view('module', False), safe=False)
+
+
+@check_login
+@sys_error
+def change_password(req):
+    msg = ''
+    try:
+        from jx.sqlalchemy_env import db, text
+
+        npwd = pc.encrypt(req.POST.get('newpwd'))
+        sql_change = "UPDATE jx_sysuser" + " SET password=:pwd, time_pwd=NOW() WHERE payroll=:payroll"
+        logger.info(sql_change)
+        try:
+            db.execute(text(sql_change), {'pwd': npwd, 'payroll': req.COOKIES.get('payroll')})
+            db.commit()
+            msg += ': 修改密码成功<br>'
+            return JsonResponse({'success': True, 'msg': msg})
+        except:
+            db.rollback()
+            msg += ': 数据库错误<br>'
+            logger.error(sys_info())
+            return JsonResponse({'success': False, 'msg': msg})
+    except:
+        msg += ': 系统异常<br>'
+        logger.error(sys_info())
+        return JsonResponse({'success': False, 'msg': msg})
 
 
 @check_login
@@ -1286,18 +1391,22 @@ def staffinfo(req):
     sql_count = """ SELECT COUNT(*) AS count FROM view_sysuser """
     sql_content = """ SELECT * FROM view_sysuser """
 
-    sql_where = " WHERE 1=1 "
+    sql_query_set = []
+    sql_where = " WHERE role_id!=1 AND usertype_id!=1" if payroll != 'admin' else " WHERE 1=1"
     if user.role_id == 1:
         pass
-    elif user.role_id == 2:
+    elif user.role_id in (2, 3):
         from jx.module import VIEW_JZGJCSJXX 
         ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
-        sql_where += " AND DWH IN '%(departments)s'" % {'departments': str(ds).replace('[', '(').replace(']', ')')}
+        sql_where += (" AND DWH IN " + trim(str(ds)).replace('[', '(').replace(']', ')')) if ds else " AND DWH=%s"
     else:
         sql_where += ' AND 1=0'
-        
+
+    if 'payroll' in v:
+        sql_where += ' AND payroll=%s'
+        sql_query_set.append(trim(str(v['payroll'])))
+
     sql_search = ""
-    sql_query_set = []
     if 'search' in v and v['search'] not in ('', None):
         search_columns = ['payroll', 'XM', 'DWMC']
         if search_columns:
@@ -1308,7 +1417,7 @@ def staffinfo(req):
             sql_search += ")"
 
     cursor = connection.cursor()
-    logger.info(sql_count + sql_where + sql_search)
+    logger.info(sql_count + sql_where + sql_search, sql_query_set)
     cursor.execute(sql_count + sql_where + sql_search, sql_query_set)
     count = dictfetchall(cursor)[0]["count"]
 
@@ -1316,9 +1425,12 @@ def staffinfo(req):
     sql_query_set.append(v['sort'])
     sql_query_set.append(v['order'])
 
-    logger.info(sql_content + sql_where + sql_search + sql_olo)
+    logger.info(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     cursor.execute(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     select_out = dictfetchall(cursor)
+
+    for s in select_out:
+        s['password'] = ''
 
     return JsonResponse({'total': count, 'rows': select_out})
 

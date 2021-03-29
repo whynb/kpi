@@ -22,9 +22,7 @@
     <!-- Start Content -->
     <div class="why_container">
         <div class="why_left">
-            <div>
-                <h5>角色名称</h5>
-            </div>
+            <div><h5>角色名称</h5></div>
             <div class="box-content">
                 <div class="breadcrumb">
                     <button class="btn btn-inverse btn-default" id="btn_add"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加角色</button>
@@ -207,8 +205,9 @@
                         width : '150px',
                         valign: "middle",
                         editable: {
-                            'type': 'checklist',
-                            'title': '权限',
+                            type: 'checklist',
+                            title: '权限',
+                            mode: "inline",
                             source: [
                                 {value: 1, text: '增'},
                                 {value: 2, text: '删'},
