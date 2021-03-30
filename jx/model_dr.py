@@ -3,7 +3,6 @@
 
 from jx.sqlalchemy_env import *
 
-
 class DR_ZZJGJBSJXX(Base):
     __tablename__ = 'dr_zzjgjbsjxx'
     __tablename__CH__ = '组织机构基本数据信息'
@@ -523,6 +522,7 @@ if __name__ == '__main__':
     ALTER TABLE DR_KCSJXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_XNXQXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_BKS_JPKC ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_XMRYXX MODIFY stamp TIMESTAMP(6);
     """
 
     try:

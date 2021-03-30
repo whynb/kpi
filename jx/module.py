@@ -804,7 +804,8 @@ class VIEW_XMRYXX(Base):
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     XMBH = Column('XMBH', String(16), default='')  # 项目编号
-    JZGH = Column('JZGH', String(16), default='')  # 人员号
+    RYH = Column('RYH', String(16), default='')  # 人员号
+    JZGH = Column('JZGH', String(16), default='')  # 教职工号
     XM = Column('XM', String(16), default='')  # 姓名
     DWH = Column('DWH', String(16), default='')  # 单位号
     DWMC = Column('DWMC', String(16), default='')  # 单位名称
@@ -825,6 +826,7 @@ class VIEW_XMRYXX(Base):
             CREATE VIEW view_xmryxx AS
             SELECT 
                 dr.id AS id,            
+                dr.RYH AS RYH, 
                 dr.RYH AS JZGH, 
                 jz.XM AS XM,
                 jz.DWH AS DWH,
@@ -872,10 +874,10 @@ class VIEW_XMRYXX(Base):
                 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s', 'create': 'True',
                 'action': [{
                     'type': 'onclick',
-                    'content': {'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'JZGH:JZGH,XM', },
+                    'content': {'value': 'view_jzgjcsjxx:JZGH,XM', 'where': 'DWH IN :this', 'to': 'RYH:JZGH,XM', },
                 }],
             },
-            {'table': 'dr_xmryxx', 'field': 'JZGH', 'title': '人员号', 'editable': 'False', 'type': 'inline', 'create': 'True', },
+            {'table': 'dr_xmryxx', 'field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'inline', 'create': 'T', },
 
             {'table': 'dr_jzgjcsjxx', 'field': 'XM', 'title': '姓名', 'editable': 'False', 'type': 'text', 'create': 'F', },
             {'table': 'dr_xmryxx', 'field': 'XMBH', 'title': '项目编号', 'editable': 'T', 'type': 'text', 'create': 'True', },
