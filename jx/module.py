@@ -433,7 +433,7 @@ class VIEW_BKSJXZXS(Base):
                 kc.KCH AS KCH,         
                 jp.KCJBM AS KCJBM,    
                 dr_jzg.DWH AS DWH,        
-                pk.KKXQM AS stamp,            
+                pk.stamp AS stamp,            
                 pk.note AS note            
             FROM dr_pksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
@@ -529,7 +529,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
                 pk.ZLXS AS ZLXS,            
                 kc.KCH AS KCH,         
                 dr_jzg.DWH AS DWH,            
-                pk.KKXQM AS stamp,            
+                pk.stamp AS stamp,            
                 pk.note AS note            
             FROM dr_sspksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
@@ -565,7 +565,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
             {'table': 'dr_sspksjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'inline', 'value': "dr_jzgjcsjxx:JZGH AS JSGH,XM", 'where': "DWH IN %(departments)s AND JSGH!='admin'", 'create': 'True', },
             {'table': 'dr_kcsjxx', 'field': 'KCH', 'title': '课程号', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_sspksjxx', 'field': 'KKXQM', 'title': '学期', 'editable': 'False', 'type': 'month', 'create': 'True', },
-            {'table': 'dr_sspksjxx', 'field': 'KKXND', 'title': '学年', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_sspksjxx', 'field': 'KKXND', 'title': '学年', 'editable': 'False', 'type': 'year', 'create': 'True', },
             {'table': 'dr_sspksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_sspksjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_xnxqxx', 'field': 'QSSKZ', 'title': '起始上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
@@ -587,6 +587,7 @@ class VIEW_ZDSYXSS(Base):
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    JZGH = Column('JZGH', String(16), default='')  # 教职工号
     KCH = Column('KCH', String(16), default='')  # 课程号
     KKXND = Column('KKXND', DateTime, default=now())  # 开课学年度
     KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
@@ -604,6 +605,7 @@ class VIEW_ZDSYXSS(Base):
             SELECT 
                 pk.id AS id,            
                 pk.JSGH AS JSGH,            
+                pk.JSGH AS JZGH,            
                 pk.KKXND AS KKXND,            
                 pk.KKXQM AS KKXQM,            
                 kc.SYXS AS SYXS,    
@@ -612,7 +614,7 @@ class VIEW_ZDSYXSS(Base):
                 kc.KCH AS KCH,         
                 jp.KCJBM AS KCJBM,    
                 dr_jzg.DWH AS DWH,        
-                pk.KKXQM AS stamp,            
+                pk.stamp AS stamp,            
                 pk.note AS note            
             FROM dr_sypksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
