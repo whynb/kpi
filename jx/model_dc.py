@@ -352,6 +352,38 @@ class DC_KJXMJBSJXX(Base):
         return ['XMBH']
 # fanmingdieoff
 
+# fanmingrevive
+class DC_XMXZDWXX(Base):
+    __tablename__ = 'dc_xmxzdwxx'
+    __tablename__CH__ = '项目协作单位信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    XZDW = Column('XZDW', String(16), default='')  # 协作单位
+    XZDWLXM = Column('XZDWLXM', String(16), default='')  # 协作单位类型码
+    HZFS = Column('HZFS', String(16), default='')  # 合作方式
+    DWPM = Column('DWPM', String(16), default='')  # 单位排名
+    XMBH = Column('XMBH', String(16), default='')  # 项目编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '协作单位': ['XZDW'],
+            '协作单位类型码': ['XZDWLXM'],
+            '合作方式': ['HZFS'],
+            '单位排名': ['DWPM'],
+            '项目编号': ['XMBH'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['XMBH']
+# fanmingdieagain
+
 class DC_XMJFXX(Base):
     __tablename__ = 'dc_xmjfxx'
     __tablename__CH__ = '项目经费信息'
@@ -394,6 +426,57 @@ class DC_XMJFXX(Base):
     def get_unique_condition() -> List[str]:
         return ['XMBH']
 
+# fanmingreviveagain
+class DC_XMRYXX(Base):
+    __tablename__ = 'dc_xmryxx'
+    __tablename__CH__ = '项目人员信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    RYH = Column('RYH', String(16), default='')  # 人员号
+    JZGH = Column('JZGH', String(16), default='')  # 教职工号
+    XM = Column('XM', String(16), default='')  # 姓名
+    XB = Column('XB', String(16), default='')  # 性别
+    ZC = Column('ZC', String(16), default='')  # 职称
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    DWMC = Column('DWMC', String(16), default='')  # 单位名称
+    GZL = Column('GZL', Float, default=0.0)  # 工作量
+    MNGZYS = Column('MNGZYS', Float, default=0.0)  # 每年工作月数
+    JSM = Column('JSM', String(16), default='')  # 角色码
+    RYLX = Column('RYLX', String(16), default='')  # 人员类型
+    SMSX = Column('SMSX', String(16), default='')  # 署名顺序
+    XLM = Column('XLM', String(16), default='')  # 学历码
+    XMBH = Column('XMBH', String(16), default='')  # 项目编号
+    XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '人员号': ['RYH'],
+            '教职工号': ['JZGH'],
+            '姓名': ['XM'],
+            '性别': ['XB'],
+            '职称': ['ZC'],
+            '单位号': ['DWH'],
+            '单位名称': ['DWMC'],
+            '工作量': ['GZL', 'Float'],
+            '每年工作月数': ['MNGZYS', 'Float'],
+            '角色码': ['JSM'],
+            '人员类型': ['RYLX'],
+            '署名顺序': ['SMSX'],
+            '学历码': ['XLM'],
+            '项目编号': ['XMBH'],
+            '学科门类(科技)码': ['XKMLKJM'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['XMBH']
+# fanmingdieatlast
 
 # yangchen
 class DC_HJCGJBSJXX(Base):
