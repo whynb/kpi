@@ -354,12 +354,14 @@ class DR_HJCGJBSJXX(Base):
         return ['HJCGBH', 'HJCGMC']
 
 
+#yangchen
 class DR_KJCGRYXX_JL(Base):
     __tablename__ = 'dr_kjcgryxx_jl'
     __tablename__CH__ = '科技成果(获奖成果)人员信息'
+    __table_args__ = (UniqueConstraint('RYH', 'HJCGBH', name='_kh_khpc_dwh_khnf_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
+    RYH = Column('RYH', String(16), default='')  # 人员号
     JSM = Column('JSM', String(16), default='')  # 角色码
     ZXZS = Column('ZXZS', String(16), default='')  # 撰写字数
     PMZRS = Column('PMZRS', String(16), default='')  # 排名/总人数
@@ -392,12 +394,12 @@ class DR_KJCGRYXX_JL(Base):
 
     @staticmethod
     def get_unique_condition() -> List[str]:
-        return ['RYH']
+        return ['RYH', 'HJCGBH']
 
 
 class DR_KJQKLWJBSJXX(Base):
     __tablename__ = 'dr_kjqklwjbsjxx'
-    __tablename__CH__ = '科技期刊论文基本数据信息息'
+    __tablename__CH__ = '科技期刊论文基本数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     LWBH= Column('LWBH', String(16), default='')  # 论文编号
@@ -467,6 +469,162 @@ class DR_KJLWFBXX(Base):
     @staticmethod
     def get_unique_condition() -> []:
         return ['LWBH']
+
+
+#yangchen
+class DR_ZLCGJBSJXX(Base):
+    __tablename__ = 'dr_zlcgjbsjxx'
+    __tablename__CH__ = '专利成果基本数据信息'
+    __table_args__ = (UniqueConstraint('ZLCGBH', 'SQBH', name='_kh_khpc_dwh_khnf_uc'),)
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    ZLCGBH = Column('ZLCGBH', String(16), default='')  # 专利成果编号
+    ZLCGMC = Column('ZLCGMC', String(128),default='')  # 专利成果名称
+    DWH = Column('DWH', String(128),default='')  # 单位号
+    SQBH= Column('SQBH', String(16), default='')  # 申请编号
+    XKLYM= Column('XKLYM', String(16), default='')  # 学科领域
+    ZLLXM = Column('ZLLXM', String(16), default='')  # 专利类型码
+    PZRQ= Column('PZRQ', DateTime, default=now())  # 批准日期
+    PZXSM = Column('PZXSM', String(16),  default='')  # 批准形式码
+    ZLZSBH = Column('ZLZSBH', String(16),  default='')  # 专利证书编号
+    FLZTM = Column('FLZTM', String(16), default='')  # 法律状态码
+    JNZLNFRQ = Column('JNZLNFRQ', DateTime, default=now())  # 交纳专利年费日期
+    JNJE = Column('JNJE', String(16), default='')  # 交纳金额
+    SSXMBH = Column('SSXMBH', String(16), default='')  # 所属项目编号
+    GJDQM = Column('GJDQM', String(16), default='')  # 国籍/地区码
+    GJZLZFLH = Column('GJZLZFLH', String(16), default='')  # 国际专利主分类号
+    PCTHZLGJDQM = Column('PCTHZLGJDQM', String(16), default='')  # PCT 或专利国家/地区码
+    SQGGH = Column('SQGGH', String(16), default='')  # 授权公告号
+    SQGGRQ = Column('SQGGRQ', DateTime, default=now())  # 授权公告日期
+    SQMC = Column('SQMC', String(16), default='')  # 申请名称
+    ZLDLJG = Column('ZLDLJG', String(30), default='')  # 专利代理机构
+    ZLDLR = Column('ZLDLR', String(16), default='')  # 专利代理人
+    ZLQR = Column('ZLQR', String(16), default='')  # 专利权人
+    ZLZZRQ = Column('ZLZZRQ', DateTime(16), default=now())  # 专利终止日期
+    XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
+    ZLSQRQ = Column('ZLSQRQ', String(16), default='')  # 专利申请日期
+    ZZM = Column('ZZM', String(16), default='')  # 作者名
+    ZZBH = Column('ZZBH', String(16), default='')  # 作者编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '专利成果编号': ['ZLCGBH'],
+            '专利成果名称': ['ZLCGMC'],
+            '单位号': ['DWH'],
+            '申请编号': ['SQBH'],
+            '学科领域': ['XKLYM'],
+            '专利类型码': ['ZLLXM'],
+            '批准日期': ['PZRQ', 'DateTime'],
+            '批准形式码': ['PZXSM'],
+            '专利证书编号': ['ZLZSBH'],
+            '法律状态码': ['FLZTM'],
+            '交纳专利年费日期': ['JNZLNFRQ'],
+            '交纳金额': ['JNJE'],
+            '所属项目编号': ['SSXMBH'],
+            '国籍/地区码': ['GJDQM'],
+            '国际专利主分类号': ['GJZLZFLH'],
+            'PCT 或专利国家/地区码': ['PCTHZLGJDQM'],
+            '授权公告号': ['SQGGH'],
+            '授权公告日期': ['SQGGRQ', 'DateTime'],
+            '申请名称': ['SQMC'],
+            '专利代理机构': ['ZLDLJG'],
+            '专利代理人': ['ZLDLR'],
+            '专利权人': ['ZLQR'],
+            '专利终止日期': ['ZLZZRQ'],
+            '学科门类(科技)码': ['XKMLKJM'],
+            '专利申请日期': ['ZLSQRQ', 'DateTime'],
+            '作者名': ['ZZM'],
+            '作者编号': ['ZZBH'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['ZLCGBH', 'SQBH']
+
+#yangchen
+class DR_ZLCSXX(Base):
+    __tablename__ = 'dr_zlcsxx'
+    __tablename__CH__ = '专利出售信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False) # ID
+    CSRQ = Column('CSRQ', DateTime, default=now())  # 出售日期
+    CSJE = Column('CSJE', Float, default=0.0)  # 出售金额
+    SSDW = Column('SSDW', String(16), default='')  # 受售单位
+    GJDQM = Column('GJDQM', String(16), default='')  # 国籍/地区码
+    BNSJSR = Column('BNSJSR', Float, default=0.0)  # 本年实际收入
+    XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
+    ZLCGBH = Column('ZLCGBH', String(16), default='')  # 专利成果编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '出售日期': ['CSRQ', 'DateTime'],
+            '出售金额': ['CSJE'],
+            '受售单位': ['SSDW'],
+            '国籍/地区码': ['GJDQM'],
+            '本年实际收入': ['BNSJSR'],
+            '学科门类(科技)码': ['XKMLKJM'],
+            '专利成果编号': ['ZLCGBH', 'DateTime'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['ZLCGBH']
+
+
+#yangchen
+class DR_KJCGRYXX_ZL(Base):
+    __tablename__ = 'dr_kjcgryxx_zl'
+    __tablename__CH__ = '科技成果(专利)人员信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    RYH = Column('RYH', String(16), default='')  # 人员号
+    JSM = Column('JSM', String(16), default='')  # 角色码
+    ZXZS = Column('ZXZS', String(16), default='')  # 撰写字数
+    PMZRS = Column('PMZRS', String(16), default='')  # 排名/总人数
+    GXL = Column('GXL', Float, default=0.0)  # 贡献率
+    XM = Column('XM', String(16), default='')  # 姓名
+    SZDW = Column('SZDW', String(16), default='')  # 所在单位
+    RYLX = Column('RYLX', String(16), default='')  # 人员类型
+    ZLCGBH = Column('ZLCGBH', String(16), default='')  # 专利成果编号
+    KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
+    SMSX = Column('SMSX', String(16), default='')  # 署名顺序
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '人员号': ['RYH'],
+            '角色码': ['JSM'],
+            '撰写字数': ['ZXZS'],
+            '排名/总人数': ['PMZRS'],
+            '贡献率': ['GXL'],
+            '姓名': ['XM'],
+            '所在单位': ['SZDW'],
+            '人员类型': ['RYLX'],
+            '专利成果编号': ['ZLCGBH'],
+            '科技成果人员编号': ['KJCGRYBH'],
+            '署名顺序': ['SMSX'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['ZLCGBH']
 
 
 # fanmingreviveagain 项目人员信息表
