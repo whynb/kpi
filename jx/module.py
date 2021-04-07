@@ -539,7 +539,7 @@ class VIEW_XMJFXX(Base):
     def get_search_columns() -> List:
         return ['JZGH', 'DWH', 'DWMC', 'XMBH', 'JBRXM']
 
-
+#zouyang
 class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_kjcgryxx_lw'  # 科技成果(论文)人员信息
