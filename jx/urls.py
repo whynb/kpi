@@ -51,7 +51,7 @@ urlpatterns = [
 
 if settings.CAS:
     urlpatterns.append(url(r'^$', cas.views.login, {"next_page": "index"}, name='cas-login'))
-    urlpatterns.append(url(r'^logout/', cas.views.logout, {"next_page": "/jx/"}, name='cas-logout'))
+    urlpatterns.append(url(r'logout^/', cas.views.logout, {"next_page": "/jx/"}, name='cas-logout'))
 else:
     urlpatterns.append(url(r'^$', views.login, name='login'))
     urlpatterns.append(url(r'^logout/', views.logout, name='logout'))
