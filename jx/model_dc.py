@@ -569,12 +569,11 @@ class DC_KJLWSLQK(Base):  # 科技论文收录情况
         return ['LWBH']
 
 
-
 # yangchen
 class DC_ZLCGJBSJXX(Base):
     __tablename__ = 'dc_zlcgjbsjxx'
     __tablename__CH__ = '专利成果基本数据信息'
-    __table_args__ = (UniqueConstraint('ZLCGBH', 'SQBH', name='_kh_khpc_dwh_khnf_uc'),)
+    __table_args__ = (UniqueConstraint('ZLCGBH', 'SQBH', name='_dc_zlcgjbsjxx_zlcgbh_sqbh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     ZLCGBH = Column('ZLCGBH', String(16), default='')  # 专利成果编号

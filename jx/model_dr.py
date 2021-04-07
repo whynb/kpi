@@ -358,7 +358,7 @@ class DR_HJCGJBSJXX(Base):
 class DR_KJCGRYXX_JL(Base):
     __tablename__ = 'dr_kjcgryxx_jl'
     __tablename__CH__ = '科技成果(获奖成果)人员信息'
-    __table_args__ = (UniqueConstraint('RYH', 'HJCGBH', name='_kh_khpc_dwh_khnf_uc'),)
+    __table_args__ = (UniqueConstraint('RYH', 'HJCGBH', name='_dr_kjcgryxx_jl_ryh_hjcgbh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     RYH = Column('RYH', String(16), default='')  # 人员号
@@ -575,7 +575,7 @@ class DR_KJLWSLQK(Base):  # 科技论文收录情况
 class DR_ZLCGJBSJXX(Base):
     __tablename__ = 'dr_zlcgjbsjxx'
     __tablename__CH__ = '专利成果基本数据信息'
-    __table_args__ = (UniqueConstraint('ZLCGBH', 'SQBH', name='_kh_khpc_dwh_khnf_uc'),)
+    __table_args__ = (UniqueConstraint('ZLCGBH', 'SQBH', name='_dr_zlcgjbsjxx_zlcgbh_sqbh_uc'),)
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     ZLCGBH = Column('ZLCGBH', String(16), default='')  # 专利成果编号
