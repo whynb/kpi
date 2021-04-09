@@ -3,7 +3,6 @@
 
 from jx.sqlalchemy_env import *
 
-
 class DR_ZZJGJBSJXX(Base):
     __tablename__ = 'dr_zzjgjbsjxx'
     __tablename__CH__ = '组织机构基本数据信息'
@@ -543,6 +542,49 @@ class DR_KJCGRYXX_ZZ(Base):
 
 
 
+# fanmingreviveagain 项目人员信息表
+class DR_XMRYXX(Base):
+    __tablename__ = 'dr_xmryxx'
+    __tablename__CH__ = '项目人员信息'
+    __table_args__ = (
+        UniqueConstraint('XMBH', 'RYH', name='_dr_xmryxx_xmbh_ryh_uc'),
+        {'extend_existing': True},
+    )
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    RYH = Column('RYH', String(16), default='')  # 人员号
+    GZL = Column('GZL', Float, default=0.0)  # 工作量
+    MNGZYS = Column('MNGZYS', Float, default=0.0)  # 每年工作月数
+    JSM = Column('JSM', String(16), default='')  # 角色码
+    RYLX = Column('RYLX', String(16), default='')  # 人员类型
+    SMSX = Column('SMSX', String(16), default='')  # 署名顺序
+    XMBH = Column('XMBH', String(16), default='')  # 项目编号
+    XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '人员号': ['RYH'],
+            '工作量': ['GZL', 'Float'],
+            '每年工作月数': ['MNGZYS', 'Float'],
+            '角色码': ['JSM'],
+            '人员类型': ['RYLX'],
+            '署名顺序': ['SMSX'],
+            '项目编号': ['XMBH'],
+            '学科门类(科技)码': ['XKMLKJM'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['XMBH', 'RYH']
+# fanmingdieatlast
+
+
 if __name__ == '__main__':
 
     """
@@ -553,6 +595,7 @@ if __name__ == '__main__':
     ALTER TABLE DR_KCSJXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_XNXQXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_BKS_JPKC ADD stamp TIMESTAMP(6);
+    ALTER TABLE DR_XMRYXX MODIFY stamp TIMESTAMP(6);
     """
 
     try:

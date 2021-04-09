@@ -100,7 +100,7 @@
                                     <div class=" col-sm-8">
                                         <select class="selectpicker" title="选择{{ title['title'] }}" id="select_{{ title['field'] }}" onchange="{{ title['field'] }}_change()" data-live-search="true">
                                             {% with fields = static_fields(title['value']) %}
-                                                {% for val in static_func(payroll, title['value']) %}
+                                                {% for val in static_func(payroll, title['value'], title['where']) %}
                                                     {% if loop.index == 1 %}
                                                         <option value="{{ val[fields[0]] }}" selected>{{ val[fields[1]] }}</option>
                                                     {% else %}

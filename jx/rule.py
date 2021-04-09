@@ -591,7 +591,7 @@ class KH_KHJGHZ(Base, KpiObjectBase):
 
     @staticmethod
     def get_search_columns() -> List[str]:
-        return ['DWMC', 'DWH', "DATE_FORMAT(KHNF,'%Y')", 'XM', 'GZH', 'KHMC', 'KHLX', 'KHZL', 'XXKHZL']
+        return ['DWMC', 'DWH', ['KHNF', "DATE_FORMAT(KHNF,'%%Y')"], 'XM', 'GZH', 'KHMC', 'KHLX', 'KHZL', 'XXKHZL']
 
     @staticmethod
     def get_title_columns() -> List[dict]:
@@ -699,7 +699,7 @@ class KH_BCYKH(Base, KpiObjectBase):
 
     @staticmethod
     def get_search_columns() -> List[str]:
-        return ['DWMC', 'KHNF', 'XM', 'JZGH', 'DWH', 'CYKH', ]
+        return ['DWMC', ['KHNF', "DATE_FORMAT(KHNF,'%%Y')"], 'XM', 'JZGH', 'DWH', 'CYZT', ]
 
     @staticmethod
     def get_title_columns() -> List[dict]:
