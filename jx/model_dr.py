@@ -118,10 +118,11 @@ QYBZ 启用标志 C  教务处、研究生院、学
 class DR_PKSJXX(Base):  # 排课数据信息
 
     __tablename__ = 'dr_pksjxx'  # 排课数据信息
-    __table_args__ = (UniqueConstraint(
-        'JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH',
-        name='_dr_pksjxx_jsgh_kch_kkxnd_kkxqm_skbjh_uc'),
-    )
+    # __table_args__ = (UniqueConstraint(
+    #     'JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH',
+    #     name='_dr_pksjxx_jsgh_kch_kkxnd_kkxqm_skbjh_uc'),
+    # )
+    __tablename__CN__ = '排课数据信息'
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JSGH = Column('JSGH', String(16), default='')  # 教师工号
@@ -135,6 +136,7 @@ class DR_PKSJXX(Base):  # 排课数据信息
     SYZS = Column('SYZS', String(16), default='')  # 实验组数
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
+    # KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
     HBS = Column('HBS', String(16), default='')  # 合班数
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
@@ -155,6 +157,7 @@ class DR_PKSJXX(Base):  # 排课数据信息
             '实验组数': ['SYZS'],
             '教学名师级别码': ['JXMSJBM'],
             '外语课程调节码': ['WYKCTJM'],
+            # '课程级别码': ['KCJBM'],
             '质量系数': ['ZLXS'],
             '合班数': ['HBS'],
             '时间戳': ['stamp', 'DateTime'],
@@ -322,7 +325,7 @@ class DR_XNXQXX(Base):
 
     @staticmethod
     def get_unique_condition() -> List[str]:
-        return ['XNXQM']
+        return ['XNDM']
 
 
 class DR_BKS_JPKC(Base):
@@ -334,6 +337,7 @@ class DR_BKS_JPKC(Base):
     KCMC = Column('KCMC', String(16), default='')  # 课程名称
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     FZRGH = Column('FZRGH', String(16), default='')  # 负责人工号
+    FZRXM = Column('FZRXM', String(16), default='')  # 负责人姓名
     DWH = Column('DWH', String(16), default='')  # 单位号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
@@ -346,6 +350,7 @@ class DR_BKS_JPKC(Base):
             '课程名称': ['KCMC'],
             '课程级别码': ['KCJBM'],
             '负责人工号': ['FZRGH'],
+            '负责人姓名': ['FZRXM'],
             '单位号': ['DWH'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
@@ -459,7 +464,7 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
-    JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    JZGH = Column('JZGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     ZDZS = Column('ZDZS', String(16), default='')  # 指导周数
     XQ = Column('XQ', DateTime, default=now())  # 指导学期
@@ -474,7 +479,7 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
             'ID': ['id'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
-            '教师工号': ['JSGH'],
+            '教师工号': ['JZGH'],
             '教师姓名': ['JSXM'],
             '指导周数': ['ZDZS'],
             '指导普通学生数': ['ZDPTXSS'],
@@ -485,7 +490,7 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
 
     @staticmethod
     def get_unique_condition() -> List[str]:
-        return ['JSGH','JXMSJBM']
+        return ['JZGH','JXMSJBM']
 
 class DR_JZGJCSJXX(Base):
     __tablename__ = 'dr_jzgjcsjxx'
