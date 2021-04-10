@@ -27,7 +27,7 @@ DEBUG = True
 
 COOKIE_TIME_OUT = 36000
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0' 'localhost', '*']
 
 LOGGING = {
     'version': 1,
@@ -86,9 +86,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'django_crontab',
+    'django_filters',
+    'rest_framework',
     'cas',
     'jx.apps.JxConfig',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 CAS = False
 
@@ -158,20 +168,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kpi',
         'USER': 'root',
-
-# run
-#        'PASSWORD': 'QAzx1324',
-#        'HOST': '47.93.196.31',
-
-# test
-#        'PASSWORD': 'P1ssW0rd',
-#        'HOST': '47.94.148.26',
-
-# local
         'PASSWORD': 'password',
-        'HOST': '',
-
-# port
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }

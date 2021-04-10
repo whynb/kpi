@@ -12,6 +12,12 @@ from jx.exception import *
 from jx.password import pc
 
 
+# from django.contrib.auth.models import User
+# u = User.objects.get(username='why')
+# u.set_password('password')
+# u.save()
+
+
 time_out = settings.COOKIE_TIME_OUT
 org_tree_without_users = ['zzjgjbsjxx', 'khpc', 'jxkhgz', 'khgzdz']
 

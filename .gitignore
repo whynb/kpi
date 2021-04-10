@@ -4,8 +4,6 @@
 */.DS_Store
 .idea/*
 .vscode/*
-jx/sqlalchemy_env.py
-kpi/settings.py
 venv/*
 templates/html/fixedtableheader.html
 jx/tests.py
