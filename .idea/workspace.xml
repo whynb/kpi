@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tatusgit status" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/model_dc.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/model_dr.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kpi/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kpi/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -312,13 +316,6 @@
       <option name="project" value="LOCAL" />
       <updated>1616068543692</updated>
     </task>
-    <task id="LOCAL-00009" summary="test comments again">
-      <created>1616068543692</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1616068543692</updated>
-    </task>
     <option name="localTasksCounter" value="10" />
     <servers />
   </component>
@@ -375,34 +372,35 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="447" y="71" width="1087" height="972" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1616068543607" />
-    <state x="247" y="121" width="1478" height="879" key="DiffContextDialog" timestamp="1615362924507">
-      <screen x="72" y="27" width="1848" height="1053" />
+    <state x="247" y="121" width="1478" height="879" key="DiffContextDialog" timestamp="1618020587236">
+      <screen x="72" y="27" width="1642" height="795" />
     </state>
-    <state x="247" y="121" width="1478" height="879" key="DiffContextDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1615362924507" />
+    <state x="247" y="121" width="1478" height="879" key="DiffContextDialog/72.27.1642.795@72.27.1642.795" timestamp="1618020587236" />
+    <state x="247" y="121" width="1478" height="879" key="DiffContextDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1618020416480" />
     <state x="778" y="298" width="424" height="525" key="FileChooserDialogImpl" timestamp="1615102164411">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="778" y="298" width="424" height="525" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1615102164411" />
-    <state width="1794" height="348" key="GridCell.Tab.0.bottom" timestamp="1617983963242">
+    <state width="1794" height="348" key="GridCell.Tab.0.bottom" timestamp="1618020487679">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1588" height="262" key="GridCell.Tab.0.bottom/72.27.1642.895@72.27.1642.895" timestamp="1616407054221" />
-    <state width="1794" height="348" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1617983963242" />
-    <state width="1794" height="348" key="GridCell.Tab.0.center" timestamp="1617983963241">
+    <state width="1794" height="348" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1618020487679" />
+    <state width="1794" height="348" key="GridCell.Tab.0.center" timestamp="1618020487678">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1588" height="262" key="GridCell.Tab.0.center/72.27.1642.895@72.27.1642.895" timestamp="1616407054220" />
-    <state width="1794" height="348" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1617983963241" />
-    <state width="1794" height="348" key="GridCell.Tab.0.left" timestamp="1617983963240">
+    <state width="1794" height="348" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1618020487678" />
+    <state width="1794" height="348" key="GridCell.Tab.0.left" timestamp="1618020487678">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1588" height="262" key="GridCell.Tab.0.left/72.27.1642.895@72.27.1642.895" timestamp="1616407054219" />
-    <state width="1794" height="348" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1617983963240" />
-    <state width="1794" height="348" key="GridCell.Tab.0.right" timestamp="1617983963242">
+    <state width="1794" height="348" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1618020487678" />
+    <state width="1794" height="348" key="GridCell.Tab.0.right" timestamp="1618020487678">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1588" height="262" key="GridCell.Tab.0.right/72.27.1642.895@72.27.1642.895" timestamp="1616407054221" />
-    <state width="1794" height="348" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1617983963242" />
+    <state width="1794" height="348" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1618020487678" />
     <state width="1794" height="275" key="GridCell.Tab.1.bottom" timestamp="1616061313183">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -427,9 +425,10 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="84" y="71" width="1641" height="929" key="MergeDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1616037995428" />
-    <state x="700" y="266" width="582" height="581" key="MultipleFileMergeDialog" timestamp="1616037995433">
-      <screen x="72" y="27" width="1848" height="1053" />
+    <state x="630" y="207" width="607" height="439" key="MultipleFileMergeDialog" timestamp="1618020566318">
+      <screen x="72" y="27" width="1642" height="795" />
     </state>
+    <state x="630" y="207" width="607" height="439" key="MultipleFileMergeDialog/72.27.1642.795@72.27.1642.795" timestamp="1618020566318" />
     <state x="700" y="266" width="582" height="581" key="MultipleFileMergeDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1616037995433" />
     <state x="432" y="164" width="922" height="737" key="SettingsEditor" timestamp="1616399167076">
       <screen x="72" y="27" width="1642" height="895" />
@@ -459,6 +458,10 @@
     </state>
     <state x="664" y="124" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/72.27.1642.895@72.27.1642.895" timestamp="1616396662915" />
     <state x="738" y="141" width="552" height="816" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1616073940735" />
+    <state x="172" y="127" width="1648" height="853" key="com.intellij.dvcs.ui.CompareBranchesDialog" timestamp="1618020587237">
+      <screen x="72" y="27" width="1642" height="795" />
+    </state>
+    <state x="172" y="127" width="1648" height="853" key="com.intellij.dvcs.ui.CompareBranchesDialog/72.27.1642.795@72.27.1642.795" timestamp="1618020587237" />
     <state x="649" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1617983034402">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
