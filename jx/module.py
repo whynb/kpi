@@ -698,20 +698,20 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     def get_title_columns() -> []:
         return [
             {'table': 'dr_kjcgryxx_lw','field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False',},
-            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'False', },
-            {'table': 'dr_kjlwslqk', 'field': 'SLLX', 'title': '收录类型', 'editable': 'True', 'type': 'inline','value': 'KY_LZSL:DM AS SLLX,MC', 'where': '', 'create': 'True', },
-            {'table': 'dr_kjlwslqk', 'field': 'SLBH', 'title': '收录编号', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjlwslqk', 'field': 'SLSJ', 'title': '收录时间', 'editable': 'False', 'type': 'date','create': 'True', },
-            {'table': 'dr_kjlwslqk', 'field': 'SLQH', 'title': '收录区号', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjcgryxx_lw','field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjcgryxx_lw', 'field': 'JSM', 'title': '角色码', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjcgryxx_lw', 'field': 'ZXZS', 'title': '撰写字数', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLLX', 'title': '收录类型', 'editable': 'True', 'type': 'inline', 'value': 'st_ky_lzsl:DM AS SLLX,MC', 'where': '', 'create': 'True', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLBH', 'title': '收录编号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLSJ', 'title': '收录时间', 'editable': 'False', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_kjlwslqk', 'field': 'SLQH', 'title': '收录区号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_lw','field': 'RYH', 'title': '人员号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'JSM', 'title': '角色码', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'ZXZS', 'title': '撰写字数', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_kjcgryxx_lw', 'field': 'PMZRS', 'title': '排名/总人数', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjcgryxx_lw', 'field': 'GXL', 'title': '贡献率', 'editable': 'True', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjcgryxx_lw', 'field': 'XM', 'title': '姓名', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjcgryxx_lw', 'field': 'SZDW', 'title': '所在单位', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjcgryxx_lw', 'field': 'RYLX', 'title': '人员类型', 'editable': 'False', 'type': 'text','create': 'True', },
-            {'table': 'dr_kjcgryxx_lw', 'field': 'LWBH', 'title': '论文编号', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'GXL', 'title': '贡献率', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'XM', 'title': '姓名', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'SZDW', 'title': '所在单位', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'RYLX', 'title': '人员类型', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjcgryxx_lw', 'field': 'LWBH', 'title': '论文编号', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_kjcgryxx_lw', 'field': 'KJCGRYBH', 'title': '科技成果人员编号', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_kjqklwjbsjxx','field': 'LWMC', 'title': '论文名称', 'editable': 'False', 'type': 'text', 'create': 'True',},
             {'table': 'dr_kjqklwjbsjxx','field': 'LWLXM', 'title': '论文类型码', 'editable': 'True', 'type': 'text', 'create': 'True',},
@@ -723,7 +723,7 @@ class VIEW_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
             {'table': 'dr_kjqklwjbsjxx','field': 'WDWZZPX', 'title': '外单位作者排序', 'editable': 'True', 'type': 'enum', 'value': ['0','1','2', '3','4'],'create': 'True', },
             {'table': 'dr_kjqklwjbsjxx','field': 'BZXYBJZDSYS', 'title': '标注学院部级重点实验室', 'editable': 'True', 'type': 'enum','value': ['无','未收录','收录'],'create': 'True', },
             {'table': 'dr_kjlwfbxx', 'field': 'FBRQ', 'title': '发表日期', 'editable': 'True', 'type': 'date', 'create': 'True', },
-            {'table': 'dr_kjlwfbxx','field': 'JH', 'title': '卷号', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_kjlwfbxx','field': 'JH', 'title': '卷号', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_kjlwfbxx','field': 'QH', 'title': '期号', 'editable': 'False', 'type': 'text', 'create': 'True',},
             {'table': 'dr_kjlwfbxx','field': 'LRSJ', 'title': '录入时间', 'editable': 'True', 'type': 'date', 'create': 'True',},
         ]
@@ -1216,20 +1216,64 @@ def generate_class_view(name='module', create_view=True):
     return cdf
 
 
-if __name__ == '__main__':
+def modify_table_stamp(name='model_dr'):
+    try:
+        module = __import__('jx.' + name, fromlist=([name]))
+    except ImportError:
+        module = __import__(name)
+    from pymysql.err import Error
 
-    # DON'T touch below SQL which related to auto management
-    """
-        DROP VIEW view_sysuser;
-        CREATE VIEW view_sysuser AS
-        SELECT su.*, ro.role_name, jg.JZGH, jg.XM, jg.DWH, zz.DWMC
-        FROM jx_sysuser su
-        LEFT JOIN jx_role ro ON ro.id=su.role_id
-        LEFT JOIN view_jzgjcsjxx jg ON jg.JZGH=su.payroll
-        LEFT JOIN view_zzjgjbsjxx zz ON zz.DWH=jg.DWH;
-    """
+    for k, v in module.class_dict.items():
+        if k.find('DR_') == -1 and k.find('DC_') == -1:
+            continue
+
+        print('Processing ' + k + ':')
+        v_class = getattr(module, k)
+
+        try:
+            print("ALTER TABLE " + v_class.__tablename__ + " MODIFY stamp TIMESTAMP(6);")
+            cursor.execute("ALTER TABLE " + v_class.__tablename__ + " MODIFY stamp TIMESTAMP(6);")
+        except Error as e:
+            print(e)
+        except Exception as e:
+            print(e)
+
+    return
+
+
+def generate_sysuser_view():
+    from pymysql.err import Error
+    try:
+        # DON'T touch below SQL which related to auto management
+        sql_drop = "DROP VIEW view_sysuser"
+        sql_create = """
+            CREATE VIEW view_sysuser AS
+            SELECT su.*, ro.role_name, jg.JZGH, jg.XM, jg.DWH, zz.DWMC
+            FROM jx_sysuser su
+            LEFT JOIN jx_role ro ON ro.id=su.role_id
+            LEFT JOIN view_jzgjcsjxx jg ON jg.JZGH=su.payroll
+            LEFT JOIN view_zzjgjbsjxx zz ON zz.DWH=jg.DWH
+        """
+        print(sql_drop)
+        cursor.execute(sql_drop)
+        print(sql_create)
+        cursor.execute(sql_create)
+    except Error as e:
+        print(e)
+    except Exception as e:
+        print(e)
+
+    return
+
+
+if __name__ == '__main__':
 
     print(generate_class_view(name='module', create_view=False))
     generate_class_view()
+
+    modify_table_stamp('model_dr')
+    modify_table_stamp('model_dc')
+
+    generate_sysuser_view()
 
     exit(0)

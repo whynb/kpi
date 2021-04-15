@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 07/04/2021 22:55:54
+ Date: 12/04/2021 14:59:16
 */
 
 SET NAMES utf8mb4;
@@ -828,7 +828,7 @@ CREATE TABLE `dr_hjcgjbsjxx` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `dr_hjcgjbsjxx` VALUES (1, 'HJ-001', '全国大奖', NULL, '00000C', '2020-12-20 00:00:00', '02', '', '5', '', NULL, '', '', '', NULL, '000001C', '王武', NULL, '冶金工程学院', '', '', NULL, NULL, NULL, NULL);
-INSERT INTO `dr_hjcgjbsjxx` VALUES (3, 'HJ-002', '省级大奖', NULL, '00000C', '2021-01-10 00:00:00', '01', '', '6', '', NULL, '', '', '', NULL, '000001D', '李四', NULL, '冶金工程学院', '', '', NULL, NULL, NULL, NULL);
+INSERT INTO `dr_hjcgjbsjxx` VALUES (3, 'HJ-002', '省级大奖', NULL, '00000C', '2021-01-10 00:00:00', '01', '', '6', '21', NULL, '', '', '', NULL, '000001D', '李四', NULL, '冶金工程学院', '', '', NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -910,12 +910,13 @@ CREATE TABLE `dr_kjcgryxx_jl` (
   `note` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `_dr_kjcgryxx_jl_ryh_hjcgbh_uc` (`RYH`,`HJCGBH`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of dr_kjcgryxx_jl
 -- ----------------------------
 BEGIN;
+INSERT INTO `dr_kjcgryxx_jl` VALUES (1, '00001B', NULL, NULL, '1/2', 50, '李四', NULL, NULL, 'HJ-002', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1268,9 +1269,9 @@ CREATE TABLE `dr_zzjgjbsjxx` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `dr_zzjgjbsjxx` VALUES (13, '00000D', '金属研究所', 'ITC', '', '', '', '', '', '00000C', '', '', '', '2099-12-31 00:00:00', '', '1954-01-01 00:00:00', '', '', '2021-03-28 21:56:12.904036');
-INSERT INTO `dr_zzjgjbsjxx` VALUES (14, '1234', '机器人研究所', '', '机器人', '', '', '', '', '00000B', '', '', '', '2021-00-01 00:00:00', '', '1920-00-01 00:00:00', '', '', '2021-03-17 10:45:15.226933');
+INSERT INTO `dr_zzjgjbsjxx` VALUES (14, '1234', '机器人研究所', '', '机器人', '', '', '', '', '00000B', '', '', '', '2021-01-01 00:00:00', '', '1920-01-01 00:00:00', '', '', '2021-03-17 10:45:15.226933');
 INSERT INTO `dr_zzjgjbsjxx` VALUES (28, '00000A', '东北大学', 'NEU', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2099-12-31 00:00:00', NULL, '1909-01-01 00:00:00', NULL, '985', '2021-02-18 20:14:40.767352');
-INSERT INTO `dr_zzjgjbsjxx` VALUES (29, '00000B', '信息工程学院', 'ITC', '信息', '', '', '', '', '00000A', '', '', NULL, '2099-01-01 00:00:00', '', '1909-00-01 00:00:00', '', '名校', '2021-02-18 20:14:40.767352');
+INSERT INTO `dr_zzjgjbsjxx` VALUES (29, '00000B', '信息工程学院', 'ITC', '信息', '', '', '', '', '00000A', '', '', NULL, '2099-01-01 00:00:00', '', '1909-01-01 00:00:00', '', '名校', '2021-02-18 20:14:40.767352');
 INSERT INTO `dr_zzjgjbsjxx` VALUES (30, '00000C', '冶金工程学院', 'ITC', '冶金', NULL, NULL, NULL, NULL, '00000A', NULL, NULL, NULL, '2099-12-31 00:00:00', NULL, '1935-01-01 00:00:00', NULL, '', '2021-03-17 20:28:07.728193');
 COMMIT;
 
@@ -1627,24 +1628,26 @@ CREATE TABLE `kh_khjghz` (
   `note` varchar(2056) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `_kh_khjghz_dwh_khnf_gzh_jzgh_uc` (`DWH`,`KHNF`,`GZH`,`JZGH`)
-) ENGINE=InnoDB AUTO_INCREMENT=285 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=312 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of kh_khjghz
 -- ----------------------------
 BEGIN;
-INSERT INTO `kh_khjghz` VALUES (270, '2021-01-01 00:00:00', '00000A', '', '', 'ZJ-1', 40, '2021-03-24 15:45:14', '');
-INSERT INTO `kh_khjghz` VALUES (272, '2021-01-01 00:00:00', '00000A', '', '', '', 144067, '2021-03-24 15:45:14', '');
-INSERT INTO `kh_khjghz` VALUES (274, '2021-01-01 00:00:00', '00000A', '', '', 'A1', 3, '2021-03-24 15:45:14', '');
-INSERT INTO `kh_khjghz` VALUES (276, '2021-01-01 00:00:00', '00000A', '', '', 'A2', 144004, '2021-03-24 15:45:14', '');
-INSERT INTO `kh_khjghz` VALUES (277, '2021-01-01 00:00:00', '00000B', '00000A', '00001B', '', 20, '2021-03-24 15:45:14', '');
-INSERT INTO `kh_khjghz` VALUES (278, '2021-01-01 00:00:00', '00000B', '00000A', '', 'XX-002', 20, '2021-03-24 15:45:14', '');
-INSERT INTO `kh_khjghz` VALUES (279, '2021-01-01 00:00:00', '00000A', '', '', 'XX-002', 20, '2021-03-24 15:45:14', '');
-INSERT INTO `kh_khjghz` VALUES (280, '2021-01-01 00:00:00', '00000B', '00000A', '', '', 20, '2021-03-24 15:45:14', '');
-INSERT INTO `kh_khjghz` VALUES (281, '2021-01-01 00:00:00', '00000C', '00000A', '00001B', '', 72022, '2021-03-30 15:09:50', '');
-INSERT INTO `kh_khjghz` VALUES (282, '2021-01-01 00:00:00', '00000C', '00000A', '', 'ZJ-1', 20, '2021-03-30 15:09:50', '');
-INSERT INTO `kh_khjghz` VALUES (283, '2021-01-01 00:00:00', '00000C', '00000A', '', '', 72022, '2021-03-30 15:09:50', '');
-INSERT INTO `kh_khjghz` VALUES (284, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A2', 72002, '2021-03-30 15:09:50', '');
+INSERT INTO `kh_khjghz` VALUES (298, '2021-01-01 00:00:00', '00000C', '00000A', '00001B', '', 72025, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (299, '2021-01-01 00:00:00', '00000C', '00000A', '', 'ZJ-1', 20, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (300, '2021-01-01 00:00:00', '00000A', '', '', 'ZJ-1', 20, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (301, '2021-01-01 00:00:00', '00000C', '00000A', '', '', 72025, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (302, '2021-01-01 00:00:00', '00000A', '', '', '', 72045, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (303, '2021-01-01 00:00:00', '00000C', '00000A', '0000001B', '', 0, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (304, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A1', 3, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (305, '2021-01-01 00:00:00', '00000A', '', '', 'A1', 3, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (306, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A2', 72002, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (307, '2021-01-01 00:00:00', '00000A', '', '', 'A2', 72002, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (308, '2021-01-01 00:00:00', '00000B', '00000A', '00001B', '', 20, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (309, '2021-01-01 00:00:00', '00000B', '00000A', '', 'XX-002', 20, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (310, '2021-01-01 00:00:00', '00000A', '', '', 'XX-002', 20, '2021-04-09 10:33:24', '');
+INSERT INTO `kh_khjghz` VALUES (311, '2021-01-01 00:00:00', '00000B', '00000A', '', '', 20, '2021-04-09 10:33:24', '');
 COMMIT;
 
 -- ----------------------------
@@ -1662,17 +1665,19 @@ CREATE TABLE `kh_khjgmx` (
   `note` varchar(2056) DEFAULT NULL,
   `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of kh_khjgmx
 -- ----------------------------
 BEGIN;
 INSERT INTO `kh_khjgmx` VALUES (143, '00001B', '00000C', 'ZJ-1', '2021-01-01 00:00:00', 20, 'da', '', '2021-03-06 23:38:57.000000');
-INSERT INTO `kh_khjgmx` VALUES (216, '00001B', '00000B', 'XX-002', '2021-01-01 00:00:00', 10, 'XX-002->教职工：00001B BH8877元', '', '2021-03-24 15:45:14.000000');
-INSERT INTO `kh_khjgmx` VALUES (217, '00001B', '00000B', 'XX-002', '2021-01-01 00:00:00', 10, 'XX-002->教职工：00001B BH8888元', '', '2021-03-24 15:45:14.000000');
-INSERT INTO `kh_khjgmx` VALUES (218, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36000, '教职工：00001B BH8877元', '', '2021-03-30 15:09:50.000000');
-INSERT INTO `kh_khjgmx` VALUES (219, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36002, '教职工：00001B BH8888元', '', '2021-03-30 15:09:50.000000');
+INSERT INTO `kh_khjgmx` VALUES (227, '00001B', '00000C', 'A1', '2021-01-01 00:00:00', 1.5, 'A1->教职工：00001B BH8877元', '', '2021-04-09 10:33:24.000000');
+INSERT INTO `kh_khjgmx` VALUES (228, '00001B', '00000C', 'A1', '2021-01-01 00:00:00', 1.5, 'A1->教职工：00001B BH8888元', '', '2021-04-09 10:33:24.000000');
+INSERT INTO `kh_khjgmx` VALUES (229, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36000, '教职工：00001B BH8877元', '', '2021-04-09 10:33:24.000000');
+INSERT INTO `kh_khjgmx` VALUES (230, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36002, '教职工：00001B BH8888元', '', '2021-04-09 10:33:24.000000');
+INSERT INTO `kh_khjgmx` VALUES (231, '00001B', '00000B', 'XX-002', '2021-01-01 00:00:00', 10, 'XX-002->教职工：00001B BH8877元', '', '2021-04-09 10:33:24.000000');
+INSERT INTO `kh_khjgmx` VALUES (232, '00001B', '00000B', 'XX-002', '2021-01-01 00:00:00', 10, 'XX-002->教职工：00001B BH8888元', '', '2021-04-09 10:33:24.000000');
 COMMIT;
 
 -- ----------------------------
@@ -2116,12 +2121,6 @@ DROP VIEW IF EXISTS `view_kjqklwjbsjxx`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_kjqklwjbsjxx` AS select `dr`.`id` AS `id`,`jz`.`DWH` AS `DWH`,`dr`.`LWBH` AS `LWBH`,`dr`.`LWMC` AS `LWMC`,`dr`.`LWLXM` AS `LWLXM`,`dr`.`DYZZ` AS `DYZZ`,`dr`.`CYRY` AS `CYRY`,`dr`.`TXZZ` AS `TXZZ`,`dr`.`JSQK` AS `JSQK`,`dr`.`JQY` AS `JQY`,`dr`.`WDWZZPX` AS `WDWZZPX`,`dr`.`BZXYBJZDSYS` AS `BZXYBJZDSYS`,`kj`.`FBRQ` AS `FBRQ`,`kj`.`JH` AS `JH`,`kj`.`QH` AS `QH`,`kj`.`LRSJ` AS `LRSJ`,`dr`.`stamp` AS `stamp`,`dr`.`note` AS `note` from ((`dr_kjqklwjbsjxx` `dr` left join `dr_kjlwfbxx` `kj` on((`kj`.`LWBH` = `dr`.`LWBH`))) left join `dr_jzgjcsjxx` `jz` on((`jz`.`JZGH` = `dr`.`DYZZ`))) where (1 = 1);
 
 -- ----------------------------
--- View structure for view_sysuser
--- ----------------------------
-DROP VIEW IF EXISTS `view_sysuser`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_sysuser` AS select `su`.`id` AS `id`,`su`.`payroll` AS `payroll`,`su`.`password` AS `password`,`su`.`time_pwd` AS `time_pwd`,`su`.`role_id` AS `role_id`,`su`.`usertype_id` AS `usertype_id`,`ro`.`role_name` AS `role_name`,`jg`.`JZGH` AS `JZGH`,`jg`.`XM` AS `XM`,`jg`.`DWH` AS `DWH`,`zz`.`DWMC` AS `DWMC` from (((`jx_sysuser` `su` left join `jx_role` `ro` on((`ro`.`id` = `su`.`role_id`))) left join `view_jzgjcsjxx` `jg` on((`jg`.`JZGH` = `su`.`payroll`))) left join `view_zzjgjbsjxx` `zz` on((`zz`.`DWH` = `jg`.`DWH`)));
-
--- ----------------------------
 -- View structure for view_xmjfxx
 -- ----------------------------
 DROP VIEW IF EXISTS `view_xmjfxx`;
@@ -2144,5 +2143,11 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_zlcgjbsjxx` AS sele
 -- ----------------------------
 DROP VIEW IF EXISTS `view_zzjgjbsjxx`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_zzjgjbsjxx` AS select `dr`.`id` AS `id`,`dr`.`DWH` AS `DWH`,`dr`.`DWMC` AS `DWMC`,`dr`.`DWYWMC` AS `DWYWMC`,`dr`.`DWJC` AS `DWJC`,`dr`.`DWYWJC` AS `DWYWJC`,`dr`.`DWJP` AS `DWJP`,`dr`.`DWDZ` AS `DWDZ`,`dr`.`SZXQ` AS `SZXQ`,`dr`.`LSDWH` AS `LSDWH`,`dr`.`DWLBM` AS `DWLBM`,`dr`.`DWBBM` AS `DWBBM`,`dr`.`DWYXBS` AS `DWYXBS`,`dr`.`SXRQ` AS `SXRQ`,`dr`.`SFST` AS `SFST`,`dr`.`JLNY` AS `JLNY`,`dr`.`DWFZRH` AS `DWFZRH`,`dr`.`stamp` AS `stamp`,`dr`.`note` AS `note` from (`dr_zzjgjbsjxx` `dr` left join `dc_zzjgjbsjxx` `dc` on((`dc`.`DWH` = `dr`.`DWH`))) where (1 = 1);
+
+-- ----------------------------
+-- View structure for view_sysuser
+-- ----------------------------
+DROP VIEW IF EXISTS `view_sysuser`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_sysuser` AS select `su`.`id` AS `id`,`su`.`payroll` AS `payroll`,`su`.`password` AS `password`,`su`.`time_pwd` AS `time_pwd`,`su`.`role_id` AS `role_id`,`su`.`usertype_id` AS `usertype_id`,`ro`.`role_name` AS `role_name`,`jg`.`JZGH` AS `JZGH`,`jg`.`XM` AS `XM`,`jg`.`DWH` AS `DWH`,`zz`.`DWMC` AS `DWMC` from (((`jx_sysuser` `su` left join `jx_role` `ro` on((`ro`.`id` = `su`.`role_id`))) left join `view_jzgjcsjxx` `jg` on((`jg`.`JZGH` = `su`.`payroll`))) left join `view_zzjgjbsjxx` `zz` on((`zz`.`DWH` = `jg`.`DWH`)));
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -7,3 +7,7 @@
 venv/*
 templates/html/fixedtableheader.html
 jx/tests.py
+mysql80-community-release-el7-3.noarch.rpm
+Python-3.9.4.tgz
+.idea/workspace.xml
+.idea/workspace.xml

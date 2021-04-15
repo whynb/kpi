@@ -3,6 +3,7 @@
 
 from jx.sqlalchemy_env import *
 
+
 class DR_ZZJGJBSJXX(Base):
     __tablename__ = 'dr_zzjgjbsjxx'
     __tablename__CH__ = '组织机构基本数据信息'
@@ -770,18 +771,10 @@ class DR_XMRYXX(Base):
 # fanmingdieatlast
 
 
-if __name__ == '__main__':
+class_dict = {key: var for key, var in locals().items() if isinstance(var, type)}
 
-    """
-    ALTER TABLE DR_ZZJGJBSJXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DR_JZGJCSJXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DR_XMJFXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DR_PKSJXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DR_KCSJXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DR_XNXQXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DR_BKS_JPKC ADD stamp TIMESTAMP(6);
-    ALTER TABLE DR_XMRYXX MODIFY stamp TIMESTAMP(6);
-    """
+
+if __name__ == '__main__':
 
     try:
         Base.metadata.create_all(engine)

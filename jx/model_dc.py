@@ -726,17 +726,10 @@ class DC_KJCGRYXX_ZL(Base):
         return ['ZLCGBH']
 
 
-if __name__ == '__main__':
+class_dict = {key: var for key, var in locals().items() if isinstance(var, type)}
 
-    """
-    ALTER TABLE DC_ZZJGJBSJXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DC_JZGJCSJXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DC_XMJFXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DC_PKSJXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DC_KCSJXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DC_XNXQXX ADD stamp TIMESTAMP(6);
-    ALTER TABLE DC_BKS_JPKC ADD stamp TIMESTAMP(6);
-    """
+
+if __name__ == '__main__':
 
     try:
         Base.metadata.create_all(engine)
