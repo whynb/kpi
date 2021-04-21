@@ -184,6 +184,7 @@ class DR_SYPKSJXX(Base):  # 实验排课数据信息
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
     KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
+    KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     SYZS = Column('SYZS', String(16), default='')  # 实验组数
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
     HBS = Column('HBS', String(16), default='')  # 合班数
@@ -201,6 +202,7 @@ class DR_SYPKSJXX(Base):  # 实验排课数据信息
             '上课班级号': ['SKBJH'],
             '开课学期码': ['KKXQM'],
             '总学时': ['ZXXS'],
+            '课程级别码': ['KCJBM'],
             '实验组数': ['SYZS'],
             '质量系数': ['ZLXS'],
             '合班数': ['HBS'],
@@ -477,7 +479,7 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
     JZGH = Column('JZGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     ZDZS = Column('ZDZS', String(16), default='')  # 指导周数
-    XQ = Column('XQ', DateTime, default=now())  # 指导学期
+    XQ = Column('XQ', String(16), default='')  # 指导学期
     ZDPTXSS = Column('ZDPTXSS', String(16), default='')  # 指导普通学生数
     ZDSYXSS = Column('ZDSYXSS', String(16), default='')  # 指导双语学生数
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
