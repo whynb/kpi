@@ -628,6 +628,113 @@ class VIEW_BKS_JPKC(Base):
     def get_search_columns() -> List[str]:
         return ['KCH']
 
+class VIEW_YJSJXZXS(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_yjsjxzxs'
+    __tablename__CH__ = '研究生理论课学时数'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    JZGH = Column('JZGH', String(16), default='')  # 教师工号
+    JSXM = Column('JSXM', String(16), default='')  # 教师姓名
+    KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
+    KKXND = Column('KKXND', String(16), default='')  # 开课学年度
+    SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
+    ZKJHXS = Column('ZKJHXS', String(16), default='')  # 助课计划学时
+    JHXSS = Column('JHXSS', String(16), default='')  # 计划学时数
+    KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
+    JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
+    WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
+    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
+    # BH = Column('BH', String(16), default='')  # 班号
+    HBS = Column('HBS', String(16), default='')  # 合班数
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+            CREATE VIEW view_yjsjxzxs AS
+            SELECT 
+                pk.id AS id,            
+                pk.JSGH AS JSGH, 
+                pk.JSGH AS JZGH, 
+                pk.JSXM AS JSXM,            
+                pk.KKXND AS KKXND,            
+                pk.KKXQM AS KKXQM,            
+                kc.LLXS AS JHXSS,  
+                pk.ZKJHXS AS ZKJHXS,     
+                pk.ZLXS AS ZLXS,            
+                pk.HBS AS HBS,      
+                pk.SKBJH AS SKBJH,         
+                pk.WYKCTJM AS WYKCTJM,            
+                pk.JXMSJBM AS JXMSJBM,     
+                pk.KCJBM AS KCJBM, 
+                # jp.KCJBM AS KCJBM,
+                kc.KCH AS KCH,           
+                dr_jzg.DWH AS DWH,        
+                xn.XQQSSJ AS stamp,            
+                pk.note AS note            
+            FROM dr_yjspksjxx pk
+            LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
+            LEFT JOIN dr_xnxqxx xn ON xn.XQQSSJ=pk.KKXQM
+            # LEFT JOIN dr_bks_jpkc jp ON jp.KCH=pk.KCH
+            left join dr_jzgjcsjxx dr_jzg on dr_jzg.JZGH = pk.JSGH
+            WHERE 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_yjspksjxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_yjspksjxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_yjspksjxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note','DWH','ZKJHXS','JXMSJBM','ZLXS','HBS','SKBJH']
+
+    @staticmethod
+    def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_yjspksjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_yjspksjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'text','create': 'False', },
+            {'table': 'dr_yjspksjxx', 'field': 'JSXM', 'title': '教师姓名', 'editable': 'False', 'type': 'table','value': "dr_jzgjcsjxx:JZGH AS JSGH,XM AS JSXM", 'where': "DWH IN %(departments)s AND JZGH!='admin'",'create': 'True', },
+            {'table': 'dr_kcsjxx', 'field': 'KCH', 'title': '课程号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kcsjxx', 'field': 'JHXSS', 'title': '计划学时数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_yjspksjxx', 'field': 'ZKJHXS', 'title': '助课计划学时', 'editable': 'False', 'type': 'text','create': 'False', },
+
+            # {'table': 'dr_bks_jpkc', 'field': 'KCJBM', 'title': '课程级别码', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            # {'table': 'dr_pksjxx', 'field': 'JXMSJBM', 'title': '教学名师级别码', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            # {'table': 'dr_pksjxx', 'field': 'WYKCTJM', 'title': '外语课程调节码', 'editable': 'False', 'type': 'text', 'create': 'True', },
+
+
+            {'table': 'dr_yjspksjxx', 'field': 'KCJBM', 'title': '课程级别码', 'editable': 'True', 'type': 'inline','create': 'True', 'value': 'st_kcjbm:DM AS KCJBM,MC', 'where': ''},
+            {'table': 'dr_yjspksjxx', 'field': 'JXMSJBM', 'title': '教学名师级别码', 'editable': 'T', 'type': 'inline','create': 'False', 'value': 'st_jxmsjbm:DM AS JXMSJBM,MC', 'where': ''},
+            {'table': 'dr_yjspksjxx', 'field': 'WYKCTJM', 'title': '外语课程调节码', 'editable': 'T', 'type': 'inline','create': 'True', 'value': 'st_wykctjm:DM AS WYKCTJM,MC', 'where': ''},
+
+            {'table': 'dr_yjspksjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_yjspksjxx', 'field': 'KKXQM', 'title': '开课学期码', 'editable': 'False', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_yjspksjxx', 'field': 'KKXND', 'title': '开课学年度', 'editable': 'False', 'type': 'year', 'create': 'True', },
+            {'table': 'dr_yjspksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_yjspksjxx', 'field': 'SKBJH', 'title': '上课班级号', 'editable': 'T', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'false', },
+            {'table': 'dr_yjspksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
+            {'table': 'dr_yjspksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
+        ]
+
+    @staticmethod
+    def get_search_columns() -> List[str]:
+        return ['JZGH']
+
+
 class VIEW_BKSJXZXS(Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_bksjxzxs'
@@ -708,7 +815,7 @@ class VIEW_BKSJXZXS(Base):
             {'table': 'dr_pksjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'text','create': 'False', },
             {'table': 'dr_pksjxx', 'field': 'JSXM', 'title': '教师姓名', 'editable': 'False', 'type': 'table','value': "dr_jzgjcsjxx:JZGH AS JSGH,XM AS JSXM", 'where': "DWH IN %(departments)s AND JZGH!='admin'",'create': 'True', },
             {'table': 'dr_kcsjxx', 'field': 'KCH', 'title': '课程号', 'editable': 'False', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_kcsjxx', 'field': 'LLXS', 'title': '计划学时数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kcsjxx', 'field': 'JHXSS', 'title': '计划学时数', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_pksjxx', 'field': 'ZKJHXS', 'title': '助课计划学时', 'editable': 'False', 'type': 'text','create': 'True', },
 
             # {'table': 'dr_bks_jpkc', 'field': 'KCJBM', 'title': '课程级别码', 'editable': 'True', 'type': 'text', 'create': 'True', },
@@ -1100,7 +1207,7 @@ class VIEW_JKXSS(Base):
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JZGH = Column('JZGH', String(16), default='')  # 教师工号
     KCH = Column('KCH', String(16), default='')  # 课程号
-    KSRQ = Column('KSRQ', String(16), default='')  # 考试日期
+    KSRQ = Column('KSRQ', DateTime, default=now())  # 考试日期
     KSSC = Column('KSSC', String(16), default='')  # 考试时长
     KSFSLXM = Column('KSFSLXM', String(16), default='')  # 考试方式类型码
     KCH = Column('KCH', String(16), default='')  # 课程号

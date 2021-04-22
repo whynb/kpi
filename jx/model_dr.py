@@ -114,6 +114,58 @@ QYBZ 启用标志 C  教务处、研究生院、学
     def get_unique_condition() -> List[str]:
         return ['BH']
 
+class DR_YJSPKSJXX(Base):  # 研究生排课数据信息
+
+    __tablename__ = 'dr_yjspksjxx'  # 研究生排课数据信息
+    __table_args__ = (UniqueConstraint(
+        'JSGH', 'KCH', 'KKXND', 'KKXQM',
+        name='_dr_yjspksjxx_jsgh_kch_kkxnd_kkxqm_skbjh_uc'),
+    )
+    __tablename__CN__ = '研究生排课数据信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    KCH = Column('KCH', String(16), default='')  # 课程号
+    JSXM = Column('JSXM', String(16), default='')  # 教师姓名
+    KKXND = Column('KKXND', String(16), default='')  # 开课学年度
+    SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
+    ZXXS = Column('ZXXS', String(16), default='')  # 总学时
+    ZKJHXS = Column('ZKJHXS', String(16), default='')  # 助课计划学时
+    SYZS = Column('SYZS', String(16), default='')  # 实验组数
+    JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
+    WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
+    KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
+    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
+    HBS = Column('HBS', String(16), default='')  # 合班数
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '教师工号': ['JSGH'],
+            '课程号': ['KCH'],
+            '教师姓名': ['JSXM'],
+            '开课学年度': ['KKXND'],
+            '上课班级号': ['SKBJH'],
+            '开课学期码': ['KKXQM', 'DateTime'],
+            '总学时': ['ZXXS'],
+            '助课计划学时': ['ZKJHXS'],
+            '实验组数': ['SYZS'],
+            '教学名师级别码': ['JXMSJBM'],
+            '外语课程调节码': ['WYKCTJM'],
+            '课程级别码': ['KCJBM'],
+            '质量系数': ['ZLXS'],
+            '合班数': ['HBS'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['JSGH', 'KCH', 'KKXND', 'KKXQM',]
 
 class DR_PKSJXX(Base):  # 排课数据信息
 
@@ -151,7 +203,7 @@ class DR_PKSJXX(Base):  # 排课数据信息
             '教师姓名': ['JSXM'],
             '开课学年度': ['KKXND'],
             '上课班级号': ['SKBJH'],
-            '开课学期码': ['KKXQM'],
+            '开课学期码': ['KKXQM', 'DateTime'],
             '总学时': ['ZXXS'],
             '助课计划学时': ['ZKJHXS'],
             '实验组数': ['SYZS'],
@@ -182,7 +234,7 @@ class DR_SYPKSJXX(Base):  # 实验排课数据信息
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     KKXND = Column('KKXND', String(16), default='')  # 开课学年度
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
-    KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     SYZS = Column('SYZS', String(16), default='')  # 实验组数
@@ -200,7 +252,7 @@ class DR_SYPKSJXX(Base):  # 实验排课数据信息
             '教师姓名': ['JSXM'],
             '开课学年度': ['KKXND'],
             '上课班级号': ['SKBJH'],
-            '开课学期码': ['KKXQM'],
+            '开课学期码': ['KKXQM', 'DateTime'],
             '总学时': ['ZXXS'],
             '课程级别码': ['KCJBM'],
             '实验组数': ['SYZS'],
@@ -228,7 +280,7 @@ class DR_SSPKSJXX(Base):  # 实习排课数据信息
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     KKXND = Column('KKXND', String(16), default='')  # 开课学年度
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
-    KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
     HBS = Column('HBS', String(16), default='')  # 合班数
@@ -244,7 +296,7 @@ class DR_SSPKSJXX(Base):  # 实习排课数据信息
             '教师姓名': ['JSXM'],
             '开课学年度': ['KKXND'],
             '上课班级号': ['SKBJH'],
-            '开课学期码': ['KKXQM'],
+            '开课学期码': ['KKXQM', 'DateTime'],
             '总学时': ['ZXXS'],
             '质量系数': ['ZLXS'],
             '合班数': ['HBS'],
@@ -270,7 +322,7 @@ class DR_KCSJSJXX(Base):  # 课程设计数据信息
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     KKXND = Column('KKXND', String(16), default='')  # 开课学年度
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
-    KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
     HBS = Column('HBS', String(16), default='')  # 合班数
@@ -286,7 +338,7 @@ class DR_KCSJSJXX(Base):  # 课程设计数据信息
             '教师姓名': ['JSXM'],
             '开课学年度': ['KKXND'],
             '上课班级号': ['SKBJH'],
-            '开课学期码': ['KKXQM'],
+            '开课学期码': ['KKXQM', 'DateTime'],
             '总学时': ['ZXXS'],
             '质量系数': ['ZLXS'],
             '合班数': ['HBS'],
@@ -521,7 +573,7 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
     JZGH = Column('JZGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     ZDZS = Column('ZDZS', String(16), default='')  # 指导周数
-    XQ = Column('XQ', String(16), default='')  # 指导学期
+    XQ = Column('XQ', DateTime, default=now())  # 指导学期
     ZDPTXSS = Column('ZDPTXSS', String(16), default='')  # 指导普通学生数
     ZDSYXSS = Column('ZDSYXSS', String(16), default='')  # 指导双语学生数
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
