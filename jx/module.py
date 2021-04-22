@@ -825,6 +825,96 @@ class VIEW_SXXSS(Base):  # 实习学时数
         return ['JZGH']
 
 
+class VIEW_KCSJXSS(Base):  # 课程设计学时数
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_kcsjxss'  # 课程设计学时数
+    __tablename__CH__ = '课程设计学时数'
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    JSXM = Column('JSXM', String(16), default='')  # 教师姓名
+    KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
+    KKXQM = Column('KKXQM', String(16), default='')  # 学期
+    KKXND = Column('KKXND', String(16), default='')  # 学年
+    HBS = Column('HBS', String(16), default='')  # 合班数
+
+    QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
+    ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
+    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
+
+    # NOTE1: NOT from dr and dc, FROM other tables or views
+    # NOTE2: used to filter out data
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+            CREATE VIEW view_kcsjxss AS
+            SELECT 
+                pk.id AS id,            
+                pk.JSGH AS JSGH, 
+                pk.JSGH AS JZGH,      
+                pk.JSXM AS JSXM,          
+                pk.KKXND AS KKXND,            
+                pk.KKXQM AS KKXQM,            
+                kc.SYXS AS SYXS,   
+                xn.QSSKZ AS QSSKZ,            
+                xn.ZZSKZ AS ZZSKZ,                  
+                pk.HBS AS HBS,               
+                pk.ZLXS AS ZLXS,            
+                kc.KCH AS KCH,         
+                dr_jzg.DWH AS DWH,            
+                xn.XQQSSJ AS stamp,            
+                pk.note AS note            
+            FROM dr_kcsjsjxx pk
+            LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
+            LEFT JOIN dr_xnxqxx xn ON xn.XQQSSJ=pk.KKXQM
+            left join dr_jzgjcsjxx dr_jzg on dr_jzg.JZGH = pk.JSGH
+            WHERE 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_kcsjsjxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_kcsjsjxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_kcsjsjxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note','DWH']
+
+    @staticmethod
+    def get_title_columns() -> List[str]:
+        # NOTE: enum data: 'type': 'enum', 'value': ['未启用', '已启用'],
+        # NOTE: static data from db: 'type': 'static', 'value': 'jx_usertype:id:usertype_name', 'where': ''
+        # NOTE: SQL data from db: 'type': 'table', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'
+        return [
+            {'table': 'dr_kcsjsjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_kcsjsjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'text','create': 'False', },
+            {'table': 'dr_kcsjsjxx', 'field': 'JSXM', 'title': '教师姓名', 'editable': 'False', 'type': 'table','value': "dr_jzgjcsjxx:JZGH AS JSGH,XM AS JSXM", 'where': "DWH IN %(departments)s AND JZGH!='admin'",'create': 'True', },{'table': 'dr_kcsjxx', 'field': 'KCH', 'title': '课程号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kcsjsjxx', 'field': 'KKXQM', 'title': '学期', 'editable': 'False', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_kcsjsjxx', 'field': 'KKXND', 'title': '学年', 'editable': 'False', 'type': 'year', 'create': 'True', },
+            {'table': 'dr_kcsjsjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kcsjsjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text','create': 'True', },
+            {'table': 'dr_xnxqxx', 'field': 'QSSKZ', 'title': '起始上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_xnxqxx', 'field': 'ZZSKZ', 'title': '终止上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'false', },
+            {'table': 'dr_kcsjsjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
+            {'table': 'dr_kcsjsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
+        ]
+
+    @staticmethod
+    def get_search_columns() -> List:
+        return ['JZGH']
+
 class VIEW_ZDSYXSS(Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_zdsyxss'
@@ -1109,7 +1199,6 @@ class VIEW_ZDBYLWXSS(Base):
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     XQ = Column('XQ', String(16), default='')  # 指导学期
 
-
     @staticmethod
     def sql() -> str:
         sql_v1 = """
@@ -1119,15 +1208,13 @@ class VIEW_ZDBYLWXSS(Base):
                 jkr.DWH AS DWH,     
                 PK.XQQSSJ AS stamp,            
                 dr.note AS note,   
-                    
                 dr.XQ AS XQ,            
                 dr.JZGH AS JZGH,            
                 dr.JSXM AS JSXM,            
                 dr.ZDZS AS ZDZS,             
                 dr.ZDPTXSS AS ZDPTXSS,            
                 dr.ZDSYXSS AS ZDSYXSS,            
-                dr.JXMSJBM AS JXMSJBM               
-                            
+                dr.JXMSJBM AS JXMSJBM                              
             FROM dr_zdbylwsjxx dr
             LEFT JOIN dr_jzgjcsjxx jkr on jkr.JZGH = dr.JZGH
             LEFT JOIN dr_xnxqxx PK ON PK.XQQSSJ=dr.XQ            
