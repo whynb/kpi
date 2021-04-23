@@ -849,7 +849,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
     JSGH = Column('JSGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
-    KKXQM = Column('KKXQM', String(16), default='')  # 学期
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 学期
     KKXND = Column('KKXND', String(16), default='')  # 学年
     HBS = Column('HBS', String(16), default='')  # 合班数
 
@@ -940,7 +940,7 @@ class VIEW_KCSJXSS(Base):  # 课程设计学时数
     JSGH = Column('JSGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
-    KKXQM = Column('KKXQM', String(16), default='')  # 学期
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 学期
     KKXND = Column('KKXND', String(16), default='')  # 学年
     HBS = Column('HBS', String(16), default='')  # 合班数
 
@@ -1032,7 +1032,7 @@ class VIEW_ZDSYXSS(Base):
     JZGH = Column('JZGH', String(16), default='')  # 教职工号
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
     KKXND = Column('KKXND', String(16), default='')  # 开课学年度
-    KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     SYXS = Column('SYXS', String(16), default='')  # 实验学时
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     SYZS = Column('SYZS', String(16), default='')  # 实验组数
@@ -1240,7 +1240,7 @@ class VIEW_JKXSS(Base):
                 jkr.DWH AS JSSSXY,            
                 jkr.DWH AS DWH,      
                 dr.KSRQ AS stamp,            
-                dr.KSRQ AS note            
+                dr.note AS note            
             FROM dr_ksapxx dr
             LEFT JOIN dr_jzgjcsjxx jkr on jkr.JZGH = dr.JKRGH
             # LEFT JOIN dr_zzjgjbsjxx zzjg ON zzjg.DWH=jkr.DWH
@@ -1304,7 +1304,7 @@ class VIEW_ZDBYLWXSS(Base):
     ZDPTXSS = Column('ZDPTXSS', String(16), default='')  # 指导普通学生数
     ZDSYXSS = Column('ZDSYXSS', String(16), default='')  # 指导双语学生数
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
-    XQ = Column('XQ', String(16), default='')  # 指导学期
+    XQ = Column('XQ', DateTime, default=now())  # 指导学期
 
     @staticmethod
     def sql() -> str:
