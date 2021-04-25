@@ -1014,7 +1014,7 @@ class VIEW_KCSJXSS(Base):  # 课程设计学时数
             {'table': 'dr_xnxqxx', 'field': 'QSSKZ', 'title': '起始上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
             {'table': 'dr_xnxqxx', 'field': 'ZZSKZ', 'title': '终止上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
             {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'false', },
-            {'table': 'dr_kcsjsjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
+            {'table': 'dr_xnxqxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
             {'table': 'dr_kcsjsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
         ]
 
