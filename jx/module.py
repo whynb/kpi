@@ -635,6 +635,7 @@ class VIEW_YJSJXZXS(Base):
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JZGH = Column('JZGH', String(16), default='')  # 教师工号
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
     KKXND = Column('KKXND', String(16), default='')  # 开课学年度
@@ -742,6 +743,7 @@ class VIEW_BKSJXZXS(Base):
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JZGH = Column('JZGH', String(16), default='')  # 教师工号
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
     KKXND = Column('KKXND', String(16), default='')  # 开课学年度
@@ -753,7 +755,6 @@ class VIEW_BKSJXZXS(Base):
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
-    # BH = Column('BH', String(16), default='')  # 班号
     HBS = Column('HBS', String(16), default='')  # 合班数
     DWH = Column('DWH', String(16), default='')  # 单位号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
@@ -778,7 +779,6 @@ class VIEW_BKSJXZXS(Base):
                 pk.WYKCTJM AS WYKCTJM,            
                 pk.JXMSJBM AS JXMSJBM,     
                 pk.KCJBM AS KCJBM, 
-                # jp.KCJBM AS KCJBM,
                 kc.KCH AS KCH,           
                 dr_jzg.DWH AS DWH,        
                 xn.XQQSSJ AS stamp,            
@@ -786,7 +786,6 @@ class VIEW_BKSJXZXS(Base):
             FROM dr_pksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
             LEFT JOIN dr_xnxqxx xn ON xn.XQQSSJ=pk.KKXQM
-            # LEFT JOIN dr_bks_jpkc jp ON jp.KCH=pk.KCH
             left join dr_jzgjcsjxx dr_jzg on dr_jzg.JZGH = pk.JSGH
             WHERE 1=1
         """
@@ -822,7 +821,6 @@ class VIEW_BKSJXZXS(Base):
             # {'table': 'dr_pksjxx', 'field': 'JXMSJBM', 'title': '教学名师级别码', 'editable': 'False', 'type': 'text', 'create': 'True', },
             # {'table': 'dr_pksjxx', 'field': 'WYKCTJM', 'title': '外语课程调节码', 'editable': 'False', 'type': 'text', 'create': 'True', },
 
-
             {'table': 'dr_pksjxx', 'field': 'KCJBM', 'title': '课程级别码', 'editable': 'True', 'type': 'inline','create': 'True', 'value': 'st_kcjbm:DM AS KCJBM,MC', 'where': ''},
             {'table': 'dr_pksjxx', 'field': 'JXMSJBM', 'title': '教学名师级别码', 'editable': 'T', 'type': 'inline','create': 'True', 'value': 'st_jxmsjbm:DM AS JXMSJBM,MC', 'where': ''},
             {'table': 'dr_pksjxx', 'field': 'WYKCTJM', 'title': '外语课程调节码', 'editable': 'T', 'type': 'inline','create': 'True', 'value': 'st_wykctjm:DM AS WYKCTJM,MC', 'where': ''},
@@ -847,6 +845,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
     __tablename__CH__ = '实习学时数'
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    JZGH = Column('JZGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
     KKXQM = Column('KKXQM', DateTime, default=now())  # 学期
@@ -857,8 +856,6 @@ class VIEW_SXXSS(Base):  # 实习学时数
     ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
 
-    # NOTE1: NOT from dr and dc, FROM other tables or views
-    # NOTE2: used to filter out data
     DWH = Column('DWH', String(16), default='')  # 单位号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
@@ -874,7 +871,6 @@ class VIEW_SXXSS(Base):  # 实习学时数
                 pk.JSXM AS JSXM,          
                 pk.KKXND AS KKXND,            
                 pk.KKXQM AS KKXQM,            
-                kc.SYXS AS SYXS,   
                 xn.QSSKZ AS QSSKZ,            
                 xn.ZZSKZ AS ZZSKZ,                  
                 pk.HBS AS HBS,               
@@ -948,8 +944,6 @@ class VIEW_KCSJXSS(Base):  # 课程设计学时数
     ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
 
-    # NOTE1: NOT from dr and dc, FROM other tables or views
-    # NOTE2: used to filter out data
     DWH = Column('DWH', String(16), default='')  # 单位号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
@@ -965,7 +959,6 @@ class VIEW_KCSJXSS(Base):  # 课程设计学时数
                 pk.JSXM AS JSXM,          
                 pk.KKXND AS KKXND,            
                 pk.KKXQM AS KKXQM,            
-                kc.SYXS AS SYXS,   
                 xn.QSSKZ AS QSSKZ,            
                 xn.ZZSKZ AS ZZSKZ,                  
                 pk.HBS AS HBS,               
@@ -1036,7 +1029,6 @@ class VIEW_ZDSYXSS(Base):
     SYXS = Column('SYXS', String(16), default='')  # 实验学时
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     SYZS = Column('SYZS', String(16), default='')  # 实验组数
-    KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     DWH = Column('DWH', String(16), default='')  # 课程级别码
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
@@ -1056,12 +1048,11 @@ class VIEW_ZDSYXSS(Base):
                 pk.SYZS AS SYZS,                   
                 kc.KCH AS KCH,           
                 dr_jzg.DWH AS DWH,        
-                pk.stamp AS stamp,            
+                xn.XQQSSJ AS stamp,            
                 pk.note AS note            
             FROM dr_sypksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
             LEFT JOIN dr_xnxqxx xn ON xn.XQQSSJ=pk.KKXQM
-            # LEFT JOIN dr_bks_jpkc jp ON jp.KCH=pk.KCH
             left join dr_jzgjcsjxx dr_jzg on dr_jzg.JZGH = pk.JSGH
             WHERE 1=1
         """
