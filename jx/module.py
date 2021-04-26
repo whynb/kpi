@@ -833,7 +833,7 @@ class VIEW_BKSJXZXS(Base):
             {'table': 'dr_pksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_pksjxx', 'field': 'SKBJH', 'title': '上课班级号', 'editable': 'T', 'type': 'text', 'create': 'True', },
             {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'false', },
-            {'table': 'dr_pksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
+            {'table': 'dr_xnxqxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
             {'table': 'dr_pksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
         ]
 
