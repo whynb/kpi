@@ -750,13 +750,14 @@ class VIEW_BKSJXZXS(Base):
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
     KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZKJHXS = Column('ZKJHXS', String(16), default='')  # 助课计划学时
-    JHXSS = Column('JHXSS', String(16), default='')  # 计划学时数
+    JHXSS = Column('JHXSS', Float(16), default='')  # 计划学时数
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
-    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
-    HBS = Column('HBS', String(16), default='')  # 合班数
+    ZLXS = Column('ZLXS', Float(16), default='')  # 质量系数
+    HBS = Column('HBS', Float(16), default='')  # 合班数
     DWH = Column('DWH', String(16), default='')  # 单位号
+    DWMC = Column('DWMC', String(16), default='')  # 单位名称
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -780,13 +781,14 @@ class VIEW_BKSJXZXS(Base):
                 pk.JXMSJBM AS JXMSJBM,     
                 pk.KCJBM AS KCJBM, 
                 kc.KCH AS KCH,           
-                dr_jzg.DWH AS DWH,        
+                pk.DWH AS DWH,        
+                pk.DWMC AS DWMC,
                 xn.XQQSSJ AS stamp,            
                 pk.note AS note            
             FROM dr_pksjxx pk
             LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
             LEFT JOIN dr_xnxqxx xn ON xn.XQQSSJ=pk.KKXQM
-            left join dr_jzgjcsjxx dr_jzg on dr_jzg.JZGH = pk.JSGH
+            LEFT JOIN dr_zzjgjbsjxx zz ON zz.DWH=pk.DWH
             WHERE 1=1
         """
         return sql_v1
@@ -805,7 +807,7 @@ class VIEW_BKSJXZXS(Base):
 
     @staticmethod
     def get_hide_columns() -> List[str]:
-        return ['id', 'stamp', 'note','DWH']
+        return ['id', 'stamp', 'note','DWH','DWMC']
 
     @staticmethod
     def get_title_columns() -> List[dict]:
@@ -830,7 +832,10 @@ class VIEW_BKSJXZXS(Base):
             {'table': 'dr_pksjxx', 'field': 'KKXND', 'title': '开课学年度', 'editable': 'False', 'type': 'year', 'create': 'True', },
             {'table': 'dr_pksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_pksjxx', 'field': 'SKBJH', 'title': '上课班级号', 'editable': 'T', 'type': 'text', 'create': 'True', },
-            {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'false', },
+
+            {'table': 'dr_pksjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'F', 'type': 'text', 'create': 'false', },
+            {'table': 'dr_pksjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'F', 'type': 'table', 'create': 'T', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'},
+
             {'table': 'dr_pksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
             {'table': 'dr_pksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
         ]
@@ -850,10 +855,10 @@ class VIEW_SXXSS(Base):  # 实习学时数
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
     KKXQM = Column('KKXQM', DateTime, default=now())  # 学期
     KKXND = Column('KKXND', String(16), default='')  # 学年
-    HBS = Column('HBS', String(16), default='')  # 合班数
-
-    QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
-    ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
+    HBS = Column('HBS', Float(16), default='')  # 合班数
+    SXZS = Column('SXZS', Float(16), default='')  # 实习周数
+    QSSKZ = Column('QSSKZ', Float(16), default='')  # 起始上课周
+    ZZSKZ = Column('ZZSKZ', Float(16), default='')  # 终止上课周
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
 
     DWH = Column('DWH', String(16), default='')  # 单位号
@@ -873,7 +878,8 @@ class VIEW_SXXSS(Base):  # 实习学时数
                 pk.KKXQM AS KKXQM,            
                 xn.QSSKZ AS QSSKZ,            
                 xn.ZZSKZ AS ZZSKZ,                  
-                pk.HBS AS HBS,               
+                pk.HBS AS HBS,            
+                pk.SXZS AS SXZS,      
                 pk.ZLXS AS ZLXS,            
                 kc.KCH AS KCH,         
                 dr_jzg.DWH AS DWH,            
@@ -915,6 +921,7 @@ class VIEW_SXXSS(Base):  # 实习学时数
             {'table': 'dr_sspksjxx', 'field': 'KKXQM', 'title': '学期', 'editable': 'False', 'type': 'date', 'create': 'True', },
             {'table': 'dr_sspksjxx', 'field': 'KKXND', 'title': '学年', 'editable': 'False', 'type': 'year', 'create': 'True', },
             {'table': 'dr_sspksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_sspksjxx', 'field': 'SXZS', 'title': '实习周数', 'editable': 'False', 'type': 'text', 'create': 'True', },
             {'table': 'dr_sspksjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_xnxqxx', 'field': 'QSSKZ', 'title': '起始上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
             {'table': 'dr_xnxqxx', 'field': 'ZZSKZ', 'title': '终止上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
@@ -938,10 +945,11 @@ class VIEW_KCSJXSS(Base):  # 课程设计学时数
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
     KKXQM = Column('KKXQM', DateTime, default=now())  # 学期
     KKXND = Column('KKXND', String(16), default='')  # 学年
-    HBS = Column('HBS', String(16), default='')  # 合班数
+    HBS = Column('HBS', Float(16), default='')  # 合班数
+    SXZS = Column('SXZS', Float(16), default='')  # 课程设计周数
 
-    QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
-    ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
+    QSSKZ = Column('QSSKZ', Float(16), default='')  # 起始上课周
+    ZZSKZ = Column('ZZSKZ', Float(16), default='')  # 终止上课周
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
 
     DWH = Column('DWH', String(16), default='')  # 单位号
@@ -964,7 +972,8 @@ class VIEW_KCSJXSS(Base):  # 课程设计学时数
                 pk.HBS AS HBS,               
                 pk.ZLXS AS ZLXS,            
                 kc.KCH AS KCH,         
-                dr_jzg.DWH AS DWH,            
+                dr_jzg.DWH AS DWH,   
+                pk.SXZS AS SXZS,               
                 xn.XQQSSJ AS stamp,            
                 pk.note AS note            
             FROM dr_kcsjsjxx pk
@@ -1006,6 +1015,8 @@ class VIEW_KCSJXSS(Base):  # 课程设计学时数
             {'table': 'dr_kcsjsjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text','create': 'True', },
             {'table': 'dr_xnxqxx', 'field': 'QSSKZ', 'title': '起始上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
             {'table': 'dr_xnxqxx', 'field': 'ZZSKZ', 'title': '终止上课周', 'editable': 'True', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_kcsjsjxx', 'field': 'SXZS', 'title': '课程设计周数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+
             {'table': 'dr_jzgjcsjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text','create': 'false', },
             {'table': 'dr_xnxqxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
             {'table': 'dr_kcsjsjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },

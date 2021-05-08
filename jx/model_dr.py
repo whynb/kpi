@@ -189,8 +189,10 @@ class DR_PKSJXX(Base):  # 排课数据信息
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
-    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
-    HBS = Column('HBS', String(16), default='')  # 合班数
+    ZLXS = Column('ZLXS', Float(16), default='')  # 质量系数
+    HBS = Column('HBS', Float(16), default='')  # 合班数
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    DWMC = Column('DWMC', String(16), default='')  # 单位名称
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -210,8 +212,10 @@ class DR_PKSJXX(Base):  # 排课数据信息
             '教学名师级别码': ['JXMSJBM'],
             '外语课程调节码': ['WYKCTJM'],
             '课程级别码': ['KCJBM'],
-            '质量系数': ['ZLXS'],
-            '合班数': ['HBS'],
+            '质量系数': ['ZLXS', 'Float'],
+            '合班数': ['HBS', 'Float'],
+            '单位号': ['DWH'],
+            '单位名称': ['DWMC'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
         }
@@ -282,8 +286,9 @@ class DR_SSPKSJXX(Base):  # 实习排课数据信息
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
     KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
+    SXZS = Column('SXZS', Float(16), default='')  # 实习周数
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
-    HBS = Column('HBS', String(16), default='')  # 合班数
+    HBS = Column('HBS', Float(16), default='')  # 合班数
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -299,7 +304,8 @@ class DR_SSPKSJXX(Base):  # 实习排课数据信息
             '开课学期码': ['KKXQM', 'DateTime'],
             '总学时': ['ZXXS'],
             '质量系数': ['ZLXS'],
-            '合班数': ['HBS'],
+            '合班数': ['HBS', 'Float'],
+            '实习周数': ['SXZS', 'Float'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
         }
@@ -325,7 +331,8 @@ class DR_KCSJSJXX(Base):  # 课程设计数据信息
     KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
-    HBS = Column('HBS', String(16), default='')  # 合班数
+    SXZS = Column('SXZS', Float(16), default='')  # 课程设计周数
+    HBS = Column('HBS', Float(16), default='')  # 合班数
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -341,7 +348,8 @@ class DR_KCSJSJXX(Base):  # 课程设计数据信息
             '开课学期码': ['KKXQM', 'DateTime'],
             '总学时': ['ZXXS'],
             '质量系数': ['ZLXS'],
-            '合班数': ['HBS'],
+            '合班数': ['HBS', 'Float'],
+            '课程设计周数': ['SXZS', 'Float'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
         }
@@ -359,7 +367,7 @@ class DR_KCSJXX(Base):
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
     KCMC = Column('KCMC', String(16), default='')  # 课程名称
     ZXS = Column('ZXS', String(16), default='')  # 总学时
-    LLXS = Column('LLXS', String(16), default='')  # 理论学时
+    LLXS = Column('LLXS', Float(16), default='')  # 理论学时
     SYXS = Column('SYXS', String(16), default='')  # 实验学时
     SJXS = Column('SJXS', String(16), default='')  # 实践学时
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
@@ -373,7 +381,7 @@ class DR_KCSJXX(Base):
             '课程号': ['KCH'],
             '课程名称': ['KCMC'],
             '总学时': ['ZXS'],
-            '理论学时': ['LLXS'],
+            '理论学时': ['LLXS', 'Float'],
             '实验学时': ['SYXS'],
             '实践学时': ['SJXS'],
             '时间戳': ['stamp', 'DateTime'],
@@ -401,8 +409,8 @@ class DR_XNXQXX(Base):
     XNDM = Column('XNDM', String(16), default='')  # 学年代码
     XQDM = Column('XQDM', String(16), default='')  # 学期代码
     XNMC = Column('XNMC', String(16), default='')  # 学年名称
-    QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
-    ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
+    QSSKZ = Column('QSSKZ', Float(16), default='')  # 起始上课周
+    ZZSKZ = Column('ZZSKZ', Float(16), default='')  # 终止上课周
     XQLXDM = Column('XQLXDM', String(16), default='')  # 学期类型代码
     XQLXMC = Column('XQLXMC', String(16), default='')  # 学期类型名称
     SFDQXQ = Column('SFDQXQ', String(16), default='')  # 是否当前学期
@@ -419,8 +427,8 @@ class DR_XNXQXX(Base):
             '学年代码': ['XNDM'],
             '学期代码': ['XQDM'],
             '学年名称': ['XNMC'],
-            '起始上课周': ['QSSKZ'],
-            '终止上课周': ['ZZSKZ'],
+            '起始上课周': ['QSSKZ', 'Float'],
+            '终止上课周': ['ZZSKZ', 'Float'],
             '学期类型代码': ['XQLXDM'],
             '学期类型名称': ['XQLXMC'],
             '是否当前学期': ['SFDQXQ'],
