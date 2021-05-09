@@ -241,7 +241,7 @@ class DR_SYPKSJXX(Base):  # 实验排课数据信息
     KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
-    SYZS = Column('SYZS', String(16), default='')  # 实验组数
+    SYZS = Column('SYZS', Float(16), default='')  # 实验组数
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
     HBS = Column('HBS', String(16), default='')  # 合班数
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
@@ -368,7 +368,7 @@ class DR_KCSJXX(Base):
     KCMC = Column('KCMC', String(16), default='')  # 课程名称
     ZXS = Column('ZXS', String(16), default='')  # 总学时
     LLXS = Column('LLXS', Float(16), default='')  # 理论学时
-    SYXS = Column('SYXS', String(16), default='')  # 实验学时
+    SYXS = Column('SYXS', Float(16), default='')  # 实验学时
     SJXS = Column('SJXS', String(16), default='')  # 实践学时
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
@@ -382,7 +382,7 @@ class DR_KCSJXX(Base):
             '课程名称': ['KCMC'],
             '总学时': ['ZXS'],
             '理论学时': ['LLXS', 'Float'],
-            '实验学时': ['SYXS'],
+            '实验学时': ['SYXS', 'Float'],
             '实践学时': ['SJXS'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
