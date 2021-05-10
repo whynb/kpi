@@ -642,7 +642,7 @@ class VIEW_YJSJXZXS(Base):
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
     KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
     ZKJHXS = Column('ZKJHXS', String(16), default='')  # 助课计划学时
-    JHXSS = Column('JHXSS', String(16), default='')  # 计划学时数
+    JHXSS = Column('JHXSS', Float(16), default='')  # 计划学时数
     KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
@@ -672,7 +672,6 @@ class VIEW_YJSJXZXS(Base):
                 pk.WYKCTJM AS WYKCTJM,            
                 pk.JXMSJBM AS JXMSJBM,     
                 pk.KCJBM AS KCJBM, 
-                # jp.KCJBM AS KCJBM,
                 kc.KCH AS KCH,           
                 dr_jzg.DWH AS DWH,        
                 xn.XQQSSJ AS stamp,            
@@ -843,6 +842,116 @@ class VIEW_BKSJXZXS(Base):
     @staticmethod
     def get_search_columns() -> List[str]:
         return ['JZGH']
+
+class VIEW_BKSZKJXZXS(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_bkszkjxzxs'
+    __tablename__CH__ = '本科生理论课助课学时数'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    JZGH = Column('JZGH', String(16), default='')  # 教师工号
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    JSXM = Column('JSXM', String(16), default='')  # 教师姓名
+    KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
+    KKXND = Column('KKXND', String(16), default='')  # 开课学年度
+    SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
+    ZKJHXS = Column('ZKJHXS', Float(16), default='')  # 助课计划学时
+    JHXSS = Column('JHXSS', Float(16), default='')  # 计划学时数
+    KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
+    JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
+    WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
+    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
+    HBS = Column('HBS', Float(16), default='')  # 合班数
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    DWMC = Column('DWMC', String(16), default='')  # 单位名称
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+            CREATE VIEW view_bkszkjxzxs AS
+            SELECT 
+                pk.id AS id,            
+                pk.JSGH AS JSGH, 
+                pk.JSGH AS JZGH, 
+                pk.JSXM AS JSXM,            
+                pk.KKXND AS KKXND,            
+                pk.KKXQM AS KKXQM,            
+                kc.LLXS AS JHXSS,  
+                pk.ZKJHXS AS ZKJHXS,     
+                pk.ZLXS AS ZLXS,            
+                pk.HBS AS HBS,      
+                pk.SKBJH AS SKBJH,         
+                pk.WYKCTJM AS WYKCTJM,            
+                pk.JXMSJBM AS JXMSJBM,     
+                pk.KCJBM AS KCJBM, 
+                kc.KCH AS KCH,           
+                pk.DWH AS DWH,        
+                pk.DWMC AS DWMC,
+                xn.XQQSSJ AS stamp,            
+                pk.note AS note            
+            FROM dr_pkzksjxx pk
+            LEFT JOIN dr_kcsjxx kc ON kc.KCH=pk.KCH
+            LEFT JOIN dr_xnxqxx xn ON xn.XQQSSJ=pk.KKXQM
+            LEFT JOIN dr_zzjgjbsjxx zz ON zz.DWH=pk.DWH
+            WHERE 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_pkzksjxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_pkzksjxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_pkzksjxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note','DWH','DWMC','KCJBM','JXMSJBM','WYKCTJM','ZLXS','JHXSS']
+
+    @staticmethod
+    def get_title_columns() -> List[dict]:
+        return [
+            {'table': 'dr_pkzksjxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_pkzksjxx', 'field': 'JSGH', 'title': '教师工号', 'editable': 'False', 'type': 'text','create': 'False', },
+            {'table': 'dr_pkzksjxx', 'field': 'JSXM', 'title': '教师姓名', 'editable': 'False', 'type': 'table','value': "dr_jzgjcsjxx:JZGH AS JSGH,XM AS JSXM", 'where': "DWH IN %(departments)s AND JZGH!='admin'",'create': 'True', },
+            {'table': 'dr_kcsjxx', 'field': 'KCH', 'title': '课程号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kcsjxx', 'field': 'JHXSS', 'title': '计划学时数', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {'table': 'dr_pkzksjxx', 'field': 'ZKJHXS', 'title': '助课计划学时', 'editable': 'False', 'type': 'text','create': 'True', },
+
+            # {'table': 'dr_bks_jpkc', 'field': 'KCJBM', 'title': '课程级别码', 'editable': 'True', 'type': 'text', 'create': 'True', },
+            # {'table': 'dr_pksjxx', 'field': 'JXMSJBM', 'title': '教学名师级别码', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            # {'table': 'dr_pksjxx', 'field': 'WYKCTJM', 'title': '外语课程调节码', 'editable': 'False', 'type': 'text', 'create': 'True', },
+
+            {'table': 'dr_pkzksjxx', 'field': 'KCJBM', 'title': '课程级别码', 'editable': 'F', 'type': 'inline','create': 'F', 'value': 'st_kcjbm:DM AS KCJBM,MC', 'where': ''},
+            {'table': 'dr_pkzksjxx', 'field': 'JXMSJBM', 'title': '教学名师级别码', 'editable': 'F', 'type': 'inline','create': 'F', 'value': 'st_jxmsjbm:DM AS JXMSJBM,MC', 'where': ''},
+            {'table': 'dr_pkzksjxx', 'field': 'WYKCTJM', 'title': '外语课程调节码', 'editable': 'F', 'type': 'inline','create': 'F', 'value': 'st_wykctjm:DM AS WYKCTJM,MC', 'where': ''},
+
+            {'table': 'dr_pkzksjxx', 'field': 'ZLXS', 'title': '质量系数', 'editable': 'False', 'type': 'text', 'create': 'F', },
+            {'table': 'dr_pkzksjxx', 'field': 'KKXQM', 'title': '开课学期码', 'editable': 'False', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_pkzksjxx', 'field': 'KKXND', 'title': '开课学年度', 'editable': 'False', 'type': 'year', 'create': 'True', },
+            {'table': 'dr_pkzksjxx', 'field': 'HBS', 'title': '合班数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_pkzksjxx', 'field': 'SKBJH', 'title': '上课班级号', 'editable': 'T', 'type': 'text', 'create': 'True', },
+
+            {'table': 'dr_pkzksjxx', 'field': 'DWH', 'title': '单位号', 'editable': 'F', 'type': 'text', 'create': 'false', },
+            {'table': 'dr_pkzksjxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'F', 'type': 'table', 'create': 'T', 'value': 'dr_zzjgjbsjxx:DWH,DWMC', 'where': 'DWH IN %(departments)s'},
+
+            {'table': 'dr_pkzksjxx', 'field': 'stamp', 'title': '时间戳', 'editable': 'False', 'type': 'date', 'create': 'False', },
+            {'table': 'dr_pkzksjxx', 'field': 'note', 'title': '备注', 'editable': 'True', 'type': 'text', 'create': 'False', },
+        ]
+
+    @staticmethod
+    def get_search_columns() -> List[str]:
+        return ['JZGH']
+
+
 
 class VIEW_SXXSS(Base):  # 实习学时数
     __table_args__ = {'extend_existing': True}
@@ -1201,7 +1310,7 @@ class VIEW_JKXSS(Base):
     JZGH = Column('JZGH', String(16), default='')  # 教师工号
     KCH = Column('KCH', String(16), default='')  # 课程号
     KSRQ = Column('KSRQ', DateTime, default=now())  # 考试日期
-    KSSC = Column('KSSC', String(16), default='')  # 考试时长
+    KSSC = Column('KSSC', Float(16), default='')  # 考试时长
     KSFSLXM = Column('KSFSLXM', String(16), default='')  # 考试方式类型码
     KCH = Column('KCH', String(16), default='')  # 课程号
     JKRGH = Column('JKRGH', String(16), default='')  # 监考人工号
@@ -1293,9 +1402,9 @@ class VIEW_ZDBYLWXSS(Base):
     note = Column('note', String(1024), default='')  # 备注
     JZGH = Column('JZGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
-    ZDZS = Column('ZDZS', String(16), default='')  # 指导周数
-    ZDPTXSS = Column('ZDPTXSS', String(16), default='')  # 指导普通学生数
-    ZDSYXSS = Column('ZDSYXSS', String(16), default='')  # 指导双语学生数
+    ZDZS = Column('ZDZS', Float(16), default='')  # 指导周数
+    ZDPTXSS = Column('ZDPTXSS', Float(16), default='')  # 指导普通学生数
+    ZDSYXSS = Column('ZDSYXSS', Float(16), default='')  # 指导双语学生数
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     XQ = Column('XQ', DateTime, default=now())  # 指导学期
 
@@ -1306,7 +1415,7 @@ class VIEW_ZDBYLWXSS(Base):
             SELECT 
                 dr.id AS id,
                 jkr.DWH AS DWH,     
-                PK.XQQSSJ AS stamp,            
+                dr.XQ AS stamp,            
                 dr.note AS note,   
                 dr.XQ AS XQ,            
                 dr.JZGH AS JZGH,            
@@ -1317,8 +1426,7 @@ class VIEW_ZDBYLWXSS(Base):
                 dr.JXMSJBM AS JXMSJBM                              
             FROM dr_zdbylwsjxx dr
             LEFT JOIN dr_jzgjcsjxx jkr on jkr.JZGH = dr.JZGH
-            LEFT JOIN dr_xnxqxx PK ON PK.XQQSSJ=dr.XQ            
-            # LEFT JOIN dr_zzjgjbsjxx zzjg ON zzjg.DWH=jkr.DWH
+            # LEFT JOIN dr_xnxqxx PK ON PK.XQQSSJ=dr.XQ            
             WHERE 1=1
         """
         return sql_v1

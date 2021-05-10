@@ -224,6 +224,64 @@ class DR_PKSJXX(Base):  # 排课数据信息
     def get_unique_condition() -> List[str]:
         return ['JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH']
 
+
+class DR_PKZKSJXX(Base):  # 排课助课数据信息
+
+    __tablename__ = 'dr_pkzksjxx'  # 排课助课数据信息
+    __table_args__ = (UniqueConstraint(
+        'JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH',
+        name='_dr_pkzksjxx_jsgh_kch_kkxnd_kkxqm_skbjh_uc'),
+    )
+    __tablename__CN__ = '排课助课数据信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    JSGH = Column('JSGH', String(16), default='')  # 教师工号
+    KCH = Column('KCH', String(16), default='')  # 课程号
+    JSXM = Column('JSXM', String(16), default='')  # 教师姓名
+    KKXND = Column('KKXND', String(16), default='')  # 开课学年度
+    SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
+    KKXQM = Column('KKXQM', DateTime, default=now())  # 开课学期码
+    ZXXS = Column('ZXXS', String(16), default='')  # 总学时
+    ZKJHXS = Column('ZKJHXS', Float(16), default='')  # 助课计划学时
+    SYZS = Column('SYZS', String(16), default='')  # 实验组数
+    JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
+    WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
+    KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
+    ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
+    HBS = Column('HBS', Float(16), default='')  # 合班数
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    DWMC = Column('DWMC', String(16), default='')  # 单位名称
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '教师工号': ['JSGH'],
+            '课程号': ['KCH'],
+            '教师姓名': ['JSXM'],
+            '开课学年度': ['KKXND'],
+            '上课班级号': ['SKBJH'],
+            '开课学期码': ['KKXQM', 'DateTime'],
+            '总学时': ['ZXXS'],
+            '助课计划学时': ['ZKJHXS', 'Float'],
+            '实验组数': ['SYZS'],
+            '教学名师级别码': ['JXMSJBM'],
+            '外语课程调节码': ['WYKCTJM'],
+            '课程级别码': ['KCJBM'],
+            '质量系数': ['ZLXS'],
+            '合班数': ['HBS', 'Float'],
+            '单位号': ['DWH'],
+            '单位名称': ['DWMC'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH']
+
 class DR_SYPKSJXX(Base):  # 实验排课数据信息
 
     __tablename__ = 'dr_sypksjxx'  # 实验排课数据信息
@@ -497,7 +555,7 @@ KSRS     考试人数 N  教务处、研究生院
     note = Column('note', String(1024), default='')  # 备注
 
     KSRQ = Column('KSRQ', DateTime, default=now())  # 考试日期
-    KSSC = Column('KSSC', String(16), default='')  # 考试时长
+    KSSC = Column('KSSC', Float(16), default='')  # 考试时长
     KSFSLXM = Column('KSFSLXM', String(16), default='')  # 考试方式类型码
     KCH = Column('KCH', String(16), default='')  # 课程号
     JKRGH = Column('JKRGH', String(16), default='')  # 监考人工号
@@ -514,7 +572,7 @@ KSRS     考试人数 N  教务处、研究生院
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
             '考试日期': ['KSRQ', 'DateTime'],
-            '考试时长': ['KSSC'],
+            '考试时长': ['KSSC', 'Flaot'],
             '考试方式类型码': ['KSFSLXM'],
             '课程号': ['KCH'],
             '监考人工号': ['JKRGH'],
@@ -580,10 +638,10 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
     note = Column('note', String(1024), default='')  # 备注
     JZGH = Column('JZGH', String(16), default='')  # 教师工号
     JSXM = Column('JSXM', String(16), default='')  # 教师姓名
-    ZDZS = Column('ZDZS', String(16), default='')  # 指导周数
+    ZDZS = Column('ZDZS', Float(16), default='')  # 指导周数
     XQ = Column('XQ', DateTime, default=now())  # 指导学期
-    ZDPTXSS = Column('ZDPTXSS', String(16), default='')  # 指导普通学生数
-    ZDSYXSS = Column('ZDSYXSS', String(16), default='')  # 指导双语学生数
+    ZDPTXSS = Column('ZDPTXSS', Float(16), default='')  # 指导普通学生数
+    ZDSYXSS = Column('ZDSYXSS', Float(16), default='')  # 指导双语学生数
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
 
 
@@ -595,9 +653,9 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
             '备注': ['note'],
             '教师工号': ['JZGH'],
             '教师姓名': ['JSXM'],
-            '指导周数': ['ZDZS'],
-            '指导普通学生数': ['ZDPTXSS'],
-            '指导双语学生数': ['ZDSYXSS'],
+            '指导周数': ['ZDZS', 'Float'],
+            '指导普通学生数': ['ZDPTXSS', 'Float'],
+            '指导双语学生数': ['ZDSYXSS', 'Float'],
             '教学名师级别码': ['JXMSJBM'],
             '指导学期': ['XQ', 'DateTime'],
         }
