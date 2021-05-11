@@ -508,7 +508,7 @@ class VIEW_XNXQXX(Base):
                 xn.XQLXMC AS XQLXMC,            
                 xn.SFDQXQ AS SFDQXQ,  
                 dr_jzg.DWH AS DWH,        
-                xn.stamp AS stamp,          
+                xn.XQQSSJ AS stamp,          
                 xn.note AS note      
             FROM dr_xnxqxx xn
             left join dr_jzgjcsjxx dr_jzg on dr_jzg.JZGH = xn.JZGH

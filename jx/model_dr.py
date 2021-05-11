@@ -467,8 +467,8 @@ class DR_XNXQXX(Base):
     XNDM = Column('XNDM', String(16), default='')  # 学年代码
     XQDM = Column('XQDM', String(16), default='')  # 学期代码
     XNMC = Column('XNMC', String(16), default='')  # 学年名称
-    QSSKZ = Column('QSSKZ', Float(16), default='')  # 起始上课周
-    ZZSKZ = Column('ZZSKZ', Float(16), default='')  # 终止上课周
+    QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
+    ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
     XQLXDM = Column('XQLXDM', String(16), default='')  # 学期类型代码
     XQLXMC = Column('XQLXMC', String(16), default='')  # 学期类型名称
     SFDQXQ = Column('SFDQXQ', String(16), default='')  # 是否当前学期
@@ -485,8 +485,8 @@ class DR_XNXQXX(Base):
             '学年代码': ['XNDM'],
             '学期代码': ['XQDM'],
             '学年名称': ['XNMC'],
-            '起始上课周': ['QSSKZ', 'Float'],
-            '终止上课周': ['ZZSKZ', 'Float'],
+            '起始上课周': ['QSSKZ'],
+            '终止上课周': ['ZZSKZ'],
             '学期类型代码': ['XQLXDM'],
             '学期类型名称': ['XQLXMC'],
             '是否当前学期': ['SFDQXQ'],
