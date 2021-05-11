@@ -499,7 +499,6 @@ class DR_XNXQXX(Base):
     def get_unique_condition() -> List[str]:
         return ['XNDM', 'XQDM', 'XQQSSJ',]
 
-
 class DR_BKS_JPKC(Base):
     __tablename__ = 'dr_bks_jpkc'
     __tablename__CH__ = '本科精品课程'

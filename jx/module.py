@@ -1038,7 +1038,6 @@ class VIEW_SXXSS(Base):  # 实习学时数
     def get_search_columns() -> List:
         return ['JZGH']
 
-
 class VIEW_KCSJXSS(Base):  # 课程设计学时数
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'view_kcsjxss'  # 课程设计学时数
