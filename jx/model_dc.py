@@ -929,6 +929,65 @@ class DC_HJJCXX(Base):
             return ['JCBH']
 
 
+class DC_JGXMXX(Base):
+    __tablename__ = 'dc_jgxmxx'
+    __tablename__CH__ = '教改项目信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    JZGH = Column('JZGH', String(16), default='')  # 教职工号
+    JZGXM = Column('JZGXM', String(16), default='')  # 教职工姓名
+    GXL = Column('GXL', String(16), default='')  # 贡献率
+    ND = Column('ND', String(16), default='')  # 年度
+    XMXH = Column('XMXH', String(16), default='')  # 项目序号
+    XMBH = Column('XMBH', String(16), default='')  # 项目编号
+    XMMC = Column('XMMC', String(16), default='')  # 项目名称
+    XMFZRH = Column('XMFZRH', String(16), default='')  # 项目负责人号
+    XM = Column('XM', String(16), default='')  # 姓名
+    LXRQ = Column('LXRQ', DateTime, default='')  # 立项日期
+    PZJF = Column('PZJF', String(16), default='')  # 批准经费
+    XMJBM = Column('XMJBM', String(16), default='')  # 项目级别码
+    JSLXM = Column('JSLXM', String(16), default='')  # 角色类型码
+    SJLYM = Column('SJLYM', String(16), default='')  # 数据来源
+    XMJB = Column('XMJB', String(16), default='')  # 项目级别
+    CYRC = Column('CYRC', String(16), default='')  # 参与人次
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '单位号': ['DWH'],
+            '教职工号': ['JZGH'],
+            '教职工姓名': ['JZGXM'],
+            '贡献率': ['GXL'],
+            '年度': ['ND'],
+            '项目序号': ['XMXH'],
+            '项目编号': ['XMBH'],
+            '项目名称': ['XMMC'],
+            '项目负责人号': ['XMFZRH'],
+            '姓名': ['XM'],
+            '立项日期': ['LXRQ', 'DateTime'],
+            '批准经费': ['PZJF'],
+            '项目级别码': ['XMJBM'],
+            '角色类型码': ['JSLXM'],
+            '数据来源': ['SJLYM'],
+            '项目级别': ['XMJB'],
+            '参与人次': ['CYRC'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['JZGH']
+
+
+
+
+
 
 if __name__ == '__main__':
 
