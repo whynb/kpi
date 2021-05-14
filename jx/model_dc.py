@@ -1,12 +1,12 @@
 # coding=utf-8
-# 定义导入数据模型，与东大校标一致; 可自动运行建表，字段变化后需要手工写SQL调整
+# 定义数据中心数据模型，与东大校标一致；Nocos API
 
 from jx.sqlalchemy_env import *
 
 
 class DC_ZZJGJBSJXX(Base):
-    __tablename__ = 'dc_zzjgjbsjxx'
-    __tablename__CH__ = '组织机构基本数据信息'
+
+    __tablename__ = 'dc_zzjgjbsjxx'  # 组织机构基本数据信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     DWH = Column('DWH', String(128), unique=True, default='')  # 单位号
@@ -57,9 +57,9 @@ class DC_ZZJGJBSJXX(Base):
         return ['DWH']
 
 
-class DC_PKSJXX(Base):
-    __tablename__ = 'dc_pksjxx'
-    __tablename__CH__ = '排课数据信息'
+class DC_PKSJXX(Base):  # 排课数据信息
+
+    __tablename__ = 'dc_pksjxx'  # 排课数据信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JSGH = Column('JSGH', String(16), unique=True, default='')  # 教师工号
@@ -69,6 +69,7 @@ class DC_PKSJXX(Base):
     SKBJH = Column('SKBJH', String(16), default='')  # 上课班级号
     KKXQM = Column('KKXQM', String(16), default='')  # 开课学期码
     ZXXS = Column('ZXXS', String(16), default='')  # 总学时
+    ZKJHXS = Column('ZKJHXS', String(16), default='')  # 助课计划学时
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
     WYKCTJM = Column('WYKCTJM', String(16), default='')  # 外语课程调节码
     ZLXS = Column('ZLXS', String(16), default='')  # 质量系数
@@ -87,10 +88,7 @@ class DC_PKSJXX(Base):
             '上课班级号': ['SKBJH'],
             '开课学期码': ['KKXQM'],
             '总学时': ['ZXXS'],
-            '教学名师级别码': ['JXMSJBM'],
-            '外语课程调节码': ['WYKCTJM'],
-            '质量系数': ['ZLXS'],
-            '合班数': ['HBS '],
+            '助课计划学时': ['ZKJHXS'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
         }
@@ -100,9 +98,9 @@ class DC_PKSJXX(Base):
         return ['JSGH']
 
 
-class DC_KCSJXX(Base):
-    __tablename__ = 'dc_kcsjxx'
-    __tablename__CH__ = '课程数据信息'
+class DC_KCSJXX(Base):  # 课程数据信息
+
+    __tablename__ = 'dc_kcsjxx'  # 课程数据信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
@@ -132,20 +130,21 @@ class DC_KCSJXX(Base):
     def get_unique_condition() -> List[str]:
         return ['KCH']
 
+class DC_XNXQXX(Base):  # 学年学期信息
 
-class DC_XNXQXX(Base):
-    __tablename__ = 'dc_xnxqxx'
-    __tablename__CH__ = '学年学期信息'
+    __tablename__ = 'dc_xnxqxx'  # 学年学期信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    XQMC = Column('XQMC', String(16), unique=True, default='')  # 学期名称
-    XNXQM = Column('XNXQM', String(16), default='')  # 学年学期名
-    XNDM = Column('XNDM', String(16), default='')  # 学年代码
-    XQDM = Column('XQDM', String(16), default='')  # 学期代码
-    XNMC = Column('XNMC', String(16), default='')  # 学年名称
-    XQLXDM = Column('XQLXDM', String(16), default='')  # 学期类型代码
-    XQLXMC = Column('XQLXMC', String(16), default='')  # 学期类型名称
-    SFDQXQ = Column('SFDQXQ', String(16), default='')  # 是否当前学期
+    XQMC  = Column('XQMC', String(16), unique=True, default='')  # 学期名称
+    XNXQM  = Column('XNXQM', String(16), default='')  # 学年学期名
+    XNDM  = Column('XNDM', String(16), default='')  # 学年代码
+    XQDM  = Column('XQDM', String(16), default='')  # 学期代码
+    XNMC  = Column('XNMC', String(16), default='')  # 学年名称
+    QSSKZ = Column('QSSKZ', String(16), default='')  # 起始上课周
+    ZZSKZ = Column('ZZSKZ', String(16), default='')  # 终止上课周
+    XQLXDM  = Column('XQLXDM', String(16), default='')  # 学期类型代码
+    XQLXMC  = Column('XQLXMC', String(16), default='')  # 学期类型名称
+    SFDQXQ  = Column('SFDQXQ', String(16), default='')  # 是否当前学期
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -158,6 +157,8 @@ class DC_XNXQXX(Base):
             '学年代码': ['XNDM'],
             '学期代码': ['XQDM'],
             '学年名称': ['XNMC'],
+            '起始上课周': ['QSSKZ'],
+            '终止上课周': ['ZZSKZ'],
             '学期类型代码': ['XQLXDM'],
             '学期类型名称': ['XQLXMC'],
             '是否当前学期': ['SFDQXQ'],
@@ -170,16 +171,16 @@ class DC_XNXQXX(Base):
         return ['XNXQM']
 
 
-class DC_BKS_JPKC(Base):
-    __tablename__ = 'dc_bks_jpkc'
-    __tablename__CH__ = '本科精品课程'
+class DR_BKS_JPKC(Base):  # 本科精品课程
+
+    __tablename__ = 'dr_bks_jpkc'  # 本科精品课程
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    KCH = Column('KCH', String(16), unique=True, default='')  # 课程号
-    KCMC = Column('KCMC', String(16), default='')  # 课程名称
-    KCJBM = Column('KCJBM', String(16), default='')  # 课程级别码
-    FZRGH = Column('FZRGH', String(16), default='')  # 负责人工号
-    DWH = Column('DWH', String(16), default='')  # 单位号
+    KCH  = Column('KCH', String(16), unique=True, default='')  # 课程号
+    KCMC  = Column('KCMC', String(16), default='')  # 课程名称
+    KCJBM  = Column('KCJBM', String(16), default='')  # 课程级别码
+    FZRGH  = Column('FZRGH', String(16), default='')  # 负责人工号
+    DWH  = Column('DWH', String(16), default='')  # 单位号
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
 
@@ -201,9 +202,9 @@ class DC_BKS_JPKC(Base):
         return ['KCH']
 
 
-class DC_JZGJCSJXX(Base):
-    __tablename__ = 'dc_jzgjcsjxx'
-    __tablename__CH__ = '教职工基础数据信息'
+class DC_JZGJCSJXX(Base):  # 教职工基础数据信息
+
+    __tablename__ = 'dc_jzgjcsjxx'  # 教职工基础数据信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     JZGH = Column('JZGH', String(16), unique=True, default='')  # 教职工号
@@ -246,12 +247,12 @@ class DC_JZGJCSJXX(Base):
         return ['JZGH']
 
 
-class DC_XMJFXX(Base):
-    __tablename__ = 'dc_xmjfxx'
-    __tablename__CH__ = '项目经费信息'
+class DC_XMJFXX(Base):  # 项目经费信息
+
+    __tablename__ = 'dc_xmjfxx'  # 项目经费信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    JHJFZE = Column('JHJFZE', Float, default=0.0)  # 计划经费总额
+    JHJFZE = Column('JHJFZE', Float, unique=True, default=0.0)  # 计划经费总额
     XMJFLYM = Column('XMJFLYM', String(16), default='')  # 项目经费来源码
     BRRQ = Column('BRRQ', DateTime, default=now())  # 拨入日期
     BKS = Column('BKS', Float, default=0.0)  # 拨款数
@@ -289,10 +290,21 @@ class DC_XMJFXX(Base):
         return ['XMBH']
 
 
+"""
+ALTER TABLE DC_ZZJGJBSJXX ADD stamp TIMESTAMP(6);
+ALTER TABLE DC_JZGJCSJXX ADD stamp TIMESTAMP(6);
+ALTER TABLE DC_XMJFXX ADD stamp TIMESTAMP(6);
+ALTER TABLE DC_PKSJXX ADD stamp TIMESTAMP(6);
+ALTER TABLE DC_KCSJXX ADD stamp TIMESTAMP(6);
+ALTER TABLE DC_XNXQXX ADD stamp TIMESTAMP(6);
+ALTER TABLE DC_BKS_JPKC ADD stamp TIMESTAMP(6);
+"""
+
+
 # yangchen
-class DC_HJCGJBSJXX(Base):
-    __tablename__ = 'dc_hjcgjbsjxx'
-    __tablename__CH__ = '获奖成果基本数据信息'
+class DC_HJCGJBSJXX(Base):  # 获奖成果基本数据信息
+
+    __tablename__ = 'dc_hjcgjbsjxx'  # 获奖成果基本数据信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     HJCGBH = Column('HJCGBH', String(16), unique=True, default='')  # 获奖成果编号
@@ -328,7 +340,7 @@ class DC_HJCGJBSJXX(Base):
             '获奖成果名称': ['HJCGMC'],
             '项目来源码': ['XMLYM'],
             '单位号': ['DWH'],
-            '获奖日期': ['HJRQ', 'DateTime'],
+            '获奖日期': ['ZCRQ', 'DateTime'],
             '成果获奖类别码': ['CGHJLBM'],
             '科技奖类别': ['KJJLB'],
             '奖励等级码': ['JLDJM'],
@@ -356,8 +368,7 @@ class DC_HJCGJBSJXX(Base):
 
 
 class DC_KJCGRYXX_JL(Base):
-    __tablename__ = 'dc_kjcgryxx_jl'
-    __tablename__CH__ = '科技成果(获奖成果)人员信息'
+    __tablename__ = 'dc_kjcgryxx_jl'  # 科技成果(获奖成果)人员信息
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     RYH = Column('RYH', String(16), unique=True, default='')  # 人员号
@@ -370,8 +381,6 @@ class DC_KJCGRYXX_JL(Base):
     RYLX = Column('RYLX', String(16), default='')  # 人员类型
     HJCGBH = Column('HJCGBH', String(16), default='')  # 获奖成果编号
     KJCGRYBH = Column('KJCGRYBH', String(16), default='')  # 科技成果人员编号
-    stamp = Column('stamp', DateTime, default=now())  # 时间戳
-    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -387,13 +396,12 @@ class DC_KJCGRYXX_JL(Base):
             '人员类型': ['RYLX'],
             '获奖成果编号': ['HJCGBH'],
             '科技成果人员编号': ['KJCGRYBH'],
-            '时间戳': ['stamp', 'DateTime'],
-            '备注': ['note'],
         }
 
     @staticmethod
     def get_unique_condition() -> List[str]:
         return ['RYH']
+
 
 #zouyang
 class DC_KJQKLWJBSJXX(Base):
@@ -425,8 +433,6 @@ class DC_KJQKLWJBSJXX(Base):
     JQY = Column('JQY', String(128),  default='')  # 卷期页
     WDWZZPX = Column('WDWZZPX', String(16), default='')  # 外单位作者排序
     BZXYBJZDSYS = Column('BZXYBJZDSYS', String(16), default='') # 标注学院部级重点实验室
-    stamp = Column('stamp', DateTime, default=now())  # 时间戳
-    note = Column('note', String(1024), default='')  # 备注
 
     @staticmethod
     def get_column_label() -> dict:
@@ -456,13 +462,12 @@ class DC_KJQKLWJBSJXX(Base):
             '卷期页': ['JQY'],
             '外单位作者排序': ['WDWZZPX'],
             '标注学院部级重点实验室': ['BZXYBJZDSYS'],
-            '时间戳': ['stamp', 'DateTime'],
-            '备注': ['note'],
         }
 
     @staticmethod
     def get_unique_condition() -> List:
         return ['LWBH']
+
 
 #zouyang
 class DC_KJLWFBXX(Base):
@@ -473,11 +478,10 @@ class DC_KJLWFBXX(Base):
     KWMC = Column('KWMC', String(16), default='')  # 刊物名称
     LWBH = Column('LWBH', String(16), default='')  # 论文编号
     FBRQ = Column('FBRQ', DateTime, default=now())  # 发表日期
-    JH = Column('JH', String(16), default='')  # 卷号
+    JH= Column('JH', String(16), default='')  # 卷号
     QH = Column('QH', String(16), default='')  # 期号
     LRSJ = Column('LRSJ', DateTime, default=now())  # 录入时间
-    stamp = Column('stamp', DateTime, default=now())  # 时间戳
-    note = Column('note', String(1024), default='')  # 备注
+
 
     @staticmethod
     def get_column_label() -> dict:
@@ -489,8 +493,6 @@ class DC_KJLWFBXX(Base):
             '卷号': ['JH'],
             '期号': ['QH'],
             '录入时间': ['LRSJ ', 'DateTime'],
-            '时间戳': ['stamp', 'DateTime'],
-            '备注': ['note'],
         }
 
     @staticmethod
@@ -730,10 +732,15 @@ class_dict = {key: var for key, var in locals().items() if isinstance(var, type)
 
 
 if __name__ == '__main__':
-
     try:
         Base.metadata.create_all(engine)
-    except Error as e:
+        # obj = DC_ZZJGJBSJXX(DWH='1223', JLNY='2020-01-01')
+        # db.add(obj)
+        # db.commit()
+    except IntegrityError as e:
         print(e)
+
+    except:
+        print(sys_info())
 
     exit(0)
