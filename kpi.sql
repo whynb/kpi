@@ -2049,6 +2049,87 @@ INSERT INTO `st_xx_sfbz` VALUES ('1', '是');
 COMMIT;
 
 -- ----------------------------
+-- Added by why@20210506 for whm
+-- ----------------------------
+DROP TABLE IF EXISTS `st_ky_cbs`;
+CREATE TABLE `st_ky_cbs` (
+  `MC` varchar(10) DEFAULT NULL,
+  `DM` varchar(3) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+BEGIN;
+INSERT INTO `st_ky_cbs` (`MC`, `DM`) VALUES
+('国外著名出版社', '1'),
+('科学出版社', '2'),
+('高等教育出版社', '3'),
+('机械工业出版社', '4'),
+('电子工业出版社', '5'),
+('人民教育出版社', '6'),
+('国防工业出版社', '7'),
+('清华大学出版社', '8'),
+('人民邮电出版社', '9'),
+('其他', '10');
+COMMIT;
+
+DROP TABLE IF EXISTS `st_ky_cbsjb`;
+CREATE TABLE `st_ky_cbsjb` (
+  `MC` varchar(16) DEFAULT NULL,
+  `DM` varchar(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+BEGIN;
+INSERT INTO `st_ky_cbsjb` (`MC`, `DM`) VALUES
+('A类', '1'),
+('B类', '2');
+COMMIT;
+
+BEGIN;
+INSERT INTO `st_ky_js` (`MC`, `DM`) VALUES
+('第一主编', '211'),
+('普通主编', '219');
+COMMIT;
+
+DROP TABLE IF EXISTS `st_xs_pyfs`;
+CREATE TABLE `st_xs_pyfs` (
+  `MC` varchar(16) DEFAULT NULL,
+  `DM` varchar(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+BEGIN;
+INSERT INTO `st_xs_pyfs` (`MC`, `DM`) VALUES
+('非定向', '11'),
+('定向', '12'),
+('留学生', '30');
+COMMIT;
+
+DROP TABLE IF EXISTS `st_xs_xsdqzt`;
+CREATE TABLE `st_xs_xsdqzt` (
+  `DM` varchar(16) DEFAULT NULL,
+  `MC` varchar(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+BEGIN;
+INSERT INTO `st_xs_xsdqzt` (`DM`, `MC`) VALUES
+('1', '在读'),
+('2', '休学'),
+('3', '退学'),
+('7', '毕业');
+COMMIT;
+
+DROP TABLE IF EXISTS `st_xs_xslb`;
+CREATE TABLE `st_xs_xslb` (
+  `MC` varchar(16) DEFAULT NULL,
+  `DM` varchar(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+BEGIN;
+INSERT INTO `st_xs_xslb` (`MC`, `DM`) VALUES
+('全日制硕士研究生', '4313'),
+('博士研究生', '432'),
+('非全日制研究生', '4314');
+COMMIT;
+
+-- ----------------------------
 -- View structure for view_bcykh
 -- ----------------------------
 DROP VIEW IF EXISTS `view_bcykh`;
