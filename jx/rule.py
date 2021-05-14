@@ -730,8 +730,8 @@ class_dict = {key: var for key, var in locals().items() if isinstance(var, type)
 if __name__ == '__main__':
 
     """
-    ALTER TABLE KH_JXKHGZ ADD stamp TIMESTAMP(6);
-    ALTER TABLE KH_KHJGMX ADD stamp TIMESTAMP(6);
+    ALTER TABLE KH_JXKHGZ MODIFY stamp TIMESTAMP(6);
+    ALTER TABLE KH_KHJGMX MODIFY stamp TIMESTAMP(6);
     ALTER TABLE KH_KHPC MODIFY stamp TIMESTAMP(6);
     ALTER TABLE KH_KHGZDZ MODIFY stamp TIMESTAMP(6);
     ALTER TABLE KH_KHJGHZ MODIFY stamp TIMESTAMP(6);

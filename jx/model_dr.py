@@ -114,6 +114,7 @@ QYBZ 启用标志 C  教务处、研究生院、学
     def get_unique_condition() -> List[str]:
         return ['BH']
 
+
 class DR_YJSPKSJXX(Base):  # 研究生排课数据信息
 
     __tablename__ = 'dr_yjspksjxx'  # 研究生排课数据信息
@@ -166,6 +167,7 @@ class DR_YJSPKSJXX(Base):  # 研究生排课数据信息
     @staticmethod
     def get_unique_condition() -> List[str]:
         return ['JSGH', 'KCH', 'KKXND', 'KKXQM',]
+
 
 class DR_PKSJXX(Base):  # 排课数据信息
 
@@ -282,6 +284,7 @@ class DR_PKZKSJXX(Base):  # 排课助课数据信息
     def get_unique_condition() -> List[str]:
         return ['JSGH', 'KCH', 'KKXND', 'KKXQM', 'SKBJH']
 
+
 class DR_SYPKSJXX(Base):  # 实验排课数据信息
 
     __tablename__ = 'dr_sypksjxx'  # 实验排课数据信息
@@ -328,6 +331,7 @@ class DR_SYPKSJXX(Base):  # 实验排课数据信息
     def get_unique_condition() -> List[str]:
         return ['JSGH', 'KCH', 'KKXND', 'KKXQM', ]
 
+
 class DR_SSPKSJXX(Base):  # 实习排课数据信息
 
     __tablename__ = 'dr_sspksjxx'  # 实习排课数据信息
@@ -372,6 +376,7 @@ class DR_SSPKSJXX(Base):  # 实习排课数据信息
     def get_unique_condition() -> List[str]:
         return ['JSGH', 'KCH', 'KKXND', 'KKXQM']
 
+
 class DR_KCSJSJXX(Base):  # 课程设计数据信息
 
     __tablename__ = 'dr_kcsjsjxx'  # 课程设计数据信息
@@ -415,6 +420,7 @@ class DR_KCSJSJXX(Base):  # 课程设计数据信息
     @staticmethod
     def get_unique_condition() -> List[str]:
         return ['JSGH', 'KCH', 'KKXND', 'KKXQM']
+
 
 class DR_KCSJXX(Base):
     __tablename__ = 'dr_kcsjxx'
@@ -499,6 +505,7 @@ class DR_XNXQXX(Base):
     def get_unique_condition() -> List[str]:
         return ['XNDM', 'XQDM', 'XQQSSJ',]
 
+
 class DR_BKS_JPKC(Base):
     __tablename__ = 'dr_bks_jpkc'
     __tablename__CH__ = '本科精品课程'
@@ -534,7 +541,6 @@ class DR_BKS_JPKC(Base):
 
 class DR_KSAPXX(Base):
     '''
-
 KSRQ     考试日期 C  教务处、研究生院
 KSSC     考试时长 N  教务处、研究生院
 KSFSLXM  考试方式类型码 C(1) JX_KSFS 考试方式代码 教务处、研究生院
@@ -543,7 +549,6 @@ JKRGH    监考人工号 C(8)  教务处、研究生院
 KSJSH    考试教室号 C  教务处、研究生院
 JKRXM    监考人姓名 C  教务处、研究生院
 KSRS     考试人数 N  教务处、研究生院
-
     '''
 
     __tablename__ = 'dr_ksapxx'
@@ -586,9 +591,9 @@ KSRS     考试人数 N  教务处、研究生院
     def get_unique_condition() -> List[str]:
         return ['KCH','KSRQ','KSJSH','SSXY']
 
+
 class DR_XWLWXX(Base):
     '''
-
 LWTM 论文题目 C  教务处、研究生院
 LWQSRQ 论文起始日期 C  教务处、研究生院
 LWZZRQ 论文终止日期 C  教务处、研究生院
@@ -627,6 +632,7 @@ XH 学号 C(8)  教务处、研究生院
     def get_unique_condition() -> List[str]:
         return ['LWTM','XH']
 
+
 class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
 
     __tablename__ = 'dr_zdbylwsjxx'  # 指导毕业论文数据信息
@@ -642,7 +648,6 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
     ZDPTXSS = Column('ZDPTXSS', Float(16), default='')  # 指导普通学生数
     ZDSYXSS = Column('ZDSYXSS', Float(16), default='')  # 指导双语学生数
     JXMSJBM = Column('JXMSJBM', String(16), default='')  # 教学名师级别码
-
 
     @staticmethod
     def get_column_label() -> dict:
@@ -662,6 +667,7 @@ class DR_ZDBYLWSJXX(Base):  # 指导毕业论文数据信息
     @staticmethod
     def get_unique_condition() -> List[str]:
         return ['JZGH','JXMSJBM']
+
 
 class DR_JZGJCSJXX(Base):
     __tablename__ = 'dr_jzgjcsjxx'
@@ -859,6 +865,7 @@ class DR_KJCGRYXX_JL(Base):
     def get_unique_condition() -> List[str]:
         return ['RYH', 'HJCGBH']
 
+
 #zouyang
 class DR_KJQKLWJBSJXX(Base):
     __tablename__ = 'dr_kjqklwjbsjxx'
@@ -926,6 +933,7 @@ class DR_KJQKLWJBSJXX(Base):
     def get_unique_condition() -> []:
         return ['LWBH']
 
+
 #zouyang
 class DR_KJLWFBXX(Base):
     __tablename__ = 'dr_kjlwfbxx'
@@ -958,6 +966,7 @@ class DR_KJLWFBXX(Base):
     @staticmethod
     def get_unique_condition() -> []:
         return ['LWBH']
+
 
 #zouyang
 class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
@@ -999,6 +1008,7 @@ class DR_KJCGRYXX_LW(Base):  # 科技成果(论文)人员信息
     @staticmethod
     def get_unique_condition() -> []:
         return ['LWBH']
+
 
 #zouyang
 class DR_KJLWSLQK(Base):  # 科技论文收录情况
@@ -1107,6 +1117,7 @@ class DR_ZLCGJBSJXX(Base):
     @staticmethod
     def get_unique_condition() -> []:
         return ['ZLCGBH', 'SQBH']
+
 
 #yangchen
 class DR_ZLCSXX(Base):
