@@ -3,7 +3,6 @@
 
 from jx.sqlalchemy_env import *
 
-
 class DR_ZZJGJBSJXX(Base):
     __tablename__ = 'dr_zzjgjbsjxx'
     __tablename__CH__ = '组织机构基本数据信息'
