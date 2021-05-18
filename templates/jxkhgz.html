@@ -102,6 +102,7 @@
 {% include 'html/spassword.html' %}
 
 <script>
+    // TODO: view rule from up-level departments
     function refresh() {
         if ($('#selectStartDate').val() > $('#selectEndDate').val()) {
             $.hulla.send("起始时间应小于等于终止时间，请重新选择！", "danger");

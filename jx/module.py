@@ -266,9 +266,12 @@ class VIEW_ZZJGJBSJXX(Base):
             dpmts_query = dpmts_query.filter(VIEW_ZZJGJBSJXX.LSDWH == str(_department_id))
             dpmts = dpmts_query.all()
 
-            for dpmt in dpmts:
-                if dpmt:
-                    departments.extend(VIEW_ZZJGJBSJXX.get_managed_departments(str(dpmt.DWH)))
+            if dpmts:
+                for dpmt in dpmts:
+                    import time
+                    time.sleep(0.001)
+                    if dpmt:
+                        departments.extend(VIEW_ZZJGJBSJXX.get_managed_departments(str(dpmt.DWH)))
 
         except PendingRollbackError:
             db.rollback()
@@ -292,8 +295,9 @@ class VIEW_ZZJGJBSJXX(Base):
             dpmts_query = dpmts_query.filter(VIEW_ZZJGJBSJXX.DWH == str(_department_id))
             dpmts = dpmts_query.all()
 
-            for dpmt in dpmts:
-                return str(dpmt.LSDWH)
+            if dpmts:
+                for dpmt in dpmts:
+                    return str(dpmt.LSDWH)
 
         except PendingRollbackError:
             db.rollback()

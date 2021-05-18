@@ -79,6 +79,7 @@ def get_static_data(payroll, s, where=''):
         cursor.execute(sql)  # NOTE: NO SQL injection
         sql_result = dictfetchall(cursor)
 
+        logger.info(sql_result)
         return sql_result
 
     except:
@@ -1099,7 +1100,9 @@ def get_data(req):
         else:
             from jx.module import VIEW_ZZJGJBSJXX
             __dpts = VIEW_ZZJGJBSJXX.get_managed_departments(v['department'])
-            sql_where += " AND DWH IN " + str(__dpts).replace('[', '(').replace(']', ')')
+            logger.info(__dpts)
+            if __dpts:
+                sql_where += " AND DWH IN " + str(__dpts).replace('[', '(').replace(']', ')')
     else:
         sql_where += " AND 1=0"
 
@@ -1122,7 +1125,7 @@ def get_data(req):
 
         sql_search += ")"
 
-    logger.info(sql_count + sql_where + sql_search)
+    logger.info(sql_count + sql_where + sql_search + ': ' + str(sql_query_set))
     cursor.execute(sql_count + sql_where + sql_search, sql_query_set)
     count = dictfetchall(cursor)[0]["count"]
 
@@ -1130,7 +1133,7 @@ def get_data(req):
     sql_query_set.append(v['sort'])
     sql_query_set.append(v['order'])
 
-    logger.info(sql_content + sql_where + sql_search + sql_olo)
+    logger.info(sql_content + sql_where + sql_search + sql_olo + ': ' + str(sql_query_set))
     cursor.execute(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     select_out = dictfetchall(cursor)
 
@@ -1398,7 +1401,8 @@ def staffinfo(req):
     elif user.role_id in (2, 3):
         from jx.module import VIEW_JZGJCSJXX 
         ds = VIEW_JZGJCSJXX.get_managed_departments(payroll)
-        sql_where += (" AND DWH IN " + trim(str(ds)).replace('[', '(').replace(']', ')')) if ds else " AND DWH=%s"
+        # sql_where += (" AND DWH IN " + trim(str(ds)).replace('[', '(').replace(']', ')')) if ds else " AND DWH=%s"
+        sql_where += (" AND DWH IN " + trim(str(ds)).replace('[', '(').replace(']', ')')) if ds else ""
     else:
         sql_where += ' AND 1=0'
 
@@ -1417,7 +1421,7 @@ def staffinfo(req):
             sql_search += ")"
 
     cursor = connection.cursor()
-    logger.info(sql_count + sql_where + sql_search, sql_query_set)
+    logger.info(sql_count + sql_where + sql_search + ': ' + str(sql_query_set))
     cursor.execute(sql_count + sql_where + sql_search, sql_query_set)
     count = dictfetchall(cursor)[0]["count"]
 
@@ -1425,7 +1429,7 @@ def staffinfo(req):
     sql_query_set.append(v['sort'])
     sql_query_set.append(v['order'])
 
-    logger.info(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
+    logger.info(sql_content + sql_where + sql_search + sql_olo + ': ' + str(sql_query_set))
     cursor.execute(sql_content + sql_where + sql_search + sql_olo, sql_query_set)
     select_out = dictfetchall(cursor)
 
