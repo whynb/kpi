@@ -1947,10 +1947,6 @@ class VIEW_HJCGJBSJXX(Base):
         ]
 
 
-    @staticmethod
-    def get_search_columns() -> []:
-        return ['HJCGMC', 'FZRXM']
-
 
 class VIEW_KJCGRYXX_JL(Base):
     __table_args__ = {'extend_existing': True}
@@ -2271,6 +2267,95 @@ class VIEW_XMRYXX(Base):
     @staticmethod
     def get_search_columns() -> List:
         return ['JZGH', 'XMBH']
+
+
+class VIEW_KJZZXX(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'view_kjzzxx'
+    __tablename__CH__ = '科技著作信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    ZZBH = Column('ZZBH', String(16), default='')  # 著作编号
+    ZZMC = Column('ZZMC', String(16), default='')  # 著作名称
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    CBRQ = Column('CBRQ', DateTime, default=now())  # 出版日期
+    LZLBM = Column('LZLBM', String(16), default='')  # 论著类别码
+    CBS = Column('CBS', String(16), default='')  # 出版社
+    CBSJBM = Column('CBSJBM', String(16), default='')  # 出版社级别码
+    CBH = Column('CBH', String(16), default='')  # 出版号
+    ZZZS = Column('ZZZS', Integer, default=0)  # 著作字数
+    ISBNH = Column('ISBNH', String(16), default='')  # ISBN号
+    DYZZ = Column('DYZZ', String(16), default='')  # 第一作者
+    DYZZBH = Column('DYZZBH', String(16), default='')  # 第一作者编号
+    DWMC = Column('DWMC', String(16), default='')  # 单位名称
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def sql() -> str:
+        sql_v1 = """
+            CREATE VIEW view_hjcgjbsjxx AS
+            SELECT
+               dr_kjzz.id AS id,
+               dr_kjzz.ZZBH AS ZZBH,
+               dr_kjzz.ZZMC AS ZZMC,
+               dr_kjzz.DWH AS DWH,
+               dr_kjzz.CBRQ AS CBRQ,
+               dr_kjzz.LZLBM AS LZLBM,
+               dr_kjzz.CBS AS CBS,
+               dr_kjzz.CBSJBM AS CBSJBM,
+               dr_kjzz.CBH AS CBH,
+               dr_kjzz.ZZZS AS ZZZS,
+               dr_kjzz.ISBNH AS ISBNH,
+               dr_kjzz.DYZZ AS DYZZ,
+               dr_kjzz.DYZZBH AS DYZZBH,
+               dr_kjzz.DWMC AS DWMC,
+               dr_kjzz.CBRQ AS stamp,
+               dr_kjzz.note AS note
+            FROM dr_kjzzxx dr_kjzz
+            WHERE 1=1
+        """
+        return sql_v1
+
+    @staticmethod
+    def get_upload_tables() -> List[str]:
+        return ['dr_kjzzxx']
+
+    @staticmethod
+    def get_delete_tables() -> List[str]:
+        return ['dr_kjzzxx']
+
+    @staticmethod
+    def get_create_tables() -> List[str]:
+        return ['dr_kjzzxx']
+
+    @staticmethod
+    def get_hide_columns() -> List[str]:
+        return ['id', 'stamp', 'note']
+
+    @staticmethod
+    def get_title_columns() -> List[str]:
+        return [
+            {'table': 'dr_kjzzxx', 'field': 'id', 'title': 'ID', 'editable': 'False', 'type': 'text', 'create': 'False', },
+            {'table': 'dr_kjzzxx', 'field': 'ZZBH', 'title': '著作编号', 'editable': 'false', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'ZZMC', 'title': '著作名称', 'editable': 'T', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'DWH', 'title': '单位号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'CBRQ', 'title': '出版日期', 'editable': 'False', 'type': 'date', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'LZLBM', 'title': '论著类别码', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'CBS', 'title': '出版社', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'CBSJBM', 'title': '出版社级别码', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'CBH', 'title': '出版号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'ZZZS', 'title': '著作字数', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'ISBNH', 'title': 'ISBN号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'DYZZ', 'title': '第一作者', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'DYZZBH', 'title': '第一作者编号', 'editable': 'False', 'type': 'text', 'create': 'True', },
+            {'table': 'dr_kjzzxx', 'field': 'DWMC', 'title': '单位名称', 'editable': 'False', 'type': 'text', 'create': 'True', },
+        ]
+
+    @staticmethod
+    def get_search_columns() -> []:
+        return ['ZZBH']
+
 
 
 class_dict = {key: var for key, var in locals().items() if isinstance(var, type)}
