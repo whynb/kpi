@@ -33,7 +33,6 @@ from pymysql.err import Error
 from jx.password import pc
 
 
-
 rule_tables = ['khpc', 'jxkhgz', 'khgzdz', 'khjgmx', 'khjghz', 'bcykh',
                'kh_khpc', 'kh_jxkhgz', 'kh_khgzdz', 'kh_khjgmx', 'kh_khjghz', 'kh_bcykh']
 

@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="2021.3.15">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/function.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/function.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kpi.sql" beforeDir="false" afterPath="$PROJECT_DIR$/kpi.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/jxkhgz.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/jxkhgz.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kpi/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/kpi/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -424,6 +422,7 @@
       <workItem from="1619609052182" duration="3772000" />
       <workItem from="1620974143404" duration="9776000" />
       <workItem from="1621141138941" duration="1988000" />
+      <workItem from="1621350853637" duration="606000" />
     </task>
     <task id="LOCAL-00001" summary="test comments again">
       <created>1613798792460</created>
@@ -514,7 +513,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/jx/function.py</url>
-          <line>858</line>
+          <line>859</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
