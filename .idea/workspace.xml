@@ -384,10 +384,11 @@
       <screen x="72" y="27" width="2802" height="1467" />
     </state>
     <state x="922" y="130" width="1092" height="1268" key="#model_dr/72.27.2802.1467@72.27.2802.1467" timestamp="1618541818957" />
-    <state x="456" y="69" width="1069" height="975" key="CommitChangelistDialog2" timestamp="1616504400657">
-      <screen x="72" y="27" width="1848" height="1053" />
+    <state x="655" y="86" width="1069" height="975" key="CommitChangelistDialog2" timestamp="1621562606524">
+      <screen x="72" y="27" width="2806" height="1471" />
     </state>
     <state x="456" y="69" width="1069" height="975" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1616504400657" />
+    <state x="655" y="86" key="CommitChangelistDialog2/72.27.2806.1471@72.27.2806.1471" timestamp="1621562606524" />
     <state width="1211" height="1060" key="DebuggerActiveHint" timestamp="1618886661244">
       <screen x="72" y="27" width="2808" height="1773" />
     </state>
@@ -461,10 +462,10 @@
     </state>
     <state x="477" y="188" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1616504333443" />
     <state x="630" y="27" width="2250" height="1773" key="SettingsEditor/72.27.2808.1773@72.27.2808.1773" timestamp="1618217734791" />
-    <state x="770" y="311" width="1400" height="912" key="Vcs.Push.Dialog.v2" timestamp="1621351108945">
-      <screen x="72" y="27" width="2806" height="1474" />
+    <state x="770" y="310" width="1400" height="912" key="Vcs.Push.Dialog.v2" timestamp="1621562637695">
+      <screen x="72" y="27" width="2806" height="1471" />
     </state>
-    <state x="770" y="310" width="1400" height="912" key="Vcs.Push.Dialog.v2/72.27.2806.1471@72.27.2806.1471" timestamp="1620783978860" />
+    <state x="770" y="310" width="1400" height="912" key="Vcs.Push.Dialog.v2/72.27.2806.1471@72.27.2806.1471" timestamp="1621562637695" />
     <state x="770" y="311" width="1400" height="912" key="Vcs.Push.Dialog.v2/72.27.2806.1474@72.27.2806.1474" timestamp="1621351108945" />
     <state x="1252" y="594" width="626" height="414" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1619317289602">
       <screen x="72" y="27" width="2806" height="1471" />
