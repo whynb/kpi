@@ -573,6 +573,183 @@ class DC_HJJCXX(Base):
         def get_unique_condition() -> []:
             return ['JCBH']
 
+class DC_JXCGWCRXX(Base):
+    __tablename__ = 'dc_jxcgwcrxx'
+    __tablename__CH__ = '教学成果完成人信息'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    WCRH = Column('WCRH', String(16), default='')  # 完成人号
+    WCRXM = Column('WCRXM', String(16), default='')  # 完成人姓名
+    WCRJSM = Column('WCRJSM', String(16), default='')  # 完成人角色码
+    WCDW = Column('WCDW', String(16), default='')  # 完成单位
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    GXL = Column('GXL', Float, default=0.0)  # 贡献率
+    JXCGBH = Column('JXCGBH', String(16), default='')  # 教学成果编号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '完成人号': ['WCRH'],
+            '完成人姓名': ['WCRXM'],
+            '完成人角色码': ['WCRJSM'],
+            '完成单位': ['WCDW'],
+            '单位号': ['DWH'],
+            '贡献率': ['GXL'],
+            '教学成果编号': ['JXCGBH'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['JXCGBH']
+
+class DC_JXHJXX(Base):
+        __tablename__ = 'dc_jxhjxx'
+        __tablename__CH__ = '教学获奖信息'
+
+        id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+        JXCGBH = Column('JXCGBH', String(16), default='')  # 教学成果编号
+        JXCGMC = Column('JXCGMC', String(16), default='')  # 教学成果名称
+        HJMC = Column('HJMC', String(16), default='')  # 获奖名称
+        JLJBM = Column('JLJBM', String(16), default='')  # 奖励级别码
+        JLLBM = Column('JLLBM', String(16), default='')  # 奖励类别码
+        JLDJM = Column('JLDJM', String(16), default='')  # 奖励等级码
+        BJDW = Column('BJDW', String(16), default='')  # 颁奖单位
+        BJNF = Column('BJNF', String(16), default='')  # 颁奖年份
+        BJRQ = Column('BJRQ', String(16), default='')  # 颁奖日期
+        ZYWCR = Column('ZYWCR', String(16), default='')  # 主要完成人
+        WCRZS = Column('WCRZS', String(16), default='')  # 完成人总数
+        stamp = Column('stamp', DateTime, default=now())  # 时间戳
+        note = Column('note', String(1024), default='')  # 备注
+
+        @staticmethod
+        def get_column_label() -> dict:
+            return {
+                'ID': ['id'],
+                '教学成果编号': ['JXCGBH'],
+                '教学成果名称': ['JXCGMC'],
+                '获奖名称': ['HJMC'],
+                '奖励级别码': ['JLJBM'],
+                '奖励等级码': ['JLDJM'],
+                '奖励类别码': ['JLLBM'],
+                '颁奖单位': ['BJDW'],
+                '颁奖年份': ['BJNF'],
+                '颁奖日期': ['BJRQ'],
+                '主要完成人': ['ZYWCR'],
+                '完成人总数': ['WCRZS'],
+                '时间戳': ['stamp', 'DateTime'],
+                '备注': ['note'],
+            }
+
+        @staticmethod
+        def get_unique_condition() -> []:
+            return ['JXCGBH']
+
+class DC_DXSKJXMJBSJXX(Base):
+    __tablename__ = 'dc_dxskjxmjbsjxx'
+    __tablename__CH__ = '大学生科技项目基本数据'
+    __table_args__ = (UniqueConstraint('XMBH',  name='_kh_khpc_dwh_khnf_uc'),)
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    XMBH = Column('XMBH', String(16), default='')  # 项目编号
+    XMMC = Column('XMMC', String(16), default='')  # 项目名称
+    DWH = Column('DWH', String(16), default='')  # 单位号
+    XMJBM = Column('XMJBM', String(16), default='')  # 项目级别码
+    ND = Column('ND', String(16), default='')  # 年度
+    GJJF = Column('GJJF', String(16), default='')  # 国家经费(元)
+    XXJF = Column('XXJF', String(16), default='')  # 学校经费(元)
+    BYXJF = Column('BYXJF', String(16), default='')  # 部院系经费(元)
+    DSJF = Column('DSJF', String(16), default='')  # 导师经费(元)
+    QTJF = Column('QTJF', String(16), default='')  # 其它经费(元)
+    XMRQ = Column('XMRQ', String(16), default='')  # 项目日期
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '项目编号': ['XMBH'],
+            '项目名称': ['XMMC'],
+            '单位号': ['DWH'],
+            '项目级别码': ['XMJBM'],
+            '年度': ['ND'],
+            '国家经费(元)': ['GJJF'],
+            '学校经费(元)': ['XXJF'],
+            '部院系经费(元)': ['BYXJF'],
+            '导师经费(元)': ['DSJF'],
+            '其它经费(元)': ['QTJF'],
+            '项目日期': ['XMRQ'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['XMBH']
+
+class DC_XWLWXX(Base):
+    __tablename__ = 'dc_xwlwxx'
+    __tablename__CH__ = '学位论文信息'
+    __table_args__ = (UniqueConstraint('LWBH',  name='_kh_khpc_dwh_khnf_uc'),)
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    LWBH = Column('LWBH', String(16), default='')  # 论文编号
+    LWTM = Column('LWTM', String(16), default='')  # 论文题目
+    LWLX = Column('LWLX', String(16), default='')  # 论文类型
+    LWYWTM = Column('LWYWTM', String(16), default='')  # 论文英文题目
+    LWZTC = Column('LWZTC', String(16), default='')  # 论文主题词
+    LWYWZTC = Column('LWYWZTC', String(16), default='')  # 论文英文主题词
+    FZRXM = Column('FZRXM', String(16), default='')  # 负责人姓名
+    ZWZY = Column('ZWZY', String(16), default='')  # 中文摘要
+    YWZY = Column('YWZY', String(16), default='')  # 英文摘要
+    LWQSRQ = Column('GJJF', String(16), default='')  # 论文起始日期
+    LWZZRQ = Column('LWZZRQ', String(16), default='')  # 论文终止日期
+    LWZS = Column('LWZS', String(16), default='')  # 论文字数
+    LWMJM = Column('LWMJM', String(16), default='')  # 论文密级码
+    LWLXM = Column('LWLXM', String(16), default='')  # 论文类型码
+    LWXTLY = Column('LWXTLY',String(16), default='')  # 论文选题来源
+    LWHJJB = Column('LWHJJB',String(16), default='')  # 论文获奖级别码
+    JLDJM = Column('JLDJM',String(16), default='')  # 奖励等级码
+    WLZTFLH = Column('LWZTFLH',String(16), default='')  # 论文中图分类号
+    XH = Column('XH',DateTime, default='')  # 学号
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '论文编号': ['LWBH'],
+            '论文题目': ['LWTM'],
+            '论文类型': ['LWLX'],
+            '论文英文题目': ['LWYWTM'],
+            '论文主题词': ['LWZTC'],
+            '论文英文主题词': ['LWYWZTC'],
+            '中文摘要': ['ZWZY'],
+            '英文摘要': ['YWZY'],
+            '论文起始日期': ['LWQSRQ'],
+            '论文终止日期': ['LWZZRQ'],
+            '论文字数': ['LWZS'],
+            '论文密级码': ['LWMJM'],
+            '论文类型码': ['LWLXM'],
+            '论文选题来源': ['LWXTLY'],
+            '奖励等级码': ['JLDJM'],
+            '论文中图分类号': ['LWZTFLH'],
+            '学号': ['XH'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> []:
+        return ['LWBH']
+
 
 
 if __name__ == '__main__':
