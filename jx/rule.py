@@ -121,7 +121,7 @@ class KH_JXKHGZ(Base, KpiObjectBase):
     @staticmethod
     def get_unique_condition() -> list:
         return [
-            ['DWH', 'KHLX', 'KHZL', 'XXKHZL','GZTJ'],  # NOTE: additional unique to verify data consistency
+            ['DWH', 'KHLX', 'KHZL', 'XXKHZL', ],  # NOTE: additional unique to verify data consistency
             ['DWH', 'GZH', ],  # NOTE: last one used to crud
         ]
 
