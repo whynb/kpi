@@ -2709,9 +2709,9 @@ CREATE TABLE `dr_zzjgjbsjxx` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `dr_zzjgjbsjxx` VALUES (13, '00000D', '金属研究所', 'ITC', '', '', '', '', '', '00000C', '', '', '', '2099-12-31 00:00:00', '', '1954-01-01 00:00:00', '', '', '2021-03-28 13:56:12.904036');
-INSERT INTO `dr_zzjgjbsjxx` VALUES (14, '1234', '机器人研究所', '', '机器人', '', '', '', '', '00000B', '', '', '', '2021-00-01 00:00:00', '', '1920-00-01 00:00:00', '', '', '2021-03-17 02:45:15.226933');
+INSERT INTO `dr_zzjgjbsjxx` VALUES (14, '1234', '机器人研究所', '', '机器人', '', '', '', '', '00000B', '', '', '', '2021-01-01 00:00:00', '', '1920-01-01 00:00:00', '', '', '2021-03-17 02:45:15.226933');
 INSERT INTO `dr_zzjgjbsjxx` VALUES (28, '00000A', '东北大学', 'NEU', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2099-12-31 00:00:00', NULL, '1909-01-01 00:00:00', NULL, '985', '2021-02-18 12:14:40.767352');
-INSERT INTO `dr_zzjgjbsjxx` VALUES (29, '00000B', '信息工程学院', 'ITC', '信息', '', '', '', '', '00000A', '', '', NULL, '2099-01-01 00:00:00', '', '1909-00-01 00:00:00', '', '名校', '2021-02-18 12:14:40.767352');
+INSERT INTO `dr_zzjgjbsjxx` VALUES (29, '00000B', '信息工程学院', 'ITC', '信息', '', '', '', '', '00000A', '', '', NULL, '2099-01-01 00:00:00', '', '1909-01-01 00:00:00', '', '名校', '2021-02-18 12:14:40.767352');
 INSERT INTO `dr_zzjgjbsjxx` VALUES (30, '00000C', '冶金工程学院', 'MTC', '冶金', NULL, NULL, NULL, NULL, '00000A', NULL, NULL, NULL, '2099-12-31 00:00:00', NULL, '1935-01-01 00:00:00', NULL, '', '2021-05-14 05:15:52.930510');
 COMMIT;
 
@@ -4007,12 +4007,6 @@ DROP VIEW IF EXISTS `view_jkxss`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_jkxss` AS select `dr`.`id` AS `id`,`dr`.`KSRQ` AS `KSRQ`,`dr`.`KSSC` AS `KSSC`,`dr`.`KSFSLXM` AS `KSFSLXM`,`dr`.`KCH` AS `KCH`,`dr`.`JKRGH` AS `JZGH`,`dr`.`JKRGH` AS `JKRGH`,`dr`.`KSJSH` AS `KSJSH`,`dr`.`JKRXM` AS `JKRXM`,`dr`.`KSRS` AS `KSRS`,`dr`.`SSXY` AS `SSXY`,`jkr`.`DWH` AS `JSSSXY`,`jkr`.`DWH` AS `DWH`,`dr`.`KSRQ` AS `stamp`,`dr`.`note` AS `note` from ((`dr_ksapxx` `dr` left join `dr_jzgjcsjxx` `jkr` on((`jkr`.`JZGH` = `dr`.`JKRGH`))) left join `dr_pksjxx` `pk` on((`pk`.`KCH` = `dr`.`KCH`))) where (1 = 1);
 
 -- ----------------------------
--- View structure for view_jxcgjlsb
--- ----------------------------
-DROP VIEW IF EXISTS `view_jxcgjlsb`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_jxcgjlsb` AS select `dr`.`id` AS `id`,`dr`.`SBRH` AS `SBRH`,`dr`.`SBRH` AS `JZGH`,`dr`.`JXCGBH` AS `JXCGBH`,`dr`.`JXCGLB` AS `JXCGLB`,`jz`.`XM` AS `XM`,`jz`.`DWH` AS `DWH`,`jz`.`DWMC` AS `DWMC`,`dr`.`stamp` AS `stamp`,`dr`.`note` AS `note` from (`dr_jxcgjlsb` `dr` left join `view_jzgjcsjxx` `jz` on((`jz`.`JZGH` = `dr`.`SBRH`))) where (1 = 1);
-
--- ----------------------------
 -- View structure for view_jxcgwcrxx
 -- ----------------------------
 DROP VIEW IF EXISTS `view_jxcgwcrxx`;
@@ -4174,6 +4168,12 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_zlcgjbsjxx` AS sele
 -- ----------------------------
 DROP VIEW IF EXISTS `view_zzjgjbsjxx`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_zzjgjbsjxx` AS select `dr`.`id` AS `id`,`dr`.`DWH` AS `DWH`,`dr`.`DWMC` AS `DWMC`,`dr`.`DWYWMC` AS `DWYWMC`,`dr`.`DWJC` AS `DWJC`,`dr`.`DWYWJC` AS `DWYWJC`,`dr`.`DWJP` AS `DWJP`,`dr`.`DWDZ` AS `DWDZ`,`dr`.`SZXQ` AS `SZXQ`,`dr`.`LSDWH` AS `LSDWH`,`dr`.`DWLBM` AS `DWLBM`,`dr`.`DWBBM` AS `DWBBM`,`dr`.`DWYXBS` AS `DWYXBS`,`dr`.`SXRQ` AS `SXRQ`,`dr`.`SFST` AS `SFST`,`dr`.`JLNY` AS `JLNY`,`dr`.`DWFZRH` AS `DWFZRH`,`dr`.`stamp` AS `stamp`,`dr`.`note` AS `note` from (`dr_zzjgjbsjxx` `dr` left join `dc_zzjgjbsjxx` `dc` on((`dc`.`DWH` = `dr`.`DWH`))) where (1 = 1);
+
+-- ----------------------------
+-- View structure for view_jxcgjlsb
+-- ----------------------------
+DROP VIEW IF EXISTS `view_jxcgjlsb`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_jxcgjlsb` AS select `dr`.`id` AS `id`,`dr`.`SBRH` AS `SBRH`,`dr`.`SBRH` AS `JZGH`,`dr`.`JXCGBH` AS `JXCGBH`,`dr`.`JXCGLB` AS `JXCGLB`,`jz`.`XM` AS `XM`,`jz`.`DWH` AS `DWH`,`jz`.`DWMC` AS `DWMC`,`dr`.`stamp` AS `stamp`,`dr`.`note` AS `note` from (`dr_jxcgjlsb` `dr` left join `view_jzgjcsjxx` `jz` on((`jz`.`JZGH` = `dr`.`SBRH`))) where (1 = 1);
 
 -- ----------------------------
 -- View structure for view_sysuser

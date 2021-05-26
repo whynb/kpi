@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7e2a4e36-9fdb-4d66-9e24-700857bd6508" name="Default Changelist" comment="2021.3.15">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kpi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kpi.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/model_dc.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/model_dr.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/model_dr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/module.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/module.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jx/rule.py" beforeDir="false" afterPath="$PROJECT_DIR$/jx/rule.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kpi.sql" beforeDir="false" afterPath="$PROJECT_DIR$/kpi.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tatusgit status" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/update.sql" beforeDir="false" afterPath="$PROJECT_DIR$/update.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -434,7 +426,7 @@
       <workItem from="1621350853637" duration="2536000" />
       <workItem from="1621393889533" duration="851000" />
       <workItem from="1621407401898" duration="16652000" />
-      <workItem from="1621868325340" duration="2563000" />
+      <workItem from="1621868325340" duration="4106000" />
     </task>
     <task id="LOCAL-00001" summary="test comments again">
       <created>1613798792460</created>
