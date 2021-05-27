@@ -245,47 +245,7 @@ class DR_JZGJCSJXX(Base):
         return ['JZGH']
 
 
-class DR_XMJFXX(Base):
-    __tablename__ = 'dr_xmjfxx'
-    __tablename__CH__ = '项目经费信息'
 
-    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
-    JHJFZE = Column('JHJFZE', Float, default=0.0)  # 计划经费总额
-    XMJFLYM = Column('XMJFLYM', String(16), default='')  # 项目经费来源码
-    BRRQ = Column('BRRQ', DateTime, default=now())  # 拨入日期
-    BKS = Column('BKS', Float, default=0.0)  # 拨款数
-    ZCRQ = Column('ZCRQ', DateTime, default=now())  # 支出日期
-    BFXZDWJF = Column('BFXZDWJF', Float, default=0.0)  # 拨付协作单位经费
-    XMPZBH = Column('XMPZBH', String(64), default='')  # 项目凭证编号
-    JBRXM = Column('JBRXM', String(32), default=now())  # 经办人姓名
-    XMBH = Column('XMBH', String(64), unique=True, default='')  # 项目编号
-    ZZKS = Column('ZZKS', Float, default=0.0)  # 支出款数
-    JZGH = Column('JZGH', String(16), default='')  # 教职工号
-    stamp = Column('stamp', DateTime, default=now())  # 时间戳
-    note = Column('note', String(1024), default='')  # 备注
-
-    @staticmethod
-    def get_column_label() -> dict:
-        return {
-            'ID': ['id'],
-            '计划经费总额': ['JHJFZE', 'Float'],
-            '项目经费来源码': ['XMJFLYM'],
-            '拨入日期': ['BRRQ', 'DateTime'],
-            '拨款数': ['BKS', 'Float'],
-            '支出日期': ['ZCRQ', 'DateTime'],
-            '拨付协作单位经费': ['BFXZDWJF'],
-            '项目凭证编号': ['XMPZBH'],
-            '经办人姓名': ['JBRXM'],
-            '项目编号': ['XMBH'],
-            '支出款数': ['ZZKS', 'Float'],
-            '教职工号': ['JZGH'],
-            '时间戳': ['stamp', 'DateTime'],
-            '备注': ['note'],
-        }
-
-    @staticmethod
-    def get_unique_condition() -> List[str]:
-        return ['XMBH']
 
 
 # yangchen
@@ -468,7 +428,47 @@ class DR_KJLWFBXX(Base):
     def get_unique_condition() -> []:
         return ['LWBH']
 
+class DR_XMJFXX(Base):
+    __tablename__ = 'dr_xmjfxx'
+    __tablename__CH__ = '项目经费信息'
 
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    XMBH = Column('XMBH', String(64), unique=True, default='')  # 项目编号
+    XMMC = Column('XMMC', String(64), unique=True, default='')  # 项目名称
+    FZRH = Column('FZRH', String(16), default='')  # 负责人号
+    XMJFLYM = Column('XMJFLYM', String(16), default='')  # 项目经费来源码
+    BRRQ = Column('BRRQ', DateTime, default=now())  # 拨入日期
+    ZCRQ = Column('ZCRQ', DateTime, default=now())  # 支出日期
+    XMSJJK = Column('XMSJJK', Float, default=0.0)  # 项目实际进款
+    KYXMLX = Column('KYXMLX', String(16), default='')  # 科研项目类型
+    KYJFLX = Column('KYJFLX', String(16), default='')  # 科研经费类型
+    XMPZBH = Column('XMPZBH', String(64), default='')  # 项目凭证编号
+    JBRXM = Column('JBRXM', String(32), default=now())  # 经办人姓名
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '项目编号': ['XMBH'],
+            '项目名称': ['XMMC'],
+            '负责人号': ['FZRH'],
+            '项目经费来源码': ['XMJFLYM'],
+            '拨入日期': ['BRRQ', 'DateTime'],
+            '支出日期': ['ZCRQ', 'DateTime'],
+            '项目实际进款': ['XMSJJK', 'Float'],
+            '科研项目类型': ['KYXMLX'],
+            '科研经费类型': ['KYJFLX'],
+            '项目凭证编号': ['XMPZBH'],
+            '经办人姓名': ['JBRXM'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['XMBH']
 # fanmingreviveagain 项目人员信息表
 class DR_XMRYXX(Base):
     __tablename__ = 'dr_xmryxx'
@@ -480,12 +480,16 @@ class DR_XMRYXX(Base):
 
     id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
     RYH = Column('RYH', String(16), default='')  # 人员号
-    GZL = Column('GZL', Float, default=0.0)  # 工作量
+    GXL = Column('GXL', Float, default=0.0)  # 贡献率
+    # XMSJJK = Column('XMSJJK', Float, default=0.0)  # 项目实际进款
+    # KYXMLX = Column('KYXMLX', String(16), default='')  # 科研项目类型
+    # KYJFLX = Column('KYJFLX', String(16), default='')  # 科研经费类型
     MNGZYS = Column('MNGZYS', Float, default=0.0)  # 每年工作月数
     JSM = Column('JSM', String(16), default='')  # 角色码
     RYLX = Column('RYLX', String(16), default='')  # 人员类型
     SMSX = Column('SMSX', String(16), default='')  # 署名顺序
     XMBH = Column('XMBH', String(16), default='')  # 项目编号
+    XMMC = Column('XMMC', String(64), unique=True, default='')  # 项目名称
     XKMLKJM = Column('XKMLKJM', String(16), default='')  # 学科门类(科技)码
     stamp = Column('stamp', DateTime, default=now())  # 时间戳
     note = Column('note', String(1024), default='')  # 备注
@@ -495,12 +499,16 @@ class DR_XMRYXX(Base):
         return {
             'ID': ['id'],
             '人员号': ['RYH'],
-            '工作量': ['GZL', 'Float'],
+            '贡献率': ['GXL', 'Float'],
+            # '项目实际进款': ['XMSJJK', 'Float'],
+            # '科研项目类型': ['KYXMLX'],
+            # '科研经费类型': ['KYJFLX'],
             '每年工作月数': ['MNGZYS', 'Float'],
             '角色码': ['JSM'],
             '人员类型': ['RYLX'],
             '署名顺序': ['SMSX'],
             '项目编号': ['XMBH'],
+            '项目名称': ['XMMC'],
             '学科门类(科技)码': ['XKMLKJM'],
             '时间戳': ['stamp', 'DateTime'],
             '备注': ['note'],
@@ -509,6 +517,34 @@ class DR_XMRYXX(Base):
     @staticmethod
     def get_unique_condition() -> List[str]:
         return ['XMBH', 'RYH']
+# fanmingdieatlast
+
+# fanming live by another season 改表5.1.6
+class DR_JXCGJLSB(Base):
+    __tablename__ = 'dr_jxcgjlsb'
+    __tablename__CH__ = '教学成果奖励申报'
+
+    id = Column('id', Integer, autoincrement=True, primary_key=True, nullable=False)  # ID
+    SBRH = Column('SBRH', String(16), default='')  # 申报人号
+    JXCGBH = Column('JXCGBH', String(16), default='')  # 教学成果编号
+    JXCGLB = Column('JXCGLB', String(16), default='')  # 教学成果类别
+    stamp = Column('stamp', DateTime, default=now())  # 时间戳
+    note = Column('note', String(1024), default='')  # 备注
+
+    @staticmethod
+    def get_column_label() -> dict:
+        return {
+            'ID': ['id'],
+            '申报人号': ['SBRH'],
+            '教学成果编号': ['JXCGBH'],
+            '教学成果类别': ['JXCGLB'],
+            '时间戳': ['stamp', 'DateTime'],
+            '备注': ['note'],
+        }
+
+    @staticmethod
+    def get_unique_condition() -> List[str]:
+        return ['SBRH', 'JXCGBH']
 # fanmingdieatlast
 
 
@@ -523,6 +559,7 @@ if __name__ == '__main__':
     ALTER TABLE DR_XNXQXX ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_BKS_JPKC ADD stamp TIMESTAMP(6);
     ALTER TABLE DR_XMRYXX MODIFY stamp TIMESTAMP(6);
+    ALTER TABLE DR_JXCGJLSB MODIFY stamp TIMESTAMP(6);
     """
 
     try:
