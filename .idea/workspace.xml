@@ -199,12 +199,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django server.kpi" />
-      <item itemvalue="Python.module" />
       <item itemvalue="Python.function" />
-      <item itemvalue="Python.settings" />
       <item itemvalue="Python.model_dr" />
+      <item itemvalue="Python.module" />
       <item itemvalue="Python.rule" />
+      <item itemvalue="Python.settings" />
+      <item itemvalue="Django server.kpi" />
     </list>
     <recent_temporary>
       <list>
