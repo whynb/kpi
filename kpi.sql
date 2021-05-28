@@ -1016,55 +1016,45 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `dc_xmjfxx`;
 CREATE TABLE `dc_xmjfxx` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `JHJFZE` float DEFAULT NULL,
-  `XMJFLYM` varchar(16) DEFAULT NULL,
-  `BRRQ` datetime DEFAULT NULL,
-  `BKS` float DEFAULT NULL,
-  `ZCRQ` datetime DEFAULT NULL,
-  `BFXZDWJF` float DEFAULT NULL,
-  `XMPZBH` varchar(64) DEFAULT NULL,
-  `JBRXM` varchar(32) DEFAULT NULL,
-  `XMBH` varchar(64) DEFAULT NULL,
-  `ZZKS` float DEFAULT NULL,
-  `JZGH` varchar(16) DEFAULT NULL,
-  `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `note` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `XMBH` (`XMBH`)
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `XMBH` varchar(64) DEFAULT NULL,
+    `XMMC` varchar(64) DEFAULT NULL,
+    `FZRH` varchar(16) DEFAULT NULL,
+    `XMJFLYM` varchar(16) DEFAULT NULL,
+    `BRRQ` datetime DEFAULT NULL,
+    `ZCRQ` datetime DEFAULT NULL,
+    `XMSJJK` float DEFAULT NULL,
+    `KYXMLX` varchar(16) DEFAULT NULL,
+    `KYJFLX` varchar(16) DEFAULT NULL,
+    `XMPZBH` varchar(64) DEFAULT NULL,
+    `JBRXM` varchar(32) DEFAULT NULL,
+    `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    `note` varchar(1024) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `XMBH` (`XMBH`),
+    UNIQUE KEY `XMMC` (`XMMC`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of dc_xmjfxx
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for dc_xmryxx
 -- ----------------------------
 DROP TABLE IF EXISTS `dc_xmryxx`;
 CREATE TABLE `dc_xmryxx` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `RYH` varchar(16) DEFAULT NULL,
-  `GZL` float DEFAULT NULL,
-  `MNGZYS` float DEFAULT NULL,
-  `JSM` varchar(16) DEFAULT NULL,
-  `RYLX` varchar(16) DEFAULT NULL,
-  `SMSX` varchar(16) DEFAULT NULL,
-  `XMBH` varchar(16) DEFAULT NULL,
-  `XKMLKJM` varchar(16) DEFAULT NULL,
-  `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `note` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `_dc_xmryxx_xmbh_ryh_uc` (`XMBH`,`RYH`)
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `RYH` varchar(16) DEFAULT NULL,
+    `GXL` float DEFAULT NULL,
+    `MNGZYS` float DEFAULT NULL,
+    `JSM` varchar(16) DEFAULT NULL,
+    `RYLX` varchar(16) DEFAULT NULL,
+    `SMSX` varchar(16) DEFAULT NULL,
+    `XMBH` varchar(16) DEFAULT NULL,
+    `XMMC` varchar(64) DEFAULT NULL,
+    `XKMLKJM` varchar(16) DEFAULT NULL,
+    `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    `note` varchar(1024) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `_dc_xmryxx_xmbh_ryh_uc` (`XMBH`,`RYH`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of dc_xmryxx
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for dc_xnxqxx
@@ -2291,119 +2281,45 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `dr_xmjfxx`;
 CREATE TABLE `dr_xmjfxx` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `XMBH` varchar(64) DEFAULT NULL,
-  `FZRH` varchar(16) DEFAULT NULL,
-  `XMJFLYM` varchar(16) DEFAULT NULL,
-  `BRRQ` datetime DEFAULT NULL,
-  `ZCRQ` datetime DEFAULT NULL,
-  `XMSJJK` float DEFAULT NULL,
-  `KYXMLX` varchar(16) DEFAULT NULL,
-  `KYJFLX` varchar(16) DEFAULT NULL,
-  `XMPZBH` varchar(64) DEFAULT NULL,
-  `JBRXM` varchar(32) DEFAULT NULL,
-  `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `note` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `XMBH` (`XMBH`)
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `XMBH` varchar(64) DEFAULT NULL,
+    `XMMC` varchar(64) DEFAULT NULL,
+    `FZRH` varchar(16) DEFAULT NULL,
+    `XMJFLYM` varchar(16) DEFAULT NULL,
+    `BRRQ` datetime DEFAULT NULL,
+    `ZCRQ` datetime DEFAULT NULL,
+    `XMSJJK` float DEFAULT NULL,
+    `KYXMLX` varchar(16) DEFAULT NULL,
+    `KYJFLX` varchar(16) DEFAULT NULL,
+    `XMPZBH` varchar(64) DEFAULT NULL,
+    `JBRXM` varchar(32) DEFAULT NULL,
+    `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    `note` varchar(1024) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `XMBH` (`XMBH`),
+    UNIQUE KEY `XMMC` (`XMMC`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of dr_xmjfxx
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for dr_xmjfxx_____
--- ----------------------------
-DROP TABLE IF EXISTS `dr_xmjfxx_____`;
-CREATE TABLE `dr_xmjfxx_____` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `JHJFZE` float DEFAULT NULL,
-  `XMJFLYM` varchar(16) DEFAULT NULL,
-  `BRRQ` datetime DEFAULT NULL,
-  `BKS` float DEFAULT NULL,
-  `ZCRQ` datetime DEFAULT NULL,
-  `BFXZDWJF` float DEFAULT NULL,
-  `XMPZBH` varchar(64) DEFAULT NULL,
-  `JBRXM` varchar(32) DEFAULT NULL,
-  `XMBH` varchar(64) DEFAULT NULL,
-  `ZZKS` float DEFAULT NULL,
-  `JZGH` varchar(16) DEFAULT NULL,
-  `note` varchar(1024) DEFAULT NULL,
-  `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `XMBH` (`XMBH`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of dr_xmjfxx_____
--- ----------------------------
-BEGIN;
-INSERT INTO `dr_xmjfxx_____` VALUES (1, 18001, '12', '2020-02-01 00:00:00', 20000, '1970-01-01 00:00:00', 0, 'XS12344', '李四', 'BH8888', 9000, '00001B', NULL, '2021-03-15 06:34:47.746371');
-INSERT INTO `dr_xmjfxx_____` VALUES (3, 18000, '12', '2020-02-01 00:00:00', 20001, '1970-01-01 00:00:00', 0, 'XS12344', '李四', 'BH8877', 9000, '00001B', NULL, '2021-03-11 18:08:52.270447');
-INSERT INTO `dr_xmjfxx_____` VALUES (4, 18000, '12', '2021-02-01 00:00:00', 20001, '1970-01-01 00:00:00', 0, 'XS12344', '李四', 'BH8879', 9000, '00001B', NULL, '2021-03-15 06:36:38.414020');
-INSERT INTO `dr_xmjfxx_____` VALUES (5, 10, 'qwe', '2021-03-02 00:00:00', 110, '2021-03-10 00:00:00', 340, 'sg', 'adsg', 'BH8765', 10, '00XW1306', NULL, '2021-03-15 12:18:19.846104');
-INSERT INTO `dr_xmjfxx_____` VALUES (6, 0, 'rrr', '2021-03-02 00:00:00', 0, '2021-03-04 00:00:00', 0, '222', '222', '2222', 0, '00001B', NULL, '2021-03-15 12:24:23.927505');
-INSERT INTO `dr_xmjfxx_____` VALUES (10, 100000, 'LN0001', '2021-03-02 00:00:00', 100000, '2021-03-02 00:00:00', 0, 'LN0001-01', '王武', 'XX0001', 9999, '000001C', NULL, '2021-03-17 03:27:18.585589');
-INSERT INTO `dr_xmjfxx_____` VALUES (11, 100000, 'LN00002', '2021-03-17 00:00:00', 110000, '2021-03-17 00:00:00', 0, 'LN0002-1', '王武', 'XX0002', 9990, '000001C', NULL, '2021-03-17 03:26:53.208529');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for dr_xmryxx
 -- ----------------------------
 DROP TABLE IF EXISTS `dr_xmryxx`;
 CREATE TABLE `dr_xmryxx` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `RYH` varchar(16) DEFAULT NULL,
-  `GXL` float DEFAULT NULL,
-  `XMSJJK` float DEFAULT NULL,
-  `KYXMLX` varchar(16) DEFAULT NULL,
-  `KYJFLX` varchar(16) DEFAULT NULL,
-  `MNGZYS` float DEFAULT NULL,
-  `JSM` varchar(16) DEFAULT NULL,
-  `RYLX` varchar(16) DEFAULT NULL,
-  `SMSX` varchar(16) DEFAULT NULL,
-  `XMBH` varchar(16) DEFAULT NULL,
-  `XKMLKJM` varchar(16) DEFAULT NULL,
-  `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `note` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `_dr_xmryxx_xmbh_ryh_uc` (`XMBH`,`RYH`)
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `RYH` varchar(16) DEFAULT NULL,
+    `GXL` float DEFAULT NULL,
+    `MNGZYS` float DEFAULT NULL,
+    `JSM` varchar(16) DEFAULT NULL,
+    `RYLX` varchar(16) DEFAULT NULL,
+    `SMSX` varchar(16) DEFAULT NULL,
+    `XMBH` varchar(16) DEFAULT NULL,
+    `XMMC` varchar(64) DEFAULT NULL,
+    `XKMLKJM` varchar(16) DEFAULT NULL,
+    `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    `note` varchar(1024) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `_dr_xmryxx_xmbh_ryh_uc` (`XMBH`,`RYH`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of dr_xmryxx
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for dr_xmryxx_____
--- ----------------------------
-DROP TABLE IF EXISTS `dr_xmryxx_____`;
-CREATE TABLE `dr_xmryxx_____` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `RYH` varchar(16) DEFAULT NULL,
-  `GZL` float DEFAULT NULL,
-  `MNGZYS` float DEFAULT NULL,
-  `JSM` varchar(16) DEFAULT NULL,
-  `RYLX` varchar(16) DEFAULT NULL,
-  `SMSX` varchar(16) DEFAULT NULL,
-  `XMBH` varchar(16) DEFAULT NULL,
-  `XKMLKJM` varchar(16) DEFAULT NULL,
-  `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `note` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `_dr_xmryxx_xmbh_ryh_uc` (`XMBH`,`RYH`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of dr_xmryxx_____
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for dr_xnxqxx
@@ -2472,29 +2388,6 @@ CREATE TABLE `dr_xwlwxx` (
 
 -- ----------------------------
 -- Records of dr_xwlwxx
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for dr_xwlwxx_____
--- ----------------------------
-DROP TABLE IF EXISTS `dr_xwlwxx_____`;
-CREATE TABLE `dr_xwlwxx_____` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `stamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `note` varchar(1024) DEFAULT NULL,
-  `LWTM` varchar(16) DEFAULT NULL,
-  `LWQSRQ` datetime DEFAULT NULL,
-  `LWZZRQ` datetime DEFAULT NULL,
-  `XH` varchar(16) DEFAULT NULL,
-  `XSXM` varchar(16) DEFAULT NULL,
-  `XSSSXY` varchar(16) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of dr_xwlwxx_____
 -- ----------------------------
 BEGIN;
 COMMIT;
@@ -3032,12 +2925,7 @@ CREATE TABLE `kh_jxkhgz` (
 -- Records of kh_jxkhgz
 -- ----------------------------
 BEGIN;
-INSERT INTO `kh_jxkhgz` VALUES (1, 'A1', '00000B', 'A', 'A-1', 'A-1-1', '项目经费信息额度1', 'XMJFXX', 'JHJFZE > 10000', '1.5', '%(GZH)s->教职工：%(JZGH)s %(XMBH)s元', 'KHJGMX', '测试', '2021-05-14 07:12:33.128866');
-INSERT INTO `kh_jxkhgz` VALUES (2, 'A2', '00000B', 'A', 'A-1', 'A-1-2', '项目经费信息额度', 'XMJFXX', 'JHJFZE > 1000', '2 * JHJFZE', '教职工：%(JZGH)s %(XMBH)s元', 'KHJGMX', '测试', '2021-05-14 07:12:36.404580');
-INSERT INTO `kh_jxkhgz` VALUES (4, 'XX-001', '00000C', 'A', 'A-1', 'A-1-3', '项目经费信息额度3', 'XMJFXX', 'JHJFZE == 11000', '0', 'hello world', 'KHJGMX', '', '2021-03-17 03:32:21.418425');
 INSERT INTO `kh_jxkhgz` VALUES (5, 'ZJ-1', '00000B', 'ZJ', 'ZZ', 'ZZZ', '增减业绩点', '', '0', '0', '', '', '', '2021-05-14 07:12:40.945631');
-INSERT INTO `kh_jxkhgz` VALUES (6, 'XX-001', '00000B', 'AB', 'AB-1', 'AB-1-2', '项目经费信息额度', 'XMJFXX', 'JHJFZE > 100000', '20', '%(GZH)s->教职工：%(JZGH)s', '', '', '2021-03-17 03:37:55.100899');
-INSERT INTO `kh_jxkhgz` VALUES (7, 'XX-002', '00000B', 'ABC', 'AB-1', 'AB-1-2', '项目经费信息额度1', 'XMJFXX', 'JHJFZE <= 100000', '10', '%(GZH)s->教职工：%(JZGH)s %(XMBH)s元', '', '', '2021-03-17 03:37:36.940028');
 INSERT INTO `kh_jxkhgz` VALUES (8, 'C1-1-1', '00000B', '学术水平和成果工作量', '科研成果工作量', '获奖成果', '奖励成果', 'KJCGRYXX_JL', 'HJJBM==\'10\' and CGHJLBM==\'01\' and JLDJM==\'1\'', '2000 * GXL', '负责人教师：%(FZRXM)s,参与项目编号:%(HJCGBH)s,贡献率为：%(GXL)s', '', NULL, '2021-03-07 18:38:04.489486');
 INSERT INTO `kh_jxkhgz` VALUES (9, 'C1-1-2', '00000B', '学术水平和成果工作量', '科研成果工作量', '获奖成果', '奖励成果', 'KJCGRYXX_JL', 'HJJBM==\'10\' and CGHJLBM==\'03\' and JLJBM==\'2\'', '2000*GXL', '负责人教师：%(FZRXM)s,参与项目编号:%(HJCGBH)s,贡献率为：%(GXL)s', '', NULL, '2021-03-07 18:37:12.155462');
 INSERT INTO `kh_jxkhgz` VALUES (10, 'C1-1-3', '00000B', '学术水平和成果工作量', '科研成果工作量', '获奖成果', '奖励成果', 'KJCGRYXX_JL', 'HJJBM==\'10\' and CGHJLBM==\'03\' and JLJBM==\'3\'', '1500*GXL', '负责人教师：%(FZRXM)s,参与项目编号:%(HJCGBH)s,贡献率为：%(GXL)s', NULL, NULL, '2021-03-07 18:37:12.104667');
@@ -3159,6 +3047,18 @@ INSERT INTO `kh_jxkhgz` VALUES (152, 'A3-4-1', '00000B', 'A', 'A3', 'A3-4', 'A3-
 INSERT INTO `kh_jxkhgz` VALUES (153, 'A3-4-2', '00000B', 'A', 'A3', 'A3-4-2', 'A3-4-2', 'JGXMXX', 'XMJBM==\'20\'', '50*GXL', '教师: %(XM)s, 参与教改项目编号: %(XMBH)s, 贡献率: %(GXL)s', '', NULL, '2021-05-11 02:33:14.904413');
 INSERT INTO `kh_jxkhgz` VALUES (154, 'A3-4-3', '00000B', 'A', 'A3', 'A3-4-3', 'A3-4-3', 'JGXMXX', 'XMJBM==\'60\'', '20*GXL', '教师: %(XM)s, 参与教改项目编号: %(XMBH)s, 贡献率: %(GXL)s', '', NULL, '2021-05-11 02:38:34.064791');
 INSERT INTO `kh_jxkhgz` VALUES (155, 'A3-4-4', '00000B', 'A3', 'A3', 'A3-4', 'A3-4-4', 'JGXMXX', 'XMJBM==\'99\'', '3*GXL', '教师: %(XM)s, 参与教改项目编号: %(XMBH)s, 贡献率: %(GXL)s', '', NULL, '2021-05-11 02:40:26.003775');
+INSERT INTO `kh_jxkhgz` VALUES (159, 'B1-1-1', '00000B', '科研工作量', '科研经费工作量', '项目经费1', '科研经费工作量1', 'XMRYXX', 'KYXMLX==\'150\' and KYJFLX==\'3500\'', '1.5*XMSJJK*GXL/3500', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:03.514203');
+INSERT INTO `kh_jxkhgz` VALUES (160, 'B1-1-2', '00000B', '科研工作量', '科研经费工作量', '项目经费2', '科研经费工作量2', 'XMRYXX', 'KYXMLX==\'120\' and KYJFLX==\'3500\'', '1.2*XMSJJK*GXL/3500', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:08.496590');
+INSERT INTO `kh_jxkhgz` VALUES (161, 'B1-1-3', '00000B', '科研工作量', '科研经费工作量', '项目经费3', '科研经费工作量3', 'XMRYXX', 'KYXMLX==\'100\' and KYJFLX==\'3500\'', 'XMSJJK*GXL/3500', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:12.274740');
+INSERT INTO `kh_jxkhgz` VALUES (162, 'B1-1-4', '00000B', '科研工作量', '科研经费工作量', '项目经费4', '科研经费工作量4', 'XMRYXX', 'KYXMLX==\'080\' and KYJFLX==\'3500\'', '0.8*XMSJJK*GXL/3500', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:16.048028');
+INSERT INTO `kh_jxkhgz` VALUES (163, 'B1-1-5', '00000B', '科研工作量', '科研经费工作量', '项目经费5', '科研经费工作量5', 'XMRYXX', 'KYXMLX==\'050\' and KYJFLX==\'3500\'', '0.5*XMSJJK*GXL/3500', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:21.259791');
+INSERT INTO `kh_jxkhgz` VALUES (164, 'B1-1-6', '00000B', '科研工作量', '科研经费工作量', '项目经费6', '科研经费工作量6', 'XMRYXX', 'KYXMLX==\'150\' and KYJFLX==\'30000\'', '1.5*XMSJJK*GXL/30000', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:26.733308');
+INSERT INTO `kh_jxkhgz` VALUES (165, 'B1-1-7', '00000B', '科研工作量', '科研经费工作量', '项目经费7', '科研经费工作量7', 'XMRYXX', 'KYXMLX==\'120\' and KYJFLX==\'30000\'', '1.2*XMSJJK*GXL/30000', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:32.131842');
+INSERT INTO `kh_jxkhgz` VALUES (166, 'B1-1-8', '00000B', '科研工作量', '科研经费工作量', '项目经费8', '科研经费工作量8', 'XMRYXX', 'KYXMLX==\'100\' and KYJFLX==\'30000\'', 'XMSJJK*GXL/30000', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:48.192882');
+INSERT INTO `kh_jxkhgz` VALUES (167, 'B1-1-9', '00000B', '科研工作量', '科研经费工作量', '项目经费9', '科研经费工作量9', 'XMRYXX', 'KYXMLX==\'080\' and KYJFLX==\'30000\'', '0.8*XMSJJK*GXL/30000', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:49:54.212127');
+INSERT INTO `kh_jxkhgz` VALUES (168, 'B1-1-10', '00000B', '科研工作量', '科研经费工作量', '项目经费10', '科研经费工作量10', 'XMRYXX', 'KYXMLX==\'050\' and KYJFLX==\'30000\'', '0.5*XMSJJK*GXL/30000', '姓名：%(XM)s,项目编号:%(XMBH)s,贡献率为：%(GXL)s', '', NULL, '2021-04-19 01:50:11.516955');
+INSERT INTO `kh_jxkhgz` VALUES (169, 'A35-1-1', '00000B', '教学水平和成果工作量', '教学成果奖励申报工作量', '教学成果奖励申报1', '教学成果奖励申报1', 'JXCGJLSB', 'JXCGLB==\'172\'', '100', '姓名：%(XM)s', '', NULL, '2021-04-21 09:51:22.453076');
+INSERT INTO `kh_jxkhgz` VALUES (170, 'A35_1-2', '00000B', '教学水平和成果工作量', '教学成果奖励申报工作量', '教学成果奖励申报2', '教学成果奖励申报2', 'JXCGJLSB', 'JXCGLB==\'158\'', '30', '姓名：%(XM)s', '', NULL, '2021-04-21 09:53:50.353123');
 COMMIT;
 
 -- ----------------------------
@@ -3177,22 +3077,6 @@ CREATE TABLE `kh_khgzdz` (
   UNIQUE KEY `_kh_khgzdz_dwh_khnf_gzh_uc` (`DWH`,`KHNF`,`GZH`)
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of kh_khgzdz
--- ----------------------------
-BEGIN;
-INSERT INTO `kh_khgzdz` VALUES (27, '00000C', '2021-01-01 00:00:00', 'A1', '未启用', '2021-03-24 07:46:04.847960', '');
-INSERT INTO `kh_khgzdz` VALUES (28, '00000C', '2021-01-01 00:00:00', 'A2', '已启用', '2021-03-17 06:19:33.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (29, '00000C', '2021-01-01 00:00:00', 'XX-001', '已启用', '2021-03-17 06:19:33.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (30, '00000C', '2021-01-01 00:00:00', 'ZJ-1', '已启用', '2021-03-17 06:19:33.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (31, '00000B', '2021-01-01 00:00:00', 'XX-001', '已启用', '2021-03-17 12:52:39.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (32, '00000B', '2021-01-01 00:00:00', 'XX-002', '已启用', '2021-03-17 12:52:39.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (33, '00000A', '2021-01-01 00:00:00', 'A1', '已启用', '2021-03-24 07:45:14.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (34, '00000A', '2021-01-01 00:00:00', 'A2', '已启用', '2021-03-24 07:45:14.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (36, '00000A', '2021-01-01 00:00:00', 'ZJ-1', '已启用', '2021-03-24 07:45:14.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (37, '00000A', '2021-01-01 00:00:00', 'XX-001', '已启用', '2021-03-24 07:45:14.000000', '');
-INSERT INTO `kh_khgzdz` VALUES (38, '00000A', '2021-01-01 00:00:00', 'XX-002', '已启用', '2021-03-24 07:45:14.000000', '');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for kh_khjghz
@@ -3216,20 +3100,6 @@ CREATE TABLE `kh_khjghz` (
 -- Records of kh_khjghz
 -- ----------------------------
 BEGIN;
-INSERT INTO `kh_khjghz` VALUES (312, '2021-01-01 00:00:00', '00000C', '00000A', '00001B', '', 72025, '2021-05-14 06:08:05.000000', '');
-INSERT INTO `kh_khjghz` VALUES (313, '2021-01-01 00:00:00', '00000C', '00000A', '', 'ZJ-1', 20, '2021-05-14 06:08:05.000000', '');
-INSERT INTO `kh_khjghz` VALUES (314, '2021-01-01 00:00:00', '00000A', '', '', 'ZJ-1', 20, '2021-05-14 06:08:05.000000', '');
-INSERT INTO `kh_khjghz` VALUES (315, '2021-01-01 00:00:00', '00000C', '00000A', '', '', 72025, '2021-05-14 06:08:05.000000', '');
-INSERT INTO `kh_khjghz` VALUES (316, '2021-01-01 00:00:00', '00000A', '', '', '', 72075, '2021-05-14 07:18:36.915487', '');
-INSERT INTO `kh_khjghz` VALUES (317, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A1', 3, '2021-05-14 06:08:05.000000', '');
-INSERT INTO `kh_khjghz` VALUES (318, '2021-01-01 00:00:00', '00000A', '', '', 'A1', 3, '2021-05-14 06:08:05.000000', '');
-INSERT INTO `kh_khjghz` VALUES (319, '2021-01-01 00:00:00', '00000C', '00000A', '', 'A2', 72002, '2021-05-14 06:08:05.000000', '');
-INSERT INTO `kh_khjghz` VALUES (320, '2021-01-01 00:00:00', '00000A', '', '', 'A2', 72002, '2021-05-14 06:08:05.000000', '');
-INSERT INTO `kh_khjghz` VALUES (323, '2021-01-01 00:00:00', '00000A', '', '', 'XX-002', 50, '2021-05-14 07:18:36.896359', '');
-INSERT INTO `kh_khjghz` VALUES (325, '2021-01-01 00:00:00', '00000B', '00000A', '000001C', '', 20, '2021-05-14 07:18:36.771124', '');
-INSERT INTO `kh_khjghz` VALUES (326, '2021-01-01 00:00:00', '00000B', '00000A', '', 'XX-002', 30, '2021-05-14 07:18:36.883407', '');
-INSERT INTO `kh_khjghz` VALUES (327, '2021-01-01 00:00:00', '00000B', '00000A', '', '', 30, '2021-05-14 07:18:36.905639', '');
-INSERT INTO `kh_khjghz` VALUES (328, '2021-01-01 00:00:00', '00000B', '00000A', '00XW1306', '', 10, '2021-05-14 07:16:58.000000', '');
 COMMIT;
 
 -- ----------------------------
@@ -3253,14 +3123,7 @@ CREATE TABLE `kh_khjgmx` (
 -- Records of kh_khjgmx
 -- ----------------------------
 BEGIN;
-INSERT INTO `kh_khjgmx` VALUES (143, '00001B', '00000C', 'ZJ-1', '2021-01-01 00:00:00', 20, 'da', '', '2021-03-06 15:38:57.000000');
-INSERT INTO `kh_khjgmx` VALUES (233, '00001B', '00000C', 'A1', '2021-01-01 00:00:00', 1.5, 'A1->教职工：00001B BH8877元', '', '2021-05-14 06:08:05.000000');
-INSERT INTO `kh_khjgmx` VALUES (234, '00001B', '00000C', 'A1', '2021-01-01 00:00:00', 1.5, 'A1->教职工：00001B BH8888元', '', '2021-05-14 06:08:05.000000');
-INSERT INTO `kh_khjgmx` VALUES (235, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36000, '教职工：00001B BH8877元', '', '2021-05-14 06:08:05.000000');
-INSERT INTO `kh_khjgmx` VALUES (236, '00001B', '00000C', 'A2', '2021-01-01 00:00:00', 36002, '教职工：00001B BH8888元', '', '2021-05-14 06:08:05.000000');
-INSERT INTO `kh_khjgmx` VALUES (239, '000001C', '00000B', 'XX-002', '2021-01-01 00:00:00', 10, 'XX-002->教职工：000001C XX0002元', '', '2021-05-14 07:16:58.000000');
-INSERT INTO `kh_khjgmx` VALUES (240, '000001C', '00000B', 'XX-002', '2021-01-01 00:00:00', 10, 'XX-002->教职工：000001C XX0001元', '', '2021-05-14 07:16:58.000000');
-INSERT INTO `kh_khjgmx` VALUES (241, '00XW1306', '00000B', 'XX-002', '2021-01-01 00:00:00', 10, 'XX-002->教职工：00XW1306 BH8765元', '', '2021-05-14 07:16:58.000000');
+INSERT INTO `kh_khjgmx` VALUES (143, '00001B', '00000C', 'ZJ-1', '2021-01-01 00:00:00', 20, 'A+', '', '2021-03-06 15:38:57.000000');
 COMMIT;
 
 -- ----------------------------
@@ -4102,18 +3965,17 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_ksapxx` AS select `
 DROP VIEW IF EXISTS `view_sxxss`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_sxxss` AS select `pk`.`id` AS `id`,`pk`.`JSGH` AS `JSGH`,`pk`.`JSGH` AS `JZGH`,`pk`.`JSXM` AS `JSXM`,`pk`.`KKXND` AS `KKXND`,`pk`.`KKXQM` AS `KKXQM`,`pk`.`HBS` AS `HBS`,`pk`.`SXZS` AS `SXZS`,`pk`.`ZLXS` AS `ZLXS`,`kc`.`KCH` AS `KCH`,`dr_jzg`.`DWH` AS `DWH`,`xn`.`XQQSSJ` AS `stamp`,`pk`.`note` AS `note` from (((`dr_sspksjxx` `pk` left join `dr_kcsjxx` `kc` on((`kc`.`KCH` = `pk`.`KCH`))) left join `dr_xnxqxx` `xn` on((`xn`.`XQQSSJ` = `pk`.`KKXQM`))) left join `dr_jzgjcsjxx` `dr_jzg` on((`dr_jzg`.`JZGH` = `pk`.`JSGH`))) where (1 = 1);
 
-
 -- ----------------------------
 -- View structure for view_xmjfxx
 -- ----------------------------
 DROP VIEW IF EXISTS `view_xmjfxx`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_xmjfxx` AS select `dr`.`id` AS `id`,`dr`.`XMBH` AS `XMBH`,`dr`.`FZRH` AS `FZRH`,`dr`.`XMJFLYM` AS `XMJFLYM`,`dr`.`BRRQ` AS `BRRQ`,`dr`.`ZCRQ` AS `ZCRQ`,`dr`.`XMSJJK` AS `XMSJJK`,`dr`.`KYXMLX` AS `KYXMLX`,`dr`.`KYJFLX` AS `KYJFLX`,`dr`.`XMPZBH` AS `XMPZBH`,`dr`.`JBRXM` AS `JBRXM`,`dr`.`FZRH` AS `JZGH`,`jz`.`DWH` AS `DWH`,`jz`.`XM` AS `XM`,`dw`.`DWMC` AS `DWMC`,`dr`.`BRRQ` AS `stamp`,`dr`.`note` AS `note` from ((`dr_xmjfxx` `dr` left join `dr_jzgjcsjxx` `jz` on((`jz`.`JZGH` = `dr`.`FZRH`))) left join `dr_zzjgjbsjxx` `dw` on((`dw`.`DWH` = `jz`.`DWH`))) where (1 = 1);
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_xmjfxx` AS select `dr`.`id` AS `id`,`dr`.`XMBH` AS `XMBH`,`dr`.`XMMC` AS `XMMC`,`dr`.`FZRH` AS `FZRH`,`dr`.`XMJFLYM` AS `XMJFLYM`,`dr`.`BRRQ` AS `BRRQ`,`dr`.`ZCRQ` AS `ZCRQ`,`dr`.`XMSJJK` AS `XMSJJK`,`dr`.`KYXMLX` AS `KYXMLX`,`dr`.`KYJFLX` AS `KYJFLX`,`dr`.`XMPZBH` AS `XMPZBH`,`dr`.`JBRXM` AS `JBRXM`,`dr`.`FZRH` AS `JZGH`,`jz`.`DWH` AS `DWH`,`jz`.`XM` AS `XM`,`dw`.`DWMC` AS `DWMC`,`dr`.`BRRQ` AS `stamp`,`dr`.`note` AS `note` from ((`dr_xmjfxx` `dr` left join `dr_jzgjcsjxx` `jz` on((`jz`.`JZGH` = `dr`.`FZRH`))) left join `dr_zzjgjbsjxx` `dw` on((`dw`.`DWH` = `jz`.`DWH`))) where (1 = 1);
 
 -- ----------------------------
 -- View structure for view_xmryxx
 -- ----------------------------
 DROP VIEW IF EXISTS `view_xmryxx`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_xmryxx` AS select `dr`.`id` AS `id`,`dr`.`RYH` AS `RYH`,`dr`.`RYH` AS `JZGH`,`dr`.`GXL` AS `GXL`,`dr`.`XMSJJK` AS `XMSJJK`,`dr`.`KYXMLX` AS `KYXMLX`,`dr`.`KYJFLX` AS `KYJFLX`,`jz`.`XM` AS `XM`,`jz`.`DWH` AS `DWH`,`jz`.`DWMC` AS `DWMC`,`jz`.`CSRQ` AS `CSRQ`,`dr`.`XMBH` AS `XMBH`,`dr`.`MNGZYS` AS `MNGZYS`,`dr`.`JSM` AS `JSM`,`dr`.`RYLX` AS `RYLX`,`dr`.`SMSX` AS `SMSX`,`dr`.`XKMLKJM` AS `XKMLKJM`,`dr`.`stamp` AS `stamp`,`dr`.`note` AS `note` from (`dr_xmryxx` `dr` left join `view_jzgjcsjxx` `jz` on((`jz`.`JZGH` = `dr`.`RYH`))) where (1 = 1);
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_xmryxx` AS select `dr`.`id` AS `id`,`dr`.`RYH` AS `RYH`,`dr`.`RYH` AS `JZGH`,`dr`.`GXL` AS `GXL`,`xm`.`XMSJJK` AS `XMSJJK`,`xm`.`KYXMLX` AS `KYXMLX`,`xm`.`KYJFLX` AS `KYJFLX`,`jz`.`XM` AS `XM`,`jz`.`DWH` AS `DWH`,`jz`.`DWMC` AS `DWMC`,`dr`.`XMBH` AS `XMBH`,`dr`.`XMMC` AS `XMMC`,`dr`.`MNGZYS` AS `MNGZYS`,`dr`.`JSM` AS `JSM`,`dr`.`RYLX` AS `RYLX`,`dr`.`SMSX` AS `SMSX`,`dr`.`XKMLKJM` AS `XKMLKJM`,`dr`.`stamp` AS `stamp`,`dr`.`note` AS `note` from ((`dr_xmryxx` `dr` left join `view_jzgjcsjxx` `jz` on((`jz`.`JZGH` = `dr`.`RYH`))) left join `dr_xmjfxx` `xm` on((`xm`.`XMBH` = `dr`.`XMBH`))) where (1 = 1);
 
 -- ----------------------------
 -- View structure for view_xnxqxx
