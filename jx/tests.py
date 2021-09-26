@@ -12,5 +12,6 @@ test = """
 if __name__ == '__main__':
 
     print(test)
+    print('a')
 
     exit(0)
